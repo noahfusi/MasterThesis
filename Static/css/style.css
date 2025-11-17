@@ -73,6 +73,12 @@ body {
   margin: 0 auto;
 }
 
+.content.content-bleed {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+}
+
 .placeholder {
   background: var(--card);
   border-radius: 12px;
@@ -99,36 +105,77 @@ body {
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 }
 
-.file-explorer-section {
-  padding: 0;
-}
-
-.file-explorer-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+.file-explorer-full {
+  padding: 2rem 3rem 3rem;
+  background: var(--bg);
+  min-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
+.file-explorer-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.file-explorer-actions button {
+  background: var(--accent);
+}
+
+.file-explorer-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr);
+  gap: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  min-height: 60vh;
+  background: var(--card);
+}
+
 .file-explorer-grid.show-preview {
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(280px, 1fr) 2fr;
 }
 
 .file-list-panel,
 .file-preview-panel {
-  padding: 1.75rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .file-preview-panel {
   border-left: 1px solid #e5e7eb;
   display: none;
+  background: #0f172a;
 }
 
 .file-explorer-grid.show-preview .file-preview-panel {
-  display: block;
+  display: flex;
+}
+
+.file-preview-panel .section-heading {
+  color: #e2e8f0;
+}
+
+.file-preview-panel h2 {
+  color: inherit;
+}
+
+.file-preview-panel span {
+  color: #94a3b8;
+}
+
+.file-preview-panel pre {
+  flex: 1;
 }
 
 .file-preview-content {
-  background: #0f172a;
+  background: transparent;
   color: #e2e8f0;
   border-radius: 0.75rem;
   padding: 1rem;
@@ -136,7 +183,15 @@ body {
   white-space: pre-wrap;
   overflow: auto;
   font-family: "JetBrains Mono", "Fira Code", Menlo, monospace;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.file-explorer-empty {
+  background: var(--card);
+  border-radius: 1.25rem;
+  padding: 3rem;
+  text-align: center;
+  border: 1px dashed #d1d5db;
 }
 
 .dataset-section form {

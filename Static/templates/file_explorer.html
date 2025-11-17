@@ -1,21 +1,29 @@
 {% extends "base.html" %}
 
-{% block content %}
-<section class="placeholder dataset-hero">
-  <h1>File explorer</h1>
-  <p>
-    Browse the <code>raw</code> folder of the currently selected dataset. Pick a file on
-    the left to preview its content without leaving the dashboard.
-  </p>
-</section>
+{% block content_classes %}content-bleed{% endblock %}
 
-{% if current_dataset %}
-<section class="dataset-section file-explorer-section">
+{% block content %}
+<section class="file-explorer-full">
+  <header class="file-explorer-header">
+    <div>
+      <h1>File explorer</h1>
+      <p>
+        Browse the <code>raw</code> folder of the active dataset and preview file contents in
+        a split view that spans the full screen.
+      </p>
+    </div>
+    <div class="file-explorer-actions">
+      {% if current_dataset %}
+      <button type="button" id="refresh-files-button">Refresh</button>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if current_dataset %}
   <div class="file-explorer-grid" id="file-explorer">
     <div class="file-list-panel" id="file-list-panel">
       <div class="section-heading">
         <h2>Files in <span id="file-list-dataset">{{ current_dataset }}</span></h2>
-        <button type="button" id="refresh-files-button">Refresh</button>
       </div>
       <p class="feedback" id="file-list-feedback"></p>
       <ul class="dataset-list" id="file-list"></ul>
@@ -28,11 +36,11 @@
       <pre id="file-content" class="file-preview-content"></pre>
     </div>
   </div>
+  {% else %}
+  <div class="file-explorer-empty">
+    <h2>No dataset selected</h2>
+    <p>Select a dataset from the header menu to explore its files.</p>
+  </div>
+  {% endif %}
 </section>
-{% else %}
-<section class="dataset-section">
-  <h2>No dataset selected</h2>
-  <p>Select a dataset from the header menu to explore its files.</p>
-</section>
-{% endif %}
 {% endblock %}

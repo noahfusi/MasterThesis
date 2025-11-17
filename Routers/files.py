@@ -15,6 +15,7 @@ from Files.dataset_manager import (
     normalize_dataset_name,
     set_current_dataset,
 )
+from Lizard.run_analysis import analyze_dataset
 
 router = APIRouter(prefix="/datasets", tags=["datasets"])
 
@@ -31,7 +32,9 @@ def _safe_extract(archive: zipfile.ZipFile, destination: Path) -> None:
     archive.extractall(destination)
 
 
-def _dataset_response(message: str | None = None, dataset: str | None = None) -> dict[str, object]:
+def _dataset_response(
+    message: str | None = None, dataset: str | None = None, extra: dict[str, object] | None = None
+) -> dict[str, object]:
     payload: dict[str, object] = {
         "datasets": list_datasets(),
         "current_dataset": get_current_dataset(),
@@ -40,6 +43,8 @@ def _dataset_response(message: str | None = None, dataset: str | None = None) ->
         payload["message"] = message
     if dataset is not None:
         payload["dataset"] = dataset
+    if extra:
+        payload.update(extra)
     return payload
 
 
@@ -92,7 +97,15 @@ async def create_dataset(name: str = Form(...), file: UploadFile = File(...)) ->
         except ValueError:
             pass
 
-    return _dataset_response(message="Dataset created", dataset=sanitized_name)
+    analysis_status = None
+    try:
+        analyze_dataset(sanitized_name, "lizard")
+        analysis_status = "Lizard analysis completed."
+    except RuntimeError as exc:
+        analysis_status = f"Lizard analysis failed: {exc}"
+
+    extra = {"analysis_status": analysis_status} if analysis_status else None
+    return _dataset_response(message="Dataset created", dataset=sanitized_name, extra=extra)
 
 
 @router.delete("/{dataset_name}", status_code=status.HTTP_200_OK, name="delete-dataset")

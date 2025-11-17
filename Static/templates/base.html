@@ -12,9 +12,9 @@
       <div class="logo">Data Workspace</div>
       <nav class="main-nav">
         <a href="{{ url_for('dataset-management') }}" class="{% if active_page == 'dataset' %}active{% endif %}">Dataset management</a>
+        <a href="{{ url_for('file-explorer') }}" class="{% if active_page == 'explorer' %}active{% endif %}">File explorer</a>
         <a href="{{ url_for('global-analysis') }}" class="{% if active_page == 'global' %}active{% endif %}">Global analysis</a>
         <a href="{{ url_for('file-analysis') }}" class="{% if active_page == 'file' %}active{% endif %}">File analysis</a>
-        <a href="{{ url_for('file-explorer') }}" class="{% if active_page == 'explorer' %}active{% endif %}">File explorer</a>
       </nav>
       <div class="dataset-switcher">
         <label for="current-dataset-select">Current dataset</label>
@@ -27,7 +27,7 @@
       </div>
     </header>
 
-    <main class="content">
+    <main class="content {% block content_classes %}{% endblock %}">
       {% block content %}{% endblock %}
     </main>
 
