@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="placeholder dataset-hero">
+  <h1>Dataset management</h1>
+  <p>
+    Upload new datasets, choose which one is active, and keep track of every available
+    source. Each dataset is stored inside <code>/Datasets</code> with a ready-to-use
+    <code>raw</code> folder.
+  </p>
+</section>
+
+<section class="dataset-section">
+  <h2>Import a dataset (.zip)</h2>
+  <form id="dataset-upload-form" enctype="multipart/form-data">
+    <label>
+      Dataset name
+      <input type="text" name="name" placeholder="e.g. client_project" required />
+    </label>
+    <label>
+      ZIP archive
+      <input type="file" name="file" accept=".zip" required />
+    </label>
+    <button type="submit">Upload</button>
+  </form>
+  <p class="feedback" id="dataset-upload-status"></p>
+</section>
+
+<section class="dataset-section">
+  <div class="section-heading">
+    <h2>Existing datasets</h2>
+    <p>Current dataset: <span id="current-dataset-display">{{ current_dataset or "None" }}</span></p>
+  </div>
+  <ul class="dataset-list" id="dataset-list">
+    {% if datasets %}
+    {% for dataset in datasets %}
+    <li class="dataset-row">
+      <span>{{ dataset }}</span>
+    </li>
+    {% endfor %}
+    {% else %}
+    <li>No datasets yet.</li>
+    {% endif %}
+  </ul>
+  <p class="feedback" id="dataset-feedback"></p>
+</section>
+{% endblock %}

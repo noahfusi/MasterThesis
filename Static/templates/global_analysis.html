@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="placeholder">
+  <h1>Global analysis</h1>
+  <p class="current-dataset-hint">
+    {% if current_dataset %}
+    Current dataset:&nbsp;<strong>{{ current_dataset }}</strong>
+    {% else %}
+    No dataset selected.
+    {% endif %}
+  </p>
+  <p>
+    Use this space to display descriptive statistics, trends, and global KPIs for the
+    selected dataset.
+  </p>
+</section>
+{% endblock %}

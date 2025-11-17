@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="placeholder">
+  <h1>File analysis</h1>
+  <p class="current-dataset-hint">
+    {% if current_dataset %}
+    Current dataset:&nbsp;<strong>{{ current_dataset }}</strong>
+    {% else %}
+    No dataset selected.
+    {% endif %}
+  </p>
+  <p>
+    Present detailed insights for a specific file: column overviews, value distributions,
+    or quality checks.
+  </p>
+</section>
+{% endblock %}
