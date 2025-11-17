@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Ivan_Dario_Morales_Gonzalez.scala:149">
+			<value>1</value>
+			<value>25</value>
+			<value>6</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Ivan_Dario_Morales_Gonzalez.scala:175">
+			<value>2</value>
+			<value>20</value>
+			<value>2</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Ivan_Dario_Morales_Gonzalez.scala:196">
+			<value>3</value>
+			<value>46</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Ivan_Dario_Morales_Gonzalez.scala:248">
+			<value>4</value>
+			<value>280</value>
+			<value>87</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Ivan_Dario_Morales_Gonzalez.scala:613">
+			<value>5</value>
+			<value>76</value>
+			<value>19</value>
+		</item>
+		<average label="NCSS" value="89.4"/>
+		<average label="CCN" value="23.6"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Ivan_Dario_Morales_Gonzalez.scala">
+			<value>1</value>
+			<value>523</value>
+			<value>118</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="523.0"/>
+		<average label="CCN" value="118.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="523"/>
+		<sum label="CCN" value="118"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="89.4"/>
+		<average label="CCN" value="23.6"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.54%

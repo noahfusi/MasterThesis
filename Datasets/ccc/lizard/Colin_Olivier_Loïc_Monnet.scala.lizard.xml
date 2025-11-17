@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:8">
+			<value>1</value>
+			<value>13</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:21">
+			<value>2</value>
+			<value>23</value>
+			<value>7</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:48">
+			<value>3</value>
+			<value>30</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:86">
+			<value>4</value>
+			<value>13</value>
+			<value>2</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:99">
+			<value>5</value>
+			<value>14</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:113">
+			<value>6</value>
+			<value>11</value>
+			<value>4</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:124">
+			<value>7</value>
+			<value>30</value>
+			<value>7</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:158">
+			<value>8</value>
+			<value>165</value>
+			<value>49</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala:337">
+			<value>9</value>
+			<value>50</value>
+			<value>13</value>
+		</item>
+		<average label="NCSS" value="38.77777777777778"/>
+		<average label="CCN" value="10.444444444444445"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Colin_Olivier_Loïc_Monnet.scala">
+			<value>1</value>
+			<value>350</value>
+			<value>94</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="350.0"/>
+		<average label="CCN" value="94.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="350"/>
+		<sum label="CCN" value="94"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="38.77777777777778"/>
+		<average label="CCN" value="10.444444444444445"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

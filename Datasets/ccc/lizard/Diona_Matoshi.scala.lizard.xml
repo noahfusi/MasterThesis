@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Diona_Matoshi.scala:12">
+			<value>1</value>
+			<value>10</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Diona_Matoshi.scala:24">
+			<value>2</value>
+			<value>15</value>
+			<value>7</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Diona_Matoshi.scala:49">
+			<value>3</value>
+			<value>21</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Diona_Matoshi.scala:71">
+			<value>4</value>
+			<value>22</value>
+			<value>5</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Diona_Matoshi.scala:95">
+			<value>5</value>
+			<value>20</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Diona_Matoshi.scala:114">
+			<value>6</value>
+			<value>12</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Diona_Matoshi.scala:125">
+			<value>7</value>
+			<value>182</value>
+			<value>29</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Diona_Matoshi.scala:341">
+			<value>8</value>
+			<value>21</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Diona_Matoshi.scala:367">
+			<value>9</value>
+			<value>67</value>
+			<value>19</value>
+		</item>
+		<average label="NCSS" value="41.111111111111114"/>
+		<average label="CCN" value="8.666666666666666"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Diona_Matoshi.scala">
+			<value>1</value>
+			<value>372</value>
+			<value>78</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="372.0"/>
+		<average label="CCN" value="78.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="372"/>
+		<sum label="CCN" value="78"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="41.111111111111114"/>
+		<average label="CCN" value="8.666666666666666"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.34%

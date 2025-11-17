@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/aaa/raw/Nina_Mahsa_Movaed.scala:16">
+			<value>1</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<item name="menuPrincipal(...) at Datasets/aaa/raw/Nina_Mahsa_Movaed.scala:21">
+			<value>2</value>
+			<value>21</value>
+			<value>5</value>
+		</item>
+		<item name="modeClient(...) at Datasets/aaa/raw/Nina_Mahsa_Movaed.scala:43">
+			<value>3</value>
+			<value>88</value>
+			<value>14</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/aaa/raw/Nina_Mahsa_Movaed.scala:141">
+			<value>4</value>
+			<value>25</value>
+			<value>3</value>
+		</item>
+		<average label="NCSS" value="34.75"/>
+		<average label="CCN" value="5.75"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Nina_Mahsa_Movaed.scala">
+			<value>1</value>
+			<value>143</value>
+			<value>23</value>
+			<value>4</value>
+		</item>
+		<average label="NCSS" value="143.0"/>
+		<average label="CCN" value="23.0"/>
+		<average label="Functions" value="4.0"/>
+		<sum label="NCSS" value="143"/>
+		<sum label="CCN" value="23"/>
+		<sum label="Functions" value="4"/>
+		<average label="NCSS" value="34.75"/>
+		<average label="CCN" value="5.75"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

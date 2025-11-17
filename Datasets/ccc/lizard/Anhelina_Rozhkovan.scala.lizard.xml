@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Anhelina_Rozhkovan.scala:9">
+			<value>1</value>
+			<value>9</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Anhelina_Rozhkovan.scala:18">
+			<value>2</value>
+			<value>9</value>
+			<value>8</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Anhelina_Rozhkovan.scala:37">
+			<value>3</value>
+			<value>22</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Anhelina_Rozhkovan.scala:60">
+			<value>4</value>
+			<value>17</value>
+			<value>4</value>
+		</item>
+		<item name="mainMenu(...) at Datasets/ccc/raw/Anhelina_Rozhkovan.scala:77">
+			<value>5</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<item name="adminMenu(...) at Datasets/ccc/raw/Anhelina_Rozhkovan.scala:84">
+			<value>6</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Anhelina_Rozhkovan.scala:89">
+			<value>7</value>
+			<value>59</value>
+			<value>13</value>
+		</item>
+		<average label="NCSS" value="18.285714285714285"/>
+		<average label="CCN" value="5.285714285714286"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Anhelina_Rozhkovan.scala">
+			<value>1</value>
+			<value>134</value>
+			<value>37</value>
+			<value>7</value>
+		</item>
+		<average label="NCSS" value="134.0"/>
+		<average label="CCN" value="37.0"/>
+		<average label="Functions" value="7.0"/>
+		<sum label="NCSS" value="134"/>
+		<sum label="CCN" value="37"/>
+		<sum label="Functions" value="7"/>
+		<average label="NCSS" value="18.285714285714285"/>
+		<average label="CCN" value="5.285714285714286"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 98.28%

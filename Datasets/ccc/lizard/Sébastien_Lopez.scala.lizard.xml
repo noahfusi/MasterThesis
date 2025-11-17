@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="serveClient(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:10">
+			<value>1</value>
+			<value>100</value>
+			<value>22</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:123">
+			<value>2</value>
+			<value>21</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:146">
+			<value>3</value>
+			<value>9</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:158">
+			<value>4</value>
+			<value>77</value>
+			<value>16</value>
+		</item>
+		<item name="addingredient(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:251">
+			<value>5</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:264">
+			<value>6</value>
+			<value>29</value>
+			<value>8</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:299">
+			<value>7</value>
+			<value>29</value>
+			<value>6</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:333">
+			<value>8</value>
+			<value>21</value>
+			<value>5</value>
+		</item>
+		<item name="affichage(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:354">
+			<value>9</value>
+			<value>13</value>
+			<value>2</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Sébastien_Lopez.scala:368">
+			<value>10</value>
+			<value>591</value>
+			<value>237</value>
+		</item>
+		<average label="NCSS" value="90.2"/>
+		<average label="CCN" value="30.8"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Sébastien_Lopez.scala">
+			<value>1</value>
+			<value>906</value>
+			<value>308</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="906.0"/>
+		<average label="CCN" value="308.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="906"/>
+		<sum label="CCN" value="308"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="90.2"/>
+		<average label="CCN" value="30.8"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Sébastien_Lopez.scala:36 ~ 50
+Datasets/ccc/raw/Sébastien_Lopez.scala:76 ~ 90
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Sébastien_Lopez.scala:182 ~ 198
+Datasets/ccc/raw/Sébastien_Lopez.scala:221 ~ 237
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 6.77%
+Total unique rate: 97.19%

@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:6">
+			<value>1</value>
+			<value>6</value>
+			<value>2</value>
+		</item>
+		<item name="AfficherMenu(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:25">
+			<value>2</value>
+			<value>19</value>
+			<value>5</value>
+		</item>
+		<item name="QuantiteDeSucre(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:62">
+			<value>3</value>
+			<value>18</value>
+			<value>6</value>
+		</item>
+		<item name="QuantiteDeCafe(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:81">
+			<value>4</value>
+			<value>27</value>
+			<value>8</value>
+		</item>
+		<item name="Preparation(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:181">
+			<value>5</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:48">
+			<value>6</value>
+			<value>75</value>
+			<value>30</value>
+		</item>
+		<item name="ModifierPin(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:194">
+			<value>7</value>
+			<value>13</value>
+			<value>3</value>
+		</item>
+		<item name="RechargerLaMachine(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:207">
+			<value>8</value>
+			<value>22</value>
+			<value>1</value>
+		</item>
+		<item name="ValiderCodePin(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:235">
+			<value>9</value>
+			<value>14</value>
+			<value>3</value>
+		</item>
+		<item name="AdminMode(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:252">
+			<value>10</value>
+			<value>21</value>
+			<value>4</value>
+		</item>
+		<item name="extraireValeurSucre(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:275">
+			<value>11</value>
+			<value>10</value>
+			<value>6</value>
+		</item>
+		<item name="FaireEspresso(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:287">
+			<value>12</value>
+			<value>19</value>
+			<value>3</value>
+		</item>
+		<item name="FaireCappucino(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:313">
+			<value>13</value>
+			<value>26</value>
+			<value>4</value>
+		</item>
+		<item name="FaireLatte(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:348">
+			<value>14</value>
+			<value>16</value>
+			<value>5</value>
+		</item>
+		<item name="FairePetitLatte(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:365">
+			<value>15</value>
+			<value>26</value>
+			<value>4</value>
+		</item>
+		<item name="FaireMoyenLatte(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:399">
+			<value>16</value>
+			<value>26</value>
+			<value>4</value>
+		</item>
+		<item name="FaireGrandLatte(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:433">
+			<value>17</value>
+			<value>26</value>
+			<value>4</value>
+		</item>
+		<item name="ExitMode(...) at Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:467">
+			<value>18</value>
+			<value>6</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="20.944444444444443"/>
+		<average label="CCN" value="5.222222222222222"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Marya_Kenza_Mimouni.scala">
+			<value>1</value>
+			<value>371</value>
+			<value>94</value>
+			<value>18</value>
+		</item>
+		<average label="NCSS" value="371.0"/>
+		<average label="CCN" value="94.0"/>
+		<average label="Functions" value="18.0"/>
+		<sum label="NCSS" value="371"/>
+		<sum label="CCN" value="94"/>
+		<sum label="Functions" value="18"/>
+		<average label="NCSS" value="20.944444444444443"/>
+		<average label="CCN" value="5.222222222222222"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:313 ~ 321
+Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:365 ~ 373
+Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:399 ~ 407
+Datasets/bbb/raw/Marya_Kenza_Mimouni.scala:433 ~ 441
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 10.74%
+Total unique rate: 96.12%

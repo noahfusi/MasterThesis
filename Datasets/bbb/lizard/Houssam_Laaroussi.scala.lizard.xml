@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/bbb/raw/Houssam_Laaroussi.scala:10">
+			<value>1</value>
+			<value>22</value>
+			<value>5</value>
+		</item>
+		<item name="modeClient(...) at Datasets/bbb/raw/Houssam_Laaroussi.scala:35">
+			<value>2</value>
+			<value>99</value>
+			<value>42</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/bbb/raw/Houssam_Laaroussi.scala:144">
+			<value>3</value>
+			<value>34</value>
+			<value>6</value>
+		</item>
+		<item name="validatePin(...) at Datasets/bbb/raw/Houssam_Laaroussi.scala:178">
+			<value>4</value>
+			<value>16</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Houssam_Laaroussi.scala:194">
+			<value>5</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="traiterCommande(...) at Datasets/bbb/raw/Houssam_Laaroussi.scala:205">
+			<value>6</value>
+			<value>22</value>
+			<value>8</value>
+		</item>
+		<average label="NCSS" value="34.0"/>
+		<average label="CCN" value="11.166666666666666"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Houssam_Laaroussi.scala">
+			<value>1</value>
+			<value>206</value>
+			<value>67</value>
+			<value>6</value>
+		</item>
+		<average label="NCSS" value="206.0"/>
+		<average label="CCN" value="67.0"/>
+		<average label="Functions" value="6.0"/>
+		<sum label="NCSS" value="206"/>
+		<sum label="CCN" value="67"/>
+		<sum label="Functions" value="6"/>
+		<average label="NCSS" value="34.0"/>
+		<average label="CCN" value="11.166666666666666"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

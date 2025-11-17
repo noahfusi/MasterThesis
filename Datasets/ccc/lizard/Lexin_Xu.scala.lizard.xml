@@ -1,0 +1,125 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Lexin_Xu.scala:11">
+			<value>1</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Lexin_Xu.scala:24">
+			<value>2</value>
+			<value>31</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Lexin_Xu.scala:64">
+			<value>3</value>
+			<value>31</value>
+			<value>6</value>
+		</item>
+		<item name="afficherTousLesStocks(...) at Datasets/ccc/raw/Lexin_Xu.scala:105">
+			<value>4</value>
+			<value>8</value>
+			<value>2</value>
+		</item>
+		<item name="afficherStocks(...) at Datasets/ccc/raw/Lexin_Xu.scala:115">
+			<value>5</value>
+			<value>11</value>
+			<value>1</value>
+		</item>
+		<item name="menuPrincipal(...) at Datasets/ccc/raw/Lexin_Xu.scala:128">
+			<value>6</value>
+			<value>26</value>
+			<value>7</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Lexin_Xu.scala:157">
+			<value>7</value>
+			<value>16</value>
+			<value>3</value>
+		</item>
+		<item name="menuAdmin(...) at Datasets/ccc/raw/Lexin_Xu.scala:175">
+			<value>8</value>
+			<value>23</value>
+			<value>6</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Lexin_Xu.scala:201">
+			<value>9</value>
+			<value>15</value>
+			<value>1</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Lexin_Xu.scala:219">
+			<value>10</value>
+			<value>14</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Lexin_Xu.scala:235">
+			<value>11</value>
+			<value>24</value>
+			<value>9</value>
+		</item>
+		<item name="tailleLatte(...) at Datasets/ccc/raw/Lexin_Xu.scala:262">
+			<value>12</value>
+			<value>18</value>
+			<value>7</value>
+		</item>
+		<item name="commandeBoisson(...) at Datasets/ccc/raw/Lexin_Xu.scala:283">
+			<value>13</value>
+			<value>17</value>
+			<value>5</value>
+		</item>
+		<item name="ajouterSucre(...) at Datasets/ccc/raw/Lexin_Xu.scala:305">
+			<value>14</value>
+			<value>26</value>
+			<value>12</value>
+		</item>
+		<item name="ajouterLaitSupplementaire(...) at Datasets/ccc/raw/Lexin_Xu.scala:335">
+			<value>15</value>
+			<value>26</value>
+			<value>12</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Lexin_Xu.scala:365">
+			<value>16</value>
+			<value>19</value>
+			<value>5</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Lexin_Xu.scala:390">
+			<value>17</value>
+			<value>35</value>
+			<value>7</value>
+		</item>
+		<average label="NCSS" value="20.705882352941178"/>
+		<average label="CCN" value="5.764705882352941"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Lexin_Xu.scala">
+			<value>1</value>
+			<value>345</value>
+			<value>98</value>
+			<value>17</value>
+		</item>
+		<average label="NCSS" value="345.0"/>
+		<average label="CCN" value="98.0"/>
+		<average label="Functions" value="17.0"/>
+		<sum label="NCSS" value="345"/>
+		<sum label="CCN" value="98"/>
+		<sum label="Functions" value="17"/>
+		<average label="NCSS" value="20.705882352941178"/>
+		<average label="CCN" value="5.764705882352941"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.49%

@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:7">
+			<value>1</value>
+			<value>21</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:31">
+			<value>2</value>
+			<value>22</value>
+			<value>6</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:59">
+			<value>3</value>
+			<value>238</value>
+			<value>60</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:344">
+			<value>4</value>
+			<value>22</value>
+			<value>4</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:373">
+			<value>5</value>
+			<value>77</value>
+			<value>16</value>
+		</item>
+		<average label="NCSS" value="76.0"/>
+		<average label="CCN" value="17.8"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Daniela_Ferreira_Couto.scala">
+			<value>1</value>
+			<value>379</value>
+			<value>89</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="379.0"/>
+		<average label="CCN" value="89.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="379"/>
+		<sum label="CCN" value="89"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="76.0"/>
+		<average label="CCN" value="17.8"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:87 ~ 95
+Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:123 ~ 132
+Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:214 ~ 223
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:104 ~ 116
+Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:141 ~ 154
+Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:228 ~ 240
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:141 ~ 183
+Datasets/bbb/raw/Daniela_Ferreira_Couto.scala:228 ~ 272
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 36.18%
+Total unique rate: 86.82%

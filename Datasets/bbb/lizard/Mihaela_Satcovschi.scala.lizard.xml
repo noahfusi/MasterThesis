@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/bbb/raw/Mihaela_Satcovschi.scala:4">
+			<value>1</value>
+			<value>53</value>
+			<value>11</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Mihaela_Satcovschi.scala:62">
+			<value>2</value>
+			<value>129</value>
+			<value>36</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Mihaela_Satcovschi.scala:194">
+			<value>3</value>
+			<value>20</value>
+			<value>1</value>
+		</item>
+		<item name="validatePin(...) at Datasets/bbb/raw/Mihaela_Satcovschi.scala:217">
+			<value>4</value>
+			<value>19</value>
+			<value>3</value>
+		</item>
+		<average label="NCSS" value="55.25"/>
+		<average label="CCN" value="12.75"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Mihaela_Satcovschi.scala">
+			<value>1</value>
+			<value>220</value>
+			<value>51</value>
+			<value>4</value>
+		</item>
+		<average label="NCSS" value="220.0"/>
+		<average label="CCN" value="51.0"/>
+		<average label="Functions" value="4.0"/>
+		<sum label="NCSS" value="220"/>
+		<sum label="CCN" value="51"/>
+		<sum label="Functions" value="4"/>
+		<average label="NCSS" value="55.25"/>
+		<average label="CCN" value="12.75"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.19%

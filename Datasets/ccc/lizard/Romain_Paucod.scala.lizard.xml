@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Romain_Paucod.scala">
+			<value>1</value>
+			<value>862</value>
+			<value>0</value>
+			<value>0</value>
+		</item>
+		<average label="NCSS" value="862.0"/>
+		<average label="CCN" value="0.0"/>
+		<average label="Functions" value="0.0"/>
+		<sum label="NCSS" value="862"/>
+		<sum label="CCN" value="0"/>
+		<sum label="Functions" value="0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Romain_Paucod.scala:100 ~ 114
+Datasets/ccc/raw/Romain_Paucod.scala:287 ~ 301
+Datasets/ccc/raw/Romain_Paucod.scala:476 ~ 490
+Datasets/ccc/raw/Romain_Paucod.scala:664 ~ 678
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Romain_Paucod.scala:188 ~ 201
+Datasets/ccc/raw/Romain_Paucod.scala:330 ~ 343
+Datasets/ccc/raw/Romain_Paucod.scala:564 ~ 577
+Datasets/ccc/raw/Romain_Paucod.scala:752 ~ 765
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Romain_Paucod.scala:232 ~ 245
+Datasets/ccc/raw/Romain_Paucod.scala:420 ~ 433
+Datasets/ccc/raw/Romain_Paucod.scala:609 ~ 622
+Datasets/ccc/raw/Romain_Paucod.scala:797 ~ 810
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Romain_Paucod.scala:143 ~ 156
+Datasets/ccc/raw/Romain_Paucod.scala:375 ~ 388
+Datasets/ccc/raw/Romain_Paucod.scala:519 ~ 532
+Datasets/ccc/raw/Romain_Paucod.scala:707 ~ 720
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Romain_Paucod.scala:139 ~ 156
+Datasets/ccc/raw/Romain_Paucod.scala:371 ~ 388
+Datasets/ccc/raw/Romain_Paucod.scala:515 ~ 532
+Datasets/ccc/raw/Romain_Paucod.scala:703 ~ 720
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Romain_Paucod.scala:184 ~ 201
+Datasets/ccc/raw/Romain_Paucod.scala:326 ~ 343
+Datasets/ccc/raw/Romain_Paucod.scala:560 ~ 577
+Datasets/ccc/raw/Romain_Paucod.scala:748 ~ 765
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Romain_Paucod.scala:229 ~ 245
+Datasets/ccc/raw/Romain_Paucod.scala:416 ~ 433
+Datasets/ccc/raw/Romain_Paucod.scala:605 ~ 622
+Datasets/ccc/raw/Romain_Paucod.scala:793 ~ 810
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Romain_Paucod.scala:287 ~ 301
+Datasets/ccc/raw/Romain_Paucod.scala:476 ~ 490
+Datasets/ccc/raw/Romain_Paucod.scala:664 ~ 678
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 51.38%
+Total unique rate: 85.60%

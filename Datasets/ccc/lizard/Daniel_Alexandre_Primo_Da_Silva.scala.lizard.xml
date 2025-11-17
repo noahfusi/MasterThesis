@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:14">
+			<value>1</value>
+			<value>30</value>
+			<value>8</value>
+		</item>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:43">
+			<value>2</value>
+			<value>12</value>
+			<value>5</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:56">
+			<value>3</value>
+			<value>25</value>
+			<value>4</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:82">
+			<value>4</value>
+			<value>9</value>
+			<value>2</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:93">
+			<value>5</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:107">
+			<value>6</value>
+			<value>16</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:124">
+			<value>7</value>
+			<value>217</value>
+			<value>39</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:391">
+			<value>8</value>
+			<value>36</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala:435">
+			<value>9</value>
+			<value>150</value>
+			<value>34</value>
+		</item>
+		<average label="NCSS" value="56.333333333333336"/>
+		<average label="CCN" value="11.555555555555555"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Daniel_Alexandre_Primo_Da_Silva.scala">
+			<value>1</value>
+			<value>511</value>
+			<value>104</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="511.0"/>
+		<average label="CCN" value="104.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="511"/>
+		<sum label="CCN" value="104"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="56.333333333333336"/>
+		<average label="CCN" value="11.555555555555555"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

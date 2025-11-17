@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:5">
+			<value>1</value>
+			<value>427</value>
+			<value>88</value>
+		</item>
+		<average label="NCSS" value="427.0"/>
+		<average label="CCN" value="88.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala">
+			<value>1</value>
+			<value>430</value>
+			<value>88</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="430.0"/>
+		<average label="CCN" value="88.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="430"/>
+		<sum label="CCN" value="88"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="427.0"/>
+		<average label="CCN" value="88.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:51 ~ 76
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:135 ~ 159
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:222 ~ 245
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:301 ~ 325
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:380 ~ 400
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:135 ~ 159
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:222 ~ 245
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:301 ~ 325
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:380 ~ 400
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:222 ~ 245
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:301 ~ 325
+Datasets/aaa/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:380 ~ 400
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 51.29%
+Total unique rate: 85.19%

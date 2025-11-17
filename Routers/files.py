@@ -15,6 +15,7 @@ from Files.dataset_manager import (
     normalize_dataset_name,
     set_current_dataset,
 )
+from Metrics import SUMMARY_FILENAME, dataset_summary_path
 from Lizard.run_analysis import analyze_dataset
 
 router = APIRouter(prefix="/datasets", tags=["datasets"])
@@ -180,4 +181,81 @@ async def read_file(filename: str = Query(..., alias="filename"), dataset: str |
         "filename": str(relative_path).replace("\\", "/"),
         "encoding": encoding,
         "content": content,
+    }
+
+
+@router.get("/file/lizard", name="file-lizard")
+async def read_file_lizard_analysis(
+    filename: str | None = Query(None, alias="filename"),
+    dataset: str | None = None,
+    summary: bool = Query(False, alias="summary"),
+) -> dict[str, object]:
+    dataset_name, raw_dir = _resolve_dataset_folder(dataset)
+
+    if summary:
+        summary_filename = filename or SUMMARY_FILENAME
+        summary_path = dataset_summary_path(dataset_name)
+        if summary_filename != SUMMARY_FILENAME:
+            summary_path = dataset_path(dataset_name) / summary_filename
+        if not summary_path.exists():
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lizard analysis not found.")
+        try:
+            analysis_data = summary_path.read_text(encoding="utf-8")
+        except OSError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to read analysis file."
+            ) from exc
+        analysis_format = summary_path.suffix.replace(".", "") or "xml"
+        return {
+            "dataset": dataset_name,
+            "filename": summary_path.name,
+            "analysis": analysis_data,
+            "analysis_format": analysis_format,
+        }
+
+    if not filename:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
+
+    relative_path = Path(filename)
+    if relative_path.is_absolute() or ".." in relative_path.parts:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
+
+    raw_file = (raw_dir / relative_path).resolve()
+    if not str(raw_file).startswith(str(raw_dir.resolve())):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
+
+    if not raw_file.is_file():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found.")
+
+    analysis_dir = dataset_path(dataset_name) / "lizard"
+    xml_path = (analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.xml")
+    csv_path = (analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.csv")
+    json_path = (analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.json")
+
+    analysis_file = None
+    analysis_format = None
+    if xml_path.exists():
+        analysis_file = xml_path
+        analysis_format = "xml"
+    elif csv_path.exists():
+        analysis_file = csv_path
+        analysis_format = "csv"
+    elif json_path.exists():
+        analysis_file = json_path
+        analysis_format = "json"
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lizard analysis not found.")
+
+    try:
+        analysis_data = analysis_file.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to read analysis file."
+        ) from exc
+
+    return {
+        "dataset": dataset_name,
+        "filename": str(relative_path).replace("\\", "/"),
+        "analysis": analysis_data,
+        "analysis_format": analysis_format,
     }

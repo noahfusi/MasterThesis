@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Leyla_Dahmane.scala:7">
+			<value>1</value>
+			<value>7</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Leyla_Dahmane.scala:16">
+			<value>2</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Leyla_Dahmane.scala:21">
+			<value>3</value>
+			<value>35</value>
+			<value>8</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Leyla_Dahmane.scala:65">
+			<value>4</value>
+			<value>211</value>
+			<value>36</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Leyla_Dahmane.scala:335">
+			<value>5</value>
+			<value>129</value>
+			<value>25</value>
+		</item>
+		<average label="NCSS" value="77.2"/>
+		<average label="CCN" value="14.4"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Leyla_Dahmane.scala">
+			<value>1</value>
+			<value>387</value>
+			<value>72</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="387.0"/>
+		<average label="CCN" value="72.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="387"/>
+		<sum label="CCN" value="72"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="77.2"/>
+		<average label="CCN" value="14.4"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

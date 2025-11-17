@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Julia_Fontes.scala">
+			<value>1</value>
+			<value>364</value>
+			<value>0</value>
+			<value>0</value>
+		</item>
+		<average label="NCSS" value="364.0"/>
+		<average label="CCN" value="0.0"/>
+		<average label="Functions" value="0.0"/>
+		<sum label="NCSS" value="364"/>
+		<sum label="CCN" value="0"/>
+		<sum label="Functions" value="0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Julia_Fontes.scala:176 ~ 211
+Datasets/aaa/raw/Julia_Fontes.scala:325 ~ 362
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 16.68%
+Total unique rate: 93.20%

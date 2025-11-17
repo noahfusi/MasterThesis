@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:10">
+			<value>1</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:21">
+			<value>2</value>
+			<value>16</value>
+			<value>5</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:87">
+			<value>3</value>
+			<value>21</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:109">
+			<value>4</value>
+			<value>16</value>
+			<value>4</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:126">
+			<value>5</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:136">
+			<value>6</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:147">
+			<value>7</value>
+			<value>172</value>
+			<value>45</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:324">
+			<value>8</value>
+			<value>20</value>
+			<value>4</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Samuel_Gyamerah.scala:40">
+			<value>9</value>
+			<value>108</value>
+			<value>19</value>
+		</item>
+		<average label="NCSS" value="42.888888888888886"/>
+		<average label="CCN" value="10.11111111111111"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Samuel_Gyamerah.scala">
+			<value>1</value>
+			<value>388</value>
+			<value>91</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="388.0"/>
+		<average label="CCN" value="91.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="388"/>
+		<sum label="CCN" value="91"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="42.888888888888886"/>
+		<average label="CCN" value="10.11111111111111"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Samuel_Gyamerah.scala:165 ~ 194
+Datasets/ccc/raw/Samuel_Gyamerah.scala:217 ~ 246
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 10.24%
+Total unique rate: 95.80%

@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:10">
+			<value>1</value>
+			<value>37</value>
+			<value>7</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:48">
+			<value>2</value>
+			<value>43</value>
+			<value>10</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:97">
+			<value>3</value>
+			<value>39</value>
+			<value>10</value>
+		</item>
+		<item name="modeclient(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:138">
+			<value>4</value>
+			<value>361</value>
+			<value>135</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:530">
+			<value>5</value>
+			<value>16</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:546">
+			<value>6</value>
+			<value>17</value>
+			<value>4</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:564">
+			<value>7</value>
+			<value>16</value>
+			<value>1</value>
+		</item>
+		<item name="LectureMachines(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:580">
+			<value>8</value>
+			<value>42</value>
+			<value>5</value>
+		</item>
+		<item name="SauvegardeMachines(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:622">
+			<value>9</value>
+			<value>24</value>
+			<value>4</value>
+		</item>
+		<item name="choixMachine(...) at Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:646">
+			<value>10</value>
+			<value>27</value>
+			<value>6</value>
+		</item>
+		<average label="NCSS" value="62.2"/>
+		<average label="CCN" value="18.5"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala">
+			<value>1</value>
+			<value>623</value>
+			<value>185</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="623.0"/>
+		<average label="CCN" value="185.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="623"/>
+		<sum label="CCN" value="185"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="62.2"/>
+		<average label="CCN" value="18.5"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:175 ~ 181
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:209 ~ 215
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:280 ~ 286
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:348 ~ 354
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:410 ~ 416
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:175 ~ 185
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:209 ~ 219
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:348 ~ 359
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:410 ~ 421
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:234 ~ 237
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:307 ~ 310
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:373 ~ 376
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:435 ~ 438
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:307 ~ 336
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:373 ~ 399
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:237 ~ 246
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:310 ~ 319
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:376 ~ 385
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:438 ~ 447
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:310 ~ 336
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:376 ~ 399
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:438 ~ 461
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:376 ~ 403
+Datasets/ccc/raw/Mathieu_Ospina_Aldana.scala:438 ~ 463
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 65.22%
+Total unique rate: 82.45%

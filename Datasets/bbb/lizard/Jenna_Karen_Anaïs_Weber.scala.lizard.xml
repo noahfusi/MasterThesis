@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:37">
+			<value>1</value>
+			<value>75</value>
+			<value>26</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:154">
+			<value>2</value>
+			<value>510</value>
+			<value>129</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:790">
+			<value>3</value>
+			<value>28</value>
+			<value>1</value>
+		</item>
+		<item name="validatePin(...) at Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:830">
+			<value>4</value>
+			<value>20</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:853">
+			<value>5</value>
+			<value>11</value>
+			<value>2</value>
+		</item>
+		<average label="NCSS" value="128.8"/>
+		<average label="CCN" value="32.4"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala">
+			<value>1</value>
+			<value>667</value>
+			<value>162</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="667.0"/>
+		<average label="CCN" value="162.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="667"/>
+		<sum label="CCN" value="162"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="128.8"/>
+		<average label="CCN" value="32.4"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:190 ~ 207
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:507 ~ 524
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:210 ~ 236
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:528 ~ 554
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:236 ~ 266
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:555 ~ 586
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:266 ~ 282
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:611 ~ 626
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:269 ~ 282
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:294 ~ 307
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:319 ~ 332
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:588 ~ 601
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:613 ~ 626
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:378 ~ 394
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:701 ~ 716
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:381 ~ 394
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:406 ~ 419
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:431 ~ 444
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:678 ~ 691
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:703 ~ 716
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:464 ~ 472
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:730 ~ 738
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:742 ~ 750
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:482 ~ 505
+Datasets/bbb/raw/Jenna_Karen_Anaïs_Weber.scala:762 ~ 785
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 53.34%
+Total unique rate: 78.69%

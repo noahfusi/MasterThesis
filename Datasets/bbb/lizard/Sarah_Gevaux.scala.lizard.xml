@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="ValidatePin(...) at Datasets/bbb/raw/Sarah_Gevaux.scala:24">
+			<value>1</value>
+			<value>25</value>
+			<value>4</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Sarah_Gevaux.scala:49">
+			<value>2</value>
+			<value>42</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Sarah_Gevaux.scala:91">
+			<value>3</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="ServeCLient(...) at Datasets/bbb/raw/Sarah_Gevaux.scala:104">
+			<value>4</value>
+			<value>283</value>
+			<value>63</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Sarah_Gevaux.scala:388">
+			<value>5</value>
+			<value>77</value>
+			<value>22</value>
+		</item>
+		<average label="NCSS" value="87.8"/>
+		<average label="CCN" value="19.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Sarah_Gevaux.scala">
+			<value>1</value>
+			<value>456</value>
+			<value>95</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="456.0"/>
+		<average label="CCN" value="95.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="456"/>
+		<sum label="CCN" value="95"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="87.8"/>
+		<average label="CCN" value="19.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Sarah_Gevaux.scala:249 ~ 257
+Datasets/bbb/raw/Sarah_Gevaux.scala:260 ~ 268
+Datasets/bbb/raw/Sarah_Gevaux.scala:272 ~ 280
+Datasets/bbb/raw/Sarah_Gevaux.scala:284 ~ 292
+Datasets/bbb/raw/Sarah_Gevaux.scala:296 ~ 304
+Datasets/bbb/raw/Sarah_Gevaux.scala:308 ~ 316
+Datasets/bbb/raw/Sarah_Gevaux.scala:320 ~ 328
+Datasets/bbb/raw/Sarah_Gevaux.scala:332 ~ 340
+Datasets/bbb/raw/Sarah_Gevaux.scala:344 ~ 352
+Datasets/bbb/raw/Sarah_Gevaux.scala:356 ~ 364
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Sarah_Gevaux.scala:249 ~ 257
+Datasets/bbb/raw/Sarah_Gevaux.scala:260 ~ 268
+Datasets/bbb/raw/Sarah_Gevaux.scala:272 ~ 280
+Datasets/bbb/raw/Sarah_Gevaux.scala:284 ~ 292
+Datasets/bbb/raw/Sarah_Gevaux.scala:296 ~ 304
+Datasets/bbb/raw/Sarah_Gevaux.scala:308 ~ 316
+Datasets/bbb/raw/Sarah_Gevaux.scala:320 ~ 328
+Datasets/bbb/raw/Sarah_Gevaux.scala:332 ~ 340
+Datasets/bbb/raw/Sarah_Gevaux.scala:344 ~ 352
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Sarah_Gevaux.scala:271 ~ 280
+Datasets/bbb/raw/Sarah_Gevaux.scala:307 ~ 316
+Datasets/bbb/raw/Sarah_Gevaux.scala:319 ~ 328
+Datasets/bbb/raw/Sarah_Gevaux.scala:355 ~ 364
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 34.14%
+Total unique rate: 91.87%

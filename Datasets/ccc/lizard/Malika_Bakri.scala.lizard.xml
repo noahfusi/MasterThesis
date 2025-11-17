@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Malika_Bakri.scala:11">
+			<value>1</value>
+			<value>16</value>
+			<value>7</value>
+		</item>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Malika_Bakri.scala:26">
+			<value>2</value>
+			<value>6</value>
+			<value>4</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Malika_Bakri.scala:34">
+			<value>3</value>
+			<value>63</value>
+			<value>21</value>
+		</item>
+		<item name="affichage(...) at Datasets/ccc/raw/Malika_Bakri.scala:107">
+			<value>4</value>
+			<value>13</value>
+			<value>2</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Malika_Bakri.scala:120">
+			<value>5</value>
+			<value>26</value>
+			<value>7</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Malika_Bakri.scala:154">
+			<value>6</value>
+			<value>28</value>
+			<value>6</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Malika_Bakri.scala:182">
+			<value>7</value>
+			<value>26</value>
+			<value>5</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Malika_Bakri.scala:210">
+			<value>8</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Malika_Bakri.scala:218">
+			<value>9</value>
+			<value>147</value>
+			<value>50</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Malika_Bakri.scala:416">
+			<value>10</value>
+			<value>14</value>
+			<value>3</value>
+		</item>
+		<average label="NCSS" value="34.6"/>
+		<average label="CCN" value="10.6"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Malika_Bakri.scala">
+			<value>1</value>
+			<value>345</value>
+			<value>106</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="345.0"/>
+		<average label="CCN" value="106.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="345"/>
+		<sum label="CCN" value="106"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="34.6"/>
+		<average label="CCN" value="10.6"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

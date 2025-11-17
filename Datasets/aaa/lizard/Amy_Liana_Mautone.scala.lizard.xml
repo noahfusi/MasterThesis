@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/aaa/raw/Amy_Liana_Mautone.scala:5">
+			<value>1</value>
+			<value>242</value>
+			<value>67</value>
+		</item>
+		<average label="NCSS" value="242.0"/>
+		<average label="CCN" value="67.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Amy_Liana_Mautone.scala">
+			<value>1</value>
+			<value>245</value>
+			<value>67</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="245.0"/>
+		<average label="CCN" value="67.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="245"/>
+		<sum label="CCN" value="67"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="242.0"/>
+		<average label="CCN" value="67.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

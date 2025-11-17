@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Pablo_Facundo_Maiz_Calle.scala:54">
+			<value>1</value>
+			<value>20</value>
+			<value>5</value>
+		</item>
+		<item name="validateStock(...) at Datasets/bbb/raw/Pablo_Facundo_Maiz_Calle.scala:75">
+			<value>2</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Pablo_Facundo_Maiz_Calle.scala:86">
+			<value>3</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Pablo_Facundo_Maiz_Calle.scala:102">
+			<value>4</value>
+			<value>175</value>
+			<value>37</value>
+		</item>
+		<item name="serveAdmin(...) at Datasets/bbb/raw/Pablo_Facundo_Maiz_Calle.scala:316">
+			<value>5</value>
+			<value>23</value>
+			<value>6</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Pablo_Facundo_Maiz_Calle.scala:341">
+			<value>6</value>
+			<value>19</value>
+			<value>1</value>
+		</item>
+		<item name="selectionMachine(...) at Datasets/bbb/raw/Pablo_Facundo_Maiz_Calle.scala:44">
+			<value>7</value>
+			<value>9</value>
+			<value>6</value>
+		</item>
+		<average label="NCSS" value="38.714285714285715"/>
+		<average label="CCN" value="8.571428571428571"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Pablo_Facundo_Maiz_Calle.scala">
+			<value>1</value>
+			<value>298</value>
+			<value>60</value>
+			<value>7</value>
+		</item>
+		<average label="NCSS" value="298.0"/>
+		<average label="CCN" value="60.0"/>
+		<average label="Functions" value="7.0"/>
+		<sum label="NCSS" value="298"/>
+		<sum label="CCN" value="60"/>
+		<sum label="Functions" value="7"/>
+		<average label="NCSS" value="38.714285714285715"/>
+		<average label="CCN" value="8.571428571428571"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

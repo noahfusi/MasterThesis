@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/bbb/raw/Shad_Denis_Yahiya_Fennane.scala:17">
+			<value>1</value>
+			<value>36</value>
+			<value>10</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Shad_Denis_Yahiya_Fennane.scala:55">
+			<value>2</value>
+			<value>140</value>
+			<value>20</value>
+		</item>
+		<item name="validatePin(...) at Datasets/bbb/raw/Shad_Denis_Yahiya_Fennane.scala:238">
+			<value>3</value>
+			<value>18</value>
+			<value>3</value>
+		</item>
+		<item name="isValidPin(...) at Datasets/bbb/raw/Shad_Denis_Yahiya_Fennane.scala:260">
+			<value>4</value>
+			<value>8</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Shad_Denis_Yahiya_Fennane.scala:257">
+			<value>5</value>
+			<value>16</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Shad_Denis_Yahiya_Fennane.scala:285">
+			<value>6</value>
+			<value>13</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="38.5"/>
+		<average label="CCN" value="6.833333333333333"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Shad_Denis_Yahiya_Fennane.scala">
+			<value>1</value>
+			<value>234</value>
+			<value>41</value>
+			<value>6</value>
+		</item>
+		<average label="NCSS" value="234.0"/>
+		<average label="CCN" value="41.0"/>
+		<average label="Functions" value="6.0"/>
+		<sum label="NCSS" value="234"/>
+		<sum label="CCN" value="41"/>
+		<sum label="Functions" value="6"/>
+		<average label="NCSS" value="38.5"/>
+		<average label="CCN" value="6.833333333333333"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

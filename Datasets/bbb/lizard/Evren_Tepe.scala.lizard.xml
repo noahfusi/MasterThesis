@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Evren_Tepe.scala:5">
+			<value>1</value>
+			<value>22</value>
+			<value>6</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Evren_Tepe.scala:26">
+			<value>2</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Evren_Tepe.scala:36">
+			<value>3</value>
+			<value>121</value>
+			<value>48</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Evren_Tepe.scala:165">
+			<value>4</value>
+			<value>36</value>
+			<value>13</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Evren_Tepe.scala:205">
+			<value>5</value>
+			<value>71</value>
+			<value>27</value>
+		</item>
+		<average label="NCSS" value="52.2"/>
+		<average label="CCN" value="19.4"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Evren_Tepe.scala">
+			<value>1</value>
+			<value>261</value>
+			<value>97</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="261.0"/>
+		<average label="CCN" value="97.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="261"/>
+		<sum label="CCN" value="97"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="52.2"/>
+		<average label="CCN" value="19.4"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 97.50%

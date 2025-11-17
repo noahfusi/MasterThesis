@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/aaa/raw/Arianny_Guimaraes.scala:12">
+			<value>1</value>
+			<value>23</value>
+			<value>5</value>
+		</item>
+		<item name="ModeClient(...) at Datasets/aaa/raw/Arianny_Guimaraes.scala:40">
+			<value>2</value>
+			<value>19</value>
+			<value>4</value>
+		</item>
+		<item name="Boisson(...) at Datasets/aaa/raw/Arianny_Guimaraes.scala:61">
+			<value>3</value>
+			<value>99</value>
+			<value>22</value>
+		</item>
+		<item name="Payment(...) at Datasets/aaa/raw/Arianny_Guimaraes.scala:174">
+			<value>4</value>
+			<value>9</value>
+			<value>1</value>
+		</item>
+		<item name="ModeAdmin(...) at Datasets/aaa/raw/Arianny_Guimaraes.scala:185">
+			<value>5</value>
+			<value>26</value>
+			<value>2</value>
+		</item>
+		<average label="NCSS" value="35.2"/>
+		<average label="CCN" value="6.8"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Arianny_Guimaraes.scala">
+			<value>1</value>
+			<value>179</value>
+			<value>34</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="179.0"/>
+		<average label="CCN" value="34.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="179"/>
+		<sum label="CCN" value="34"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="35.2"/>
+		<average label="CCN" value="6.8"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

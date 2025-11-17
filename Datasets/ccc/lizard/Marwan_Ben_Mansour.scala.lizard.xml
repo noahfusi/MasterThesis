@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:12">
+			<value>1</value>
+			<value>9</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:22">
+			<value>2</value>
+			<value>9</value>
+			<value>8</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:42">
+			<value>3</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:58">
+			<value>4</value>
+			<value>14</value>
+			<value>3</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:73">
+			<value>5</value>
+			<value>18</value>
+			<value>6</value>
+		</item>
+		<item name="clientMode(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:93">
+			<value>6</value>
+			<value>65</value>
+			<value>26</value>
+		</item>
+		<item name="adminMode(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:164">
+			<value>7</value>
+			<value>14</value>
+			<value>6</value>
+		</item>
+		<item name="selectMachine(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:179">
+			<value>8</value>
+			<value>6</value>
+			<value>1</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:186">
+			<value>9</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:202">
+			<value>10</value>
+			<value>11</value>
+			<value>2</value>
+		</item>
+		<item name="restockIngredients(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:214">
+			<value>11</value>
+			<value>11</value>
+			<value>1</value>
+		</item>
+		<item name="prepareDrink(...) at Datasets/ccc/raw/Marwan_Ben_Mansour.scala:226">
+			<value>12</value>
+			<value>8</value>
+			<value>3</value>
+		</item>
+		<average label="NCSS" value="16.25"/>
+		<average label="CCN" value="5.583333333333333"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Marwan_Ben_Mansour.scala">
+			<value>1</value>
+			<value>195</value>
+			<value>67</value>
+			<value>12</value>
+		</item>
+		<average label="NCSS" value="195.0"/>
+		<average label="CCN" value="67.0"/>
+		<average label="Functions" value="12.0"/>
+		<sum label="NCSS" value="195"/>
+		<sum label="CCN" value="67"/>
+		<sum label="Functions" value="12"/>
+		<average label="NCSS" value="16.25"/>
+		<average label="CCN" value="5.583333333333333"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

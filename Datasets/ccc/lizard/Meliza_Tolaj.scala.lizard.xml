@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:10">
+			<value>1</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:29">
+			<value>2</value>
+			<value>16</value>
+			<value>7</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:56">
+			<value>3</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:75">
+			<value>4</value>
+			<value>121</value>
+			<value>31</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:217">
+			<value>5</value>
+			<value>20</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:241">
+			<value>6</value>
+			<value>21</value>
+			<value>5</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:262">
+			<value>7</value>
+			<value>20</value>
+			<value>5</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:282">
+			<value>8</value>
+			<value>28</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Meliza_Tolaj.scala:318">
+			<value>9</value>
+			<value>79</value>
+			<value>19</value>
+		</item>
+		<average label="NCSS" value="36.888888888888886"/>
+		<average label="CCN" value="9.666666666666666"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Meliza_Tolaj.scala">
+			<value>1</value>
+			<value>332</value>
+			<value>87</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="332.0"/>
+		<average label="CCN" value="87.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="332"/>
+		<sum label="CCN" value="87"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="36.888888888888886"/>
+		<average label="CCN" value="9.666666666666666"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 98.36%

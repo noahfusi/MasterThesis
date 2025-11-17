@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:14">
+			<value>1</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:26">
+			<value>2</value>
+			<value>22</value>
+			<value>7</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:57">
+			<value>3</value>
+			<value>31</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:93">
+			<value>4</value>
+			<value>19</value>
+			<value>4</value>
+		</item>
+		<item name="validePin(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:114">
+			<value>5</value>
+			<value>25</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:145">
+			<value>6</value>
+			<value>18</value>
+			<value>5</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:170">
+			<value>7</value>
+			<value>25</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:201">
+			<value>8</value>
+			<value>360</value>
+			<value>124</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:665">
+			<value>9</value>
+			<value>60</value>
+			<value>21</value>
+		</item>
+		<average label="NCSS" value="63.55555555555556"/>
+		<average label="CCN" value="19.77777777777778"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala">
+			<value>1</value>
+			<value>581</value>
+			<value>178</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="581.0"/>
+		<average label="CCN" value="178.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="581"/>
+		<sum label="CCN" value="178"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="63.55555555555556"/>
+		<average label="CCN" value="19.77777777777778"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:290 ~ 307
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:441 ~ 459
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:499 ~ 517
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:557 ~ 575
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:614 ~ 632
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:441 ~ 464
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:499 ~ 522
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:557 ~ 580
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:614 ~ 637
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:441 ~ 465
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:557 ~ 581
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:614 ~ 638
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:432 ~ 440
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:490 ~ 498
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:548 ~ 556
+Datasets/ccc/raw/Shyna_Ngounou_Mongoué.scala:605 ~ 613
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 37.61%
+Total unique rate: 90.73%

@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Alexia_Chiriac.scala:13">
+			<value>1</value>
+			<value>13</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Alexia_Chiriac.scala:27">
+			<value>2</value>
+			<value>12</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Alexia_Chiriac.scala:40">
+			<value>3</value>
+			<value>11</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Alexia_Chiriac.scala:56">
+			<value>4</value>
+			<value>38</value>
+			<value>10</value>
+		</item>
+		<item name="selectionnerMachine(...) at Datasets/bbb/raw/Alexia_Chiriac.scala:96">
+			<value>5</value>
+			<value>5</value>
+			<value>2</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Alexia_Chiriac.scala:103">
+			<value>6</value>
+			<value>29</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="18.0"/>
+		<average label="CCN" value="4.833333333333333"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Alexia_Chiriac.scala">
+			<value>1</value>
+			<value>112</value>
+			<value>29</value>
+			<value>6</value>
+		</item>
+		<average label="NCSS" value="112.0"/>
+		<average label="CCN" value="29.0"/>
+		<average label="Functions" value="6.0"/>
+		<sum label="NCSS" value="112"/>
+		<sum label="CCN" value="29"/>
+		<sum label="Functions" value="6"/>
+		<average label="NCSS" value="18.0"/>
+		<average label="CCN" value="4.833333333333333"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

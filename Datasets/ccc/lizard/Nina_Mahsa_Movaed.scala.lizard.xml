@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:23">
+			<value>1</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<item name="menuPrincipal(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:35">
+			<value>2</value>
+			<value>31</value>
+			<value>11</value>
+		</item>
+		<item name="modeClient(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:69">
+			<value>3</value>
+			<value>10</value>
+			<value>3</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:80">
+			<value>4</value>
+			<value>25</value>
+			<value>6</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:111">
+			<value>5</value>
+			<value>18</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:132">
+			<value>6</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:149">
+			<value>7</value>
+			<value>48</value>
+			<value>9</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:202">
+			<value>8</value>
+			<value>10</value>
+			<value>1</value>
+		</item>
+		<item name="chargerMachines(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:216">
+			<value>9</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="sauvegarderMachines(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:229">
+			<value>10</value>
+			<value>13</value>
+			<value>2</value>
+		</item>
+		<item name="afficherStocksMachine(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:242">
+			<value>11</value>
+			<value>8</value>
+			<value>1</value>
+		</item>
+		<item name="afficherStocksToutesMachines(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:250">
+			<value>12</value>
+			<value>7</value>
+			<value>2</value>
+		</item>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:260">
+			<value>13</value>
+			<value>9</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Nina_Mahsa_Movaed.scala:269">
+			<value>14</value>
+			<value>9</value>
+			<value>8</value>
+		</item>
+		<average label="NCSS" value="15.857142857142858"/>
+		<average label="CCN" value="4.285714285714286"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Nina_Mahsa_Movaed.scala">
+			<value>1</value>
+			<value>223</value>
+			<value>60</value>
+			<value>14</value>
+		</item>
+		<average label="NCSS" value="223.0"/>
+		<average label="CCN" value="60.0"/>
+		<average label="Functions" value="14.0"/>
+		<sum label="NCSS" value="223"/>
+		<sum label="CCN" value="60"/>
+		<sum label="Functions" value="14"/>
+		<average label="NCSS" value="15.857142857142858"/>
+		<average label="CCN" value="4.285714285714286"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.46%

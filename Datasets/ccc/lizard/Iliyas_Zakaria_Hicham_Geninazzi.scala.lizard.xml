@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:7">
+			<value>1</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:19">
+			<value>2</value>
+			<value>16</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:39">
+			<value>3</value>
+			<value>30</value>
+			<value>7</value>
+		</item>
+		<item name="selectMachine(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:74">
+			<value>4</value>
+			<value>12</value>
+			<value>5</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:86">
+			<value>5</value>
+			<value>27</value>
+			<value>6</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:117">
+			<value>6</value>
+			<value>14</value>
+			<value>6</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:132">
+			<value>7</value>
+			<value>18</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:153">
+			<value>8</value>
+			<value>23</value>
+			<value>8</value>
+		</item>
+		<item name="ModeAdmin(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:179">
+			<value>9</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:196">
+			<value>10</value>
+			<value>29</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:226">
+			<value>11</value>
+			<value>17</value>
+			<value>5</value>
+		</item>
+		<item name="Expresso(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:243">
+			<value>12</value>
+			<value>38</value>
+			<value>7</value>
+		</item>
+		<item name="Cappuccino(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:284">
+			<value>13</value>
+			<value>67</value>
+			<value>16</value>
+		</item>
+		<item name="Latte(...) at Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:359">
+			<value>14</value>
+			<value>92</value>
+			<value>19</value>
+		</item>
+		<average label="NCSS" value="29.285714285714285"/>
+		<average label="CCN" value="7.071428571428571"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala">
+			<value>1</value>
+			<value>405</value>
+			<value>99</value>
+			<value>14</value>
+		</item>
+		<average label="NCSS" value="405.0"/>
+		<average label="CCN" value="99.0"/>
+		<average label="Functions" value="14.0"/>
+		<sum label="NCSS" value="405"/>
+		<sum label="CCN" value="99"/>
+		<sum label="Functions" value="14"/>
+		<average label="NCSS" value="29.285714285714285"/>
+		<average label="CCN" value="7.071428571428571"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:243 ~ 271
+Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:284 ~ 312
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:245 ~ 271
+Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:286 ~ 312
+Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:390 ~ 416
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:286 ~ 340
+Datasets/ccc/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:390 ~ 444
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 48.57%
+Total unique rate: 85.55%

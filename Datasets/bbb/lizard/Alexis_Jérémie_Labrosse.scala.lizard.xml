@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:11">
+			<value>1</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="mainMenu(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:16">
+			<value>2</value>
+			<value>24</value>
+			<value>9</value>
+		</item>
+		<item name="validatePin(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:42">
+			<value>3</value>
+			<value>18</value>
+			<value>3</value>
+		</item>
+		<item name="adminMenu(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:61">
+			<value>4</value>
+			<value>12</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:75">
+			<value>5</value>
+			<value>13</value>
+			<value>5</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:89">
+			<value>6</value>
+			<value>19</value>
+			<value>9</value>
+		</item>
+		<item name="choisirTailleLatte(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:110">
+			<value>7</value>
+			<value>13</value>
+			<value>8</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:124">
+			<value>8</value>
+			<value>11</value>
+			<value>1</value>
+		</item>
+		<item name="verifierStock(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:136">
+			<value>9</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="CodePaiement(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:149">
+			<value>10</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<item name="choisirSucre(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:155">
+			<value>11</value>
+			<value>11</value>
+			<value>8</value>
+		</item>
+		<item name="choisirLaitSupplementaire(...) at Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala:167">
+			<value>12</value>
+			<value>17</value>
+			<value>3</value>
+		</item>
+		<average label="NCSS" value="13.25"/>
+		<average label="CCN" value="4.75"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Alexis_Jérémie_Labrosse.scala">
+			<value>1</value>
+			<value>156</value>
+			<value>57</value>
+			<value>12</value>
+		</item>
+		<average label="NCSS" value="156.0"/>
+		<average label="CCN" value="57.0"/>
+		<average label="Functions" value="12.0"/>
+		<sum label="NCSS" value="156"/>
+		<sum label="CCN" value="57"/>
+		<sum label="Functions" value="12"/>
+		<average label="NCSS" value="13.25"/>
+		<average label="CCN" value="4.75"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

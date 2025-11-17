@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Erleta_Iseni.scala:6">
+			<value>1</value>
+			<value>11</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Erleta_Iseni.scala:17">
+			<value>2</value>
+			<value>158</value>
+			<value>39</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Erleta_Iseni.scala:192">
+			<value>3</value>
+			<value>10</value>
+			<value>3</value>
+		</item>
+		<item name="validatePin(...) at Datasets/bbb/raw/Erleta_Iseni.scala:202">
+			<value>4</value>
+			<value>18</value>
+			<value>4</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Erleta_Iseni.scala:222">
+			<value>5</value>
+			<value>54</value>
+			<value>19</value>
+		</item>
+		<average label="NCSS" value="50.2"/>
+		<average label="CCN" value="13.2"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Erleta_Iseni.scala">
+			<value>1</value>
+			<value>250</value>
+			<value>66</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="250.0"/>
+		<average label="CCN" value="66.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="250"/>
+		<sum label="CCN" value="66"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="50.2"/>
+		<average label="CCN" value="13.2"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

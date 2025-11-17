@@ -1,0 +1,109 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Noah_Franco_Boisier.scala:17">
+			<value>1</value>
+			<value>20</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Noah_Franco_Boisier.scala:38">
+			<value>2</value>
+			<value>13</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Noah_Franco_Boisier.scala:54">
+			<value>3</value>
+			<value>301</value>
+			<value>90</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Noah_Franco_Boisier.scala:387">
+			<value>4</value>
+			<value>18</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="88.0"/>
+		<average label="CCN" value="24.75"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Noah_Franco_Boisier.scala">
+			<value>1</value>
+			<value>403</value>
+			<value>99</value>
+			<value>4</value>
+		</item>
+		<average label="NCSS" value="403.0"/>
+		<average label="CCN" value="99.0"/>
+		<average label="Functions" value="4.0"/>
+		<sum label="NCSS" value="403"/>
+		<sum label="CCN" value="99"/>
+		<sum label="Functions" value="4"/>
+		<average label="NCSS" value="88.0"/>
+		<average label="CCN" value="24.75"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:125 ~ 135
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:226 ~ 236
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:254 ~ 264
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:275 ~ 285
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:303 ~ 313
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:324 ~ 334
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:226 ~ 248
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:275 ~ 297
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:324 ~ 346
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:254 ~ 275
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:303 ~ 324
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:147 ~ 157
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:168 ~ 178
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:205 ~ 215
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:149 ~ 157
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:170 ~ 178
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:207 ~ 215
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:237 ~ 245
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:265 ~ 273
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:286 ~ 294
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:314 ~ 322
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:335 ~ 343
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:155 ~ 168
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:176 ~ 189
+Datasets/bbb/raw/Noah_Franco_Boisier.scala:213 ~ 226
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 64.84%
+Total unique rate: 78.14%

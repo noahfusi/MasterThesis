@@ -1,0 +1,120 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="updateStock(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:12">
+			<value>1</value>
+			<value>9</value>
+			<value>8</value>
+		</item>
+		<item name="hasSufficientStock(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:21">
+			<value>2</value>
+			<value>2</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:29">
+			<value>3</value>
+			<value>18</value>
+			<value>6</value>
+		</item>
+		<item name="clientMode(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:48">
+			<value>4</value>
+			<value>74</value>
+			<value>16</value>
+		</item>
+		<item name="readDoubleSafe(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:142">
+			<value>5</value>
+			<value>8</value>
+			<value>1</value>
+		</item>
+		<item name="afficherDetailsMachine(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:151">
+			<value>6</value>
+			<value>9</value>
+			<value>1</value>
+		</item>
+		<item name="adminMode(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:160">
+			<value>7</value>
+			<value>38</value>
+			<value>6</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:209">
+			<value>8</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:223">
+			<value>9</value>
+			<value>13</value>
+			<value>1</value>
+		</item>
+		<item name="demarrerProgramme(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:239">
+			<value>10</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="genererCodePaiement(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:247">
+			<value>11</value>
+			<value>11</value>
+			<value>2</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:260">
+			<value>12</value>
+			<value>24</value>
+			<value>4</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:286">
+			<value>13</value>
+			<value>18</value>
+			<value>3</value>
+		</item>
+		<item name="isValidMachine(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:309">
+			<value>14</value>
+			<value>2</value>
+			<value>2</value>
+		</item>
+		<item name="readIntSafe(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:311">
+			<value>15</value>
+			<value>8</value>
+			<value>1</value>
+		</item>
+		<item name="readStringSafe(...) at Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala:319">
+			<value>16</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="15.875"/>
+		<average label="CCN" value="3.5625"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Baptiste_Nawesi_Ihab_Wata.scala">
+			<value>1</value>
+			<value>250</value>
+			<value>57</value>
+			<value>16</value>
+		</item>
+		<average label="NCSS" value="250.0"/>
+		<average label="CCN" value="57.0"/>
+		<average label="Functions" value="16.0"/>
+		<sum label="NCSS" value="250"/>
+		<sum label="CCN" value="57"/>
+		<sum label="Functions" value="16"/>
+		<average label="NCSS" value="15.875"/>
+		<average label="CCN" value="3.5625"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

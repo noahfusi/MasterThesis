@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:80">
+			<value>1</value>
+			<value>7</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:86">
+			<value>2</value>
+			<value>14</value>
+			<value>2</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:99">
+			<value>3</value>
+			<value>148</value>
+			<value>26</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:275">
+			<value>4</value>
+			<value>14</value>
+			<value>2</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:6">
+			<value>5</value>
+			<value>131</value>
+			<value>21</value>
+		</item>
+		<average label="NCSS" value="62.8"/>
+		<average label="CCN" value="10.6"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala">
+			<value>1</value>
+			<value>313</value>
+			<value>53</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="313.0"/>
+		<average label="CCN" value="53.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="313"/>
+		<sum label="CCN" value="53"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="62.8"/>
+		<average label="CCN" value="10.6"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

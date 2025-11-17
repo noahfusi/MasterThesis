@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/aaa/raw/Alba_Beqiri.scala:4">
+			<value>1</value>
+			<value>294</value>
+			<value>45</value>
+		</item>
+		<average label="NCSS" value="294.0"/>
+		<average label="CCN" value="45.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Alba_Beqiri.scala">
+			<value>1</value>
+			<value>297</value>
+			<value>45</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="297.0"/>
+		<average label="CCN" value="45.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="297"/>
+		<sum label="CCN" value="45"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="294.0"/>
+		<average label="CCN" value="45.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Alba_Beqiri.scala:220 ~ 239
+Datasets/aaa/raw/Alba_Beqiri.scala:240 ~ 259
+Datasets/aaa/raw/Alba_Beqiri.scala:260 ~ 280
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Alba_Beqiri.scala:221 ~ 238
+Datasets/aaa/raw/Alba_Beqiri.scala:241 ~ 258
+Datasets/aaa/raw/Alba_Beqiri.scala:261 ~ 278
+Datasets/aaa/raw/Alba_Beqiri.scala:332 ~ 351
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 24.58%
+Total unique rate: 95.05%

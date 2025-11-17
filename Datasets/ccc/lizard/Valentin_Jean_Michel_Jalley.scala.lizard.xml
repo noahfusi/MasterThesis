@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:13">
+			<value>1</value>
+			<value>9</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:21">
+			<value>2</value>
+			<value>16</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:39">
+			<value>3</value>
+			<value>70</value>
+			<value>20</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:123">
+			<value>4</value>
+			<value>13</value>
+			<value>2</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:137">
+			<value>5</value>
+			<value>29</value>
+			<value>7</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:177">
+			<value>6</value>
+			<value>39</value>
+			<value>6</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:221">
+			<value>7</value>
+			<value>195</value>
+			<value>64</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:472">
+			<value>8</value>
+			<value>13</value>
+			<value>2</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala:485">
+			<value>9</value>
+			<value>31</value>
+			<value>6</value>
+		</item>
+		<average label="NCSS" value="46.111111111111114"/>
+		<average label="CCN" value="13.11111111111111"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Valentin_Jean_Michel_Jalley.scala">
+			<value>1</value>
+			<value>417</value>
+			<value>118</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="417.0"/>
+		<average label="CCN" value="118.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="417"/>
+		<sum label="CCN" value="118"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="46.111111111111114"/>
+		<average label="CCN" value="13.11111111111111"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.79%

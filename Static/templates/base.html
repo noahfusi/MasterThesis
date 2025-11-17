@@ -15,6 +15,7 @@
         <a href="{{ url_for('file-explorer') }}" class="{% if active_page == 'explorer' %}active{% endif %}">File explorer</a>
         <a href="{{ url_for('global-analysis') }}" class="{% if active_page == 'global' %}active{% endif %}">Global analysis</a>
         <a href="{{ url_for('file-analysis') }}" class="{% if active_page == 'file' %}active{% endif %}">File analysis</a>
+        <a href="{{ url_for('plagiarism') }}" class="{% if active_page == 'plagiarism' %}active{% endif %}">Plagiarism</a>
       </nav>
       <div class="dataset-switcher">
         <label for="current-dataset-select">Current dataset</label>

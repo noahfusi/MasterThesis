@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Yukyung_Lee.scala:6">
+			<value>1</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Yukyung_Lee.scala:18">
+			<value>2</value>
+			<value>16</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Yukyung_Lee.scala:38">
+			<value>3</value>
+			<value>25</value>
+			<value>6</value>
+		</item>
+		<item name="clientMode(...) at Datasets/ccc/raw/Yukyung_Lee.scala:65">
+			<value>4</value>
+			<value>31</value>
+			<value>8</value>
+		</item>
+		<item name="adminMode(...) at Datasets/ccc/raw/Yukyung_Lee.scala:101">
+			<value>5</value>
+			<value>36</value>
+			<value>7</value>
+		</item>
+		<item name="loadCSV(...) at Datasets/ccc/raw/Yukyung_Lee.scala:142">
+			<value>6</value>
+			<value>16</value>
+			<value>4</value>
+		</item>
+		<item name="saveCSV(...) at Datasets/ccc/raw/Yukyung_Lee.scala:158">
+			<value>7</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<average label="NCSS" value="21.571428571428573"/>
+		<average label="CCN" value="5.714285714285714"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Yukyung_Lee.scala">
+			<value>1</value>
+			<value>152</value>
+			<value>40</value>
+			<value>7</value>
+		</item>
+		<average label="NCSS" value="152.0"/>
+		<average label="CCN" value="40.0"/>
+		<average label="Functions" value="7.0"/>
+		<sum label="NCSS" value="152"/>
+		<sum label="CCN" value="40"/>
+		<sum label="Functions" value="7"/>
+		<average label="NCSS" value="21.571428571428573"/>
+		<average label="CCN" value="5.714285714285714"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

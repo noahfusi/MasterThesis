@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/aaa/raw/Ema_Chikhi.scala:4">
+			<value>1</value>
+			<value>446</value>
+			<value>113</value>
+		</item>
+		<average label="NCSS" value="446.0"/>
+		<average label="CCN" value="113.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Ema_Chikhi.scala">
+			<value>1</value>
+			<value>448</value>
+			<value>113</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="448.0"/>
+		<average label="CCN" value="113.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="448"/>
+		<sum label="CCN" value="113"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="446.0"/>
+		<average label="CCN" value="113.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Ema_Chikhi.scala:402 ~ 406
+Datasets/aaa/raw/Ema_Chikhi.scala:409 ~ 413
+Datasets/aaa/raw/Ema_Chikhi.scala:416 ~ 420
+Datasets/aaa/raw/Ema_Chikhi.scala:423 ~ 427
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 6.20%
+Total unique rate: 96.98%

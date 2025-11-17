@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:17">
+			<value>1</value>
+			<value>10</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:28">
+			<value>2</value>
+			<value>20</value>
+			<value>7</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:62">
+			<value>3</value>
+			<value>35</value>
+			<value>8</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:98">
+			<value>4</value>
+			<value>24</value>
+			<value>6</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:125">
+			<value>5</value>
+			<value>14</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:140">
+			<value>6</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:156">
+			<value>7</value>
+			<value>167</value>
+			<value>47</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:361">
+			<value>8</value>
+			<value>26</value>
+			<value>6</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:394">
+			<value>9</value>
+			<value>37</value>
+			<value>6</value>
+		</item>
+		<item name="modeClient(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:438">
+			<value>10</value>
+			<value>13</value>
+			<value>5</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:454">
+			<value>11</value>
+			<value>55</value>
+			<value>15</value>
+		</item>
+		<average label="NCSS" value="37.81818181818182"/>
+		<average label="CCN" value="10.181818181818182"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala">
+			<value>1</value>
+			<value>425</value>
+			<value>112</value>
+			<value>11</value>
+		</item>
+		<average label="NCSS" value="425.0"/>
+		<average label="CCN" value="112.0"/>
+		<average label="Functions" value="11.0"/>
+		<sum label="NCSS" value="425"/>
+		<sum label="CCN" value="112"/>
+		<sum label="Functions" value="11"/>
+		<average label="NCSS" value="37.81818181818182"/>
+		<average label="CCN" value="10.181818181818182"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.51%

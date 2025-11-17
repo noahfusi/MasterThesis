@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Clarisse_Dalex.scala:12">
+			<value>1</value>
+			<value>22</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Clarisse_Dalex.scala:37">
+			<value>2</value>
+			<value>30</value>
+			<value>12</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Clarisse_Dalex.scala:76">
+			<value>3</value>
+			<value>195</value>
+			<value>43</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Clarisse_Dalex.scala:336">
+			<value>4</value>
+			<value>29</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Clarisse_Dalex.scala:380">
+			<value>5</value>
+			<value>83</value>
+			<value>18</value>
+		</item>
+		<average label="NCSS" value="71.8"/>
+		<average label="CCN" value="16.8"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Clarisse_Dalex.scala">
+			<value>1</value>
+			<value>361</value>
+			<value>84</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="361.0"/>
+		<average label="CCN" value="84.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="361"/>
+		<sum label="CCN" value="84"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="71.8"/>
+		<average label="CCN" value="16.8"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 98.07%

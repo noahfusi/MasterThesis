@@ -1,0 +1,116 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:6">
+			<value>1</value>
+			<value>23</value>
+			<value>4</value>
+		</item>
+		<item name="choixmachine(...) at Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:30">
+			<value>2</value>
+			<value>10</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:40">
+			<value>3</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:53">
+			<value>4</value>
+			<value>423</value>
+			<value>80</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:547">
+			<value>5</value>
+			<value>21</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:569">
+			<value>6</value>
+			<value>50</value>
+			<value>17</value>
+		</item>
+		<average label="NCSS" value="89.83333333333333"/>
+		<average label="CCN" value="17.833333333333332"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala">
+			<value>1</value>
+			<value>537</value>
+			<value>107</value>
+			<value>6</value>
+		</item>
+		<average label="NCSS" value="537.0"/>
+		<average label="CCN" value="107.0"/>
+		<average label="Functions" value="6.0"/>
+		<sum label="NCSS" value="537"/>
+		<sum label="CCN" value="107"/>
+		<sum label="Functions" value="6"/>
+		<average label="NCSS" value="89.83333333333333"/>
+		<average label="CCN" value="17.833333333333332"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:87 ~ 112
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:178 ~ 202
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:178 ~ 202
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:206 ~ 220
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:299 ~ 315
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:386 ~ 401
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:468 ~ 482
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:299 ~ 321
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:386 ~ 407
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:468 ~ 486
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:298 ~ 321
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:385 ~ 407
+Datasets/bbb/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:467 ~ 486
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 57.69%
+Total unique rate: 85.89%

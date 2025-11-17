@@ -3,6 +3,7 @@ const API_ROUTES = {
   currentDataset: "/current-dataset",
   listFiles: "/datasets/files",
   fileContent: "/datasets/file",
+  fileAnalysis: "/datasets/file/lizard",
 };
 
 const datasetSelect = document.getElementById("current-dataset-select");
@@ -19,6 +20,18 @@ const filePreviewPanel = document.getElementById("file-preview-panel");
 const filePreviewName = document.getElementById("file-preview-name");
 const filePreviewContent = document.getElementById("file-content");
 const refreshFilesButton = document.getElementById("refresh-files-button");
+const plagiarismContainer = document.getElementById("plagiarism-viewer");
+const plagiarismPrevButton = document.getElementById("plagiarism-prev");
+const plagiarismNextButton = document.getElementById("plagiarism-next");
+const plagiarismCounter = document.getElementById("plagiarism-counter");
+
+const plagiarismState = {
+  blocks: [],
+  index: 0,
+  dataset: plagiarismContainer ? plagiarismContainer.dataset.dataset : null,
+  summaryFilename: plagiarismContainer ? plagiarismContainer.dataset.summaryFilename : "lizard_dataset.xml",
+  snippetCache: new Map(),
+};
 
 async function requestJSON(url, options = {}) {
   const response = await fetch(url, options);
@@ -211,6 +224,260 @@ async function loadFileContent(filename) {
   }
 }
 
+function getActiveDatasetForPlagiarism() {
+  if (!plagiarismContainer) return null;
+  const selectValue = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
+  if (selectValue) return selectValue;
+  if (plagiarismContainer.dataset.dataset) return plagiarismContainer.dataset.dataset;
+  return plagiarismState.dataset || null;
+}
+
+function parseDuplicateBlocks(report) {
+  const lines = (report || "").split(/\r?\n/);
+  const blocks = [];
+  let i = 0;
+  while (i < lines.length) {
+    if (lines[i].trim() === "Duplicate block:") {
+      i += 1;
+      while (i < lines.length && !lines[i].trim()) i += 1;
+      if (i < lines.length && lines[i].includes("-")) {
+        i += 1;
+      }
+      const entries = [];
+      while (i < lines.length) {
+        const line = lines[i].trim();
+        if (!line) {
+          i += 1;
+          continue;
+        }
+        if (line.startsWith("^")) {
+          i += 1;
+          break;
+        }
+        const match = line.match(/^(.*?):\s*(\d+)\s*~\s*(\d+)/);
+        if (match) {
+          const filePath = match[1].trim();
+          const relativePath = extractRelativePath(filePath);
+          entries.push({
+            filePath,
+            relativePath,
+            startLine: Number(match[2]),
+            endLine: Number(match[3]),
+          });
+        }
+        i += 1;
+      }
+      if (entries.length > 1) {
+        blocks.push({ entries });
+      }
+    } else {
+      i += 1;
+    }
+  }
+  return blocks;
+}
+
+function extractRelativePath(fullPath) {
+  if (!fullPath) return null;
+  const marker = "/raw/";
+  const idx = fullPath.lastIndexOf(marker);
+  if (idx !== -1) {
+    return fullPath.slice(idx + marker.length);
+  }
+  const winMarker = "\\raw\\";
+  const winIdx = fullPath.lastIndexOf(winMarker);
+  if (winIdx !== -1) {
+    return fullPath.slice(winIdx + winMarker.length).replace(/\\/g, "/");
+  }
+  return fullPath;
+}
+
+function showPlagiarismEmptyState(message) {
+  if (!plagiarismContainer) return;
+  plagiarismContainer.innerHTML = "";
+  const wrapper = document.createElement("div");
+  wrapper.className = "plagiarism-viewer-empty";
+  wrapper.textContent = message;
+  plagiarismContainer.appendChild(wrapper);
+}
+
+function updatePlagiarismControls() {
+  if (!plagiarismContainer) return;
+  const total = plagiarismState.blocks.length;
+  if (plagiarismCounter) {
+    const current = total ? Math.min(plagiarismState.index + 1, total) : 0;
+    plagiarismCounter.textContent = `${current} / ${total}`;
+  }
+  if (plagiarismPrevButton) {
+    plagiarismPrevButton.disabled = total <= 1 || plagiarismState.index === 0;
+  }
+  if (plagiarismNextButton) {
+    plagiarismNextButton.disabled = total <= 1 || plagiarismState.index >= total - 1;
+  }
+}
+
+async function fetchPlagiarismData() {
+  if (!plagiarismContainer) return;
+  const dataset = getActiveDatasetForPlagiarism();
+  if (!dataset) {
+    plagiarismState.blocks = [];
+    plagiarismState.snippetCache.clear();
+    updatePlagiarismControls();
+    showPlagiarismEmptyState("Select a dataset to inspect duplicate blocks.");
+    return;
+  }
+  plagiarismState.dataset = dataset;
+  plagiarismContainer.dataset.dataset = dataset;
+  plagiarismState.snippetCache.clear();
+  showPlagiarismEmptyState("Loading duplicate blocks…");
+  try {
+    const params = new URLSearchParams({
+      dataset,
+      summary: "true",
+      filename: plagiarismState.summaryFilename || "lizard_dataset.xml",
+    });
+    const data = await requestJSON(`${API_ROUTES.fileAnalysis}?${params.toString()}`);
+    const blocks = parseDuplicateBlocks(data.analysis || "");
+    plagiarismState.blocks = blocks;
+    plagiarismState.index = 0;
+    updatePlagiarismControls();
+    if (!blocks.length) {
+      showPlagiarismEmptyState("No duplicate blocks detected.");
+      return;
+    }
+    await renderPlagiarismBlock();
+  } catch (error) {
+    plagiarismState.blocks = [];
+    updatePlagiarismControls();
+    showPlagiarismEmptyState(error.message);
+  }
+}
+
+async function getFileContentCached(dataset, relativePath) {
+  if (!relativePath) throw new Error("Missing file path in duplicate block.");
+  const key = `${dataset}:${relativePath}`;
+  if (!plagiarismState.snippetCache.has(key)) {
+    const params = new URLSearchParams({ filename: relativePath });
+    if (dataset) params.set("dataset", dataset);
+    const promise = requestJSON(`${API_ROUTES.fileContent}?${params.toString()}`);
+    plagiarismState.snippetCache.set(key, promise);
+  }
+  const payload = await plagiarismState.snippetCache.get(key);
+  return payload.content || "";
+}
+
+function buildSnippetLines(content, start, end) {
+  const lines = content.split(/\r?\n/);
+  const before = 10;
+  const after = 10;
+  const snippetStart = Math.max(start - before, 1);
+  const snippetEnd = Math.min(end + after, lines.length);
+  const snippetLines = [];
+  for (let line = snippetStart; line <= snippetEnd; line += 1) {
+    snippetLines.push({
+      number: line,
+      text: lines[line - 1] ?? "",
+      highlight: line >= start && line <= end,
+    });
+  }
+  return snippetLines;
+}
+
+function buildSnippetElement(entry, snippetLines) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "plagiarism-file";
+
+  const title = document.createElement("h3");
+  title.textContent = `${entry.relativePath} (${entry.startLine} ~ ${entry.endLine})`;
+  wrapper.appendChild(title);
+
+  const snippet = document.createElement("div");
+  snippet.className = "plagiarism-snippet";
+  if (!snippetLines.length) {
+    const empty = document.createElement("div");
+    empty.textContent = "Unable to render snippet.";
+    snippet.appendChild(empty);
+  } else {
+    snippetLines.forEach((line) => {
+      const lineRow = document.createElement("div");
+      lineRow.className = "plagiarism-snippet-line";
+
+      const lineNumber = document.createElement("span");
+      lineNumber.className = "plagiarism-line-number";
+      lineNumber.textContent = line.number.toString().padStart(4, " ");
+
+      const lineText = document.createElement("span");
+      lineText.className = "plagiarism-line-text";
+      if (line.highlight) {
+        lineText.classList.add("highlight");
+      }
+      lineText.textContent = line.text || " ";
+
+      lineRow.appendChild(lineNumber);
+      lineRow.appendChild(lineText);
+      snippet.appendChild(lineRow);
+    });
+  }
+
+  wrapper.appendChild(snippet);
+  return wrapper;
+}
+
+async function renderPlagiarismBlock() {
+  if (!plagiarismContainer) return;
+  const total = plagiarismState.blocks.length;
+  if (!total) {
+    showPlagiarismEmptyState("No duplicate blocks detected.");
+    return;
+  }
+  const index = Math.min(plagiarismState.index, total - 1);
+  const block = plagiarismState.blocks[index];
+  plagiarismContainer.innerHTML = "";
+  const grid = document.createElement("div");
+  grid.className = "plagiarism-grid";
+  try {
+    const panels = await Promise.all(
+      block.entries.map(async (entry) => {
+        const content = await getFileContentCached(plagiarismState.dataset, entry.relativePath);
+        const snippetLines = buildSnippetLines(content, entry.startLine, entry.endLine);
+        return buildSnippetElement(entry, snippetLines);
+      }),
+    );
+    panels.forEach((panel) => grid.appendChild(panel));
+    plagiarismContainer.appendChild(grid);
+  } catch (error) {
+    showPlagiarismEmptyState(error.message);
+  }
+}
+
+async function refreshPlagiarismView() {
+  if (!plagiarismContainer) return;
+  await fetchPlagiarismData();
+}
+
+function initPlagiarismViewer() {
+  if (!plagiarismContainer) return;
+  if (plagiarismPrevButton) {
+    plagiarismPrevButton.addEventListener("click", async () => {
+      if (plagiarismState.index > 0) {
+        plagiarismState.index -= 1;
+        updatePlagiarismControls();
+        await renderPlagiarismBlock();
+      }
+    });
+  }
+  if (plagiarismNextButton) {
+    plagiarismNextButton.addEventListener("click", async () => {
+      if (plagiarismState.index < plagiarismState.blocks.length - 1) {
+        plagiarismState.index += 1;
+        updatePlagiarismControls();
+        await renderPlagiarismBlock();
+      }
+    });
+  }
+  refreshPlagiarismView();
+}
+
 async function handleUpload(event) {
   event.preventDefault();
   if (!uploadForm) return;
@@ -259,12 +526,18 @@ async function setCurrentDataset(name) {
     if (fileListElement) {
       await refreshFileList();
     }
+    if (plagiarismContainer) {
+      await refreshPlagiarismView();
+    }
     showMessage(datasetFeedbackElement, `Current dataset: ${data.current_dataset || "None"}.`);
   } catch (error) {
     showMessage(datasetFeedbackElement, error.message, true);
     refreshDatasets();
     if (fileListElement) {
       refreshFileList();
+    }
+    if (plagiarismContainer) {
+      refreshPlagiarismView();
     }
   }
 }
@@ -290,6 +563,10 @@ function initDatasetControls() {
 
   if (refreshFilesButton) {
     refreshFilesButton.addEventListener("click", refreshFileList);
+  }
+
+  if (plagiarismContainer) {
+    initPlagiarismViewer();
   }
 }
 

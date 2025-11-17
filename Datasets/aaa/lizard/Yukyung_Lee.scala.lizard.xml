@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="generateRandomCode(...) at Datasets/aaa/raw/Yukyung_Lee.scala:11">
+			<value>1</value>
+			<value>6</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/aaa/raw/Yukyung_Lee.scala:16">
+			<value>2</value>
+			<value>398</value>
+			<value>78</value>
+		</item>
+		<average label="NCSS" value="202.0"/>
+		<average label="CCN" value="39.5"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Yukyung_Lee.scala">
+			<value>1</value>
+			<value>412</value>
+			<value>79</value>
+			<value>2</value>
+		</item>
+		<average label="NCSS" value="412.0"/>
+		<average label="CCN" value="79.0"/>
+		<average label="Functions" value="2.0"/>
+		<sum label="NCSS" value="412"/>
+		<sum label="CCN" value="79"/>
+		<sum label="Functions" value="2"/>
+		<average label="NCSS" value="202.0"/>
+		<average label="CCN" value="39.5"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Yukyung_Lee.scala:48 ~ 88
+Datasets/aaa/raw/Yukyung_Lee.scala:156 ~ 197
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Yukyung_Lee.scala:52 ~ 88
+Datasets/aaa/raw/Yukyung_Lee.scala:160 ~ 197
+Datasets/aaa/raw/Yukyung_Lee.scala:299 ~ 336
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Yukyung_Lee.scala:52 ~ 95
+Datasets/aaa/raw/Yukyung_Lee.scala:299 ~ 343
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Yukyung_Lee.scala:95 ~ 123
+Datasets/aaa/raw/Yukyung_Lee.scala:204 ~ 232
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Yukyung_Lee.scala:98 ~ 123
+Datasets/aaa/raw/Yukyung_Lee.scala:207 ~ 232
+Datasets/aaa/raw/Yukyung_Lee.scala:346 ~ 371
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Yukyung_Lee.scala:98 ~ 132
+Datasets/aaa/raw/Yukyung_Lee.scala:346 ~ 380
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 99.89%
+Total unique rate: 75.01%

@@ -1,0 +1,133 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="ajouterIngredient(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:9">
+			<value>1</value>
+			<value>9</value>
+			<value>5</value>
+		</item>
+		<item name="retirerIngredient(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:17">
+			<value>2</value>
+			<value>17</value>
+			<value>8</value>
+		</item>
+		<item name="afficherDetailsMachine(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:41">
+			<value>3</value>
+			<value>9</value>
+			<value>1</value>
+		</item>
+		<item name="afficherToutesMachines(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:49">
+			<value>4</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<item name="chargementDepuisFichier(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:53">
+			<value>5</value>
+			<value>33</value>
+			<value>5</value>
+		</item>
+		<item name="sauvegardeDansFichier(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:86">
+			<value>6</value>
+			<value>23</value>
+			<value>3</value>
+		</item>
+		<item name="selectionMachine(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:108">
+			<value>7</value>
+			<value>17</value>
+			<value>4</value>
+		</item>
+		<item name="pin(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:126">
+			<value>8</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:129">
+			<value>9</value>
+			<value>25</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:153">
+			<value>10</value>
+			<value>12</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:164">
+			<value>11</value>
+			<value>407</value>
+			<value>87</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:574">
+			<value>12</value>
+			<value>37</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Victor_Faria_Andrade.scala:610">
+			<value>13</value>
+			<value>68</value>
+			<value>17</value>
+		</item>
+		<average label="NCSS" value="51.23076923076923"/>
+		<average label="CCN" value="10.76923076923077"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Victor_Faria_Andrade.scala">
+			<value>1</value>
+			<value>664</value>
+			<value>140</value>
+			<value>13</value>
+		</item>
+		<average label="NCSS" value="664.0"/>
+		<average label="CCN" value="140.0"/>
+		<average label="Functions" value="13.0"/>
+		<sum label="NCSS" value="664"/>
+		<sum label="CCN" value="140"/>
+		<sum label="Functions" value="13"/>
+		<average label="NCSS" value="51.23076923076923"/>
+		<average label="CCN" value="10.76923076923077"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:190 ~ 206
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:348 ~ 364
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:227 ~ 235
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:398 ~ 406
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:454 ~ 462
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:512 ~ 520
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:398 ~ 408
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:454 ~ 464
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:512 ~ 522
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:396 ~ 408
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:452 ~ 464
+Datasets/ccc/raw/Victor_Faria_Andrade.scala:510 ~ 522
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 15.23%
+Total unique rate: 96.48%

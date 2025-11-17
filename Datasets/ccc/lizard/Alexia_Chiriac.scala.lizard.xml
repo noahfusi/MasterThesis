@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:9">
+			<value>1</value>
+			<value>9</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:19">
+			<value>2</value>
+			<value>9</value>
+			<value>8</value>
+		</item>
+		<item name="afficherStock(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:28">
+			<value>3</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:39">
+			<value>4</value>
+			<value>20</value>
+			<value>6</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:60">
+			<value>5</value>
+			<value>14</value>
+			<value>4</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:75">
+			<value>6</value>
+			<value>13</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:89">
+			<value>7</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:101">
+			<value>8</value>
+			<value>12</value>
+			<value>1</value>
+		</item>
+		<item name="calculCout(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:117">
+			<value>9</value>
+			<value>15</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:133">
+			<value>10</value>
+			<value>60</value>
+			<value>22</value>
+		</item>
+		<item name="selectionnerMachine(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:200">
+			<value>11</value>
+			<value>6</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Alexia_Chiriac.scala:208">
+			<value>12</value>
+			<value>34</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="17.5"/>
+		<average label="CCN" value="5.416666666666667"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Alexia_Chiriac.scala">
+			<value>1</value>
+			<value>209</value>
+			<value>65</value>
+			<value>12</value>
+		</item>
+		<average label="NCSS" value="209.0"/>
+		<average label="CCN" value="65.0"/>
+		<average label="Functions" value="12.0"/>
+		<sum label="NCSS" value="209"/>
+		<sum label="CCN" value="65"/>
+		<sum label="Functions" value="12"/>
+		<average label="NCSS" value="17.5"/>
+		<average label="CCN" value="5.416666666666667"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

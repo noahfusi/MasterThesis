@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content_classes %}content-bleed{% endblock %}
+
+{% block content %}
+<section class="plagiarism-full">
+  <div class="placeholder plagiarism-hero">
+    <h1>Plagiarism overview</h1>
+    <p>
+      Review duplicate code regions detected by Lizard across files. Navigate through the
+      duplicate blocks using the controls below and inspect the surrounding context for
+      each file.
+    </p>
+  </div>
+
+  {% if current_dataset %}
+  <div class="plagiarism-body">
+    <div class="plagiarism-controls">
+      <div class="plagiarism-buttons">
+        <button id="plagiarism-prev" disabled>Previous</button>
+        <button id="plagiarism-next" disabled>Next</button>
+      </div>
+      <span id="plagiarism-counter">0 / 0</span>
+    </div>
+    <div
+      id="plagiarism-viewer"
+      class="plagiarism-viewer-panel"
+      data-dataset="{{ current_dataset }}"
+      data-summary-filename="lizard_dataset.xml"
+    >
+      <p class="feedback">Loading duplicate blocks…</p>
+    </div>
+  </div>
+  {% else %}
+  <div class="plagiarism-body">
+    <div class="plagiarism-viewer-panel plagiarism-viewer-empty">
+      <h2>No dataset selected</h2>
+      <p>Select a dataset from the header to inspect duplicate blocks.</p>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

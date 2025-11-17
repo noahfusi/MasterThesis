@@ -1,0 +1,96 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:8">
+			<value>1</value>
+			<value>16</value>
+			<value>11</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:24">
+			<value>2</value>
+			<value>15</value>
+			<value>13</value>
+		</item>
+		<item name="displayStock(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:39">
+			<value>3</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<item name="summary(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:46">
+			<value>4</value>
+			<value>9</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:59">
+			<value>5</value>
+			<value>93</value>
+			<value>32</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:156">
+			<value>6</value>
+			<value>29</value>
+			<value>7</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:186">
+			<value>7</value>
+			<value>16</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:202">
+			<value>8</value>
+			<value>195</value>
+			<value>58</value>
+		</item>
+		<item name="adminMenu(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:412">
+			<value>9</value>
+			<value>54</value>
+			<value>13</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Raouen_Ben_Ali.scala:467">
+			<value>10</value>
+			<value>27</value>
+			<value>7</value>
+		</item>
+		<average label="NCSS" value="46.1"/>
+		<average label="CCN" value="14.7"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Raouen_Ben_Ali.scala">
+			<value>1</value>
+			<value>461</value>
+			<value>147</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="461.0"/>
+		<average label="CCN" value="147.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="461"/>
+		<sum label="CCN" value="147"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="46.1"/>
+		<average label="CCN" value="14.7"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Raouen_Ben_Ali.scala:94 ~ 113
+Datasets/ccc/raw/Raouen_Ben_Ali.scala:120 ~ 139
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 7.60%
+Total unique rate: 97.38%

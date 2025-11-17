@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Fodil_Khali.scala:12">
+			<value>1</value>
+			<value>12</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Fodil_Khali.scala:25">
+			<value>2</value>
+			<value>16</value>
+			<value>7</value>
+		</item>
+		<item name="displayDetails(...) at Datasets/ccc/raw/Fodil_Khali.scala:42">
+			<value>3</value>
+			<value>9</value>
+			<value>1</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Fodil_Khali.scala:58">
+			<value>4</value>
+			<value>33</value>
+			<value>7</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Fodil_Khali.scala:92">
+			<value>5</value>
+			<value>16</value>
+			<value>5</value>
+		</item>
+		<item name="genererCodeTwint(...) at Datasets/ccc/raw/Fodil_Khali.scala:108">
+			<value>6</value>
+			<value>6</value>
+			<value>1</value>
+		</item>
+		<item name="modeClient(...) at Datasets/ccc/raw/Fodil_Khali.scala:114">
+			<value>7</value>
+			<value>74</value>
+			<value>13</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/ccc/raw/Fodil_Khali.scala:196">
+			<value>8</value>
+			<value>31</value>
+			<value>5</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Fodil_Khali.scala:228">
+			<value>9</value>
+			<value>36</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="25.88888888888889"/>
+		<average label="CCN" value="5.777777777777778"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Fodil_Khali.scala">
+			<value>1</value>
+			<value>236</value>
+			<value>52</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="236.0"/>
+		<average label="CCN" value="52.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="236"/>
+		<sum label="CCN" value="52"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="25.88888888888889"/>
+		<average label="CCN" value="5.777777777777778"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.85%

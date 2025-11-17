@@ -1,0 +1,153 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="findmachineId(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:9">
+			<value>1</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:20">
+			<value>2</value>
+			<value>20</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:42">
+			<value>3</value>
+			<value>12</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:56">
+			<value>4</value>
+			<value>31</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:95">
+			<value>5</value>
+			<value>629</value>
+			<value>156</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:800">
+			<value>6</value>
+			<value>63</value>
+			<value>15</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:878">
+			<value>7</value>
+			<value>29</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:919">
+			<value>8</value>
+			<value>18</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:948">
+			<value>9</value>
+			<value>28</value>
+			<value>8</value>
+		</item>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Evan_Delle_Rose.scala:978">
+			<value>10</value>
+			<value>7</value>
+			<value>4</value>
+		</item>
+		<average label="NCSS" value="84.8"/>
+		<average label="CCN" value="20.7"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Evan_Delle_Rose.scala">
+			<value>1</value>
+			<value>846</value>
+			<value>207</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="846.0"/>
+		<average label="CCN" value="207.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="846"/>
+		<sum label="CCN" value="207"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="84.8"/>
+		<average label="CCN" value="20.7"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:277 ~ 299
+Datasets/ccc/raw/Evan_Delle_Rose.scala:499 ~ 521
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:331 ~ 359
+Datasets/ccc/raw/Evan_Delle_Rose.scala:676 ~ 703
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:188 ~ 197
+Datasets/ccc/raw/Evan_Delle_Rose.scala:341 ~ 350
+Datasets/ccc/raw/Evan_Delle_Rose.scala:686 ~ 695
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:439 ~ 456
+Datasets/ccc/raw/Evan_Delle_Rose.scala:765 ~ 783
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:270 ~ 299
+Datasets/ccc/raw/Evan_Delle_Rose.scala:492 ~ 521
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:297 ~ 314
+Datasets/ccc/raw/Evan_Delle_Rose.scala:523 ~ 541
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:359 ~ 371
+Datasets/ccc/raw/Evan_Delle_Rose.scala:371 ~ 383
+Datasets/ccc/raw/Evan_Delle_Rose.scala:383 ~ 395
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:614 ~ 634
+Datasets/ccc/raw/Evan_Delle_Rose.scala:634 ~ 653
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:614 ~ 629
+Datasets/ccc/raw/Evan_Delle_Rose.scala:634 ~ 649
+Datasets/ccc/raw/Evan_Delle_Rose.scala:653 ~ 668
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Evan_Delle_Rose.scala:399 ~ 437
+Datasets/ccc/raw/Evan_Delle_Rose.scala:717 ~ 757
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 43.79%
+Total unique rate: 81.29%

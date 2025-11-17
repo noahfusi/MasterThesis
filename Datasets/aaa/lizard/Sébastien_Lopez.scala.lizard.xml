@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/aaa/raw/Sébastien_Lopez.scala:4">
+			<value>1</value>
+			<value>613</value>
+			<value>241</value>
+		</item>
+		<average label="NCSS" value="613.0"/>
+		<average label="CCN" value="241.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Sébastien_Lopez.scala">
+			<value>1</value>
+			<value>616</value>
+			<value>241</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="616.0"/>
+		<average label="CCN" value="241.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="616"/>
+		<sum label="CCN" value="241"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="613.0"/>
+		<average label="CCN" value="241.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sébastien_Lopez.scala:229 ~ 241
+Datasets/aaa/raw/Sébastien_Lopez.scala:247 ~ 260
+Datasets/aaa/raw/Sébastien_Lopez.scala:264 ~ 276
+Datasets/aaa/raw/Sébastien_Lopez.scala:280 ~ 292
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sébastien_Lopez.scala:229 ~ 243
+Datasets/aaa/raw/Sébastien_Lopez.scala:247 ~ 261
+Datasets/aaa/raw/Sébastien_Lopez.scala:264 ~ 277
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 9.44%
+Total unique rate: 98.49%

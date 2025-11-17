@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:19">
+			<value>1</value>
+			<value>9</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:29">
+			<value>2</value>
+			<value>22</value>
+			<value>11</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:70">
+			<value>3</value>
+			<value>35</value>
+			<value>6</value>
+		</item>
+		<item name="savecsv(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:111">
+			<value>4</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<item name="validatePin(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:129">
+			<value>5</value>
+			<value>23</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:155">
+			<value>6</value>
+			<value>31</value>
+			<value>12</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:195">
+			<value>7</value>
+			<value>192</value>
+			<value>42</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:452">
+			<value>8</value>
+			<value>28</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Clarisse_Dalex.scala:495">
+			<value>9</value>
+			<value>100</value>
+			<value>19</value>
+		</item>
+		<average label="NCSS" value="50.55555555555556"/>
+		<average label="CCN" value="12.222222222222221"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Clarisse_Dalex.scala">
+			<value>1</value>
+			<value>462</value>
+			<value>110</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="462.0"/>
+		<average label="CCN" value="110.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="462"/>
+		<sum label="CCN" value="110"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="50.55555555555556"/>
+		<average label="CCN" value="12.222222222222221"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/ccc/raw/Clarisse_Dalex.scala:523 ~ 544
+Datasets/ccc/raw/Clarisse_Dalex.scala:553 ~ 570
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 5.60%
+Total unique rate: 97.50%

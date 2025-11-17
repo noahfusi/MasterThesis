@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/bbb/raw/Kastriot_Rafizi.scala:67">
+			<value>1</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Kastriot_Rafizi.scala:80">
+			<value>2</value>
+			<value>25</value>
+			<value>8</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Kastriot_Rafizi.scala:115">
+			<value>3</value>
+			<value>36</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/bbb/raw/Kastriot_Rafizi.scala:162">
+			<value>4</value>
+			<value>295</value>
+			<value>106</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Kastriot_Rafizi.scala:488">
+			<value>5</value>
+			<value>75</value>
+			<value>23</value>
+		</item>
+		<average label="NCSS" value="88.6"/>
+		<average label="CCN" value="28.6"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Kastriot_Rafizi.scala">
+			<value>1</value>
+			<value>469</value>
+			<value>143</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="469.0"/>
+		<average label="CCN" value="143.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="469"/>
+		<sum label="CCN" value="143"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="88.6"/>
+		<average label="CCN" value="28.6"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Kastriot_Rafizi.scala:177 ~ 202
+Datasets/bbb/raw/Kastriot_Rafizi.scala:229 ~ 254
+Datasets/bbb/raw/Kastriot_Rafizi.scala:335 ~ 360
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Kastriot_Rafizi.scala:229 ~ 296
+Datasets/bbb/raw/Kastriot_Rafizi.scala:335 ~ 401
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 45.58%
+Total unique rate: 81.38%

@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:9">
+			<value>1</value>
+			<value>23</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:33">
+			<value>2</value>
+			<value>24</value>
+			<value>7</value>
+		</item>
+		<item name="RandomTwintCode(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:368">
+			<value>3</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:60">
+			<value>4</value>
+			<value>284</value>
+			<value>100</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:411">
+			<value>5</value>
+			<value>14</value>
+			<value>1</value>
+		</item>
+		<item name="addIngredient(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:430">
+			<value>6</value>
+			<value>22</value>
+			<value>7</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:451">
+			<value>7</value>
+			<value>46</value>
+			<value>13</value>
+		</item>
+		<item name="loadCSV(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:501">
+			<value>8</value>
+			<value>29</value>
+			<value>5</value>
+		</item>
+		<item name="saveCSV(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:530">
+			<value>9</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="main(...) at Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:542">
+			<value>10</value>
+			<value>212</value>
+			<value>57</value>
+		</item>
+		<average label="NCSS" value="66.8"/>
+		<average label="CCN" value="19.8"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/ccc/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala">
+			<value>1</value>
+			<value>667</value>
+			<value>198</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="667.0"/>
+		<average label="CCN" value="198.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="667"/>
+		<sum label="CCN" value="198"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="66.8"/>
+		<average label="CCN" value="19.8"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.34%

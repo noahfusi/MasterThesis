@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="generateTwintCode(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:28">
+			<value>1</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="calculerPrixFinal(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:32">
+			<value>2</value>
+			<value>16</value>
+			<value>5</value>
+		</item>
+		<item name="effectuerPaiement(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:66">
+			<value>3</value>
+			<value>8</value>
+			<value>1</value>
+		</item>
+		<item name="clientMode(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:77">
+			<value>4</value>
+			<value>10</value>
+			<value>3</value>
+		</item>
+		<item name="adminMode(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:87">
+			<value>5</value>
+			<value>18</value>
+			<value>6</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:105">
+			<value>6</value>
+			<value>15</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:124">
+			<value>7</value>
+			<value>16</value>
+			<value>5</value>
+		</item>
+		<item name="validatePin(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:141">
+			<value>8</value>
+			<value>18</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:159">
+			<value>9</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="choixdeboisson(...) at Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:174">
+			<value>10</value>
+			<value>156</value>
+			<value>52</value>
+		</item>
+		<average label="NCSS" value="27.6"/>
+		<average label="CCN" value="8.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala">
+			<value>1</value>
+			<value>282</value>
+			<value>80</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="282.0"/>
+		<average label="CCN" value="80.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="282"/>
+		<sum label="CCN" value="80"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="27.6"/>
+		<average label="CCN" value="8.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:265 ~ 284
+Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:284 ~ 303
+Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:303 ~ 322
+Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:322 ~ 341
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:265 ~ 284
+Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:284 ~ 303
+Datasets/bbb/raw/Daniela_Oghenemine_Bazunu.scala:303 ~ 322
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 49.31%
+Total unique rate: 83.39%

@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:7">
+			<value>1</value>
+			<value>710</value>
+			<value>110</value>
+		</item>
+		<average label="NCSS" value="710.0"/>
+		<average label="CCN" value="110.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala">
+			<value>1</value>
+			<value>713</value>
+			<value>110</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="713.0"/>
+		<average label="CCN" value="110.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="713"/>
+		<sum label="CCN" value="110"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="710.0"/>
+		<average label="CCN" value="110.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:294 ~ 310
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:723 ~ 739
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:364 ~ 396
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:492 ~ 523
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:618 ~ 649
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:492 ~ 529
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:618 ~ 655
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:190 ~ 197
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:370 ~ 377
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:498 ~ 505
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:624 ~ 631
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:199 ~ 206
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:377 ~ 384
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:505 ~ 512
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:631 ~ 638
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:208 ~ 219
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:384 ~ 396
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:512 ~ 523
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:638 ~ 649
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:355 ~ 369
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:484 ~ 497
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:610 ~ 623
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:441 ~ 466
+Datasets/aaa/raw/Sixtine_Marie_Phanette_de_Guigné.scala:566 ~ 591
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 53.92%
+Total unique rate: 84.65%
