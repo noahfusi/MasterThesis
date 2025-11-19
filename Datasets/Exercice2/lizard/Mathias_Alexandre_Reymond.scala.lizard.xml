@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Mathias_Alexandre_Reymond.scala:27">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Mathias_Alexandre_Reymond.scala:27">
 			<value>1</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Mathias_Alexandre_Reymond.scala:37">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Mathias_Alexandre_Reymond.scala:37">
 			<value>2</value>
 			<value>14</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Mathias_Alexandre_Reymond.scala:53">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Mathias_Alexandre_Reymond.scala:53">
 			<value>3</value>
 			<value>339</value>
 			<value>90</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Mathias_Alexandre_Reymond.scala:401">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Mathias_Alexandre_Reymond.scala:401">
 			<value>4</value>
 			<value>133</value>
 			<value>55</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Mathias_Alexandre_Reymond.scala:2">
+		<item name="main(...) at Datasets/exercice2/raw/Mathias_Alexandre_Reymond.scala:2">
 			<value>5</value>
 			<value>137</value>
 			<value>35</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Mathias_Alexandre_Reymond.scala">
+		<item name="Datasets/exercice2/raw/Mathias_Alexandre_Reymond.scala">
 			<value>1</value>
 			<value>630</value>
 			<value>186</value>
@@ -63,8 +63,8 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathias_Alexandre_Reymond.scala:407 ~ 425
-Datasets/Exercice2/raw/Mathias_Alexandre_Reymond.scala:564 ~ 582
+Datasets/exercice2/raw/Mathias_Alexandre_Reymond.scala:407 ~ 425
+Datasets/exercice2/raw/Mathias_Alexandre_Reymond.scala:564 ~ 582
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 4.43%

@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:80">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:80">
 			<value>1</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:86">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:86">
 			<value>2</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:99">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:99">
 			<value>3</value>
 			<value>148</value>
 			<value>26</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:275">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:275">
 			<value>4</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:6">
+		<item name="main(...) at Datasets/exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala:6">
 			<value>5</value>
 			<value>131</value>
 			<value>21</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala">
+		<item name="Datasets/exercice2/raw/Mattias_Raymond_Ngoc_Minh_Hansen.scala">
 			<value>1</value>
 			<value>313</value>
 			<value>53</value>

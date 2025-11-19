@@ -7,42 +7,42 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Hinabi_Zekarias.scala:14">
+		<item name="main(...) at Datasets/exercice2/raw/Hinabi_Zekarias.scala:14">
 			<value>1</value>
 			<value>22</value>
 			<value>5</value>
 		</item>
-		<item name="modeClient(...) at Datasets/Exercice2/raw/Hinabi_Zekarias.scala:41">
+		<item name="modeClient(...) at Datasets/exercice2/raw/Hinabi_Zekarias.scala:41">
 			<value>2</value>
 			<value>15</value>
 			<value>5</value>
 		</item>
-		<item name="modeAdministrateur(...) at Datasets/Exercice2/raw/Hinabi_Zekarias.scala:57">
+		<item name="modeAdministrateur(...) at Datasets/exercice2/raw/Hinabi_Zekarias.scala:57">
 			<value>3</value>
 			<value>23</value>
 			<value>5</value>
 		</item>
-		<item name="selectMachine(...) at Datasets/Exercice2/raw/Hinabi_Zekarias.scala:82">
+		<item name="selectMachine(...) at Datasets/exercice2/raw/Hinabi_Zekarias.scala:82">
 			<value>4</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Hinabi_Zekarias.scala:93">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Hinabi_Zekarias.scala:93">
 			<value>5</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Hinabi_Zekarias.scala:110">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Hinabi_Zekarias.scala:110">
 			<value>6</value>
 			<value>16</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Hinabi_Zekarias.scala:127">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Hinabi_Zekarias.scala:127">
 			<value>7</value>
 			<value>91</value>
 			<value>21</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Hinabi_Zekarias.scala:229">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Hinabi_Zekarias.scala:229">
 			<value>8</value>
 			<value>11</value>
 			<value>1</value>
@@ -57,7 +57,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Hinabi_Zekarias.scala">
+		<item name="Datasets/exercice2/raw/Hinabi_Zekarias.scala">
 			<value>1</value>
 			<value>205</value>
 			<value>47</value>

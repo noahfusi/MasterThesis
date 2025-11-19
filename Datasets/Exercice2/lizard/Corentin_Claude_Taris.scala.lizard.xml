@@ -7,62 +7,62 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:34">
+		<item name="main(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:34">
 			<value>1</value>
 			<value>42</value>
 			<value>11</value>
 		</item>
-		<item name="choisirMachine(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:80">
+		<item name="choisirMachine(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:80">
 			<value>2</value>
 			<value>11</value>
 			<value>6</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:91">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:91">
 			<value>3</value>
 			<value>46</value>
 			<value>19</value>
 		</item>
-		<item name="preparerExpresso(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:145">
+		<item name="preparerExpresso(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:145">
 			<value>4</value>
 			<value>27</value>
 			<value>11</value>
 		</item>
-		<item name="preparerCappuccino(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:178">
+		<item name="preparerCappuccino(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:178">
 			<value>5</value>
 			<value>53</value>
 			<value>25</value>
 		</item>
-		<item name="preparerLatte(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:243">
+		<item name="preparerLatte(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:243">
 			<value>6</value>
 			<value>92</value>
 			<value>38</value>
 		</item>
-		<item name="preparerBoisson(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:351">
+		<item name="preparerBoisson(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:351">
 			<value>7</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<item name="verifierStocks(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:357">
+		<item name="verifierStocks(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:357">
 			<value>8</value>
 			<value>6</value>
 			<value>5</value>
 		</item>
-		<item name="Twint(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:363">
+		<item name="Twint(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:363">
 			<value>9</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:375">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:375">
 			<value>10</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:395">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:395">
 			<value>11</value>
 			<value>15</value>
 			<value>6</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Corentin_Claude_Taris.scala:410">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Corentin_Claude_Taris.scala:410">
 			<value>12</value>
 			<value>39</value>
 			<value>10</value>
@@ -77,7 +77,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Corentin_Claude_Taris.scala">
+		<item name="Datasets/exercice2/raw/Corentin_Claude_Taris.scala">
 			<value>1</value>
 			<value>380</value>
 			<value>137</value>

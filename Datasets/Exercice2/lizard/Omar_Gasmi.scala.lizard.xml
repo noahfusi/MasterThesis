@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:9">
+		<item name="main(...) at Datasets/exercice2/raw/Omar_Gasmi.scala:9">
 			<value>1</value>
 			<value>80</value>
 			<value>31</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:93">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Omar_Gasmi.scala:93">
 			<value>2</value>
 			<value>21</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:118">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Omar_Gasmi.scala:118">
 			<value>3</value>
 			<value>17</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:140">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Omar_Gasmi.scala:140">
 			<value>4</value>
 			<value>196</value>
 			<value>57</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:346">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Omar_Gasmi.scala:346">
 			<value>5</value>
 			<value>41</value>
 			<value>7</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Omar_Gasmi.scala">
+		<item name="Datasets/exercice2/raw/Omar_Gasmi.scala">
 			<value>1</value>
 			<value>358</value>
 			<value>103</value>
@@ -63,19 +63,19 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Omar_Gasmi.scala:248 ~ 257
-Datasets/Exercice2/raw/Omar_Gasmi.scala:266 ~ 275
-Datasets/Exercice2/raw/Omar_Gasmi.scala:299 ~ 308
-Datasets/Exercice2/raw/Omar_Gasmi.scala:312 ~ 321
-Datasets/Exercice2/raw/Omar_Gasmi.scala:325 ~ 334
+Datasets/exercice2/raw/Omar_Gasmi.scala:248 ~ 257
+Datasets/exercice2/raw/Omar_Gasmi.scala:266 ~ 275
+Datasets/exercice2/raw/Omar_Gasmi.scala:299 ~ 308
+Datasets/exercice2/raw/Omar_Gasmi.scala:312 ~ 321
+Datasets/exercice2/raw/Omar_Gasmi.scala:325 ~ 334
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Omar_Gasmi.scala:266 ~ 275
-Datasets/Exercice2/raw/Omar_Gasmi.scala:299 ~ 308
-Datasets/Exercice2/raw/Omar_Gasmi.scala:312 ~ 321
-Datasets/Exercice2/raw/Omar_Gasmi.scala:325 ~ 334
+Datasets/exercice2/raw/Omar_Gasmi.scala:266 ~ 275
+Datasets/exercice2/raw/Omar_Gasmi.scala:299 ~ 308
+Datasets/exercice2/raw/Omar_Gasmi.scala:312 ~ 321
+Datasets/exercice2/raw/Omar_Gasmi.scala:325 ~ 334
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 20.34%

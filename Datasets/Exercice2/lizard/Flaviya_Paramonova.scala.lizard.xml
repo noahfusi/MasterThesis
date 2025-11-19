@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Flaviya_Paramonova.scala:37">
+		<item name="main(...) at Datasets/exercice2/raw/Flaviya_Paramonova.scala:37">
 			<value>1</value>
 			<value>41</value>
 			<value>27</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Flaviya_Paramonova.scala:102">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Flaviya_Paramonova.scala:102">
 			<value>2</value>
 			<value>15</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Flaviya_Paramonova.scala:125">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Flaviya_Paramonova.scala:125">
 			<value>3</value>
 			<value>12</value>
 			<value>4</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Flaviya_Paramonova.scala:139">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Flaviya_Paramonova.scala:139">
 			<value>4</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Flaviya_Paramonova.scala:156">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Flaviya_Paramonova.scala:156">
 			<value>5</value>
 			<value>152</value>
 			<value>67</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Flaviya_Paramonova.scala">
+		<item name="Datasets/exercice2/raw/Flaviya_Paramonova.scala">
 			<value>1</value>
 			<value>246</value>
 			<value>103</value>

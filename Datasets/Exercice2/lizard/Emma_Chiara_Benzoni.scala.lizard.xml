@@ -7,42 +7,42 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala:11">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala:11">
 			<value>1</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala:27">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala:27">
 			<value>2</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala:37">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala:37">
 			<value>3</value>
 			<value>106</value>
 			<value>33</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala:165">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala:165">
 			<value>4</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
-		<item name="choixMachine(...) at Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala:182">
+		<item name="choixMachine(...) at Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala:182">
 			<value>5</value>
 			<value>9</value>
 			<value>3</value>
 		</item>
-		<item name="choixMenu(...) at Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala:191">
+		<item name="choixMenu(...) at Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala:191">
 			<value>6</value>
 			<value>9</value>
 			<value>4</value>
 		</item>
-		<item name="choixAdmin(...) at Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala:200">
+		<item name="choixAdmin(...) at Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala:200">
 			<value>7</value>
 			<value>9</value>
 			<value>3</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala:209">
+		<item name="main(...) at Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala:209">
 			<value>8</value>
 			<value>25</value>
 			<value>9</value>
@@ -57,7 +57,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Emma_Chiara_Benzoni.scala">
+		<item name="Datasets/exercice2/raw/Emma_Chiara_Benzoni.scala">
 			<value>1</value>
 			<value>197</value>
 			<value>58</value>

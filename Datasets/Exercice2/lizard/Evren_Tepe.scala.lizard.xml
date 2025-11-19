@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Evren_Tepe.scala:5">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Evren_Tepe.scala:5">
 			<value>1</value>
 			<value>22</value>
 			<value>6</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Evren_Tepe.scala:26">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Evren_Tepe.scala:26">
 			<value>2</value>
 			<value>11</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Evren_Tepe.scala:36">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Evren_Tepe.scala:36">
 			<value>3</value>
 			<value>121</value>
 			<value>48</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Evren_Tepe.scala:165">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Evren_Tepe.scala:165">
 			<value>4</value>
 			<value>36</value>
 			<value>13</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Evren_Tepe.scala:205">
+		<item name="main(...) at Datasets/exercice2/raw/Evren_Tepe.scala:205">
 			<value>5</value>
 			<value>71</value>
 			<value>27</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Evren_Tepe.scala">
+		<item name="Datasets/exercice2/raw/Evren_Tepe.scala">
 			<value>1</value>
 			<value>261</value>
 			<value>97</value>

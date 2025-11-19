@@ -7,37 +7,37 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:38">
+		<item name="main(...) at Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:38">
 			<value>1</value>
 			<value>27</value>
 			<value>7</value>
 		</item>
-		<item name="selectMachine(...) at Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:73">
+		<item name="selectMachine(...) at Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:73">
 			<value>2</value>
 			<value>14</value>
 			<value>5</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:89">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:89">
 			<value>3</value>
 			<value>28</value>
 			<value>7</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:125">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:125">
 			<value>4</value>
 			<value>14</value>
 			<value>6</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:141">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:141">
 			<value>5</value>
 			<value>17</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:163">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:163">
 			<value>6</value>
 			<value>235</value>
 			<value>83</value>
 		</item>
-		<item name="ModeAdmin(...) at Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:449">
+		<item name="ModeAdmin(...) at Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:449">
 			<value>7</value>
 			<value>15</value>
 			<value>3</value>
@@ -52,7 +52,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala">
+		<item name="Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala">
 			<value>1</value>
 			<value>369</value>
 			<value>112</value>
@@ -73,21 +73,21 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:177 ~ 210
-Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:230 ~ 262
+Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:177 ~ 210
+Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:230 ~ 262
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:178 ~ 205
-Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:231 ~ 258
-Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:355 ~ 382
+Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:178 ~ 205
+Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:231 ~ 258
+Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:355 ~ 382
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:268 ~ 303
-Datasets/Exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:385 ~ 421
+Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:268 ~ 303
+Datasets/exercice2/raw/Iliyas_Zakaria_Hicham_Geninazzi.scala:385 ~ 421
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 44.78%

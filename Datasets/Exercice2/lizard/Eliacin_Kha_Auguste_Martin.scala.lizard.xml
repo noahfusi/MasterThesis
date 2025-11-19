@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:11">
+		<item name="main(...) at Datasets/exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:11">
 			<value>1</value>
 			<value>52</value>
 			<value>14</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:64">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:64">
 			<value>2</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:80">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:80">
 			<value>3</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
-		<item name="resetPin(...) at Datasets/Exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:95">
+		<item name="resetPin(...) at Datasets/exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:95">
 			<value>4</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:106">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:106">
 			<value>5</value>
 			<value>51</value>
 			<value>10</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:160">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Eliacin_Kha_Auguste_Martin.scala:160">
 			<value>6</value>
 			<value>15</value>
 			<value>1</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Eliacin_Kha_Auguste_Martin.scala">
+		<item name="Datasets/exercice2/raw/Eliacin_Kha_Auguste_Martin.scala">
 			<value>1</value>
 			<value>163</value>
 			<value>33</value>

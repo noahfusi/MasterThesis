@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Williyam_Ogbe.scala:11">
+		<item name="main(...) at Datasets/exercice2/raw/Williyam_Ogbe.scala:11">
 			<value>1</value>
 			<value>52</value>
 			<value>13</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Williyam_Ogbe.scala:65">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Williyam_Ogbe.scala:65">
 			<value>2</value>
 			<value>24</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Williyam_Ogbe.scala:88">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Williyam_Ogbe.scala:88">
 			<value>3</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Williyam_Ogbe.scala:98">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Williyam_Ogbe.scala:98">
 			<value>4</value>
 			<value>113</value>
 			<value>18</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Williyam_Ogbe.scala:221">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Williyam_Ogbe.scala:221">
 			<value>5</value>
 			<value>27</value>
 			<value>1</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Williyam_Ogbe.scala">
+		<item name="Datasets/exercice2/raw/Williyam_Ogbe.scala">
 			<value>1</value>
 			<value>231</value>
 			<value>38</value>

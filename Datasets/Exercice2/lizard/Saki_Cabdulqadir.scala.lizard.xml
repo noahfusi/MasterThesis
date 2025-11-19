@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:8">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Saki_Cabdulqadir.scala:8">
 			<value>1</value>
 			<value>6</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:13">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Saki_Cabdulqadir.scala:13">
 			<value>2</value>
 			<value>190</value>
 			<value>47</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:239">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Saki_Cabdulqadir.scala:239">
 			<value>3</value>
 			<value>13</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:255">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Saki_Cabdulqadir.scala:255">
 			<value>4</value>
 			<value>29</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:290">
+		<item name="main(...) at Datasets/exercice2/raw/Saki_Cabdulqadir.scala:290">
 			<value>5</value>
 			<value>70</value>
 			<value>23</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Saki_Cabdulqadir.scala">
+		<item name="Datasets/exercice2/raw/Saki_Cabdulqadir.scala">
 			<value>1</value>
 			<value>307</value>
 			<value>79</value>

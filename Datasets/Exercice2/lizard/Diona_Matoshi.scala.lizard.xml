@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Diona_Matoshi.scala:9">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Diona_Matoshi.scala:9">
 			<value>1</value>
 			<value>20</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Diona_Matoshi.scala:28">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Diona_Matoshi.scala:28">
 			<value>2</value>
 			<value>12</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Diona_Matoshi.scala:39">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Diona_Matoshi.scala:39">
 			<value>3</value>
 			<value>189</value>
 			<value>29</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Diona_Matoshi.scala:260">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Diona_Matoshi.scala:260">
 			<value>4</value>
 			<value>22</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Diona_Matoshi.scala:287">
+		<item name="main(...) at Datasets/exercice2/raw/Diona_Matoshi.scala:287">
 			<value>5</value>
 			<value>57</value>
 			<value>18</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Diona_Matoshi.scala">
+		<item name="Datasets/exercice2/raw/Diona_Matoshi.scala">
 			<value>1</value>
 			<value>302</value>
 			<value>56</value>

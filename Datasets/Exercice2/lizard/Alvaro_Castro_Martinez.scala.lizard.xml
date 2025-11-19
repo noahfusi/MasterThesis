@@ -7,37 +7,37 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Alvaro_Castro_Martinez.scala:11">
+		<item name="main(...) at Datasets/exercice2/raw/Alvaro_Castro_Martinez.scala:11">
 			<value>1</value>
 			<value>48</value>
 			<value>10</value>
 		</item>
-		<item name="afficherStocks(...) at Datasets/Exercice2/raw/Alvaro_Castro_Martinez.scala:71">
+		<item name="afficherStocks(...) at Datasets/exercice2/raw/Alvaro_Castro_Martinez.scala:71">
 			<value>2</value>
 			<value>13</value>
 			<value>1</value>
 		</item>
-		<item name="demanderOptionValide(...) at Datasets/Exercice2/raw/Alvaro_Castro_Martinez.scala:84">
+		<item name="demanderOptionValide(...) at Datasets/exercice2/raw/Alvaro_Castro_Martinez.scala:84">
 			<value>3</value>
 			<value>11</value>
 			<value>4</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Alvaro_Castro_Martinez.scala:95">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Alvaro_Castro_Martinez.scala:95">
 			<value>4</value>
 			<value>13</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Alvaro_Castro_Martinez.scala:108">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Alvaro_Castro_Martinez.scala:108">
 			<value>5</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Alvaro_Castro_Martinez.scala:123">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Alvaro_Castro_Martinez.scala:123">
 			<value>6</value>
 			<value>104</value>
 			<value>22</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Alvaro_Castro_Martinez.scala:238">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Alvaro_Castro_Martinez.scala:238">
 			<value>7</value>
 			<value>11</value>
 			<value>1</value>
@@ -52,7 +52,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Alvaro_Castro_Martinez.scala">
+		<item name="Datasets/exercice2/raw/Alvaro_Castro_Martinez.scala">
 			<value>1</value>
 			<value>217</value>
 			<value>44</value>

@@ -17,6 +17,7 @@ const fileExplorerWrapper = document.getElementById("file-explorer");
 const fileListElement = document.getElementById("file-list");
 const fileListFeedback = document.getElementById("file-list-feedback");
 const fileDatasetLabel = document.getElementById("file-list-dataset");
+const fileListFilterSelect = document.getElementById("file-list-filter");
 const filePreviewPanel = document.getElementById("file-preview-panel");
 const filePreviewName = document.getElementById("file-preview-name");
 const filePreviewContent = document.getElementById("file-content");
@@ -30,6 +31,8 @@ const globalAnalysisMetricSelect = document.getElementById("global-analysis-metr
 const globalAnalysisChart = document.getElementById("global-analysis-chart");
 const globalAnalysisFeedback = document.getElementById("global-analysis-feedback");
 const globalAnalysisDatasetLabel = document.getElementById("global-analysis-dataset");
+const globalAnalysisReferenceName = document.getElementById("global-analysis-reference-name");
+const globalAnalysisReferenceInfo = document.getElementById("global-analysis-reference-info");
 
 const DEFAULT_LIZARD_SUMMARY = "lizard_dataset.xml";
 const urlParams = new URLSearchParams(window.location.search || "");
@@ -52,7 +55,14 @@ const globalAnalysisState = {
   metrics: [],
   files: [],
   metricKey: null,
+  reference: null,
 };
+const fileListState = {
+  files: [],
+  dataset: null,
+};
+let lastDuplicateSummary = null;
+let lastDuplicateSummaryDataset = null;
 
 async function requestJSON(url, options = {}) {
   const response = await fetch(url, options);
@@ -126,6 +136,27 @@ function renderDatasetList(datasets = []) {
     selectBtn.addEventListener("click", () => setCurrentDataset(name));
     actions.appendChild(selectBtn);
 
+    const referenceBtn = document.createElement("button");
+    referenceBtn.type = "button";
+    referenceBtn.textContent = "Reference";
+    const referenceInput = document.createElement("input");
+    referenceInput.type = "file";
+    referenceInput.accept = "*/*";
+    referenceInput.style.display = "none";
+    referenceBtn.addEventListener("click", () => referenceInput.click());
+    referenceInput.addEventListener("change", (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (file) {
+        uploadReferenceFile(name, file);
+      }
+      event.target.value = "";
+    });
+    const referenceWrapper = document.createElement("div");
+    referenceWrapper.className = "reference-upload-wrapper";
+    referenceWrapper.appendChild(referenceBtn);
+    referenceWrapper.appendChild(referenceInput);
+    actions.appendChild(referenceWrapper);
+
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
     deleteBtn.classList.add("danger");
@@ -170,6 +201,8 @@ function resetFileExplorerState() {
 function renderFileList(files = [], dataset = null) {
   if (!fileListElement) return;
 
+  fileListState.files = files.slice();
+  fileListState.dataset = dataset || null;
   fileListElement.dataset.dataset = dataset || "";
 
   if (fileDatasetLabel) {
@@ -185,7 +218,17 @@ function renderFileList(files = [], dataset = null) {
     return;
   }
 
-  files.forEach((filename) => {
+  const filteredFiles = applyFileListFilter(files, dataset);
+
+  if (!filteredFiles.length) {
+    const item = document.createElement("li");
+    item.textContent = "No files match the selected filter.";
+    fileListElement.appendChild(item);
+    void updateFileDuplicateBadges(dataset);
+    return;
+  }
+
+  filteredFiles.forEach((filename) => {
     const item = document.createElement("li");
     item.className = "dataset-row";
     item.dataset.filename = filename;
@@ -526,6 +569,8 @@ async function updateFileDuplicateBadges(dataset) {
   let summary = null;
   try {
     summary = await getDuplicateSummary(dataset);
+    lastDuplicateSummary = summary;
+    lastDuplicateSummaryDataset = dataset;
   } catch (error) {
     if (!(error && typeof error.message === "string" && error.message.toLowerCase().includes("not found"))) {
       console.warn(`Unable to load duplicate summary for dataset "${dataset}":`, error);
@@ -563,6 +608,35 @@ async function updateFileDuplicateBadges(dataset) {
       badge.title = "Duplicate block references only this file.";
       label.appendChild(badge);
     }
+  });
+}
+
+function getFileMetadata(filename) {
+  if (!filename || !lastDuplicateSummary) return null;
+  const normalizedName = normalizeRelativePath(filename);
+  if (!normalizedName) return null;
+  const metaByFile = lastDuplicateSummary.metaByFile || new Map();
+  return metaByFile.get(normalizedName) || null;
+}
+
+function applyFileListFilter(files = [], dataset = null) {
+  const filterValue = (fileListFilterSelect && fileListFilterSelect.value) || "all";
+  if (filterValue === "all") {
+    return files;
+  }
+  if (!dataset || !lastDuplicateSummary || lastDuplicateSummaryDataset !== dataset) {
+    return files;
+  }
+  return files.filter((filename) => {
+    const meta = getFileMetadata(filename);
+    if (!meta) return false;
+    if (filterValue === "plagiarism") {
+      return Boolean(meta.crossFile);
+    }
+    if (filterValue === "duplication") {
+      return Boolean(meta.crossFile || meta.selfOnly);
+    }
+    return true;
   });
 }
 
@@ -611,6 +685,29 @@ function computeStandardDeviation(values = [], mean = null) {
     values.reduce((sum, value) => sum + (value - actualMean) ** 2, 0) / values.length;
   if (!Number.isFinite(variance)) return null;
   return Math.sqrt(variance);
+}
+
+function getReferenceMetricValue(metricKey) {
+  if (!globalAnalysisState.reference || !metricKey) return null;
+  const metrics = globalAnalysisState.reference.metrics || {};
+  const value = metrics[metricKey];
+  return Number.isFinite(value) ? value : null;
+}
+
+function updateReferenceDisplay(metricKey) {
+  if (!globalAnalysisReferenceName || !globalAnalysisReferenceInfo) return;
+  if (!globalAnalysisState.reference) {
+    globalAnalysisReferenceName.textContent = "None";
+    globalAnalysisReferenceInfo.textContent = "";
+    return;
+  }
+  globalAnalysisReferenceName.textContent = globalAnalysisState.reference.filename || "Unknown";
+  const value = getReferenceMetricValue(metricKey);
+  if (Number.isFinite(value)) {
+    globalAnalysisReferenceInfo.textContent = `${metricKey}: ${value.toFixed(2)}`;
+  } else {
+    globalAnalysisReferenceInfo.textContent = `No value for ${metricKey}.`;
+  }
 }
 
 function clearGlobalAnalysisChart() {
@@ -694,7 +791,7 @@ function renderGlobalAnalysisChart() {
     if (status === "Low outlier") return "#1d4ed8";
     if (status === "High band") return "#fb923c";
     if (status === "Low band") return "#60a5fa";
-    return "#2563eb";
+    return "#22c55e";
   });
   trace.marker = {
     size: 10,
@@ -707,7 +804,7 @@ function renderGlobalAnalysisChart() {
         if (status === "Low outlier") return "#1e40af";
         if (status === "High band") return "#c2410c";
         if (status === "Low band") return "#2563eb";
-        return "#1d4ed8";
+        return "#15803d";
       }),
     },
   };
@@ -798,6 +895,24 @@ function renderGlobalAnalysisChart() {
       },
     });
   }
+  const referenceValue = getReferenceMetricValue(metricKey);
+  updateReferenceDisplay(metricKey);
+  if (Number.isFinite(referenceValue)) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: referenceValue,
+      y1: referenceValue,
+      line: {
+        color: "#7e22ce",
+        width: 2,
+      },
+    });
+  } else if (!globalAnalysisState.reference) {
+    updateReferenceDisplay(metricKey);
+  }
   const layout = {
     margin: { l: 60, r: 20, t: 30, b: 40 },
     xaxis: {
@@ -842,8 +957,10 @@ async function refreshGlobalAnalysis() {
     globalAnalysisState.metrics = [];
     globalAnalysisState.files = [];
     globalAnalysisState.metricKey = null;
+    globalAnalysisState.reference = null;
     updateGlobalAnalysisMetricOptions([]);
     clearGlobalAnalysisChart();
+    updateReferenceDisplay(null);
     showMessage(globalAnalysisFeedback, "Select a dataset to load the analysis.");
     return;
   }
@@ -854,6 +971,7 @@ async function refreshGlobalAnalysis() {
     globalAnalysisState.dataset = data.dataset || dataset;
     globalAnalysisState.metrics = data.metrics || [];
     globalAnalysisState.files = data.files || [];
+    globalAnalysisState.reference = data.reference || null;
     if (!globalAnalysisState.metrics.length || !globalAnalysisState.files.length) {
       globalAnalysisState.metricKey = null;
       updateGlobalAnalysisMetricOptions([]);
@@ -873,9 +991,11 @@ async function refreshGlobalAnalysis() {
   } catch (error) {
     globalAnalysisState.metrics = [];
     globalAnalysisState.files = [];
+    globalAnalysisState.reference = null;
     globalAnalysisState.metricKey = null;
     updateGlobalAnalysisMetricOptions([]);
     clearGlobalAnalysisChart();
+    updateReferenceDisplay(null);
     showMessage(globalAnalysisFeedback, error.message, true);
   }
 }
@@ -1136,6 +1256,30 @@ async function deleteDataset(name) {
   }
 }
 
+async function uploadReferenceFile(datasetName, file) {
+  if (!file) return;
+  const formData = new FormData();
+  formData.append("file", file);
+  showMessage(datasetFeedbackElement, `Uploading reference for ${datasetName}...`);
+  try {
+    const response = await fetch(`/datasets/${encodeURIComponent(datasetName)}/reference`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.detail || payload.message || response.statusText);
+    }
+    const data = await response.json();
+    showMessage(datasetFeedbackElement, `Reference file "${data.filename}" saved for ${datasetName}.`);
+    if (globalAnalysisPanel && datasetSelect && datasetSelect.value === datasetName) {
+      await refreshGlobalAnalysis();
+    }
+  } catch (error) {
+    showMessage(datasetFeedbackElement, error.message, true);
+  }
+}
+
 async function setCurrentDataset(name) {
   try {
     const data = await requestJSON(API_ROUTES.currentDataset, {
@@ -1178,6 +1322,12 @@ function initDatasetControls() {
   if (datasetSelect) {
     datasetSelect.addEventListener("change", (event) => {
       setCurrentDataset(event.target.value || null);
+    });
+  }
+
+  if (fileListFilterSelect) {
+    fileListFilterSelect.addEventListener("change", () => {
+      renderFileList(fileListState.files, fileListState.dataset);
     });
   }
 

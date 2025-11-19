@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:4">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:4">
 			<value>1</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:14">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:14">
 			<value>2</value>
 			<value>16</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:30">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:30">
 			<value>3</value>
 			<value>619</value>
 			<value>219</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:662">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:662">
 			<value>4</value>
 			<value>50</value>
 			<value>12</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:712">
+		<item name="main(...) at Datasets/exercice2/raw/Aloys_Jean_Charles_Ehrler.scala:712">
 			<value>5</value>
 			<value>72</value>
 			<value>19</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Aloys_Jean_Charles_Ehrler.scala">
+		<item name="Datasets/exercice2/raw/Aloys_Jean_Charles_Ehrler.scala">
 			<value>1</value>
 			<value>767</value>
 			<value>256</value>

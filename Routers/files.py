@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 import re
 import shutil
@@ -19,8 +20,8 @@ from Files.dataset_manager import (
     set_current_dataset,
 )
 from Metrics import SUMMARY_FILENAME, dataset_summary_path
-from Lizard.run_analysis import LIZARD_FOLDER, analyze_dataset
-from Tree_Sitter.structural_ast import build_rich_structural_representation
+from Lizard.run_analysis import LIZARD_FOLDER, analyze_dataset, _run_lizard
+from Tree_Sitter.structural_ast import build_rich_structural_representation, parse_code
 from LLM.ollama import DEFAULT_EMBED_MODEL, OllamaError, request_embedding
 
 router = APIRouter(prefix="/datasets", tags=["datasets"])
@@ -42,6 +43,21 @@ STRUCTURAL_SOURCE_EXTENSIONS = {".scala"}
 STRUCTURAL_EMBEDDING_SUFFIX = ".embedding.json"
 RAW_FOLDER = "raw"
 DUPLICATE_RATE_PATTERN = re.compile(r"Total duplicate rate:\s*([0-9.]+)%", re.IGNORECASE)
+OTHER_METRICS_FILENAME = "other_metrics.csv"
+NESTING_NODE_TYPES = {
+    "block",
+    "if_expression",
+    "else_clause",
+    "else_if_clause",
+    "for_expression",
+    "while_expression",
+    "match_expression",
+    "case_clause",
+    "try_expression",
+    "catch_clause",
+    "finally_clause",
+    "function_definition",
+}
 
 
 def _generate_structural_views(dataset_name: str, raw_dir: Path) -> str:
@@ -225,7 +241,7 @@ def _sanitize_summary_xml(summary_text: str) -> str:
     return summary_text
 
 
-def _extract_file_metrics(summary_text: str) -> tuple[list[dict[str, str]], list[dict[str, object]]]:
+def _parse_summary_metrics(summary_text: str) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     xml_payload = _sanitize_summary_xml(summary_text)
     try:
         root = ET.fromstring(xml_payload)
@@ -260,20 +276,12 @@ def _extract_file_metrics(summary_text: str) -> tuple[list[dict[str, str]], list
             continue
         if capturing_averages:
             break
-    metric_definitions = []
+    metric_definitions: list[dict[str, object]] = []
     for label in metric_labels:
         definition: dict[str, object] = {"key": label, "label": label}
         if label in average_values:
             definition["average"] = average_values[label]
         metric_definitions.append(definition)
-
-    if "NCSS" in metric_labels and "Functions" in metric_labels:
-        ratio_definition: dict[str, object] = {"key": "NCSS/Functions", "label": "NCSS / Functions"}
-        ncss_avg = average_values.get("NCSS")
-        functions_avg = average_values.get("Functions")
-        if isinstance(ncss_avg, (int, float)) and isinstance(functions_avg, (int, float)) and functions_avg:
-            ratio_definition["average"] = ncss_avg / functions_avg
-        metric_definitions.append(ratio_definition)
 
     files: list[dict[str, object]] = []
     for item in measure.findall("item"):
@@ -288,10 +296,6 @@ def _extract_file_metrics(summary_text: str) -> tuple[list[dict[str, str]], list
             numeric = _safe_number(value_node.text if value_node is not None else None)
             if numeric is not None:
                 metrics[label_clean] = numeric
-        ncss_value = metrics.get("NCSS")
-        functions_value = metrics.get("Functions")
-        if isinstance(ncss_value, (int, float)) and isinstance(functions_value, (int, float)) and functions_value:
-            metrics["NCSS/Functions"] = ncss_value / functions_value
         files.append(
             {
                 "path": relative or raw_name,
@@ -301,6 +305,74 @@ def _extract_file_metrics(summary_text: str) -> tuple[list[dict[str, str]], list
         )
 
     return metric_definitions, files
+
+
+def _merge_other_metrics(dataset: str, metric_definitions: list[dict[str, object]], files: list[dict[str, object]]) -> None:
+    other_path = _other_metrics_path(dataset)
+    if not other_path.exists():
+        return
+    try:
+        with other_path.open("r", encoding="utf-8", newline="") as handle:
+            reader = csv.DictReader(handle)
+            fieldnames = [name for name in (reader.fieldnames or []) if name and name != "path"]
+            rows = list(reader)
+    except OSError:
+        return
+    if not fieldnames or not rows:
+        return
+
+    averages: dict[str, list[float]] = {name: [] for name in fieldnames}
+    row_map: dict[str, dict[str, str]] = {}
+    for row in rows:
+        file_path = row.get("path")
+        if not file_path:
+            continue
+        row_map[file_path] = row
+        for name in fieldnames:
+            value = row.get(name)
+            if value in (None, ""):
+                continue
+            try:
+                averages[name].append(float(value))
+            except ValueError:
+                continue
+
+    existing_keys = {definition.get("key") for definition in metric_definitions}
+    for name in fieldnames:
+        if name in existing_keys:
+            continue
+        definition: dict[str, object] = {"key": name, "label": name}
+        values = averages.get(name) or []
+        if values:
+            definition["average"] = sum(values) / len(values)
+        metric_definitions.append(definition)
+
+    for file_entry in files:
+        path_key = file_entry.get("path") or file_entry.get("raw_path")
+        if not path_key:
+            continue
+        row = row_map.get(path_key)
+        if not row:
+            continue
+        metrics = file_entry.setdefault("metrics", {})
+        for name in fieldnames:
+            value = row.get(name)
+            if value in (None, ""):
+                continue
+            try:
+                metrics[name] = float(value)
+            except ValueError:
+                metrics[name] = value
+
+
+def _extract_file_metrics(dataset: str, summary_text: str) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    metric_definitions, files = _parse_summary_metrics(summary_text)
+    _merge_other_metrics(dataset, metric_definitions, files)
+    return metric_definitions, files
+
+
+def _other_metrics_path(dataset: str) -> Path:
+    return dataset_path(dataset) / OTHER_METRICS_FILENAME
 
 
 def _read_file_duplicate_rate(dataset: str, relative_path: str) -> float | None:
@@ -327,26 +399,165 @@ def _read_file_duplicate_rate(dataset: str, relative_path: str) -> float | None:
         return None
 
 
-def _attach_duplication_metrics(dataset: str, files: list[dict[str, object]], metrics: list[dict[str, object]]) -> None:
+def _extract_duplicate_rate_from_output(output: str) -> float | None:
+    match = DUPLICATE_RATE_PATTERN.search(output)
+    if not match:
+        return None
+    try:
+        return float(match.group(1))
+    except ValueError:
+        return None
+
+
+def _reference_metrics_path(dataset: str) -> Path:
+    return dataset_path(dataset) / "reference_metrics.json"
+
+
+def _parse_reference_metrics(output: str) -> dict[str, object]:
+    xml_payload = _sanitize_summary_xml(output)
+    try:
+        root = ET.fromstring(xml_payload)
+    except ET.ParseError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Invalid Lizard output."
+        ) from exc
+    measure = root.find(".//measure[@type='File']")
+    if measure is None:
+        return {}
+    labels_element = measure.find("labels")
+    label_texts: list[str] = []
+    if labels_element is not None:
+        for label_node in labels_element.findall("label"):
+            if label_node.text:
+                label_texts.append(label_node.text.strip())
+    values = measure.find("item")
+    if values is None:
+        return {}
+    metrics: dict[str, object] = {}
+    for label, value_node in zip(label_texts, values.findall("value")):
+        label_clean = (label or "").strip()
+        if not label_clean or label_clean.lower().startswith("nr"):
+            continue
+        numeric = _safe_number(value_node.text if value_node is not None else None)
+        if numeric is not None:
+            metrics[label_clean] = numeric
+    ncss_value = metrics.get("NCSS")
+    functions_value = metrics.get("Functions")
+    if isinstance(ncss_value, (int, float)) and isinstance(functions_value, (int, float)) and functions_value:
+        metrics["NCSS/Functions"] = ncss_value / functions_value
+    duplicate_rate = _extract_duplicate_rate_from_output(output)
+    if duplicate_rate is not None:
+        metrics["Duplication (%)"] = duplicate_rate
+    return metrics
+
+
+def _store_reference_metrics(dataset: str, filename: str, metrics: dict[str, object]) -> None:
+    payload = {"filename": filename, "metrics": metrics}
+    reference_path = _reference_metrics_path(dataset)
+    reference_path.parent.mkdir(parents=True, exist_ok=True)
+    reference_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+
+def _load_reference_metrics(dataset: str) -> dict[str, object] | None:
+    reference_path = _reference_metrics_path(dataset)
+    if not reference_path.exists():
+        return None
+    try:
+        return json.loads(reference_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _max_nesting_from_node(node, depth: int = 0) -> int:
+    max_depth = depth
+    for child in getattr(node, "children", []) or []:
+        next_depth = depth + 1 if child.type in NESTING_NODE_TYPES else depth
+        candidate = _max_nesting_from_node(child, next_depth)
+        if candidate > max_depth:
+            max_depth = candidate
+    return max_depth
+
+
+def _compute_max_nesting_depth(code: str) -> int | None:
+    try:
+        root = parse_code(code)
+    except Exception:
+        return None
+    return _max_nesting_from_node(root, 0)
+
+
+def _generate_other_metrics(dataset: str) -> str:
+    summary_path = dataset_summary_path(dataset)
+    other_path = _other_metrics_path(dataset)
+    if not summary_path.exists():
+        other_path.unlink(missing_ok=True)
+        return "Other metrics skipped: summary missing."
+    try:
+        summary_text = summary_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        other_path.unlink(missing_ok=True)
+        return f"Other metrics skipped: {exc}"
+
+    try:
+        _, files = _parse_summary_metrics(summary_text)
+    except HTTPException as exc:
+        other_path.unlink(missing_ok=True)
+        return f"Other metrics skipped: {exc.detail}"
     if not files:
-        return
-    rates: list[float] = []
+        other_path.unlink(missing_ok=True)
+        return "Other metrics skipped: no file entries."
+
+    metric_names: set[str] = set()
+    rows: list[dict[str, object]] = []
+    raw_dir = dataset_path(dataset) / RAW_FOLDER
     for entry in files:
-        relative_path = entry.get("path") or entry.get("raw_path")
-        if not isinstance(relative_path, str):
+        path_value = entry.get("path") or entry.get("raw_path")
+        if not isinstance(path_value, str) or not path_value:
             continue
-        rate = _read_file_duplicate_rate(dataset, relative_path)
-        if rate is None:
-            continue
-        entry_metrics = entry.get("metrics")
-        if not isinstance(entry_metrics, dict):
-            entry_metrics = {}
-            entry["metrics"] = entry_metrics
-        entry_metrics["Duplication (%)"] = rate
-        rates.append(rate)
-    if rates:
-        average_rate = sum(rates) / len(rates)
-        metrics.append({"key": "Duplication (%)", "label": "Duplication (%)", "average": average_rate})
+        metrics = entry.get("metrics") or {}
+        row: dict[str, object] = {"path": path_value}
+
+        ncss_value = metrics.get("NCSS")
+        functions_value = metrics.get("Functions")
+        if isinstance(ncss_value, (int, float)) and isinstance(functions_value, (int, float)) and functions_value:
+            row["NCSS/Functions"] = ncss_value / functions_value
+            metric_names.add("NCSS/Functions")
+
+        duplicate_rate = _read_file_duplicate_rate(dataset, path_value)
+        if duplicate_rate is not None:
+            row["Duplication (%)"] = duplicate_rate
+            metric_names.add("Duplication (%)")
+
+        source_path = raw_dir / Path(path_value)
+        if source_path.exists():
+            try:
+                code = source_path.read_text(encoding="utf-8")
+            except OSError:
+                code = None
+            if code:
+                nesting = _compute_max_nesting_depth(code)
+                if isinstance(nesting, (int, float)):
+                    row["Max nesting depth"] = nesting
+                    metric_names.add("Max nesting depth")
+
+        rows.append(row)
+
+    if not metric_names:
+        other_path.unlink(missing_ok=True)
+        return "Other metrics skipped: no derived metrics."
+
+    fieldnames = ["path"] + sorted(metric_names)
+    try:
+        with other_path.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in rows:
+                writer.writerow({field: row.get(field, "") for field in fieldnames})
+    except OSError as exc:
+        other_path.unlink(missing_ok=True)
+        return f"Other metrics failed: {exc}"
+
+    return "Other metrics generated."
 
 
 def _dataset_response(
@@ -421,6 +632,12 @@ async def create_dataset(name: str = Form(...), file: UploadFile = File(...)) ->
     except RuntimeError as exc:
         analysis_status = f"Lizard analysis failed: {exc}"
 
+    other_metrics_status = None
+    try:
+        other_metrics_status = _generate_other_metrics(sanitized_name)
+    except Exception as exc:  # pragma: no cover - derived metrics errors
+        other_metrics_status = f"Other metrics failed: {exc}"
+
     structural_status = None
     try:
         structural_status = _generate_structural_views(sanitized_name, raw_dir)
@@ -436,6 +653,8 @@ async def create_dataset(name: str = Form(...), file: UploadFile = File(...)) ->
     extra = {}
     if analysis_status:
         extra["analysis_status"] = analysis_status
+    if other_metrics_status:
+        extra["other_metrics_status"] = other_metrics_status
     if structural_status:
         extra["structural_status"] = structural_status
     if embedding_status:
@@ -608,8 +827,50 @@ async def read_global_metrics(dataset: str | None = None) -> dict[str, object]:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to read summary file."
         ) from exc
-    metrics, files = _extract_file_metrics(summary_text)
-    _attach_duplication_metrics(dataset_name, files, metrics)
+    metrics, files = _extract_file_metrics(dataset_name, summary_text)
     if not metrics or not files:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No file metrics available.")
-    return {"dataset": dataset_name, "metrics": metrics, "files": files}
+    reference = _load_reference_metrics(dataset_name)
+    return {"dataset": dataset_name, "metrics": metrics, "files": files, "reference": reference}
+
+
+@router.post("/{dataset_name}/reference", name="upload-reference-file")
+async def upload_reference_file(dataset_name: str, file: UploadFile = File(...)) -> dict[str, object]:
+    try:
+        sanitized = normalize_dataset_name(dataset_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    dataset_dir = dataset_path(sanitized)
+    if not dataset_dir.exists():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dataset not found.")
+    if not file.filename:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
+
+    reference_dir = dataset_dir / "reference"
+    reference_dir.mkdir(parents=True, exist_ok=True)
+    reference_name = Path(file.filename).name
+    target_path = reference_dir / reference_name
+    try:
+        contents = await file.read()
+        target_path.write_bytes(contents)
+    except OSError as exc:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
+
+    try:
+        analysis_output = _run_lizard("lizard", target_path)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
+
+    metrics = _parse_reference_metrics(analysis_output)
+    try:
+        code_text = target_path.read_text(encoding="utf-8")
+    except OSError:
+        code_text = None
+    if code_text:
+        nesting_depth = _compute_max_nesting_depth(code_text)
+        if isinstance(nesting_depth, (int, float)):
+            metrics["Max nesting depth"] = nesting_depth
+    _store_reference_metrics(sanitized, reference_name, metrics)
+
+    return {"dataset": sanitized, "filename": reference_name, "metrics": metrics}

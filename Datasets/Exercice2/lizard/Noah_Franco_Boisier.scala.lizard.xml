@@ -7,22 +7,22 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:17">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Noah_Franco_Boisier.scala:17">
 			<value>1</value>
 			<value>20</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:38">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Noah_Franco_Boisier.scala:38">
 			<value>2</value>
 			<value>13</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:54">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Noah_Franco_Boisier.scala:54">
 			<value>3</value>
 			<value>301</value>
 			<value>90</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:387">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Noah_Franco_Boisier.scala:387">
 			<value>4</value>
 			<value>18</value>
 			<value>1</value>
@@ -37,7 +37,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Noah_Franco_Boisier.scala">
+		<item name="Datasets/exercice2/raw/Noah_Franco_Boisier.scala">
 			<value>1</value>
 			<value>403</value>
 			<value>99</value>
@@ -58,51 +58,51 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:125 ~ 135
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:226 ~ 236
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:254 ~ 264
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:275 ~ 285
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:303 ~ 313
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:324 ~ 334
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:125 ~ 135
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:226 ~ 236
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:254 ~ 264
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:275 ~ 285
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:303 ~ 313
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:324 ~ 334
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:226 ~ 248
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:275 ~ 297
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:324 ~ 346
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:226 ~ 248
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:275 ~ 297
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:324 ~ 346
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:254 ~ 275
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:303 ~ 324
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:254 ~ 275
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:303 ~ 324
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:147 ~ 157
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:168 ~ 178
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:205 ~ 215
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:147 ~ 157
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:168 ~ 178
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:205 ~ 215
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:149 ~ 157
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:170 ~ 178
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:207 ~ 215
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:237 ~ 245
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:265 ~ 273
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:286 ~ 294
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:314 ~ 322
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:335 ~ 343
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:149 ~ 157
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:170 ~ 178
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:207 ~ 215
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:237 ~ 245
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:265 ~ 273
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:286 ~ 294
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:314 ~ 322
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:335 ~ 343
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:155 ~ 168
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:176 ~ 189
-Datasets/Exercice2/raw/Noah_Franco_Boisier.scala:213 ~ 226
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:155 ~ 168
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:176 ~ 189
+Datasets/exercice2/raw/Noah_Franco_Boisier.scala:213 ~ 226
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 64.84%

@@ -7,42 +7,42 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="choixMachine(...) at Datasets/Exercice2/raw/Alessandro_Caldara.scala:23">
+		<item name="choixMachine(...) at Datasets/exercice2/raw/Alessandro_Caldara.scala:23">
 			<value>1</value>
 			<value>9</value>
 			<value>5</value>
 		</item>
-		<item name="checkStock(...) at Datasets/Exercice2/raw/Alessandro_Caldara.scala:57">
+		<item name="checkStock(...) at Datasets/exercice2/raw/Alessandro_Caldara.scala:57">
 			<value>2</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Alessandro_Caldara.scala:67">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Alessandro_Caldara.scala:67">
 			<value>3</value>
 			<value>175</value>
 			<value>63</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Alessandro_Caldara.scala:263">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Alessandro_Caldara.scala:263">
 			<value>4</value>
 			<value>19</value>
 			<value>6</value>
 		</item>
-		<item name="adminMode(...) at Datasets/Exercice2/raw/Alessandro_Caldara.scala:284">
+		<item name="adminMode(...) at Datasets/exercice2/raw/Alessandro_Caldara.scala:284">
 			<value>5</value>
 			<value>23</value>
 			<value>7</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Alessandro_Caldara.scala:310">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Alessandro_Caldara.scala:310">
 			<value>6</value>
 			<value>12</value>
 			<value>4</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Alessandro_Caldara.scala:324">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Alessandro_Caldara.scala:324">
 			<value>7</value>
 			<value>18</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Alessandro_Caldara.scala:5">
+		<item name="main(...) at Datasets/exercice2/raw/Alessandro_Caldara.scala:5">
 			<value>8</value>
 			<value>33</value>
 			<value>7</value>
@@ -57,7 +57,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Alessandro_Caldara.scala">
+		<item name="Datasets/exercice2/raw/Alessandro_Caldara.scala">
 			<value>1</value>
 			<value>295</value>
 			<value>95</value>

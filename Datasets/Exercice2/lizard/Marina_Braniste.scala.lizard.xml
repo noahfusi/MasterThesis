@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Marina_Braniste.scala:6">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Marina_Braniste.scala:6">
 			<value>1</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Marina_Braniste.scala:22">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Marina_Braniste.scala:22">
 			<value>2</value>
 			<value>30</value>
 			<value>10</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Marina_Braniste.scala:62">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Marina_Braniste.scala:62">
 			<value>3</value>
 			<value>13</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Marina_Braniste.scala:75">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Marina_Braniste.scala:75">
 			<value>4</value>
 			<value>171</value>
 			<value>50</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Marina_Braniste.scala:253">
+		<item name="main(...) at Datasets/exercice2/raw/Marina_Braniste.scala:253">
 			<value>5</value>
 			<value>59</value>
 			<value>14</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Marina_Braniste.scala">
+		<item name="Datasets/exercice2/raw/Marina_Braniste.scala">
 			<value>1</value>
 			<value>287</value>
 			<value>79</value>

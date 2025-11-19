@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:11">
+		<item name="main(...) at Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:11">
 			<value>1</value>
 			<value>36</value>
 			<value>10</value>
 		</item>
-		<item name="modeclient(...) at Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:47">
+		<item name="modeclient(...) at Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:47">
 			<value>2</value>
 			<value>361</value>
 			<value>135</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:440">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:440">
 			<value>3</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:456">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:456">
 			<value>4</value>
 			<value>17</value>
 			<value>4</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:475">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:475">
 			<value>5</value>
 			<value>13</value>
 			<value>1</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala">
+		<item name="Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala">
 			<value>1</value>
 			<value>447</value>
 			<value>153</value>
@@ -63,58 +63,58 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:85 ~ 91
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:119 ~ 125
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:190 ~ 196
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:258 ~ 264
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:320 ~ 326
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:85 ~ 91
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:119 ~ 125
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:190 ~ 196
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:258 ~ 264
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:320 ~ 326
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:85 ~ 95
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:119 ~ 129
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:85 ~ 95
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:119 ~ 129
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:258 ~ 269
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:320 ~ 331
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:258 ~ 269
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:320 ~ 331
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:144 ~ 147
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:217 ~ 220
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:283 ~ 286
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:345 ~ 348
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:144 ~ 147
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:217 ~ 220
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:283 ~ 286
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:345 ~ 348
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:217 ~ 246
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:283 ~ 309
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:217 ~ 246
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:283 ~ 309
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:147 ~ 156
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:220 ~ 229
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:286 ~ 295
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:348 ~ 357
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:147 ~ 156
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:220 ~ 229
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:286 ~ 295
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:348 ~ 357
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:220 ~ 246
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:286 ~ 309
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:348 ~ 371
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:220 ~ 246
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:286 ~ 309
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:348 ~ 371
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:286 ~ 313
-Datasets/Exercice2/raw/Mathieu_Ospina_Aldana.scala:348 ~ 373
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:286 ~ 313
+Datasets/exercice2/raw/Mathieu_Ospina_Aldana.scala:348 ~ 373
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 84.01%

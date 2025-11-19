@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Valentin_Jean_Michel_Jalley.scala:5">
+		<item name="main(...) at Datasets/exercice2/raw/Valentin_Jean_Michel_Jalley.scala:5">
 			<value>1</value>
 			<value>71</value>
 			<value>20</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Valentin_Jean_Michel_Jalley.scala:90">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Valentin_Jean_Michel_Jalley.scala:90">
 			<value>2</value>
 			<value>13</value>
 			<value>2</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Valentin_Jean_Michel_Jalley.scala:104">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Valentin_Jean_Michel_Jalley.scala:104">
 			<value>3</value>
 			<value>29</value>
 			<value>7</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Valentin_Jean_Michel_Jalley.scala:144">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Valentin_Jean_Michel_Jalley.scala:144">
 			<value>4</value>
 			<value>195</value>
 			<value>64</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Valentin_Jean_Michel_Jalley.scala:394">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Valentin_Jean_Michel_Jalley.scala:394">
 			<value>5</value>
 			<value>13</value>
 			<value>2</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Valentin_Jean_Michel_Jalley.scala">
+		<item name="Datasets/exercice2/raw/Valentin_Jean_Michel_Jalley.scala">
 			<value>1</value>
 			<value>320</value>
 			<value>95</value>

@@ -7,47 +7,47 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validePin(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:47">
+		<item name="validePin(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:47">
 			<value>1</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:71">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:71">
 			<value>2</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:94">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:94">
 			<value>3</value>
 			<value>18</value>
 			<value>1</value>
 		</item>
-		<item name="suffisantExpresso(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:209">
+		<item name="suffisantExpresso(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:209">
 			<value>4</value>
 			<value>11</value>
 			<value>4</value>
 		</item>
-		<item name="suffisantCappucino(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:359">
+		<item name="suffisantCappucino(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:359">
 			<value>5</value>
 			<value>14</value>
 			<value>4</value>
 		</item>
-		<item name="suffisantPetit_Latte(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:374">
+		<item name="suffisantPetit_Latte(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:374">
 			<value>6</value>
 			<value>14</value>
 			<value>4</value>
 		</item>
-		<item name="suffisantMoyen_Latte(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:388">
+		<item name="suffisantMoyen_Latte(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:388">
 			<value>7</value>
 			<value>14</value>
 			<value>4</value>
 		</item>
-		<item name="suffisantGrand_Latte(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:404">
+		<item name="suffisantGrand_Latte(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:404">
 			<value>8</value>
 			<value>14</value>
 			<value>5</value>
 		</item>
-		<item name="serviceClient(...) at Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:119">
+		<item name="serviceClient(...) at Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:119">
 			<value>9</value>
 			<value>311</value>
 			<value>100</value>
@@ -62,7 +62,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala">
+		<item name="Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala">
 			<value>1</value>
 			<value>460</value>
 			<value>130</value>
@@ -83,26 +83,26 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:232 ~ 249
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:430 ~ 448
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:471 ~ 489
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:510 ~ 528
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:549 ~ 567
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:232 ~ 249
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:430 ~ 448
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:471 ~ 489
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:510 ~ 528
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:549 ~ 567
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:430 ~ 455
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:471 ~ 495
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:510 ~ 534
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:549 ~ 575
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:430 ~ 455
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:471 ~ 495
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:510 ~ 534
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:549 ~ 575
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:430 ~ 459
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:471 ~ 498
-Datasets/Exercice2/raw/Shyna_Ngounou_Mongoué.scala:510 ~ 537
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:430 ~ 459
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:471 ~ 498
+Datasets/exercice2/raw/Shyna_Ngounou_Mongoué.scala:510 ~ 537
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 40.16%

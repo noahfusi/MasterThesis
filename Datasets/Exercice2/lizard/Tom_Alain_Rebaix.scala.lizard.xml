@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Tom_Alain_Rebaix.scala:4">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Tom_Alain_Rebaix.scala:4">
 			<value>1</value>
 			<value>23</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Tom_Alain_Rebaix.scala:30">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Tom_Alain_Rebaix.scala:30">
 			<value>2</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Tom_Alain_Rebaix.scala:51">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Tom_Alain_Rebaix.scala:51">
 			<value>3</value>
 			<value>178</value>
 			<value>92</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Tom_Alain_Rebaix.scala:252">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Tom_Alain_Rebaix.scala:252">
 			<value>4</value>
 			<value>27</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Tom_Alain_Rebaix.scala:285">
+		<item name="main(...) at Datasets/exercice2/raw/Tom_Alain_Rebaix.scala:285">
 			<value>5</value>
 			<value>61</value>
 			<value>20</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Tom_Alain_Rebaix.scala">
+		<item name="Datasets/exercice2/raw/Tom_Alain_Rebaix.scala">
 			<value>1</value>
 			<value>304</value>
 			<value>124</value>

@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Sébastien_Lopez.scala:6">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Sébastien_Lopez.scala:6">
 			<value>1</value>
 			<value>26</value>
 			<value>7</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Sébastien_Lopez.scala:38">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Sébastien_Lopez.scala:38">
 			<value>2</value>
 			<value>21</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Sébastien_Lopez.scala:64">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Sébastien_Lopez.scala:64">
 			<value>3</value>
 			<value>9</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Sébastien_Lopez.scala:78">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Sébastien_Lopez.scala:78">
 			<value>4</value>
 			<value>18</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Sébastien_Lopez.scala:104">
+		<item name="main(...) at Datasets/exercice2/raw/Sébastien_Lopez.scala:104">
 			<value>5</value>
 			<value>594</value>
 			<value>237</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Sébastien_Lopez.scala">
+		<item name="Datasets/exercice2/raw/Sébastien_Lopez.scala">
 			<value>1</value>
 			<value>667</value>
 			<value>256</value>

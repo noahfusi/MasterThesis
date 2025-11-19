@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="CodePaiement(...) at Datasets/Exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:8">
+		<item name="CodePaiement(...) at Datasets/exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:8">
 			<value>1</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:71">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:71">
 			<value>2</value>
 			<value>18</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:89">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:89">
 			<value>3</value>
 			<value>15</value>
 			<value>6</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:104">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:104">
 			<value>4</value>
 			<value>294</value>
 			<value>69</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:534">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:534">
 			<value>5</value>
 			<value>48</value>
 			<value>8</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:12">
+		<item name="main(...) at Datasets/exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala:12">
 			<value>6</value>
 			<value>108</value>
 			<value>23</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala">
+		<item name="Datasets/exercice2/raw/Samuel_Emmanuel_Jean_Pellegrini.scala">
 			<value>1</value>
 			<value>485</value>
 			<value>110</value>

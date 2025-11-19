@@ -7,37 +7,37 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Basile_Augustin_Zbinden.scala:13">
+		<item name="main(...) at Datasets/exercice2/raw/Basile_Augustin_Zbinden.scala:13">
 			<value>1</value>
 			<value>19</value>
 			<value>6</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Basile_Augustin_Zbinden.scala:32">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Basile_Augustin_Zbinden.scala:32">
 			<value>2</value>
 			<value>18</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Basile_Augustin_Zbinden.scala:50">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Basile_Augustin_Zbinden.scala:50">
 			<value>3</value>
 			<value>15</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Basile_Augustin_Zbinden.scala:65">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Basile_Augustin_Zbinden.scala:65">
 			<value>4</value>
 			<value>26</value>
 			<value>7</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Basile_Augustin_Zbinden.scala:92">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Basile_Augustin_Zbinden.scala:92">
 			<value>5</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
-		<item name="modeClient(...) at Datasets/Exercice2/raw/Basile_Augustin_Zbinden.scala:103">
+		<item name="modeClient(...) at Datasets/exercice2/raw/Basile_Augustin_Zbinden.scala:103">
 			<value>6</value>
 			<value>11</value>
 			<value>3</value>
 		</item>
-		<item name="modeAdmin(...) at Datasets/Exercice2/raw/Basile_Augustin_Zbinden.scala:114">
+		<item name="modeAdmin(...) at Datasets/exercice2/raw/Basile_Augustin_Zbinden.scala:114">
 			<value>7</value>
 			<value>20</value>
 			<value>7</value>
@@ -52,7 +52,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Basile_Augustin_Zbinden.scala">
+		<item name="Datasets/exercice2/raw/Basile_Augustin_Zbinden.scala">
 			<value>1</value>
 			<value>122</value>
 			<value>32</value>

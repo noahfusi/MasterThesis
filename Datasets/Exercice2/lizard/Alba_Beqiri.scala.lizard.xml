@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Alba_Beqiri.scala:43">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Alba_Beqiri.scala:43">
 			<value>1</value>
 			<value>19</value>
 			<value>6</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Alba_Beqiri.scala:65">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Alba_Beqiri.scala:65">
 			<value>2</value>
 			<value>26</value>
 			<value>7</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Alba_Beqiri.scala:93">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Alba_Beqiri.scala:93">
 			<value>3</value>
 			<value>33</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Alba_Beqiri.scala:131">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Alba_Beqiri.scala:131">
 			<value>4</value>
 			<value>221</value>
 			<value>37</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Alba_Beqiri.scala:384">
+		<item name="main(...) at Datasets/exercice2/raw/Alba_Beqiri.scala:384">
 			<value>5</value>
 			<value>45</value>
 			<value>19</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Alba_Beqiri.scala">
+		<item name="Datasets/exercice2/raw/Alba_Beqiri.scala">
 			<value>1</value>
 			<value>373</value>
 			<value>73</value>
@@ -63,26 +63,26 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Alba_Beqiri.scala:255 ~ 274
-Datasets/Exercice2/raw/Alba_Beqiri.scala:275 ~ 294
-Datasets/Exercice2/raw/Alba_Beqiri.scala:295 ~ 315
+Datasets/exercice2/raw/Alba_Beqiri.scala:255 ~ 274
+Datasets/exercice2/raw/Alba_Beqiri.scala:275 ~ 294
+Datasets/exercice2/raw/Alba_Beqiri.scala:295 ~ 315
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Alba_Beqiri.scala:257 ~ 272
-Datasets/Exercice2/raw/Alba_Beqiri.scala:277 ~ 292
-Datasets/Exercice2/raw/Alba_Beqiri.scala:297 ~ 312
-Datasets/Exercice2/raw/Alba_Beqiri.scala:317 ~ 332
-Datasets/Exercice2/raw/Alba_Beqiri.scala:363 ~ 378
+Datasets/exercice2/raw/Alba_Beqiri.scala:257 ~ 272
+Datasets/exercice2/raw/Alba_Beqiri.scala:277 ~ 292
+Datasets/exercice2/raw/Alba_Beqiri.scala:297 ~ 312
+Datasets/exercice2/raw/Alba_Beqiri.scala:317 ~ 332
+Datasets/exercice2/raw/Alba_Beqiri.scala:363 ~ 378
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Alba_Beqiri.scala:257 ~ 274
-Datasets/Exercice2/raw/Alba_Beqiri.scala:277 ~ 294
-Datasets/Exercice2/raw/Alba_Beqiri.scala:297 ~ 315
-Datasets/Exercice2/raw/Alba_Beqiri.scala:317 ~ 335
+Datasets/exercice2/raw/Alba_Beqiri.scala:257 ~ 274
+Datasets/exercice2/raw/Alba_Beqiri.scala:277 ~ 294
+Datasets/exercice2/raw/Alba_Beqiri.scala:297 ~ 315
+Datasets/exercice2/raw/Alba_Beqiri.scala:317 ~ 335
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 28.18%

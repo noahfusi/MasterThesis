@@ -7,22 +7,22 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:7">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:7">
 			<value>1</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:17">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:17">
 			<value>2</value>
 			<value>11</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:31">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:31">
 			<value>3</value>
 			<value>47</value>
 			<value>12</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:81">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:81">
 			<value>4</value>
 			<value>9</value>
 			<value>1</value>
@@ -37,7 +37,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala">
+		<item name="Datasets/exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala">
 			<value>1</value>
 			<value>122</value>
 			<value>19</value>

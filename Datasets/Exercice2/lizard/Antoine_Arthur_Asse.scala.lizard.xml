@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Antoine_Arthur_Asse.scala:10">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Antoine_Arthur_Asse.scala:10">
 			<value>1</value>
 			<value>9</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Antoine_Arthur_Asse.scala:18">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Antoine_Arthur_Asse.scala:18">
 			<value>2</value>
 			<value>206</value>
 			<value>48</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Antoine_Arthur_Asse.scala:242">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Antoine_Arthur_Asse.scala:242">
 			<value>3</value>
 			<value>12</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Antoine_Arthur_Asse.scala:256">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Antoine_Arthur_Asse.scala:256">
 			<value>4</value>
 			<value>33</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Antoine_Arthur_Asse.scala:295">
+		<item name="main(...) at Datasets/exercice2/raw/Antoine_Arthur_Asse.scala:295">
 			<value>5</value>
 			<value>74</value>
 			<value>24</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Antoine_Arthur_Asse.scala">
+		<item name="Datasets/exercice2/raw/Antoine_Arthur_Asse.scala">
 			<value>1</value>
 			<value>333</value>
 			<value>81</value>

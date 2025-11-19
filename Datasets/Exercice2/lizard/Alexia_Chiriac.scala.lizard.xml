@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Alexia_Chiriac.scala:13">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Alexia_Chiriac.scala:13">
 			<value>1</value>
 			<value>13</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Alexia_Chiriac.scala:27">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Alexia_Chiriac.scala:27">
 			<value>2</value>
 			<value>12</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Alexia_Chiriac.scala:40">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Alexia_Chiriac.scala:40">
 			<value>3</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Alexia_Chiriac.scala:56">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Alexia_Chiriac.scala:56">
 			<value>4</value>
 			<value>38</value>
 			<value>10</value>
 		</item>
-		<item name="selectionnerMachine(...) at Datasets/Exercice2/raw/Alexia_Chiriac.scala:96">
+		<item name="selectionnerMachine(...) at Datasets/exercice2/raw/Alexia_Chiriac.scala:96">
 			<value>5</value>
 			<value>5</value>
 			<value>2</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Alexia_Chiriac.scala:103">
+		<item name="main(...) at Datasets/exercice2/raw/Alexia_Chiriac.scala:103">
 			<value>6</value>
 			<value>29</value>
 			<value>10</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Alexia_Chiriac.scala">
+		<item name="Datasets/exercice2/raw/Alexia_Chiriac.scala">
 			<value>1</value>
 			<value>112</value>
 			<value>29</value>

@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Leyla_Dahmane.scala:7">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Leyla_Dahmane.scala:7">
 			<value>1</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Leyla_Dahmane.scala:16">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Leyla_Dahmane.scala:16">
 			<value>2</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Leyla_Dahmane.scala:21">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Leyla_Dahmane.scala:21">
 			<value>3</value>
 			<value>35</value>
 			<value>8</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Leyla_Dahmane.scala:65">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Leyla_Dahmane.scala:65">
 			<value>4</value>
 			<value>211</value>
 			<value>36</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Leyla_Dahmane.scala:335">
+		<item name="main(...) at Datasets/exercice2/raw/Leyla_Dahmane.scala:335">
 			<value>5</value>
 			<value>129</value>
 			<value>25</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Leyla_Dahmane.scala">
+		<item name="Datasets/exercice2/raw/Leyla_Dahmane.scala">
 			<value>1</value>
 			<value>387</value>
 			<value>72</value>

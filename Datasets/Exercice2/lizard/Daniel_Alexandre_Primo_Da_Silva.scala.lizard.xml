@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:6">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:6">
 			<value>1</value>
 			<value>12</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:20">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:20">
 			<value>2</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:37">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:37">
 			<value>3</value>
 			<value>214</value>
 			<value>39</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:301">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:301">
 			<value>4</value>
 			<value>36</value>
 			<value>7</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:345">
+		<item name="main(...) at Datasets/exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:345">
 			<value>5</value>
 			<value>135</value>
 			<value>36</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala">
+		<item name="Datasets/exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala">
 			<value>1</value>
 			<value>411</value>
 			<value>87</value>
@@ -63,8 +63,8 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:398 ~ 427
-Datasets/Exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:437 ~ 467
+Datasets/exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:398 ~ 427
+Datasets/exercice2/raw/Daniel_Alexandre_Primo_Da_Silva.scala:437 ~ 467
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 12.00%

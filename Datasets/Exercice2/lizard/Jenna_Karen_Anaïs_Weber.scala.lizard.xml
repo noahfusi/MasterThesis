@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:37">
+		<item name="main(...) at Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:37">
 			<value>1</value>
 			<value>75</value>
 			<value>26</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:154">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:154">
 			<value>2</value>
 			<value>510</value>
 			<value>129</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:790">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:790">
 			<value>3</value>
 			<value>28</value>
 			<value>1</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:830">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:830">
 			<value>4</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:853">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:853">
 			<value>5</value>
 			<value>11</value>
 			<value>2</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala">
+		<item name="Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala">
 			<value>1</value>
 			<value>667</value>
 			<value>162</value>
@@ -63,63 +63,63 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:190 ~ 207
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:507 ~ 524
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:190 ~ 207
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:507 ~ 524
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:210 ~ 236
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:528 ~ 554
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:210 ~ 236
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:528 ~ 554
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:236 ~ 266
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:555 ~ 586
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:236 ~ 266
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:555 ~ 586
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:266 ~ 282
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:611 ~ 626
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:266 ~ 282
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:611 ~ 626
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:269 ~ 282
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:294 ~ 307
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:319 ~ 332
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:588 ~ 601
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:613 ~ 626
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:269 ~ 282
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:294 ~ 307
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:319 ~ 332
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:588 ~ 601
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:613 ~ 626
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:378 ~ 394
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:701 ~ 716
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:378 ~ 394
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:701 ~ 716
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:381 ~ 394
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:406 ~ 419
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:431 ~ 444
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:678 ~ 691
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:703 ~ 716
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:381 ~ 394
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:406 ~ 419
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:431 ~ 444
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:678 ~ 691
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:703 ~ 716
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:464 ~ 472
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:730 ~ 738
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:742 ~ 750
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:464 ~ 472
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:730 ~ 738
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:742 ~ 750
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:482 ~ 505
-Datasets/Exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:762 ~ 785
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:482 ~ 505
+Datasets/exercice2/raw/Jenna_Karen_Anaïs_Weber.scala:762 ~ 785
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 53.34%

@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Mahamud_Maxamud_Maxamed.scala:39">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Mahamud_Maxamud_Maxamed.scala:39">
 			<value>1</value>
 			<value>21</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Mahamud_Maxamud_Maxamed.scala:62">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Mahamud_Maxamud_Maxamed.scala:62">
 			<value>2</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Mahamud_Maxamud_Maxamed.scala:78">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Mahamud_Maxamud_Maxamed.scala:78">
 			<value>3</value>
 			<value>114</value>
 			<value>46</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Mahamud_Maxamud_Maxamed.scala:201">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Mahamud_Maxamud_Maxamed.scala:201">
 			<value>4</value>
 			<value>15</value>
 			<value>2</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Mahamud_Maxamud_Maxamed.scala:4">
+		<item name="main(...) at Datasets/exercice2/raw/Mahamud_Maxamud_Maxamed.scala:4">
 			<value>5</value>
 			<value>60</value>
 			<value>10</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Mahamud_Maxamud_Maxamed.scala">
+		<item name="Datasets/exercice2/raw/Mahamud_Maxamud_Maxamed.scala">
 			<value>1</value>
 			<value>224</value>
 			<value>65</value>

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block content_classes %}content-bleed{% endblock %}
+
 {% block extra_head %}
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
 {% endblock %}
@@ -23,6 +25,10 @@
       <select id="global-analysis-metric" disabled>
         <option value="">No metrics yet</option>
       </select>
+      <div class="global-analysis-reference" id="global-analysis-reference">
+        <span>Reference file: <strong id="global-analysis-reference-name">None</strong></span>
+        <span id="global-analysis-reference-info"></span>
+      </div>
     </div>
     <p class="feedback" id="global-analysis-feedback">
       {% if not current_dataset %}Select a dataset to load the analysis.{% endif %}

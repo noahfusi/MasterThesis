@@ -7,42 +7,42 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="read(...) at Datasets/Exercice2/raw/Adrien_Mengon.scala:29">
+		<item name="read(...) at Datasets/exercice2/raw/Adrien_Mengon.scala:29">
 			<value>1</value>
 			<value>9</value>
 			<value>5</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Adrien_Mengon.scala:37">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Adrien_Mengon.scala:37">
 			<value>2</value>
 			<value>21</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Adrien_Mengon.scala:57">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Adrien_Mengon.scala:57">
 			<value>3</value>
 			<value>21</value>
 			<value>8</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Adrien_Mengon.scala:77">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Adrien_Mengon.scala:77">
 			<value>4</value>
 			<value>35</value>
 			<value>12</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Adrien_Mengon.scala:121">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Adrien_Mengon.scala:121">
 			<value>5</value>
 			<value>14</value>
 			<value>1</value>
 		</item>
-		<item name="Client(...) at Datasets/Exercice2/raw/Adrien_Mengon.scala:134">
+		<item name="Client(...) at Datasets/exercice2/raw/Adrien_Mengon.scala:134">
 			<value>6</value>
 			<value>71</value>
 			<value>18</value>
 		</item>
-		<item name="Admin(...) at Datasets/Exercice2/raw/Adrien_Mengon.scala:213">
+		<item name="Admin(...) at Datasets/exercice2/raw/Adrien_Mengon.scala:213">
 			<value>7</value>
 			<value>11</value>
 			<value>5</value>
 		</item>
-		<item name="NospressoMachine(...) at Datasets/Exercice2/raw/Adrien_Mengon.scala:13">
+		<item name="NospressoMachine(...) at Datasets/exercice2/raw/Adrien_Mengon.scala:13">
 			<value>8</value>
 			<value>32</value>
 			<value>7</value>
@@ -57,7 +57,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Adrien_Mengon.scala">
+		<item name="Datasets/exercice2/raw/Adrien_Mengon.scala">
 			<value>1</value>
 			<value>216</value>
 			<value>61</value>

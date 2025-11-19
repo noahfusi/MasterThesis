@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Sebastian_Cañas_Losada.scala:16">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Sebastian_Cañas_Losada.scala:16">
 			<value>1</value>
 			<value>21</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Sebastian_Cañas_Losada.scala:39">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Sebastian_Cañas_Losada.scala:39">
 			<value>2</value>
 			<value>17</value>
 			<value>4</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Sebastian_Cañas_Losada.scala:60">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Sebastian_Cañas_Losada.scala:60">
 			<value>3</value>
 			<value>21</value>
 			<value>1</value>
 		</item>
-		<item name="serveAdmin(...) at Datasets/Exercice2/raw/Sebastian_Cañas_Losada.scala:82">
+		<item name="serveAdmin(...) at Datasets/exercice2/raw/Sebastian_Cañas_Losada.scala:82">
 			<value>4</value>
 			<value>50</value>
 			<value>8</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Sebastian_Cañas_Losada.scala:136">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Sebastian_Cañas_Losada.scala:136">
 			<value>5</value>
 			<value>277</value>
 			<value>40</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Sebastian_Cañas_Losada.scala:462">
+		<item name="main(...) at Datasets/exercice2/raw/Sebastian_Cañas_Losada.scala:462">
 			<value>6</value>
 			<value>51</value>
 			<value>11</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Sebastian_Cañas_Losada.scala">
+		<item name="Datasets/exercice2/raw/Sebastian_Cañas_Losada.scala">
 			<value>1</value>
 			<value>440</value>
 			<value>67</value>

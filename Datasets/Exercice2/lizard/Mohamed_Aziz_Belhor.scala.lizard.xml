@@ -7,77 +7,77 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="lireChoixValide(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:13">
+		<item name="lireChoixValide(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:13">
 			<value>1</value>
 			<value>14</value>
 			<value>4</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:27">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:27">
 			<value>2</value>
 			<value>23</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:53">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:53">
 			<value>3</value>
 			<value>16</value>
 			<value>4</value>
 		</item>
-		<item name="verifierStocks(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:71">
+		<item name="verifierStocks(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:71">
 			<value>4</value>
 			<value>4</value>
 			<value>3</value>
 		</item>
-		<item name="mettreAJourStocks(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:75">
+		<item name="mettreAJourStocks(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:75">
 			<value>5</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<item name="gererNiveauSucre(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:81">
+		<item name="gererNiveauSucre(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:81">
 			<value>6</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<item name="gererLaitSupplementaire(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:103">
+		<item name="gererLaitSupplementaire(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:103">
 			<value>7</value>
 			<value>16</value>
 			<value>2</value>
 		</item>
-		<item name="traiterPaiement(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:120">
+		<item name="traiterPaiement(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:120">
 			<value>8</value>
 			<value>10</value>
 			<value>1</value>
 		</item>
-		<item name="preparerExpresso(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:130">
+		<item name="preparerExpresso(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:130">
 			<value>9</value>
 			<value>21</value>
 			<value>3</value>
 		</item>
-		<item name="preparerCappuccino(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:153">
+		<item name="preparerCappuccino(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:153">
 			<value>10</value>
 			<value>24</value>
 			<value>3</value>
 		</item>
-		<item name="preparerLatte(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:180">
+		<item name="preparerLatte(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:180">
 			<value>11</value>
 			<value>46</value>
 			<value>5</value>
 		</item>
-		<item name="afficherErreurStock(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:231">
+		<item name="afficherErreurStock(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:231">
 			<value>12</value>
 			<value>7</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:238">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:238">
 			<value>13</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:256">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:256">
 			<value>14</value>
 			<value>18</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala:279">
+		<item name="main(...) at Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala:279">
 			<value>15</value>
 			<value>32</value>
 			<value>6</value>
@@ -92,7 +92,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Mohamed_Aziz_Belhor.scala">
+		<item name="Datasets/exercice2/raw/Mohamed_Aziz_Belhor.scala">
 			<value>1</value>
 			<value>267</value>
 			<value>49</value>

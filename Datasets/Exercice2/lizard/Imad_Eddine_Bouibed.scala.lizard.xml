@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="machineSelect(...) at Datasets/Exercice2/raw/Imad_Eddine_Bouibed.scala:11">
+		<item name="machineSelect(...) at Datasets/exercice2/raw/Imad_Eddine_Bouibed.scala:11">
 			<value>1</value>
 			<value>7</value>
 			<value>4</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Imad_Eddine_Bouibed.scala:18">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Imad_Eddine_Bouibed.scala:18">
 			<value>2</value>
 			<value>16</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Imad_Eddine_Bouibed.scala:35">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Imad_Eddine_Bouibed.scala:35">
 			<value>3</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Imad_Eddine_Bouibed.scala:45">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Imad_Eddine_Bouibed.scala:45">
 			<value>4</value>
 			<value>67</value>
 			<value>32</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Imad_Eddine_Bouibed.scala:125">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Imad_Eddine_Bouibed.scala:125">
 			<value>5</value>
 			<value>16</value>
 			<value>7</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Imad_Eddine_Bouibed.scala:143">
+		<item name="main(...) at Datasets/exercice2/raw/Imad_Eddine_Bouibed.scala:143">
 			<value>6</value>
 			<value>24</value>
 			<value>14</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Imad_Eddine_Bouibed.scala">
+		<item name="Datasets/exercice2/raw/Imad_Eddine_Bouibed.scala">
 			<value>1</value>
 			<value>143</value>
 			<value>65</value>

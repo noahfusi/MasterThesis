@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="alphanumeric(...) at Datasets/Exercice2/raw/Théo_Gaillard.scala:6">
+		<item name="alphanumeric(...) at Datasets/exercice2/raw/Théo_Gaillard.scala:6">
 			<value>1</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<item name="validatePin(...) at Datasets/Exercice2/raw/Théo_Gaillard.scala:12">
+		<item name="validatePin(...) at Datasets/exercice2/raw/Théo_Gaillard.scala:12">
 			<value>2</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/Exercice2/raw/Théo_Gaillard.scala:28">
+		<item name="restockMachine(...) at Datasets/exercice2/raw/Théo_Gaillard.scala:28">
 			<value>3</value>
 			<value>19</value>
 			<value>1</value>
 		</item>
-		<item name="updatePin(...) at Datasets/Exercice2/raw/Théo_Gaillard.scala:49">
+		<item name="updatePin(...) at Datasets/exercice2/raw/Théo_Gaillard.scala:49">
 			<value>4</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/Exercice2/raw/Théo_Gaillard.scala:58">
+		<item name="serveClient(...) at Datasets/exercice2/raw/Théo_Gaillard.scala:58">
 			<value>5</value>
 			<value>285</value>
 			<value>65</value>
 		</item>
-		<item name="main(...) at Datasets/Exercice2/raw/Théo_Gaillard.scala:371">
+		<item name="main(...) at Datasets/exercice2/raw/Théo_Gaillard.scala:371">
 			<value>6</value>
 			<value>48</value>
 			<value>16</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/Exercice2/raw/Théo_Gaillard.scala">
+		<item name="Datasets/exercice2/raw/Théo_Gaillard.scala">
 			<value>1</value>
 			<value>381</value>
 			<value>88</value>
@@ -68,23 +68,23 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Théo_Gaillard.scala:235 ~ 255
-Datasets/Exercice2/raw/Théo_Gaillard.scala:275 ~ 295
-Datasets/Exercice2/raw/Théo_Gaillard.scala:305 ~ 325
-Datasets/Exercice2/raw/Théo_Gaillard.scala:335 ~ 355
+Datasets/exercice2/raw/Théo_Gaillard.scala:235 ~ 255
+Datasets/exercice2/raw/Théo_Gaillard.scala:275 ~ 295
+Datasets/exercice2/raw/Théo_Gaillard.scala:305 ~ 325
+Datasets/exercice2/raw/Théo_Gaillard.scala:335 ~ 355
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Théo_Gaillard.scala:275 ~ 299
-Datasets/Exercice2/raw/Théo_Gaillard.scala:305 ~ 329
-Datasets/Exercice2/raw/Théo_Gaillard.scala:335 ~ 359
+Datasets/exercice2/raw/Théo_Gaillard.scala:275 ~ 299
+Datasets/exercice2/raw/Théo_Gaillard.scala:305 ~ 329
+Datasets/exercice2/raw/Théo_Gaillard.scala:335 ~ 359
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/Exercice2/raw/Théo_Gaillard.scala:275 ~ 299
-Datasets/Exercice2/raw/Théo_Gaillard.scala:305 ~ 329
+Datasets/exercice2/raw/Théo_Gaillard.scala:275 ~ 299
+Datasets/exercice2/raw/Théo_Gaillard.scala:305 ~ 329
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 43.28%
