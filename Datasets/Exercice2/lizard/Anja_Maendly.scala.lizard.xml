@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Anja_Maendly.scala:33">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:33">
 			<value>1</value>
 			<value>21</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Anja_Maendly.scala:55">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:55">
 			<value>2</value>
 			<value>15</value>
 			<value>5</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Anja_Maendly.scala:71">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:71">
 			<value>3</value>
 			<value>37</value>
 			<value>10</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Anja_Maendly.scala:112">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:112">
 			<value>4</value>
 			<value>183</value>
 			<value>49</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Anja_Maendly.scala:4">
+		<item name="main(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:4">
 			<value>5</value>
 			<value>56</value>
 			<value>18</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Anja_Maendly.scala">
+		<item name="Datasets/Exercice2/raw/Anja_Maendly.scala">
 			<value>1</value>
 			<value>310</value>
 			<value>85</value>

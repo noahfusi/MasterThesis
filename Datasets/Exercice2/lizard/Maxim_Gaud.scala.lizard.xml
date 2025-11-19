@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Maxim_Gaud.scala:6">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Maxim_Gaud.scala:6">
 			<value>1</value>
 			<value>22</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Maxim_Gaud.scala:28">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Maxim_Gaud.scala:28">
 			<value>2</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Maxim_Gaud.scala:39">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Maxim_Gaud.scala:39">
 			<value>3</value>
 			<value>164</value>
 			<value>48</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Maxim_Gaud.scala:213">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Maxim_Gaud.scala:213">
 			<value>4</value>
 			<value>43</value>
 			<value>8</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Maxim_Gaud.scala:259">
+		<item name="main(...) at Datasets/Exercice2/raw/Maxim_Gaud.scala:259">
 			<value>5</value>
 			<value>62</value>
 			<value>18</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Maxim_Gaud.scala">
+		<item name="Datasets/Exercice2/raw/Maxim_Gaud.scala">
 			<value>1</value>
 			<value>301</value>
 			<value>80</value>

@@ -7,62 +7,62 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:11">
+		<item name="main(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:11">
 			<value>1</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<item name="mainMenu(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:16">
+		<item name="mainMenu(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:16">
 			<value>2</value>
 			<value>24</value>
 			<value>9</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:42">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:42">
 			<value>3</value>
 			<value>18</value>
 			<value>3</value>
 		</item>
-		<item name="adminMenu(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:61">
+		<item name="adminMenu(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:61">
 			<value>4</value>
 			<value>12</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:75">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:75">
 			<value>5</value>
 			<value>13</value>
 			<value>5</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:89">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:89">
 			<value>6</value>
 			<value>19</value>
 			<value>9</value>
 		</item>
-		<item name="choisirTailleLatte(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:110">
+		<item name="choisirTailleLatte(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:110">
 			<value>7</value>
 			<value>13</value>
 			<value>8</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:124">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:124">
 			<value>8</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
-		<item name="verifierStock(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:136">
+		<item name="verifierStock(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:136">
 			<value>9</value>
 			<value>12</value>
 			<value>4</value>
 		</item>
-		<item name="CodePaiement(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:149">
+		<item name="CodePaiement(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:149">
 			<value>10</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<item name="choisirSucre(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:155">
+		<item name="choisirSucre(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:155">
 			<value>11</value>
 			<value>11</value>
 			<value>8</value>
 		</item>
-		<item name="choisirLaitSupplementaire(...) at Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala:167">
+		<item name="choisirLaitSupplementaire(...) at Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala:167">
 			<value>12</value>
 			<value>17</value>
 			<value>3</value>
@@ -77,7 +77,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Alexis_Jérémie_Labrosse.scala">
+		<item name="Datasets/Exercice2/raw/Alexis_Jérémie_Labrosse.scala">
 			<value>1</value>
 			<value>156</value>
 			<value>57</value>

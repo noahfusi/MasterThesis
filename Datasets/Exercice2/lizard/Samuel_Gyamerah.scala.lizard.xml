@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Samuel_Gyamerah.scala:56">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Samuel_Gyamerah.scala:56">
 			<value>1</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Samuel_Gyamerah.scala:66">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Samuel_Gyamerah.scala:66">
 			<value>2</value>
 			<value>11</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Samuel_Gyamerah.scala:77">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Samuel_Gyamerah.scala:77">
 			<value>3</value>
 			<value>172</value>
 			<value>45</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Samuel_Gyamerah.scala:254">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Samuel_Gyamerah.scala:254">
 			<value>4</value>
 			<value>20</value>
 			<value>5</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Samuel_Gyamerah.scala:6">
+		<item name="main(...) at Datasets/Exercice2/raw/Samuel_Gyamerah.scala:6">
 			<value>5</value>
 			<value>101</value>
 			<value>17</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Samuel_Gyamerah.scala">
+		<item name="Datasets/Exercice2/raw/Samuel_Gyamerah.scala">
 			<value>1</value>
 			<value>313</value>
 			<value>72</value>
@@ -63,8 +63,8 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Samuel_Gyamerah.scala:95 ~ 124
-Datasets/exercice2/raw/Samuel_Gyamerah.scala:147 ~ 176
+Datasets/Exercice2/raw/Samuel_Gyamerah.scala:95 ~ 124
+Datasets/Exercice2/raw/Samuel_Gyamerah.scala:147 ~ 176
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 12.68%

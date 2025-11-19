@@ -7,57 +7,57 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="initializeArrays(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:12">
+		<item name="initializeArrays(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:12">
 			<value>1</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:22">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:22">
 			<value>2</value>
 			<value>18</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:44">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:44">
 			<value>3</value>
 			<value>11</value>
 			<value>4</value>
 		</item>
-		<item name="getIngredientRequirements(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:57">
+		<item name="getIngredientRequirements(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:57">
 			<value>4</value>
 			<value>20</value>
 			<value>7</value>
 		</item>
-		<item name="getBasePrice(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:79">
+		<item name="getBasePrice(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:79">
 			<value>5</value>
 			<value>20</value>
 			<value>7</value>
 		</item>
-		<item name="getSugarPrice(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:101">
+		<item name="getSugarPrice(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:101">
 			<value>6</value>
 			<value>14</value>
 			<value>5</value>
 		</item>
-		<item name="getSugarLevel(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:117">
+		<item name="getSugarLevel(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:117">
 			<value>7</value>
 			<value>14</value>
 			<value>5</value>
 		</item>
-		<item name="processPayment(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:133">
+		<item name="processPayment(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:133">
 			<value>8</value>
 			<value>9</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:143">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:143">
 			<value>9</value>
 			<value>102</value>
 			<value>20</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:275">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:275">
 			<value>10</value>
 			<value>22</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:302">
+		<item name="main(...) at Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala:302">
 			<value>11</value>
 			<value>36</value>
 			<value>10</value>
@@ -72,7 +72,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Calixte_Pierre_Louis_Pittet.scala">
+		<item name="Datasets/Exercice2/raw/Calixte_Pierre_Louis_Pittet.scala">
 			<value>1</value>
 			<value>270</value>
 			<value>65</value>

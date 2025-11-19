@@ -7,57 +7,57 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="afficherMenu(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:18">
+		<item name="afficherMenu(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:18">
 			<value>1</value>
 			<value>22</value>
 			<value>5</value>
 		</item>
-		<item name="modeClient(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:41">
+		<item name="modeClient(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:41">
 			<value>2</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<item name="modeAdmin(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:51">
+		<item name="modeAdmin(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:51">
 			<value>3</value>
 			<value>20</value>
 			<value>6</value>
 		</item>
-		<item name="selectMachine(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:72">
+		<item name="selectMachine(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:72">
 			<value>4</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<item name="validPin(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:82">
+		<item name="validPin(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:82">
 			<value>5</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
-		<item name="affichageStocks(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:101">
+		<item name="affichageStocks(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:101">
 			<value>6</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
-		<item name="reapprovisionnerStocks(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:108">
+		<item name="reapprovisionnerStocks(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:108">
 			<value>7</value>
 			<value>14</value>
 			<value>1</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:125">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:125">
 			<value>8</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:137">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:137">
 			<value>9</value>
 			<value>36</value>
 			<value>8</value>
 		</item>
-		<item name="lireEntreeValide(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:179">
+		<item name="lireEntreeValide(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:179">
 			<value>10</value>
 			<value>16</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala:7">
+		<item name="main(...) at Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala:7">
 			<value>11</value>
 			<value>12</value>
 			<value>1</value>
@@ -72,7 +72,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Rhode_Kanda_Bolenge.scala">
+		<item name="Datasets/Exercice2/raw/Rhode_Kanda_Bolenge.scala">
 			<value>1</value>
 			<value>167</value>
 			<value>37</value>

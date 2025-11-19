@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Renata_Manzato.scala:18">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Renata_Manzato.scala:18">
 			<value>1</value>
 			<value>21</value>
 			<value>4</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Renata_Manzato.scala:38">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Renata_Manzato.scala:38">
 			<value>2</value>
 			<value>21</value>
 			<value>1</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Renata_Manzato.scala:62">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Renata_Manzato.scala:62">
 			<value>3</value>
 			<value>14</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Renata_Manzato.scala:79">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Renata_Manzato.scala:79">
 			<value>4</value>
 			<value>237</value>
 			<value>131</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Renata_Manzato.scala:4">
+		<item name="main(...) at Datasets/Exercice2/raw/Renata_Manzato.scala:4">
 			<value>5</value>
 			<value>85</value>
 			<value>27</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Renata_Manzato.scala">
+		<item name="Datasets/Exercice2/raw/Renata_Manzato.scala">
 			<value>1</value>
 			<value>376</value>
 			<value>166</value>
@@ -63,21 +63,21 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Renata_Manzato.scala:96 ~ 125
-Datasets/exercice2/raw/Renata_Manzato.scala:135 ~ 164
-Datasets/exercice2/raw/Renata_Manzato.scala:235 ~ 264
+Datasets/Exercice2/raw/Renata_Manzato.scala:96 ~ 125
+Datasets/Exercice2/raw/Renata_Manzato.scala:135 ~ 164
+Datasets/Exercice2/raw/Renata_Manzato.scala:235 ~ 264
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Renata_Manzato.scala:135 ~ 206
-Datasets/exercice2/raw/Renata_Manzato.scala:235 ~ 306
+Datasets/Exercice2/raw/Renata_Manzato.scala:135 ~ 206
+Datasets/Exercice2/raw/Renata_Manzato.scala:235 ~ 306
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Renata_Manzato.scala:332 ~ 345
-Datasets/exercice2/raw/Renata_Manzato.scala:360 ~ 373
+Datasets/Exercice2/raw/Renata_Manzato.scala:332 ~ 345
+Datasets/Exercice2/raw/Renata_Manzato.scala:360 ~ 373
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 70.59%

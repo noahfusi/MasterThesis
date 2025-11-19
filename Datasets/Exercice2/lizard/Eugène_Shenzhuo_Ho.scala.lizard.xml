@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Eugène_Shenzhuo_Ho.scala:44">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Eugène_Shenzhuo_Ho.scala:44">
 			<value>1</value>
 			<value>21</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Eugène_Shenzhuo_Ho.scala:66">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Eugène_Shenzhuo_Ho.scala:66">
 			<value>2</value>
 			<value>17</value>
 			<value>7</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Eugène_Shenzhuo_Ho.scala:83">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Eugène_Shenzhuo_Ho.scala:83">
 			<value>3</value>
 			<value>176</value>
 			<value>53</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Eugène_Shenzhuo_Ho.scala:287">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Eugène_Shenzhuo_Ho.scala:287">
 			<value>4</value>
 			<value>15</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Eugène_Shenzhuo_Ho.scala:305">
+		<item name="main(...) at Datasets/Exercice2/raw/Eugène_Shenzhuo_Ho.scala:305">
 			<value>5</value>
 			<value>52</value>
 			<value>16</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Eugène_Shenzhuo_Ho.scala">
+		<item name="Datasets/Exercice2/raw/Eugène_Shenzhuo_Ho.scala">
 			<value>1</value>
 			<value>305</value>
 			<value>81</value>

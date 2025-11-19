@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Evan_Delle_Rose.scala:5">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Evan_Delle_Rose.scala:5">
 			<value>1</value>
 			<value>20</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Evan_Delle_Rose.scala:32">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Evan_Delle_Rose.scala:32">
 			<value>2</value>
 			<value>11</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Evan_Delle_Rose.scala:47">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Evan_Delle_Rose.scala:47">
 			<value>3</value>
 			<value>31</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Evan_Delle_Rose.scala:88">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Evan_Delle_Rose.scala:88">
 			<value>4</value>
 			<value>611</value>
 			<value>156</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Evan_Delle_Rose.scala:775">
+		<item name="main(...) at Datasets/Exercice2/raw/Evan_Delle_Rose.scala:775">
 			<value>5</value>
 			<value>99</value>
 			<value>35</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Evan_Delle_Rose.scala">
+		<item name="Datasets/Exercice2/raw/Evan_Delle_Rose.scala">
 			<value>1</value>
 			<value>770</value>
 			<value>203</value>
@@ -63,57 +63,57 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:270 ~ 292
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:492 ~ 514
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:270 ~ 292
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:492 ~ 514
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:324 ~ 352
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:651 ~ 678
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:324 ~ 352
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:651 ~ 678
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:432 ~ 449
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:740 ~ 758
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:432 ~ 449
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:740 ~ 758
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:263 ~ 292
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:485 ~ 514
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:263 ~ 292
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:485 ~ 514
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:290 ~ 307
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:516 ~ 534
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:290 ~ 307
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:516 ~ 534
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:607 ~ 616
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:621 ~ 630
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:634 ~ 643
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:607 ~ 616
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:621 ~ 630
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:634 ~ 643
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:607 ~ 621
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:621 ~ 634
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:607 ~ 621
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:621 ~ 634
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:394 ~ 430
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:694 ~ 732
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:394 ~ 430
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:694 ~ 732
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:817 ~ 836
-Datasets/exercice2/raw/Evan_Delle_Rose.scala:839 ~ 858
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:817 ~ 836
+Datasets/Exercice2/raw/Evan_Delle_Rose.scala:839 ~ 858
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 45.46%

@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Loris_Léon_Roger_Gouin.scala:17">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Loris_Léon_Roger_Gouin.scala:17">
 			<value>1</value>
 			<value>21</value>
 			<value>6</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Loris_Léon_Roger_Gouin.scala:39">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Loris_Léon_Roger_Gouin.scala:39">
 			<value>2</value>
 			<value>11</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Loris_Léon_Roger_Gouin.scala:51">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Loris_Léon_Roger_Gouin.scala:51">
 			<value>3</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
-		<item name="showStocks(...) at Datasets/exercice2/raw/Loris_Léon_Roger_Gouin.scala:66">
+		<item name="showStocks(...) at Datasets/Exercice2/raw/Loris_Léon_Roger_Gouin.scala:66">
 			<value>4</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Loris_Léon_Roger_Gouin.scala:74">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Loris_Léon_Roger_Gouin.scala:74">
 			<value>5</value>
 			<value>81</value>
 			<value>36</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Loris_Léon_Roger_Gouin.scala:165">
+		<item name="main(...) at Datasets/Exercice2/raw/Loris_Léon_Roger_Gouin.scala:165">
 			<value>6</value>
 			<value>62</value>
 			<value>24</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Loris_Léon_Roger_Gouin.scala">
+		<item name="Datasets/Exercice2/raw/Loris_Léon_Roger_Gouin.scala">
 			<value>1</value>
 			<value>197</value>
 			<value>71</value>

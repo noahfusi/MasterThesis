@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:6">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:6">
 			<value>1</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:11">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:11">
 			<value>2</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:21">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:21">
 			<value>3</value>
 			<value>147</value>
 			<value>32</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:187">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:187">
 			<value>4</value>
 			<value>9</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:198">
+		<item name="main(...) at Datasets/Exercice2/raw/Charlie_Arno_Joan_Rolandez.scala:198">
 			<value>5</value>
 			<value>62</value>
 			<value>18</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Charlie_Arno_Joan_Rolandez.scala">
+		<item name="Datasets/Exercice2/raw/Charlie_Arno_Joan_Rolandez.scala">
 			<value>1</value>
 			<value>232</value>
 			<value>54</value>

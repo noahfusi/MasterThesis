@@ -7,52 +7,52 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="generateTwintCode(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:28">
+		<item name="generateTwintCode(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:28">
 			<value>1</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<item name="calculerPrixFinal(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:32">
+		<item name="calculerPrixFinal(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:32">
 			<value>2</value>
 			<value>16</value>
 			<value>5</value>
 		</item>
-		<item name="effectuerPaiement(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:66">
+		<item name="effectuerPaiement(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:66">
 			<value>3</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
-		<item name="clientMode(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:77">
+		<item name="clientMode(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:77">
 			<value>4</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<item name="adminMode(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:87">
+		<item name="adminMode(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:87">
 			<value>5</value>
 			<value>18</value>
 			<value>6</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:105">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:105">
 			<value>6</value>
 			<value>15</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:124">
+		<item name="main(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:124">
 			<value>7</value>
 			<value>16</value>
 			<value>5</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:141">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:141">
 			<value>8</value>
 			<value>18</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:159">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:159">
 			<value>9</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
-		<item name="choixdeboisson(...) at Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:174">
+		<item name="choixdeboisson(...) at Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:174">
 			<value>10</value>
 			<value>156</value>
 			<value>52</value>
@@ -67,7 +67,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala">
+		<item name="Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala">
 			<value>1</value>
 			<value>282</value>
 			<value>80</value>
@@ -88,17 +88,17 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:265 ~ 284
-Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:284 ~ 303
-Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:303 ~ 322
-Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:322 ~ 341
+Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:265 ~ 284
+Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:284 ~ 303
+Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:303 ~ 322
+Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:322 ~ 341
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:265 ~ 284
-Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:284 ~ 303
-Datasets/exercice2/raw/Daniela_Oghenemine_Bazunu.scala:303 ~ 322
+Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:265 ~ 284
+Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:284 ~ 303
+Datasets/Exercice2/raw/Daniela_Oghenemine_Bazunu.scala:303 ~ 322
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 49.31%

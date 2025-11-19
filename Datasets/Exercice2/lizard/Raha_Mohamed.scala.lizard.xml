@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Raha_Mohamed.scala:7">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Raha_Mohamed.scala:7">
 			<value>1</value>
 			<value>28</value>
 			<value>6</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Raha_Mohamed.scala:43">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Raha_Mohamed.scala:43">
 			<value>2</value>
 			<value>24</value>
 			<value>5</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Raha_Mohamed.scala:70">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Raha_Mohamed.scala:70">
 			<value>3</value>
 			<value>129</value>
 			<value>30</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Raha_Mohamed.scala:218">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Raha_Mohamed.scala:218">
 			<value>4</value>
 			<value>25</value>
 			<value>2</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Raha_Mohamed.scala:248">
+		<item name="main(...) at Datasets/Exercice2/raw/Raha_Mohamed.scala:248">
 			<value>5</value>
 			<value>70</value>
 			<value>12</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Raha_Mohamed.scala">
+		<item name="Datasets/Exercice2/raw/Raha_Mohamed.scala">
 			<value>1</value>
 			<value>275</value>
 			<value>55</value>

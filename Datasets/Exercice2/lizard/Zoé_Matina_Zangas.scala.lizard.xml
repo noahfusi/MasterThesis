@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Zoé_Matina_Zangas.scala:8">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Zoé_Matina_Zangas.scala:8">
 			<value>1</value>
 			<value>19</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Zoé_Matina_Zangas.scala:30">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Zoé_Matina_Zangas.scala:30">
 			<value>2</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Zoé_Matina_Zangas.scala:49">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Zoé_Matina_Zangas.scala:49">
 			<value>3</value>
 			<value>224</value>
 			<value>60</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Zoé_Matina_Zangas.scala:329">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Zoé_Matina_Zangas.scala:329">
 			<value>4</value>
 			<value>41</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Zoé_Matina_Zangas.scala:377">
+		<item name="main(...) at Datasets/Exercice2/raw/Zoé_Matina_Zangas.scala:377">
 			<value>5</value>
 			<value>73</value>
 			<value>25</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Zoé_Matina_Zangas.scala">
+		<item name="Datasets/Exercice2/raw/Zoé_Matina_Zangas.scala">
 			<value>1</value>
 			<value>371</value>
 			<value>95</value>

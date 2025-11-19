@@ -7,37 +7,37 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:25">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:25">
 			<value>1</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:35">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:35">
 			<value>2</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:47">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:47">
 			<value>3</value>
 			<value>162</value>
 			<value>45</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:247">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:247">
 			<value>4</value>
 			<value>22</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:278">
+		<item name="main(...) at Datasets/Exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:278">
 			<value>5</value>
 			<value>24</value>
 			<value>5</value>
 		</item>
-		<item name="modeClient(...) at Datasets/exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:307">
+		<item name="modeClient(...) at Datasets/Exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:307">
 			<value>6</value>
 			<value>14</value>
 			<value>5</value>
 		</item>
-		<item name="modeAdmin(...) at Datasets/exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:324">
+		<item name="modeAdmin(...) at Datasets/Exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala:324">
 			<value>7</value>
 			<value>52</value>
 			<value>13</value>
@@ -52,7 +52,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala">
+		<item name="Datasets/Exercice2/raw/Sebasti╞o_Victor_Da_Silva_Ambrósio.scala">
 			<value>1</value>
 			<value>299</value>
 			<value>76</value>

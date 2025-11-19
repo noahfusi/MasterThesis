@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Galyna_Rabochy.scala:14">
+		<item name="main(...) at Datasets/Exercice2/raw/Galyna_Rabochy.scala:14">
 			<value>1</value>
 			<value>26</value>
 			<value>12</value>
 		</item>
-		<item name="clientMode(...) at Datasets/exercice2/raw/Galyna_Rabochy.scala:42">
+		<item name="clientMode(...) at Datasets/Exercice2/raw/Galyna_Rabochy.scala:42">
 			<value>2</value>
 			<value>23</value>
 			<value>8</value>
 		</item>
-		<item name="adminMode(...) at Datasets/exercice2/raw/Galyna_Rabochy.scala:67">
+		<item name="adminMode(...) at Datasets/Exercice2/raw/Galyna_Rabochy.scala:67">
 			<value>3</value>
 			<value>44</value>
 			<value>14</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Galyna_Rabochy.scala:119">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Galyna_Rabochy.scala:119">
 			<value>4</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="restockStocks(...) at Datasets/exercice2/raw/Galyna_Rabochy.scala:135">
+		<item name="restockStocks(...) at Datasets/Exercice2/raw/Galyna_Rabochy.scala:135">
 			<value>5</value>
 			<value>13</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Galyna_Rabochy.scala:148">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Galyna_Rabochy.scala:148">
 			<value>6</value>
 			<value>138</value>
 			<value>47</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Galyna_Rabochy.scala">
+		<item name="Datasets/Exercice2/raw/Galyna_Rabochy.scala">
 			<value>1</value>
 			<value>263</value>
 			<value>85</value>
@@ -68,8 +68,8 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Galyna_Rabochy.scala:42 ~ 59
-Datasets/exercice2/raw/Galyna_Rabochy.scala:67 ~ 84
+Datasets/Exercice2/raw/Galyna_Rabochy.scala:42 ~ 59
+Datasets/Exercice2/raw/Galyna_Rabochy.scala:67 ~ 84
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 12.35%

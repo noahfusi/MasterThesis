@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:49">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:49">
 			<value>1</value>
 			<value>12</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:61">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:61">
 			<value>2</value>
 			<value>10</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:72">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:72">
 			<value>3</value>
 			<value>296</value>
 			<value>99</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:395">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:395">
 			<value>4</value>
 			<value>32</value>
 			<value>9</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:5">
+		<item name="main(...) at Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:5">
 			<value>5</value>
 			<value>100</value>
 			<value>33</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala">
+		<item name="Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala">
 			<value>1</value>
 			<value>448</value>
 			<value>147</value>
@@ -63,18 +63,18 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:201 ~ 207
-Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:242 ~ 248
-Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:282 ~ 288
-Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:322 ~ 328
+Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:201 ~ 207
+Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:242 ~ 248
+Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:282 ~ 288
+Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:322 ~ 328
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:210 ~ 216
-Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:251 ~ 257
-Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:291 ~ 297
-Datasets/exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:331 ~ 337
+Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:210 ~ 216
+Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:251 ~ 257
+Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:291 ~ 297
+Datasets/Exercice2/raw/Thibaut_Albert_Thomas_Emonot.scala:331 ~ 337
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 10.43%

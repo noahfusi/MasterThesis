@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Mohamed_Aziz_Aissaoui.scala:5">
+		<item name="main(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Aissaoui.scala:5">
 			<value>1</value>
 			<value>46</value>
 			<value>10</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Mohamed_Aziz_Aissaoui.scala:53">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Aissaoui.scala:53">
 			<value>2</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Mohamed_Aziz_Aissaoui.scala:69">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Aissaoui.scala:69">
 			<value>3</value>
 			<value>16</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Mohamed_Aziz_Aissaoui.scala:85">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Aissaoui.scala:85">
 			<value>4</value>
 			<value>25</value>
 			<value>7</value>
 		</item>
-		<item name="Gestionprixstocks(...) at Datasets/exercice2/raw/Mohamed_Aziz_Aissaoui.scala:109">
+		<item name="Gestionprixstocks(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Aissaoui.scala:109">
 			<value>5</value>
 			<value>61</value>
 			<value>12</value>
 		</item>
-		<item name="adminMenu(...) at Datasets/exercice2/raw/Mohamed_Aziz_Aissaoui.scala:177">
+		<item name="adminMenu(...) at Datasets/Exercice2/raw/Mohamed_Aziz_Aissaoui.scala:177">
 			<value>6</value>
 			<value>28</value>
 			<value>4</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Mohamed_Aziz_Aissaoui.scala">
+		<item name="Datasets/Exercice2/raw/Mohamed_Aziz_Aissaoui.scala">
 			<value>1</value>
 			<value>190</value>
 			<value>40</value>

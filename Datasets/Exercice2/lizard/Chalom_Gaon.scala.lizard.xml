@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="manageStocks(...) at Datasets/exercice2/raw/Chalom_Gaon.scala:7">
+		<item name="manageStocks(...) at Datasets/Exercice2/raw/Chalom_Gaon.scala:7">
 			<value>1</value>
 			<value>25</value>
 			<value>5</value>
 		</item>
-		<item name="checkPin(...) at Datasets/exercice2/raw/Chalom_Gaon.scala:36">
+		<item name="checkPin(...) at Datasets/Exercice2/raw/Chalom_Gaon.scala:36">
 			<value>2</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<item name="changePin(...) at Datasets/exercice2/raw/Chalom_Gaon.scala:42">
+		<item name="changePin(...) at Datasets/Exercice2/raw/Chalom_Gaon.scala:42">
 			<value>3</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<item name="prepareDrink(...) at Datasets/exercice2/raw/Chalom_Gaon.scala:53">
+		<item name="prepareDrink(...) at Datasets/Exercice2/raw/Chalom_Gaon.scala:53">
 			<value>4</value>
 			<value>24</value>
 			<value>9</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Chalom_Gaon.scala:80">
+		<item name="main(...) at Datasets/Exercice2/raw/Chalom_Gaon.scala:80">
 			<value>5</value>
 			<value>35</value>
 			<value>7</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Chalom_Gaon.scala">
+		<item name="Datasets/Exercice2/raw/Chalom_Gaon.scala">
 			<value>1</value>
 			<value>98</value>
 			<value>25</value>

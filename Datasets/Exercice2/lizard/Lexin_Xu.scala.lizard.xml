@@ -7,67 +7,67 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Lexin_Xu.scala:14">
+		<item name="main(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:14">
 			<value>1</value>
 			<value>20</value>
 			<value>6</value>
 		</item>
-		<item name="menuPrincipal(...) at Datasets/exercice2/raw/Lexin_Xu.scala:35">
+		<item name="menuPrincipal(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:35">
 			<value>2</value>
 			<value>27</value>
 			<value>7</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Lexin_Xu.scala:65">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:65">
 			<value>3</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<item name="menuAdmin(...) at Datasets/exercice2/raw/Lexin_Xu.scala:88">
+		<item name="menuAdmin(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:88">
 			<value>4</value>
 			<value>24</value>
 			<value>6</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Lexin_Xu.scala:114">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:114">
 			<value>5</value>
 			<value>14</value>
 			<value>4</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Lexin_Xu.scala:129">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:129">
 			<value>6</value>
 			<value>13</value>
 			<value>1</value>
 		</item>
-		<item name="afficherStocks(...) at Datasets/exercice2/raw/Lexin_Xu.scala:144">
+		<item name="afficherStocks(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:144">
 			<value>7</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Lexin_Xu.scala:152">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:152">
 			<value>8</value>
 			<value>30</value>
 			<value>9</value>
 		</item>
-		<item name="tailleLatte(...) at Datasets/exercice2/raw/Lexin_Xu.scala:183">
+		<item name="tailleLatte(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:183">
 			<value>9</value>
 			<value>24</value>
 			<value>7</value>
 		</item>
-		<item name="commandeBoisson(...) at Datasets/exercice2/raw/Lexin_Xu.scala:209">
+		<item name="commandeBoisson(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:209">
 			<value>10</value>
 			<value>21</value>
 			<value>5</value>
 		</item>
-		<item name="ajouterSucre(...) at Datasets/exercice2/raw/Lexin_Xu.scala:231">
+		<item name="ajouterSucre(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:231">
 			<value>11</value>
 			<value>26</value>
 			<value>12</value>
 		</item>
-		<item name="ajouterLaitSupplementaire(...) at Datasets/exercice2/raw/Lexin_Xu.scala:261">
+		<item name="ajouterLaitSupplementaire(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:261">
 			<value>12</value>
 			<value>26</value>
 			<value>12</value>
 		</item>
-		<item name="genererCodePaiement(...) at Datasets/exercice2/raw/Lexin_Xu.scala:289">
+		<item name="genererCodePaiement(...) at Datasets/Exercice2/raw/Lexin_Xu.scala:289">
 			<value>13</value>
 			<value>5</value>
 			<value>1</value>
@@ -82,7 +82,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Lexin_Xu.scala">
+		<item name="Datasets/Exercice2/raw/Lexin_Xu.scala">
 			<value>1</value>
 			<value>254</value>
 			<value>75</value>

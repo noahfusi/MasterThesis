@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Anissa_Nasri.scala:5">
+		<item name="main(...) at Datasets/Exercice2/raw/Anissa_Nasri.scala:5">
 			<value>1</value>
 			<value>37</value>
 			<value>12</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Anissa_Nasri.scala:46">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Anissa_Nasri.scala:46">
 			<value>2</value>
 			<value>21</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Anissa_Nasri.scala:68">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Anissa_Nasri.scala:68">
 			<value>3</value>
 			<value>120</value>
 			<value>27</value>
 		</item>
-		<item name="adminMode(...) at Datasets/exercice2/raw/Anissa_Nasri.scala:209">
+		<item name="adminMode(...) at Datasets/Exercice2/raw/Anissa_Nasri.scala:209">
 			<value>4</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Anissa_Nasri.scala:228">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Anissa_Nasri.scala:228">
 			<value>5</value>
 			<value>18</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Anissa_Nasri.scala:248">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Anissa_Nasri.scala:248">
 			<value>6</value>
 			<value>20</value>
 			<value>6</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Anissa_Nasri.scala">
+		<item name="Datasets/Exercice2/raw/Anissa_Nasri.scala">
 			<value>1</value>
 			<value>230</value>
 			<value>56</value>

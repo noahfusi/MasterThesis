@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:5">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:5">
 			<value>1</value>
 			<value>22</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:30">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:30">
 			<value>2</value>
 			<value>24</value>
 			<value>7</value>
 		</item>
-		<item name="RandomTwintCode(...) at Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:395">
+		<item name="RandomTwintCode(...) at Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:395">
 			<value>3</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:57">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:57">
 			<value>4</value>
 			<value>316</value>
 			<value>112</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:442">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:442">
 			<value>5</value>
 			<value>14</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:462">
+		<item name="main(...) at Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:462">
 			<value>6</value>
 			<value>89</value>
 			<value>26</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala">
+		<item name="Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala">
 			<value>1</value>
 			<value>467</value>
 			<value>152</value>
@@ -68,9 +68,9 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:335 ~ 346
-Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:348 ~ 359
-Datasets/exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:361 ~ 372
+Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:335 ~ 346
+Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:348 ~ 359
+Datasets/Exercice2/raw/Srishyam_Prasad_Kuthethur_Hemachandra.scala:361 ~ 372
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 7.52%

@@ -24,6 +24,14 @@
     <div class="file-list-panel" id="file-list-panel">
       <div class="section-heading">
         <h2>Files in <span id="file-list-dataset">{{ current_dataset }}</span></h2>
+        <label class="file-list-filters">
+          View
+          <select id="file-list-filter">
+            <option value="all">All</option>
+            <option value="duplication">Code duplication</option>
+            <option value="plagiarism">Possible plagiarism</option>
+          </select>
+        </label>
       </div>
       <p class="feedback" id="file-list-feedback"></p>
       <ul class="dataset-list" id="file-list"></ul>

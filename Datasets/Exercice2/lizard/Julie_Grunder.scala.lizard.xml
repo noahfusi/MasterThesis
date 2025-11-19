@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Julie_Grunder.scala:6">
+		<item name="main(...) at Datasets/Exercice2/raw/Julie_Grunder.scala:6">
 			<value>1</value>
 			<value>38</value>
 			<value>25</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Julie_Grunder.scala:47">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Julie_Grunder.scala:47">
 			<value>2</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
-		<item name="modeAdmin(...) at Datasets/exercice2/raw/Julie_Grunder.scala:64">
+		<item name="modeAdmin(...) at Datasets/Exercice2/raw/Julie_Grunder.scala:64">
 			<value>3</value>
 			<value>15</value>
 			<value>7</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Julie_Grunder.scala:79">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Julie_Grunder.scala:79">
 			<value>4</value>
 			<value>14</value>
 			<value>4</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Julie_Grunder.scala:93">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Julie_Grunder.scala:93">
 			<value>5</value>
 			<value>23</value>
 			<value>8</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Julie_Grunder.scala:117">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Julie_Grunder.scala:117">
 			<value>6</value>
 			<value>199</value>
 			<value>58</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Julie_Grunder.scala">
+		<item name="Datasets/Exercice2/raw/Julie_Grunder.scala">
 			<value>1</value>
 			<value>305</value>
 			<value>105</value>
@@ -68,8 +68,8 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Julie_Grunder.scala:286 ~ 301
-Datasets/exercice2/raw/Julie_Grunder.scala:302 ~ 317
+Datasets/Exercice2/raw/Julie_Grunder.scala:286 ~ 301
+Datasets/Exercice2/raw/Julie_Grunder.scala:302 ~ 317
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 8.76%

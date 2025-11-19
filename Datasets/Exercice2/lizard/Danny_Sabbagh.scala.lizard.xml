@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Danny_Sabbagh.scala:10">
+		<item name="main(...) at Datasets/Exercice2/raw/Danny_Sabbagh.scala:10">
 			<value>1</value>
 			<value>49</value>
 			<value>20</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Danny_Sabbagh.scala:62">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Danny_Sabbagh.scala:62">
 			<value>2</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Danny_Sabbagh.scala:67">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Danny_Sabbagh.scala:67">
 			<value>3</value>
 			<value>12</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Danny_Sabbagh.scala:78">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Danny_Sabbagh.scala:78">
 			<value>4</value>
 			<value>115</value>
 			<value>34</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Danny_Sabbagh.scala:202">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Danny_Sabbagh.scala:202">
 			<value>5</value>
 			<value>21</value>
 			<value>1</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Danny_Sabbagh.scala">
+		<item name="Datasets/Exercice2/raw/Danny_Sabbagh.scala">
 			<value>1</value>
 			<value>207</value>
 			<value>58</value>

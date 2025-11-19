@@ -7,62 +7,62 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:13">
+		<item name="main(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:13">
 			<value>1</value>
 			<value>20</value>
 			<value>6</value>
 		</item>
-		<item name="modeClient(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:34">
+		<item name="modeClient(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:34">
 			<value>2</value>
 			<value>46</value>
 			<value>9</value>
 		</item>
-		<item name="modeAdmin(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:88">
+		<item name="modeAdmin(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:88">
 			<value>3</value>
 			<value>27</value>
 			<value>8</value>
 		</item>
-		<item name="isValidMachine(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:118">
+		<item name="isValidMachine(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:118">
 			<value>4</value>
 			<value>4</value>
 			<value>2</value>
 		</item>
-		<item name="Stockcheck(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:122">
+		<item name="Stockcheck(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:122">
 			<value>5</value>
 			<value>4</value>
 			<value>2</value>
 		</item>
-		<item name="Stockupdate(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:126">
+		<item name="Stockupdate(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:126">
 			<value>6</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<item name="ajouterSucre(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:132">
+		<item name="ajouterSucre(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:132">
 			<value>7</value>
 			<value>23</value>
 			<value>9</value>
 		</item>
-		<item name="ajouterLait(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:155">
+		<item name="ajouterLait(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:155">
 			<value>8</value>
 			<value>23</value>
 			<value>9</value>
 		</item>
-		<item name="reapprovisionner(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:178">
+		<item name="reapprovisionner(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:178">
 			<value>9</value>
 			<value>19</value>
 			<value>2</value>
 		</item>
-		<item name="changerPin(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:201">
+		<item name="changerPin(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:201">
 			<value>10</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<item name="afficherPins(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:224">
+		<item name="afficherPins(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:224">
 			<value>11</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
-		<item name="generateTwintCode(...) at Datasets/exercice2/raw/Yukyung_Lee.scala:231">
+		<item name="generateTwintCode(...) at Datasets/Exercice2/raw/Yukyung_Lee.scala:231">
 			<value>12</value>
 			<value>4</value>
 			<value>1</value>
@@ -77,7 +77,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Yukyung_Lee.scala">
+		<item name="Datasets/Exercice2/raw/Yukyung_Lee.scala">
 			<value>1</value>
 			<value>200</value>
 			<value>55</value>

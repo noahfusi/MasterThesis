@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Sarah_de_Courten.scala:81">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Sarah_de_Courten.scala:81">
 			<value>1</value>
 			<value>131</value>
 			<value>29</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Sarah_de_Courten.scala:270">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Sarah_de_Courten.scala:270">
 			<value>2</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Sarah_de_Courten.scala:289">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Sarah_de_Courten.scala:289">
 			<value>3</value>
 			<value>14</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Sarah_de_Courten.scala:304">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Sarah_de_Courten.scala:304">
 			<value>4</value>
 			<value>19</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Sarah_de_Courten.scala:8">
+		<item name="main(...) at Datasets/Exercice2/raw/Sarah_de_Courten.scala:8">
 			<value>5</value>
 			<value>48</value>
 			<value>15</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Sarah_de_Courten.scala">
+		<item name="Datasets/Exercice2/raw/Sarah_de_Courten.scala">
 			<value>1</value>
 			<value>226</value>
 			<value>51</value>

@@ -7,37 +7,37 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="selectionMode(...) at Datasets/exercice2/raw/Patrick_Robert_Cave.scala:30">
+		<item name="selectionMode(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:30">
 			<value>1</value>
 			<value>17</value>
 			<value>7</value>
 		</item>
-		<item name="selectionMachine(...) at Datasets/exercice2/raw/Patrick_Robert_Cave.scala:47">
+		<item name="selectionMachine(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:47">
 			<value>2</value>
 			<value>18</value>
 			<value>11</value>
 		</item>
-		<item name="verificationCode(...) at Datasets/exercice2/raw/Patrick_Robert_Cave.scala:249">
+		<item name="verificationCode(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:249">
 			<value>3</value>
 			<value>26</value>
 			<value>4</value>
 		</item>
-		<item name="menuAdmin(...) at Datasets/exercice2/raw/Patrick_Robert_Cave.scala:277">
+		<item name="menuAdmin(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:277">
 			<value>4</value>
 			<value>14</value>
 			<value>5</value>
 		</item>
-		<item name="nouveauCode(...) at Datasets/exercice2/raw/Patrick_Robert_Cave.scala:291">
+		<item name="nouveauCode(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:291">
 			<value>5</value>
 			<value>17</value>
 			<value>6</value>
 		</item>
-		<item name="remplirMachine(...) at Datasets/exercice2/raw/Patrick_Robert_Cave.scala:308">
+		<item name="remplirMachine(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:308">
 			<value>6</value>
 			<value>22</value>
 			<value>4</value>
 		</item>
-		<item name="quitter(...) at Datasets/exercice2/raw/Patrick_Robert_Cave.scala:334">
+		<item name="quitter(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:334">
 			<value>7</value>
 			<value>28</value>
 			<value>7</value>
@@ -52,7 +52,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Patrick_Robert_Cave.scala">
+		<item name="Datasets/Exercice2/raw/Patrick_Robert_Cave.scala">
 			<value>1</value>
 			<value>329</value>
 			<value>44</value>

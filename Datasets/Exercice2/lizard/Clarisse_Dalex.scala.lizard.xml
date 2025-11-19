@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Clarisse_Dalex.scala:12">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Clarisse_Dalex.scala:12">
 			<value>1</value>
 			<value>22</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Clarisse_Dalex.scala:37">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Clarisse_Dalex.scala:37">
 			<value>2</value>
 			<value>30</value>
 			<value>12</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Clarisse_Dalex.scala:76">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Clarisse_Dalex.scala:76">
 			<value>3</value>
 			<value>195</value>
 			<value>43</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Clarisse_Dalex.scala:336">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Clarisse_Dalex.scala:336">
 			<value>4</value>
 			<value>29</value>
 			<value>7</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Clarisse_Dalex.scala:380">
+		<item name="main(...) at Datasets/Exercice2/raw/Clarisse_Dalex.scala:380">
 			<value>5</value>
 			<value>83</value>
 			<value>18</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Clarisse_Dalex.scala">
+		<item name="Datasets/Exercice2/raw/Clarisse_Dalex.scala">
 			<value>1</value>
 			<value>361</value>
 			<value>84</value>

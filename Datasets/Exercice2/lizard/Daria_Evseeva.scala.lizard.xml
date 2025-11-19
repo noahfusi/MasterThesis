@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Daria_Evseeva.scala:12">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Daria_Evseeva.scala:12">
 			<value>1</value>
 			<value>15</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Daria_Evseeva.scala:26">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Daria_Evseeva.scala:26">
 			<value>2</value>
 			<value>8</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Daria_Evseeva.scala:33">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Daria_Evseeva.scala:33">
 			<value>3</value>
 			<value>129</value>
 			<value>33</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Daria_Evseeva.scala:162">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Daria_Evseeva.scala:162">
 			<value>4</value>
 			<value>22</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Daria_Evseeva.scala:183">
+		<item name="main(...) at Datasets/Exercice2/raw/Daria_Evseeva.scala:183">
 			<value>5</value>
 			<value>44</value>
 			<value>16</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Daria_Evseeva.scala">
+		<item name="Datasets/Exercice2/raw/Daria_Evseeva.scala">
 			<value>1</value>
 			<value>225</value>
 			<value>60</value>

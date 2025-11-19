@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:6">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:6">
 			<value>1</value>
 			<value>23</value>
 			<value>4</value>
 		</item>
-		<item name="choixmachine(...) at Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:30">
+		<item name="choixmachine(...) at Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:30">
 			<value>2</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:40">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:40">
 			<value>3</value>
 			<value>12</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:53">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:53">
 			<value>4</value>
 			<value>423</value>
 			<value>80</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:547">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:547">
 			<value>5</value>
 			<value>21</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:569">
+		<item name="main(...) at Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:569">
 			<value>6</value>
 			<value>50</value>
 			<value>17</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala">
+		<item name="Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala">
 			<value>1</value>
 			<value>537</value>
 			<value>107</value>
@@ -68,48 +68,48 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:87 ~ 112
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:178 ~ 202
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:87 ~ 112
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:178 ~ 202
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:178 ~ 202
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:178 ~ 202
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:272 ~ 295
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:358 ~ 382
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:444 ~ 464
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:206 ~ 220
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:299 ~ 315
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:386 ~ 401
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:468 ~ 482
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:206 ~ 220
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:299 ~ 315
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:386 ~ 401
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:468 ~ 482
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:299 ~ 321
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:386 ~ 407
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:468 ~ 486
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:299 ~ 321
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:386 ~ 407
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:468 ~ 486
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:298 ~ 321
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:385 ~ 407
-Datasets/exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:467 ~ 486
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:298 ~ 321
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:385 ~ 407
+Datasets/Exercice2/raw/Alexandre_Eduardo_de_Freitas_Pereira.scala:467 ~ 486
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 57.69%

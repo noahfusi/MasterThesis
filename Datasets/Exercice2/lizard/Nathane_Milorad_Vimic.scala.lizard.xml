@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:5">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:5">
 			<value>1</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:15">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:15">
 			<value>2</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:32">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:32">
 			<value>3</value>
 			<value>205</value>
 			<value>57</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:242">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:242">
 			<value>4</value>
 			<value>18</value>
 			<value>1</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:260">
+		<item name="main(...) at Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:260">
 			<value>5</value>
 			<value>136</value>
 			<value>62</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala">
+		<item name="Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala">
 			<value>1</value>
 			<value>383</value>
 			<value>125</value>
@@ -63,15 +63,15 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:317 ~ 335
-Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:342 ~ 360
-Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:366 ~ 384
+Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:317 ~ 335
+Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:342 ~ 360
+Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:366 ~ 384
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:342 ~ 362
-Datasets/exercice2/raw/Nathane_Milorad_Vimic.scala:366 ~ 386
+Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:342 ~ 362
+Datasets/Exercice2/raw/Nathane_Milorad_Vimic.scala:366 ~ 386
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 21.47%

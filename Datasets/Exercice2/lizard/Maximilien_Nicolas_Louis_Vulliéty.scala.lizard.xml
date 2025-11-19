@@ -7,67 +7,67 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:13">
+		<item name="main(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:13">
 			<value>1</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<item name="mainMenu(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:18">
+		<item name="mainMenu(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:18">
 			<value>2</value>
 			<value>19</value>
 			<value>6</value>
 		</item>
-		<item name="selectMachine(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:38">
+		<item name="selectMachine(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:38">
 			<value>3</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:46">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:46">
 			<value>4</value>
 			<value>46</value>
 			<value>12</value>
 		</item>
-		<item name="latteSizeSelection(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:97">
+		<item name="latteSizeSelection(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:97">
 			<value>5</value>
 			<value>8</value>
 			<value>3</value>
 		</item>
-		<item name="adminMenu(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:105">
+		<item name="adminMenu(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:105">
 			<value>6</value>
 			<value>8</value>
 			<value>3</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:113">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:113">
 			<value>7</value>
 			<value>13</value>
 			<value>1</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:126">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:126">
 			<value>8</value>
 			<value>14</value>
 			<value>6</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:140">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:140">
 			<value>9</value>
 			<value>17</value>
 			<value>4</value>
 		</item>
-		<item name="generateTwintCode(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:157">
+		<item name="generateTwintCode(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:157">
 			<value>10</value>
 			<value>2</value>
 			<value>1</value>
 		</item>
-		<item name="readIntInput(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:159">
+		<item name="readIntInput(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:159">
 			<value>11</value>
 			<value>11</value>
 			<value>9</value>
 		</item>
-		<item name="readPositiveInt(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:170">
+		<item name="readPositiveInt(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:170">
 			<value>12</value>
 			<value>10</value>
 			<value>5</value>
 		</item>
-		<item name="readPositiveDouble(...) at Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:180">
+		<item name="readPositiveDouble(...) at Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala:180">
 			<value>13</value>
 			<value>10</value>
 			<value>6</value>
@@ -82,7 +82,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala">
+		<item name="Datasets/Exercice2/raw/Maximilien_Nicolas_Louis_Vulliéty.scala">
 			<value>1</value>
 			<value>168</value>
 			<value>58</value>

@@ -7,47 +7,47 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="choose(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:46">
+		<item name="choose(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:46">
 			<value>1</value>
 			<value>8</value>
 			<value>4</value>
 		</item>
-		<item name="calculation(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:54">
+		<item name="calculation(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:54">
 			<value>2</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
-		<item name="calculation_sup(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:65">
+		<item name="calculation_sup(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:65">
 			<value>3</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:77">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:77">
 			<value>4</value>
 			<value>21</value>
 			<value>8</value>
 		</item>
-		<item name="error_print(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:98">
+		<item name="error_print(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:98">
 			<value>5</value>
 			<value>9</value>
 			<value>6</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:107">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:107">
 			<value>6</value>
 			<value>9</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:116">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:116">
 			<value>7</value>
 			<value>127</value>
 			<value>60</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:251">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:251">
 			<value>8</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Piotr_Strunilin.scala:4">
+		<item name="main(...) at Datasets/Exercice2/raw/Piotr_Strunilin.scala:4">
 			<value>9</value>
 			<value>60</value>
 			<value>12</value>
@@ -62,7 +62,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Piotr_Strunilin.scala">
+		<item name="Datasets/Exercice2/raw/Piotr_Strunilin.scala">
 			<value>1</value>
 			<value>263</value>
 			<value>98</value>

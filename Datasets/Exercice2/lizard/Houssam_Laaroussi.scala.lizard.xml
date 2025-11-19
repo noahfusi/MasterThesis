@@ -7,32 +7,32 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Houssam_Laaroussi.scala:10">
+		<item name="main(...) at Datasets/Exercice2/raw/Houssam_Laaroussi.scala:10">
 			<value>1</value>
 			<value>22</value>
 			<value>5</value>
 		</item>
-		<item name="modeClient(...) at Datasets/exercice2/raw/Houssam_Laaroussi.scala:35">
+		<item name="modeClient(...) at Datasets/Exercice2/raw/Houssam_Laaroussi.scala:35">
 			<value>2</value>
 			<value>99</value>
 			<value>42</value>
 		</item>
-		<item name="modeAdmin(...) at Datasets/exercice2/raw/Houssam_Laaroussi.scala:144">
+		<item name="modeAdmin(...) at Datasets/Exercice2/raw/Houssam_Laaroussi.scala:144">
 			<value>3</value>
 			<value>34</value>
 			<value>6</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Houssam_Laaroussi.scala:178">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Houssam_Laaroussi.scala:178">
 			<value>4</value>
 			<value>16</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Houssam_Laaroussi.scala:194">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Houssam_Laaroussi.scala:194">
 			<value>5</value>
 			<value>11</value>
 			<value>3</value>
 		</item>
-		<item name="traiterCommande(...) at Datasets/exercice2/raw/Houssam_Laaroussi.scala:205">
+		<item name="traiterCommande(...) at Datasets/Exercice2/raw/Houssam_Laaroussi.scala:205">
 			<value>6</value>
 			<value>22</value>
 			<value>8</value>
@@ -47,7 +47,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Houssam_Laaroussi.scala">
+		<item name="Datasets/Exercice2/raw/Houssam_Laaroussi.scala">
 			<value>1</value>
 			<value>206</value>
 			<value>67</value>

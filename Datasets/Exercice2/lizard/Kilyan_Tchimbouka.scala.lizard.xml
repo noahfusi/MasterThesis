@@ -7,47 +7,47 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:17">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:17">
 			<value>1</value>
 			<value>22</value>
 			<value>5</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:42">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:42">
 			<value>2</value>
 			<value>13</value>
 			<value>3</value>
 		</item>
-		<item name="numberPin(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:57">
+		<item name="numberPin(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:57">
 			<value>3</value>
 			<value>4</value>
 			<value>3</value>
 		</item>
-		<item name="TwintCode(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:206">
+		<item name="TwintCode(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:206">
 			<value>4</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="Prepboisson(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:219">
+		<item name="Prepboisson(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:219">
 			<value>5</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:63">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:63">
 			<value>6</value>
 			<value>150</value>
 			<value>33</value>
 		</item>
-		<item name="adminMode(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:278">
+		<item name="adminMode(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:278">
 			<value>7</value>
 			<value>22</value>
 			<value>6</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:302">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:302">
 			<value>8</value>
 			<value>36</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Kilyan_Tchimbouka.scala:7">
+		<item name="main(...) at Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala:7">
 			<value>9</value>
 			<value>49</value>
 			<value>9</value>
@@ -62,7 +62,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Kilyan_Tchimbouka.scala">
+		<item name="Datasets/Exercice2/raw/Kilyan_Tchimbouka.scala">
 			<value>1</value>
 			<value>307</value>
 			<value>67</value>

@@ -7,37 +7,37 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:54">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:54">
 			<value>1</value>
 			<value>20</value>
 			<value>5</value>
 		</item>
-		<item name="validateStock(...) at Datasets/exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:75">
+		<item name="validateStock(...) at Datasets/Exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:75">
 			<value>2</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:86">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:86">
 			<value>3</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:102">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:102">
 			<value>4</value>
 			<value>175</value>
 			<value>37</value>
 		</item>
-		<item name="serveAdmin(...) at Datasets/exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:316">
+		<item name="serveAdmin(...) at Datasets/Exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:316">
 			<value>5</value>
 			<value>23</value>
 			<value>6</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:341">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:341">
 			<value>6</value>
 			<value>19</value>
 			<value>1</value>
 		</item>
-		<item name="selectionMachine(...) at Datasets/exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:44">
+		<item name="selectionMachine(...) at Datasets/Exercice2/raw/Pablo_Facundo_Maiz_Calle.scala:44">
 			<value>7</value>
 			<value>9</value>
 			<value>6</value>
@@ -52,7 +52,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Pablo_Facundo_Maiz_Calle.scala">
+		<item name="Datasets/Exercice2/raw/Pablo_Facundo_Maiz_Calle.scala">
 			<value>1</value>
 			<value>298</value>
 			<value>60</value>

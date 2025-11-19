@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:13">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:13">
 			<value>1</value>
 			<value>18</value>
 			<value>5</value>
 		</item>
-		<item name="updatePIN(...) at Datasets/exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:31">
+		<item name="updatePIN(...) at Datasets/Exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:31">
 			<value>2</value>
 			<value>12</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:43">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:43">
 			<value>3</value>
 			<value>140</value>
 			<value>26</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:201">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:201">
 			<value>4</value>
 			<value>19</value>
 			<value>4</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:222">
+		<item name="main(...) at Datasets/Exercice2/raw/Rita_Vanessa_Bispo_Alves.scala:222">
 			<value>5</value>
 			<value>50</value>
 			<value>14</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Rita_Vanessa_Bispo_Alves.scala">
+		<item name="Datasets/Exercice2/raw/Rita_Vanessa_Bispo_Alves.scala">
 			<value>1</value>
 			<value>243</value>
 			<value>53</value>

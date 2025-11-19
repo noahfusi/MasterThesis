@@ -7,72 +7,72 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:17">
+		<item name="main(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:17">
 			<value>1</value>
 			<value>23</value>
 			<value>5</value>
 		</item>
-		<item name="modeClient(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:43">
+		<item name="modeClient(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:43">
 			<value>2</value>
 			<value>9</value>
 			<value>3</value>
 		</item>
-		<item name="modeAdmin(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:56">
+		<item name="modeAdmin(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:56">
 			<value>3</value>
 			<value>29</value>
 			<value>8</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:90">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:90">
 			<value>4</value>
 			<value>18</value>
 			<value>3</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:110">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:110">
 			<value>5</value>
 			<value>13</value>
 			<value>3</value>
 		</item>
-		<item name="genererCodeTwint(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:126">
+		<item name="genererCodeTwint(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:126">
 			<value>6</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<item name="preparerExpresso(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:138">
+		<item name="preparerExpresso(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:138">
 			<value>7</value>
 			<value>57</value>
 			<value>10</value>
 		</item>
-		<item name="preparerCappuccino(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:205">
+		<item name="preparerCappuccino(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:205">
 			<value>8</value>
 			<value>92</value>
 			<value>23</value>
 		</item>
-		<item name="preparerLatte(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:309">
+		<item name="preparerLatte(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:309">
 			<value>9</value>
 			<value>119</value>
 			<value>32</value>
 		</item>
-		<item name="verifierStock(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:443">
+		<item name="verifierStock(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:443">
 			<value>10</value>
 			<value>16</value>
 			<value>4</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:461">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:461">
 			<value>11</value>
 			<value>23</value>
 			<value>8</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:486">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:486">
 			<value>12</value>
 			<value>17</value>
 			<value>1</value>
 		</item>
-		<item name="viderStock(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:506">
+		<item name="viderStock(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:506">
 			<value>13</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<item name="voirStock(...) at Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:513">
+		<item name="voirStock(...) at Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:513">
 			<value>14</value>
 			<value>7</value>
 			<value>1</value>
@@ -87,7 +87,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala">
+		<item name="Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala">
 			<value>1</value>
 			<value>435</value>
 			<value>104</value>
@@ -108,8 +108,8 @@ Duplicates
 ===================================
 Duplicate block:
 --------------------------
-Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:224 ~ 254
-Datasets/exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:345 ~ 373
+Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:224 ~ 254
+Datasets/Exercice2/raw/Carlos_Fernando_Lezano_Orias.scala:345 ~ 373
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Total duplicate rate: 12.01%

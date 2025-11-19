@@ -7,42 +7,42 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="main(...) at Datasets/exercice2/raw/Erwann_Assi.scala:22">
+		<item name="main(...) at Datasets/Exercice2/raw/Erwann_Assi.scala:22">
 			<value>1</value>
 			<value>44</value>
 			<value>11</value>
 		</item>
-		<item name="selectMachine(...) at Datasets/exercice2/raw/Erwann_Assi.scala:118">
+		<item name="selectMachine(...) at Datasets/Exercice2/raw/Erwann_Assi.scala:118">
 			<value>2</value>
 			<value>23</value>
 			<value>10</value>
 		</item>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Erwann_Assi.scala:164">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Erwann_Assi.scala:164">
 			<value>3</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
-		<item name="adminMenu(...) at Datasets/exercice2/raw/Erwann_Assi.scala:200">
+		<item name="adminMenu(...) at Datasets/Exercice2/raw/Erwann_Assi.scala:200">
 			<value>4</value>
 			<value>27</value>
 			<value>8</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Erwann_Assi.scala:260">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Erwann_Assi.scala:260">
 			<value>5</value>
 			<value>45</value>
 			<value>16</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Erwann_Assi.scala:358">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Erwann_Assi.scala:358">
 			<value>6</value>
 			<value>14</value>
 			<value>5</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Erwann_Assi.scala:386">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Erwann_Assi.scala:386">
 			<value>7</value>
 			<value>84</value>
 			<value>22</value>
 		</item>
-		<item name="isAllDigits(...) at Datasets/exercice2/raw/Erwann_Assi.scala:570">
+		<item name="isAllDigits(...) at Datasets/Exercice2/raw/Erwann_Assi.scala:570">
 			<value>8</value>
 			<value>9</value>
 			<value>4</value>
@@ -57,7 +57,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Erwann_Assi.scala">
+		<item name="Datasets/Exercice2/raw/Erwann_Assi.scala">
 			<value>1</value>
 			<value>263</value>
 			<value>79</value>

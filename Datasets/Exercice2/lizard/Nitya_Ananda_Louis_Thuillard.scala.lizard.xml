@@ -7,27 +7,27 @@
 			<label>NCSS</label>
 			<label>CCN</label>
 		</labels>
-		<item name="validatePin(...) at Datasets/exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:7">
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:7">
 			<value>1</value>
 			<value>22</value>
 			<value>4</value>
 		</item>
-		<item name="updatePin(...) at Datasets/exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:29">
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:29">
 			<value>2</value>
 			<value>12</value>
 			<value>2</value>
 		</item>
-		<item name="serveClient(...) at Datasets/exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:41">
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:41">
 			<value>3</value>
 			<value>200</value>
 			<value>59</value>
 		</item>
-		<item name="restockMachine(...) at Datasets/exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:246">
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:246">
 			<value>4</value>
 			<value>28</value>
 			<value>6</value>
 		</item>
-		<item name="main(...) at Datasets/exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:275">
+		<item name="main(...) at Datasets/Exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala:275">
 			<value>5</value>
 			<value>72</value>
 			<value>19</value>
@@ -42,7 +42,7 @@
 			<label>CCN</label>
 			<label>Functions</label>
 		</labels>
-		<item name="Datasets/exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala">
+		<item name="Datasets/Exercice2/raw/Nitya_Ananda_Louis_Thuillard.scala">
 			<value>1</value>
 			<value>334</value>
 			<value>90</value>
