@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:16">
+			<value>1</value>
+			<value>7</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:23">
+			<value>2</value>
+			<value>7</value>
+			<value>8</value>
+		</item>
+		<item name="loadCSV(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:32">
+			<value>3</value>
+			<value>35</value>
+			<value>6</value>
+		</item>
+		<item name="saveCSV(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:75">
+			<value>4</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="demanderMachineID(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:103">
+			<value>5</value>
+			<value>23</value>
+			<value>6</value>
+		</item>
+		<item name="demanderChiffre(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:129">
+			<value>6</value>
+			<value>16</value>
+			<value>3</value>
+		</item>
+		<item name="gestiondestock(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:194">
+			<value>7</value>
+			<value>19</value>
+			<value>1</value>
+		</item>
+		<item name="generateRandomCode(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:214">
+			<value>8</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala:220">
+			<value>9</value>
+			<value>116</value>
+			<value>53</value>
+		</item>
+		<average label="NCSS" value="26.666666666666668"/>
+		<average label="CCN" value="9.444444444444445"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Stanislas_Zacky_Bechis.scala">
+			<value>1</value>
+			<value>329</value>
+			<value>85</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="329.0"/>
+		<average label="CCN" value="85.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="329"/>
+		<sum label="CCN" value="85"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="26.666666666666668"/>
+		<average label="CCN" value="9.444444444444445"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:34">
+			<value>1</value>
+			<value>10</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:46">
+			<value>2</value>
+			<value>20</value>
+			<value>7</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:73">
+			<value>3</value>
+			<value>22</value>
+			<value>4</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:100">
+			<value>4</value>
+			<value>17</value>
+			<value>4</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:122">
+			<value>5</value>
+			<value>104</value>
+			<value>20</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:290">
+			<value>6</value>
+			<value>509</value>
+			<value>129</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:929">
+			<value>7</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:945">
+			<value>8</value>
+			<value>20</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:968">
+			<value>9</value>
+			<value>11</value>
+			<value>2</value>
+		</item>
+		<average label="NCSS" value="80.0"/>
+		<average label="CCN" value="19.444444444444443"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala">
+			<value>1</value>
+			<value>740</value>
+			<value>175</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="740.0"/>
+		<average label="CCN" value="175.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="740"/>
+		<sum label="CCN" value="175"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="80.0"/>
+		<average label="CCN" value="19.444444444444443"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:326 ~ 343
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:643 ~ 660
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:346 ~ 372
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:664 ~ 690
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:372 ~ 402
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:691 ~ 722
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:402 ~ 418
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:747 ~ 762
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:405 ~ 418
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:430 ~ 443
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:455 ~ 468
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:724 ~ 737
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:749 ~ 762
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:514 ~ 530
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:836 ~ 851
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:519 ~ 530
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:544 ~ 555
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:569 ~ 580
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:815 ~ 826
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:840 ~ 851
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:600 ~ 608
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:865 ~ 873
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:877 ~ 885
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:618 ~ 641
+Datasets/Exercice3/raw/Jenna_Karen_Anaïs_Weber.scala:897 ~ 924
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 48.55%
+Total unique rate: 80.58%

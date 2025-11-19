@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:8">
+			<value>1</value>
+			<value>7</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:15">
+			<value>2</value>
+			<value>7</value>
+			<value>8</value>
+		</item>
+		<item name="prepareDrink(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:22">
+			<value>3</value>
+			<value>22</value>
+			<value>10</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:63">
+			<value>4</value>
+			<value>21</value>
+			<value>6</value>
+		</item>
+		<item name="clientMode(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:84">
+			<value>5</value>
+			<value>39</value>
+			<value>14</value>
+		</item>
+		<item name="adminMode(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:127">
+			<value>6</value>
+			<value>20</value>
+			<value>8</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:147">
+			<value>7</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="selectMachine(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:157">
+			<value>8</value>
+			<value>12</value>
+			<value>3</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:169">
+			<value>9</value>
+			<value>24</value>
+			<value>6</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:193">
+			<value>10</value>
+			<value>16</value>
+			<value>4</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:209">
+			<value>11</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala:224">
+			<value>12</value>
+			<value>11</value>
+			<value>2</value>
+		</item>
+		<average label="NCSS" value="17.0"/>
+		<average label="CCN" value="5.916666666666667"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Alexis_Jérémie_Labrosse.scala">
+			<value>1</value>
+			<value>210</value>
+			<value>71</value>
+			<value>12</value>
+		</item>
+		<average label="NCSS" value="210.0"/>
+		<average label="CCN" value="71.0"/>
+		<average label="Functions" value="12.0"/>
+		<sum label="NCSS" value="210"/>
+		<sum label="CCN" value="71"/>
+		<sum label="Functions" value="12"/>
+		<average label="NCSS" value="17.0"/>
+		<average label="CCN" value="5.916666666666667"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

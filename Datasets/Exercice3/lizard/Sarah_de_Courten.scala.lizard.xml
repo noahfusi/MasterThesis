@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:16">
+			<value>1</value>
+			<value>10</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:26">
+			<value>2</value>
+			<value>27</value>
+			<value>7</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:62">
+			<value>3</value>
+			<value>27</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:94">
+			<value>4</value>
+			<value>16</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:191">
+			<value>5</value>
+			<value>131</value>
+			<value>29</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:380">
+			<value>6</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:399">
+			<value>7</value>
+			<value>14</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:414">
+			<value>8</value>
+			<value>19</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Sarah_de_Courten.scala:55">
+			<value>9</value>
+			<value>61</value>
+			<value>16</value>
+		</item>
+		<average label="NCSS" value="35.55555555555556"/>
+		<average label="CCN" value="7.888888888888889"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Sarah_de_Courten.scala">
+			<value>1</value>
+			<value>322</value>
+			<value>71</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="322.0"/>
+		<average label="CCN" value="71.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="322"/>
+		<sum label="CCN" value="71"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="35.55555555555556"/>
+		<average label="CCN" value="7.888888888888889"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.77%

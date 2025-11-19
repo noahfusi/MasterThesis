@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:10">
+			<value>1</value>
+			<value>9</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:20">
+			<value>2</value>
+			<value>17</value>
+			<value>8</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:46">
+			<value>3</value>
+			<value>26</value>
+			<value>6</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:75">
+			<value>4</value>
+			<value>18</value>
+			<value>4</value>
+		</item>
+		<item name="afficherMenu(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:94">
+			<value>5</value>
+			<value>19</value>
+			<value>6</value>
+		</item>
+		<item name="modeClient(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:115">
+			<value>6</value>
+			<value>7</value>
+			<value>2</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:124">
+			<value>7</value>
+			<value>17</value>
+			<value>7</value>
+		</item>
+		<item name="selectMachine(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:143">
+			<value>8</value>
+			<value>10</value>
+			<value>3</value>
+		</item>
+		<item name="validPin(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:154">
+			<value>9</value>
+			<value>11</value>
+			<value>2</value>
+		</item>
+		<item name="affichageStocks(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:166">
+			<value>10</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<item name="reapprovisionnerStocks(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:172">
+			<value>11</value>
+			<value>8</value>
+			<value>1</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:181">
+			<value>12</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="lireEntreeValide(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:197">
+			<value>13</value>
+			<value>16</value>
+			<value>4</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala:214">
+			<value>14</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="13.214285714285714"/>
+		<average label="CCN" value="3.7857142857142856"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Rhode_Kanda_Bolenge.scala">
+			<value>1</value>
+			<value>181</value>
+			<value>53</value>
+			<value>14</value>
+		</item>
+		<average label="NCSS" value="181.0"/>
+		<average label="CCN" value="53.0"/>
+		<average label="Functions" value="14.0"/>
+		<sum label="NCSS" value="181"/>
+		<sum label="CCN" value="53"/>
+		<sum label="Functions" value="14"/>
+		<average label="NCSS" value="13.214285714285714"/>
+		<average label="CCN" value="3.7857142857142856"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

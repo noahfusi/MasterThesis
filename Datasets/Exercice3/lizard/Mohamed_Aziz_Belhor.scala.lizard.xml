@@ -1,0 +1,140 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:8">
+			<value>1</value>
+			<value>9</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:17">
+			<value>2</value>
+			<value>15</value>
+			<value>8</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:38">
+			<value>3</value>
+			<value>45</value>
+			<value>10</value>
+		</item>
+		<item name="lireChoixValide(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:86">
+			<value>4</value>
+			<value>21</value>
+			<value>6</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:107">
+			<value>5</value>
+			<value>22</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:131">
+			<value>6</value>
+			<value>13</value>
+			<value>6</value>
+		</item>
+		<item name="verifierStocks(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:145">
+			<value>7</value>
+			<value>5</value>
+			<value>3</value>
+		</item>
+		<item name="mettreAJourStocks(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:150">
+			<value>8</value>
+			<value>7</value>
+			<value>3</value>
+		</item>
+		<item name="gererNiveauSucre(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:157">
+			<value>9</value>
+			<value>15</value>
+			<value>5</value>
+		</item>
+		<item name="gererLaitSupplementaire(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:173">
+			<value>10</value>
+			<value>14</value>
+			<value>2</value>
+		</item>
+		<item name="traiterPaiement(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:188">
+			<value>11</value>
+			<value>11</value>
+			<value>1</value>
+		</item>
+		<item name="preparerBoisson(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:199">
+			<value>12</value>
+			<value>6</value>
+			<value>1</value>
+		</item>
+		<item name="preparerExpresso(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:205">
+			<value>13</value>
+			<value>17</value>
+			<value>3</value>
+		</item>
+		<item name="preparerCappuccino(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:223">
+			<value>14</value>
+			<value>19</value>
+			<value>3</value>
+		</item>
+		<item name="preparerLatte(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:244">
+			<value>15</value>
+			<value>26</value>
+			<value>6</value>
+		</item>
+		<item name="afficherErreurStock(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:273">
+			<value>16</value>
+			<value>8</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:281">
+			<value>17</value>
+			<value>13</value>
+			<value>4</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:295">
+			<value>18</value>
+			<value>22</value>
+			<value>1</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:321">
+			<value>19</value>
+			<value>41</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala:370">
+			<value>20</value>
+			<value>18</value>
+			<value>3</value>
+		</item>
+		<average label="NCSS" value="17.35"/>
+		<average label="CCN" value="4.2"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Mohamed_Aziz_Belhor.scala">
+			<value>1</value>
+			<value>339</value>
+			<value>84</value>
+			<value>20</value>
+		</item>
+		<average label="NCSS" value="339.0"/>
+		<average label="CCN" value="84.0"/>
+		<average label="Functions" value="20.0"/>
+		<sum label="NCSS" value="339"/>
+		<sum label="CCN" value="84"/>
+		<sum label="Functions" value="20"/>
+		<average label="NCSS" value="17.35"/>
+		<average label="CCN" value="4.2"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 98.17%

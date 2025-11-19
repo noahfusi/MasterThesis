@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:11">
+			<value>1</value>
+			<value>13</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:24">
+			<value>2</value>
+			<value>17</value>
+			<value>7</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:43">
+			<value>3</value>
+			<value>19</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:63">
+			<value>4</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:79">
+			<value>5</value>
+			<value>23</value>
+			<value>2</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:106">
+			<value>6</value>
+			<value>167</value>
+			<value>50</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:343">
+			<value>7</value>
+			<value>21</value>
+			<value>4</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:365">
+			<value>8</value>
+			<value>16</value>
+			<value>3</value>
+		</item>
+		<item name="selectMachineId(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:385">
+			<value>9</value>
+			<value>13</value>
+			<value>6</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala:339">
+			<value>10</value>
+			<value>49</value>
+			<value>12</value>
+		</item>
+		<average label="NCSS" value="35.3"/>
+		<average label="CCN" value="9.4"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Loredana_Tamazlicaru.scala">
+			<value>1</value>
+			<value>354</value>
+			<value>94</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="354.0"/>
+		<average label="CCN" value="94.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="354"/>
+		<sum label="CCN" value="94"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="35.3"/>
+		<average label="CCN" value="9.4"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.34%

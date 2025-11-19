@@ -1,0 +1,115 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="imprimerCSV(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:9">
+			<value>1</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="affichage(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:13">
+			<value>2</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<item name="ajoutStock(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:18">
+			<value>3</value>
+			<value>10</value>
+			<value>4</value>
+		</item>
+		<item name="retirerStock(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:28">
+			<value>4</value>
+			<value>15</value>
+			<value>7</value>
+		</item>
+		<item name="ecritureCSV(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:43">
+			<value>5</value>
+			<value>21</value>
+			<value>4</value>
+		</item>
+		<item name="lectureCSV(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:65">
+			<value>6</value>
+			<value>27</value>
+			<value>5</value>
+		</item>
+		<item name="SelectionMode(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:103">
+			<value>7</value>
+			<value>16</value>
+			<value>6</value>
+		</item>
+		<item name="SelectionMachine(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:119">
+			<value>8</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<item name="ServeClient(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:134">
+			<value>9</value>
+			<value>170</value>
+			<value>51</value>
+		</item>
+		<item name="VerificationCode(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:310">
+			<value>10</value>
+			<value>25</value>
+			<value>5</value>
+		</item>
+		<item name="menuAdmin(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:337">
+			<value>11</value>
+			<value>14</value>
+			<value>6</value>
+		</item>
+		<item name="NouveauCode(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:351">
+			<value>12</value>
+			<value>15</value>
+			<value>6</value>
+		</item>
+		<item name="RemplirMachine(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:367">
+			<value>13</value>
+			<value>24</value>
+			<value>4</value>
+		</item>
+		<item name="Quitter(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:392">
+			<value>14</value>
+			<value>5</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Amy_Liana_Mautone.scala:97">
+			<value>15</value>
+			<value>35</value>
+			<value>8</value>
+		</item>
+		<average label="NCSS" value="26.733333333333334"/>
+		<average label="CCN" value="7.533333333333333"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Amy_Liana_Mautone.scala">
+			<value>1</value>
+			<value>397</value>
+			<value>113</value>
+			<value>15</value>
+		</item>
+		<average label="NCSS" value="397.0"/>
+		<average label="CCN" value="113.0"/>
+		<average label="Functions" value="15.0"/>
+		<sum label="NCSS" value="397"/>
+		<sum label="CCN" value="113"/>
+		<sum label="Functions" value="15"/>
+		<average label="NCSS" value="26.733333333333334"/>
+		<average label="CCN" value="7.533333333333333"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

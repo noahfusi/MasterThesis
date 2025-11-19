@@ -1,0 +1,1794 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:43">
+			<value>1</value>
+			<value>26</value>
+			<value>14</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:69">
+			<value>2</value>
+			<value>485</value>
+			<value>649</value>
+		</item>
+		<item name="affichage(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:562">
+			<value>3</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="imprimerCSV(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:566">
+			<value>4</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:573">
+			<value>5</value>
+			<value>829</value>
+			<value>687</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1441">
+			<value>6</value>
+			<value>27</value>
+			<value>4</value>
+		</item>
+		<item name="saveCSV(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1472">
+			<value>7</value>
+			<value>8</value>
+			<value>2</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1480">
+			<value>8</value>
+			<value>7</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1487">
+			<value>9</value>
+			<value>8</value>
+			<value>3</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1495">
+			<value>10</value>
+			<value>60</value>
+			<value>35</value>
+		</item>
+		<average label="NCSS" value="145.8"/>
+		<average label="CCN" value="139.8"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala">
+			<value>1</value>
+			<value>1487</value>
+			<value>1398</value>
+			<value>10</value>
+		</item>
+		<average label="NCSS" value="1487.0"/>
+		<average label="CCN" value="1398.0"/>
+		<average label="Functions" value="10.0"/>
+		<sum label="NCSS" value="1487"/>
+		<sum label="CCN" value="1398"/>
+		<sum label="Functions" value="10"/>
+		<average label="NCSS" value="145.8"/>
+		<average label="CCN" value="139.8"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:73 ~ 78
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:78 ~ 83
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:83 ~ 88
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:90 ~ 94
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:93 ~ 97
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:96 ~ 100
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:99 ~ 103
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:90 ~ 95
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:93 ~ 98
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:96 ~ 101
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:158 ~ 161
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:161 ~ 164
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:164 ~ 167
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:167 ~ 170
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:170 ~ 173
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:173 ~ 176
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:176 ~ 179
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:179 ~ 182
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:100 ~ 106
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:103 ~ 109
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:106 ~ 112
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:109 ~ 112
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:182 ~ 185
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:185 ~ 188
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:188 ~ 191
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:109 ~ 112
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:158 ~ 161
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:161 ~ 164
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:164 ~ 167
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:167 ~ 170
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:170 ~ 173
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:173 ~ 176
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:176 ~ 179
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:188 ~ 191
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:191 ~ 194
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:194 ~ 197
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:197 ~ 200
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:200 ~ 203
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:188 ~ 191
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:191 ~ 194
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:194 ~ 197
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:197 ~ 200
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:200 ~ 203
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:203 ~ 206
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:206 ~ 209
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:209 ~ 212
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:200 ~ 203
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:203 ~ 206
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:206 ~ 209
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:209 ~ 212
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:116 ~ 121
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:122 ~ 127
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:128 ~ 133
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:139 ~ 144
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:145 ~ 150
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:151 ~ 156
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:135 ~ 138
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:470 ~ 473
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:220 ~ 226
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:226 ~ 232
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:232 ~ 238
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:117 ~ 121
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:123 ~ 127
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:129 ~ 133
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:340 ~ 344
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:346 ~ 350
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:352 ~ 356
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:452 ~ 456
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:458 ~ 462
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:464 ~ 468
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:335 ~ 340
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:447 ~ 452
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:475 ~ 481
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:481 ~ 487
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:487 ~ 493
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:340 ~ 346
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:346 ~ 352
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:352 ~ 358
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:452 ~ 458
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:458 ~ 464
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:464 ~ 470
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:140 ~ 144
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:146 ~ 150
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:152 ~ 156
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:243 ~ 247
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:249 ~ 253
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 259
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:363 ~ 367
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:369 ~ 373
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 379
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:238 ~ 243
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:358 ~ 363
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:152 ~ 158
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:243 ~ 249
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:249 ~ 255
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 261
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:363 ~ 369
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:369 ~ 375
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 381
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:243 ~ 249
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:249 ~ 255
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 261
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:363 ~ 369
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:369 ~ 375
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 381
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 335
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 447
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:112 ~ 115
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:215 ~ 218
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:335 ~ 338
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:447 ~ 450
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:117 ~ 121
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:123 ~ 127
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:129 ~ 133
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:220 ~ 224
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:226 ~ 230
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:232 ~ 236
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:340 ~ 344
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:346 ~ 350
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:352 ~ 356
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:452 ~ 456
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:458 ~ 462
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:464 ~ 468
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:215 ~ 220
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:335 ~ 340
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:447 ~ 452
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:220 ~ 226
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:226 ~ 232
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:232 ~ 238
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:340 ~ 346
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:346 ~ 352
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:352 ~ 358
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:452 ~ 458
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:458 ~ 464
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:464 ~ 470
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:113 ~ 117
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:119 ~ 123
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:125 ~ 129
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:131 ~ 135
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:113 ~ 117
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:119 ~ 123
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:125 ~ 129
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:115 ~ 117
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:121 ~ 123
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:127 ~ 129
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:133 ~ 135
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:138 ~ 140
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:144 ~ 146
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:150 ~ 152
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:156 ~ 158
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:115 ~ 117
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:121 ~ 123
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:127 ~ 129
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:133 ~ 135
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:138 ~ 140
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:144 ~ 146
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:150 ~ 152
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:115 ~ 117
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:121 ~ 123
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:127 ~ 129
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:138 ~ 140
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:144 ~ 146
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:150 ~ 152
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:138 ~ 143
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:144 ~ 149
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:150 ~ 155
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:117 ~ 117
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:123 ~ 123
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:129 ~ 129
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:140 ~ 140
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:146 ~ 146
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:152 ~ 152
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:238 ~ 238
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:243 ~ 243
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:249 ~ 249
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 255
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:335 ~ 335
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:340 ~ 340
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:346 ~ 346
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:352 ~ 352
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:358 ~ 358
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:363 ~ 363
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:369 ~ 369
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 375
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:447 ~ 447
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:452 ~ 452
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:458 ~ 458
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:464 ~ 464
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:140 ~ 143
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:146 ~ 149
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:152 ~ 155
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:243 ~ 246
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:249 ~ 252
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 258
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:363 ~ 366
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:369 ~ 372
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 378
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:475 ~ 478
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:481 ~ 484
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:487 ~ 490
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:243 ~ 249
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:249 ~ 255
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 261
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:363 ~ 369
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:369 ~ 375
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 381
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:475 ~ 481
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:481 ~ 487
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:487 ~ 493
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 321
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 435
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:487 ~ 547
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:135 ~ 135
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:470 ~ 470
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:475 ~ 475
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:481 ~ 481
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:487 ~ 487
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:135 ~ 137
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:238 ~ 240
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:358 ~ 360
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:470 ~ 472
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:140 ~ 143
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:146 ~ 149
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:152 ~ 155
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:243 ~ 246
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:249 ~ 252
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 258
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:363 ~ 366
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:369 ~ 372
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 378
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:475 ~ 478
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:481 ~ 484
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:487 ~ 490
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:238 ~ 243
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:358 ~ 363
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:470 ~ 475
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:243 ~ 249
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:249 ~ 255
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 261
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:363 ~ 369
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:369 ~ 375
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 381
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:475 ~ 481
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:481 ~ 487
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:487 ~ 493
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:255 ~ 321
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:375 ~ 435
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:487 ~ 547
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:153 ~ 158
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:244 ~ 249
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:250 ~ 255
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:256 ~ 261
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:364 ~ 369
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:370 ~ 375
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:376 ~ 381
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:476 ~ 481
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:482 ~ 487
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:488 ~ 493
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:158 ~ 159
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:161 ~ 162
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:164 ~ 165
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:167 ~ 168
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:170 ~ 171
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:173 ~ 174
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:176 ~ 177
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:179 ~ 180
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:261 ~ 262
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:264 ~ 265
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:267 ~ 268
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:270 ~ 271
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:273 ~ 274
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:276 ~ 277
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:279 ~ 280
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:282 ~ 283
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:381 ~ 382
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:384 ~ 385
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:387 ~ 388
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:390 ~ 391
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:393 ~ 394
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:396 ~ 397
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:399 ~ 400
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:402 ~ 403
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:493 ~ 494
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:496 ~ 497
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:499 ~ 500
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:502 ~ 503
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:505 ~ 506
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:508 ~ 509
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:511 ~ 512
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:514 ~ 515
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:179 ~ 182
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:261 ~ 264
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:264 ~ 267
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:267 ~ 270
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:270 ~ 273
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:273 ~ 276
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:276 ~ 279
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:279 ~ 282
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:282 ~ 285
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:381 ~ 384
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:384 ~ 387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:387 ~ 390
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:390 ~ 393
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:393 ~ 396
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:396 ~ 399
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:399 ~ 402
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:402 ~ 405
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:493 ~ 496
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:496 ~ 499
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:499 ~ 502
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:502 ~ 505
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:505 ~ 508
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:508 ~ 511
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:511 ~ 514
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:514 ~ 517
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:261 ~ 264
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:264 ~ 267
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:267 ~ 270
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:270 ~ 273
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:273 ~ 276
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:276 ~ 279
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:279 ~ 282
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:282 ~ 285
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:381 ~ 384
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:384 ~ 387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:387 ~ 390
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:390 ~ 393
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:393 ~ 396
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:396 ~ 399
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:399 ~ 402
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:402 ~ 405
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:493 ~ 496
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:496 ~ 499
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:499 ~ 502
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:502 ~ 505
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:505 ~ 508
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:508 ~ 511
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:511 ~ 514
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:514 ~ 517
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:188 ~ 191
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:285 ~ 288
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:288 ~ 292
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:292 ~ 296
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:296 ~ 300
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:300 ~ 304
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:304 ~ 307
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:405 ~ 408
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:408 ~ 411
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:411 ~ 414
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:414 ~ 417
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:417 ~ 420
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:420 ~ 423
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:517 ~ 520
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:520 ~ 523
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:523 ~ 526
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:526 ~ 529
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:529 ~ 532
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:532 ~ 535
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:285 ~ 288
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:288 ~ 292
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:292 ~ 296
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:296 ~ 300
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:300 ~ 304
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:304 ~ 307
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:405 ~ 408
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:408 ~ 411
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:411 ~ 414
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:414 ~ 417
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:417 ~ 420
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:420 ~ 423
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:517 ~ 520
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:520 ~ 523
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:523 ~ 526
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:526 ~ 529
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:529 ~ 532
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:532 ~ 535
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:307 ~ 309
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:310 ~ 312
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:314 ~ 316
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:318 ~ 320
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:423 ~ 425
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:426 ~ 428
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:429 ~ 431
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:432 ~ 434
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:535 ~ 537
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:538 ~ 540
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:541 ~ 543
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:544 ~ 546
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:547 ~ 549
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:550 ~ 552
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:553 ~ 555
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:556 ~ 558
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:307 ~ 310
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:310 ~ 314
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:314 ~ 318
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:318 ~ 321
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:423 ~ 426
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:426 ~ 429
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:429 ~ 432
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:432 ~ 435
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:535 ~ 538
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:538 ~ 541
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:541 ~ 544
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:544 ~ 547
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:547 ~ 550
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:550 ~ 553
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:553 ~ 556
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:200 ~ 203
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:307 ~ 310
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:310 ~ 314
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:314 ~ 318
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:318 ~ 321
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:423 ~ 426
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:426 ~ 429
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:429 ~ 432
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:432 ~ 435
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:535 ~ 538
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:538 ~ 541
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:541 ~ 544
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:544 ~ 547
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:547 ~ 550
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:550 ~ 553
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:553 ~ 556
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:203 ~ 203
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:206 ~ 206
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:209 ~ 209
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:212 ~ 212
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:321 ~ 321
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:324 ~ 324
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:328 ~ 328
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:332 ~ 332
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:435 ~ 435
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:438 ~ 438
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:441 ~ 441
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:444 ~ 444
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:212 ~ 215
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:321 ~ 324
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:324 ~ 328
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:328 ~ 332
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:332 ~ 335
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:435 ~ 438
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:438 ~ 441
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:441 ~ 444
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:444 ~ 447
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:261 ~ 264
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:264 ~ 267
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:267 ~ 270
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:270 ~ 273
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:273 ~ 276
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:276 ~ 279
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:279 ~ 282
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:381 ~ 384
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:384 ~ 387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:387 ~ 390
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:390 ~ 393
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:393 ~ 396
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:396 ~ 399
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:399 ~ 402
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:493 ~ 496
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:496 ~ 499
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:499 ~ 502
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:502 ~ 505
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:505 ~ 508
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:508 ~ 511
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:511 ~ 514
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:304 ~ 307
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:307 ~ 310
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:310 ~ 314
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:314 ~ 318
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:420 ~ 423
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:423 ~ 426
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:426 ~ 429
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:429 ~ 432
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:532 ~ 535
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:535 ~ 538
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:538 ~ 541
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:541 ~ 544
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:544 ~ 547
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:547 ~ 550
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:550 ~ 553
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:553 ~ 556
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:282 ~ 285
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:285 ~ 288
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:288 ~ 292
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:292 ~ 296
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:296 ~ 300
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:300 ~ 304
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:402 ~ 405
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:405 ~ 408
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:408 ~ 411
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:411 ~ 414
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:414 ~ 417
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:417 ~ 420
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:514 ~ 517
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:517 ~ 520
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:520 ~ 523
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:523 ~ 526
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:526 ~ 529
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:529 ~ 532
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:260 ~ 261
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:263 ~ 264
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:266 ~ 267
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:269 ~ 270
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:272 ~ 273
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:275 ~ 276
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:278 ~ 279
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:281 ~ 282
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:380 ~ 381
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:383 ~ 384
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:386 ~ 387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:389 ~ 390
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:392 ~ 393
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:395 ~ 396
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:398 ~ 399
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:401 ~ 402
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:492 ~ 493
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:495 ~ 496
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:498 ~ 499
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:501 ~ 502
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:504 ~ 505
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:507 ~ 508
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:510 ~ 511
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:513 ~ 514
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:304 ~ 307
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:307 ~ 310
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:310 ~ 314
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:314 ~ 318
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:420 ~ 423
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:423 ~ 426
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:426 ~ 429
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:429 ~ 432
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:532 ~ 535
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:535 ~ 538
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:538 ~ 541
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:541 ~ 544
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:544 ~ 547
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:547 ~ 550
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:550 ~ 553
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:553 ~ 556
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:282 ~ 285
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:285 ~ 288
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:288 ~ 292
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:292 ~ 296
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:296 ~ 300
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:300 ~ 304
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:402 ~ 405
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:405 ~ 408
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:408 ~ 411
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:411 ~ 414
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:414 ~ 417
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:417 ~ 420
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:514 ~ 517
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:517 ~ 520
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:520 ~ 523
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:523 ~ 526
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:526 ~ 529
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:529 ~ 532
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:606 ~ 610
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:683 ~ 687
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:873 ~ 877
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1063 ~ 1067
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1253 ~ 1257
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:606 ~ 613
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:615 ~ 622
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:624 ~ 631
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:633 ~ 642
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:615 ~ 619
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:692 ~ 696
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:882 ~ 886
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1072 ~ 1076
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1262 ~ 1266
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:624 ~ 628
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:701 ~ 705
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:891 ~ 895
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1081 ~ 1085
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1271 ~ 1275
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:633 ~ 637
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:710 ~ 714
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:900 ~ 904
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1090 ~ 1094
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1280 ~ 1284
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:683 ~ 687
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:873 ~ 877
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1063 ~ 1067
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1253 ~ 1257
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:683 ~ 687
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:692 ~ 696
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:701 ~ 705
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:710 ~ 714
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:719 ~ 723
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:728 ~ 732
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:737 ~ 741
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:746 ~ 750
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:683 ~ 690
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:692 ~ 699
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:701 ~ 708
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:710 ~ 717
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:719 ~ 726
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:728 ~ 735
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:737 ~ 744
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:684 ~ 689
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:693 ~ 698
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:702 ~ 707
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:711 ~ 716
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:720 ~ 725
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:729 ~ 734
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:738 ~ 743
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:747 ~ 752
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:723 ~ 726
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:777 ~ 780
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:809 ~ 812
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:851 ~ 854
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:732 ~ 735
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:782 ~ 785
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:814 ~ 817
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:856 ~ 859
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:696 ~ 699
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:762 ~ 765
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:799 ~ 802
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:836 ~ 839
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:741 ~ 744
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:787 ~ 790
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:819 ~ 822
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:861 ~ 864
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:705 ~ 708
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:767 ~ 770
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:804 ~ 807
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:841 ~ 844
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:746 ~ 750
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:909 ~ 913
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:918 ~ 922
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:927 ~ 931
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:936 ~ 940
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1099 ~ 1103
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1108 ~ 1112
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1117 ~ 1121
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1126 ~ 1130
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1289 ~ 1293
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1298 ~ 1302
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1307 ~ 1311
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1316 ~ 1320
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1289 ~ 1295
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1298 ~ 1304
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1307 ~ 1313
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1316 ~ 1322
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1099 ~ 1105
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1108 ~ 1114
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1117 ~ 1123
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1126 ~ 1132
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:909 ~ 915
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:918 ~ 924
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:927 ~ 933
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:936 ~ 942
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1289 ~ 1296
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1298 ~ 1305
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1307 ~ 1314
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1099 ~ 1106
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1108 ~ 1115
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1117 ~ 1124
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:909 ~ 916
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:918 ~ 925
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:927 ~ 934
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:746 ~ 750
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:936 ~ 940
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1126 ~ 1130
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1316 ~ 1320
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:756 ~ 760
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:761 ~ 765
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:766 ~ 770
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:771 ~ 775
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:776 ~ 780
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:781 ~ 785
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:786 ~ 790
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:776 ~ 780
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:966 ~ 970
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1156 ~ 1160
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1346 ~ 1350
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:966 ~ 970
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:971 ~ 975
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:976 ~ 980
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1156 ~ 1160
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1161 ~ 1165
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1166 ~ 1170
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1346 ~ 1350
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1351 ~ 1355
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1356 ~ 1360
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:781 ~ 785
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:971 ~ 975
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1161 ~ 1165
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1351 ~ 1355
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:786 ~ 790
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:976 ~ 980
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1166 ~ 1170
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1356 ~ 1360
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:791 ~ 797
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:981 ~ 987
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1171 ~ 1177
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1361 ~ 1367
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:798 ~ 802
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:803 ~ 807
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:808 ~ 812
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:813 ~ 817
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:818 ~ 822
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:813 ~ 817
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1003 ~ 1007
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1193 ~ 1197
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1383 ~ 1387
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:818 ~ 822
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1008 ~ 1012
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1198 ~ 1202
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1388 ~ 1392
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:823 ~ 829
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1013 ~ 1019
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1203 ~ 1209
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1393 ~ 1399
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:830 ~ 834
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:835 ~ 839
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:840 ~ 844
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:845 ~ 849
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:850 ~ 854
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:855 ~ 859
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:860 ~ 864
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:850 ~ 854
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1040 ~ 1044
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1230 ~ 1234
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1420 ~ 1424
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1040 ~ 1044
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1045 ~ 1049
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1050 ~ 1054
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1230 ~ 1234
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1235 ~ 1239
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1240 ~ 1244
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1420 ~ 1424
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1425 ~ 1429
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1430 ~ 1434
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:855 ~ 859
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1045 ~ 1049
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1235 ~ 1239
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1425 ~ 1429
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:860 ~ 864
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1050 ~ 1054
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1240 ~ 1244
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1430 ~ 1434
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:967 ~ 970
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:999 ~ 1002
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1041 ~ 1044
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:972 ~ 975
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1004 ~ 1007
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1046 ~ 1049
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:952 ~ 955
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:989 ~ 992
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1026 ~ 1029
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:977 ~ 980
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1009 ~ 1012
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1051 ~ 1054
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:957 ~ 960
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:994 ~ 997
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1031 ~ 1034
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:882 ~ 886
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:891 ~ 895
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:900 ~ 904
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:909 ~ 913
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:918 ~ 922
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:927 ~ 931
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:936 ~ 940
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:883 ~ 889
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:892 ~ 898
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:901 ~ 907
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:919 ~ 925
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:928 ~ 934
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:883 ~ 889
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:892 ~ 898
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:901 ~ 907
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:910 ~ 916
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:919 ~ 925
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:928 ~ 934
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:946 ~ 950
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:951 ~ 955
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:956 ~ 960
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:961 ~ 965
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1136 ~ 1140
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1141 ~ 1145
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1146 ~ 1150
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1151 ~ 1155
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1326 ~ 1330
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1331 ~ 1335
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1336 ~ 1340
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1341 ~ 1345
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:946 ~ 950
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:951 ~ 955
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:956 ~ 960
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:961 ~ 965
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:966 ~ 970
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:971 ~ 975
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:976 ~ 980
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1136 ~ 1140
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1141 ~ 1145
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1146 ~ 1150
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1151 ~ 1155
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1156 ~ 1160
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1161 ~ 1165
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1166 ~ 1170
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1326 ~ 1330
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1331 ~ 1335
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1336 ~ 1340
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1341 ~ 1345
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1346 ~ 1350
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1351 ~ 1355
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1356 ~ 1360
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:967 ~ 970
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:999 ~ 1002
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1041 ~ 1044
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:972 ~ 975
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1004 ~ 1007
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1046 ~ 1049
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:952 ~ 955
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:989 ~ 992
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1026 ~ 1029
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:977 ~ 980
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1009 ~ 1012
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1051 ~ 1054
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:957 ~ 960
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:994 ~ 997
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1031 ~ 1034
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:988 ~ 992
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:993 ~ 997
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:998 ~ 1002
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1178 ~ 1182
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1183 ~ 1187
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1188 ~ 1192
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1368 ~ 1372
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1373 ~ 1377
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1378 ~ 1382
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:988 ~ 992
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:993 ~ 997
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:998 ~ 1002
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1003 ~ 1007
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1008 ~ 1012
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1178 ~ 1182
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1183 ~ 1187
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1188 ~ 1192
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1193 ~ 1197
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1198 ~ 1202
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1368 ~ 1372
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1373 ~ 1377
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1378 ~ 1382
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1383 ~ 1387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1388 ~ 1392
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:988 ~ 992
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:993 ~ 997
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:998 ~ 1002
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1003 ~ 1007
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1008 ~ 1012
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1368 ~ 1372
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1373 ~ 1377
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1378 ~ 1382
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1383 ~ 1387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1388 ~ 1392
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1003 ~ 1007
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1008 ~ 1012
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1193 ~ 1197
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1198 ~ 1202
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1383 ~ 1387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1388 ~ 1392
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1020 ~ 1024
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1025 ~ 1029
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1030 ~ 1034
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1035 ~ 1039
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1210 ~ 1214
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1215 ~ 1219
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1220 ~ 1224
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1225 ~ 1229
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1400 ~ 1404
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1405 ~ 1409
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1410 ~ 1414
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1415 ~ 1419
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1020 ~ 1024
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1025 ~ 1029
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1030 ~ 1034
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1035 ~ 1039
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1040 ~ 1044
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1045 ~ 1049
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1050 ~ 1054
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1210 ~ 1214
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1215 ~ 1219
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1220 ~ 1224
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1225 ~ 1229
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1230 ~ 1234
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1235 ~ 1239
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1240 ~ 1244
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1400 ~ 1404
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1405 ~ 1409
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1410 ~ 1414
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1415 ~ 1419
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1420 ~ 1424
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1425 ~ 1429
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1430 ~ 1434
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1056 ~ 1061
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1130 ~ 1135
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1204 ~ 1209
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1063 ~ 1067
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1072 ~ 1076
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1081 ~ 1085
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1090 ~ 1094
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1099 ~ 1103
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1108 ~ 1112
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1117 ~ 1121
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1126 ~ 1130
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1063 ~ 1070
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1072 ~ 1079
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1081 ~ 1088
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1090 ~ 1097
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1099 ~ 1106
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1108 ~ 1115
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1117 ~ 1124
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1063 ~ 1070
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1099 ~ 1106
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1072 ~ 1079
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1108 ~ 1115
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1081 ~ 1088
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1117 ~ 1124
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1094 ~ 1097
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1152 ~ 1155
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1226 ~ 1229
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1103 ~ 1106
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1157 ~ 1160
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1189 ~ 1192
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1231 ~ 1234
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1067 ~ 1070
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1137 ~ 1140
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1211 ~ 1214
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1112 ~ 1115
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1162 ~ 1165
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1194 ~ 1197
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1236 ~ 1239
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1076 ~ 1079
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1142 ~ 1145
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1179 ~ 1182
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1216 ~ 1219
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1121 ~ 1124
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1167 ~ 1170
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1199 ~ 1202
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1241 ~ 1244
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1085 ~ 1088
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1147 ~ 1150
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1184 ~ 1187
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1221 ~ 1224
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1157 ~ 1160
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1189 ~ 1192
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1231 ~ 1234
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1162 ~ 1165
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1194 ~ 1197
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1236 ~ 1239
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1142 ~ 1145
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1179 ~ 1182
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1216 ~ 1219
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1167 ~ 1170
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1199 ~ 1202
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1241 ~ 1244
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1147 ~ 1150
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1184 ~ 1187
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1221 ~ 1224
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1179 ~ 1182
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1184 ~ 1187
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1189 ~ 1192
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1194 ~ 1197
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1199 ~ 1202
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1246 ~ 1251
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1320 ~ 1325
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1394 ~ 1399
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1253 ~ 1257
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1262 ~ 1266
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1271 ~ 1275
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1280 ~ 1284
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1289 ~ 1293
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1298 ~ 1302
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1307 ~ 1311
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1316 ~ 1320
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1253 ~ 1260
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1262 ~ 1269
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1271 ~ 1278
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1280 ~ 1287
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1289 ~ 1296
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1298 ~ 1305
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1307 ~ 1314
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1253 ~ 1260
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1289 ~ 1296
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1262 ~ 1269
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1298 ~ 1305
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1271 ~ 1278
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1307 ~ 1314
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1284 ~ 1287
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1342 ~ 1345
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1416 ~ 1419
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1293 ~ 1296
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1347 ~ 1350
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1379 ~ 1382
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1421 ~ 1424
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1257 ~ 1260
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1327 ~ 1330
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1401 ~ 1404
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1302 ~ 1305
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1352 ~ 1355
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1384 ~ 1387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1426 ~ 1429
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1266 ~ 1269
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1332 ~ 1335
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1369 ~ 1372
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1406 ~ 1409
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1311 ~ 1314
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1357 ~ 1360
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1389 ~ 1392
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1431 ~ 1434
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1275 ~ 1278
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1337 ~ 1340
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1374 ~ 1377
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1411 ~ 1414
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1347 ~ 1350
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1379 ~ 1382
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1421 ~ 1424
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1352 ~ 1355
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1384 ~ 1387
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1426 ~ 1429
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1332 ~ 1335
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1369 ~ 1372
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1406 ~ 1409
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1357 ~ 1360
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1389 ~ 1392
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1431 ~ 1434
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1337 ~ 1340
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1374 ~ 1377
+Datasets/Exercice3/raw/Dario_De_Jésus_Marçalo.scala:1411 ~ 1414
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 264.96%
+Total unique rate: 49.54%

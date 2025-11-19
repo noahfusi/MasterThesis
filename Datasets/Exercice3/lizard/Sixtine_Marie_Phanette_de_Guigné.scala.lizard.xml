@@ -1,0 +1,188 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:11">
+			<value>1</value>
+			<value>41</value>
+			<value>7</value>
+		</item>
+		<item name="validateInput(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:58">
+			<value>2</value>
+			<value>18</value>
+			<value>6</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:77">
+			<value>3</value>
+			<value>20</value>
+			<value>3</value>
+		</item>
+		<item name="selectMachine(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:98">
+			<value>4</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:108">
+			<value>5</value>
+			<value>17</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:126">
+			<value>6</value>
+			<value>582</value>
+			<value>85</value>
+		</item>
+		<item name="adminMode(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:777">
+			<value>7</value>
+			<value>16</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:797">
+			<value>8</value>
+			<value>15</value>
+			<value>1</value>
+		</item>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:816">
+			<value>9</value>
+			<value>15</value>
+			<value>1</value>
+		</item>
+		<item name="loadMachines(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:835">
+			<value>10</value>
+			<value>14</value>
+			<value>2</value>
+		</item>
+		<item name="saveMachines(...) at Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:848">
+			<value>11</value>
+			<value>10</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="68.9090909090909"/>
+		<average label="CCN" value="10.545454545454545"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala">
+			<value>1</value>
+			<value>754</value>
+			<value>116</value>
+			<value>11</value>
+		</item>
+		<average label="NCSS" value="754.0"/>
+		<average label="CCN" value="116.0"/>
+		<average label="Functions" value="11.0"/>
+		<sum label="NCSS" value="754"/>
+		<sum label="CCN" value="116"/>
+		<sum label="Functions" value="11"/>
+		<average label="NCSS" value="68.9090909090909"/>
+		<average label="CCN" value="10.545454545454545"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:164 ~ 170
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:247 ~ 253
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:401 ~ 407
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:535 ~ 541
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:668 ~ 674
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:401 ~ 412
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:535 ~ 546
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:668 ~ 679
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:401 ~ 420
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:668 ~ 687
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:194 ~ 200
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:327 ~ 333
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:481 ~ 487
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:614 ~ 620
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:748 ~ 754
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:327 ~ 341
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:481 ~ 495
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:614 ~ 628
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:748 ~ 762
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:481 ~ 499
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:614 ~ 632
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:748 ~ 766
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:481 ~ 499
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:614 ~ 632
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:247 ~ 253
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:401 ~ 407
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:535 ~ 541
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:668 ~ 674
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:365 ~ 378
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:500 ~ 513
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:633 ~ 646
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:387 ~ 400
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:522 ~ 534
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:655 ~ 667
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:397 ~ 406
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:531 ~ 540
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:664 ~ 673
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:546 ~ 565
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:679 ~ 698
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:461 ~ 481
+Datasets/Exercice3/raw/Sixtine_Marie_Phanette_de_Guigné.scala:595 ~ 614
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 60.44%
+Total unique rate: 84.64%

@@ -1,0 +1,202 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:16">
+			<value>1</value>
+			<value>12</value>
+			<value>3</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:29">
+			<value>2</value>
+			<value>18</value>
+			<value>7</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:55">
+			<value>3</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:71">
+			<value>4</value>
+			<value>21</value>
+			<value>4</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:111">
+			<value>5</value>
+			<value>17</value>
+			<value>5</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:129">
+			<value>6</value>
+			<value>11</value>
+			<value>5</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:141">
+			<value>7</value>
+			<value>18</value>
+			<value>1</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:164">
+			<value>8</value>
+			<value>310</value>
+			<value>164</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Dion_Avdyli.scala:531">
+			<value>9</value>
+			<value>77</value>
+			<value>22</value>
+		</item>
+		<average label="NCSS" value="55.44444444444444"/>
+		<average label="CCN" value="23.88888888888889"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Dion_Avdyli.scala">
+			<value>1</value>
+			<value>516</value>
+			<value>215</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="516.0"/>
+		<average label="CCN" value="215.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="516"/>
+		<sum label="CCN" value="215"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="55.44444444444444"/>
+		<average label="CCN" value="23.88888888888889"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:180 ~ 185
+Datasets/Exercice3/raw/Dion_Avdyli.scala:222 ~ 226
+Datasets/Exercice3/raw/Dion_Avdyli.scala:300 ~ 304
+Datasets/Exercice3/raw/Dion_Avdyli.scala:452 ~ 456
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:180 ~ 187
+Datasets/Exercice3/raw/Dion_Avdyli.scala:222 ~ 228
+Datasets/Exercice3/raw/Dion_Avdyli.scala:300 ~ 306
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:222 ~ 235
+Datasets/Exercice3/raw/Dion_Avdyli.scala:300 ~ 313
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:182 ~ 185
+Datasets/Exercice3/raw/Dion_Avdyli.scala:223 ~ 226
+Datasets/Exercice3/raw/Dion_Avdyli.scala:301 ~ 304
+Datasets/Exercice3/raw/Dion_Avdyli.scala:377 ~ 380
+Datasets/Exercice3/raw/Dion_Avdyli.scala:453 ~ 456
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:182 ~ 187
+Datasets/Exercice3/raw/Dion_Avdyli.scala:223 ~ 228
+Datasets/Exercice3/raw/Dion_Avdyli.scala:301 ~ 306
+Datasets/Exercice3/raw/Dion_Avdyli.scala:377 ~ 382
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:223 ~ 235
+Datasets/Exercice3/raw/Dion_Avdyli.scala:301 ~ 313
+Datasets/Exercice3/raw/Dion_Avdyli.scala:377 ~ 389
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:223 ~ 238
+Datasets/Exercice3/raw/Dion_Avdyli.scala:377 ~ 391
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:226 ~ 235
+Datasets/Exercice3/raw/Dion_Avdyli.scala:304 ~ 313
+Datasets/Exercice3/raw/Dion_Avdyli.scala:380 ~ 389
+Datasets/Exercice3/raw/Dion_Avdyli.scala:456 ~ 465
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:238 ~ 245
+Datasets/Exercice3/raw/Dion_Avdyli.scala:316 ~ 325
+Datasets/Exercice3/raw/Dion_Avdyli.scala:391 ~ 399
+Datasets/Exercice3/raw/Dion_Avdyli.scala:467 ~ 475
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:245 ~ 259
+Datasets/Exercice3/raw/Dion_Avdyli.scala:475 ~ 489
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:247 ~ 257
+Datasets/Exercice3/raw/Dion_Avdyli.scala:326 ~ 336
+Datasets/Exercice3/raw/Dion_Avdyli.scala:401 ~ 411
+Datasets/Exercice3/raw/Dion_Avdyli.scala:477 ~ 487
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:247 ~ 259
+Datasets/Exercice3/raw/Dion_Avdyli.scala:326 ~ 338
+Datasets/Exercice3/raw/Dion_Avdyli.scala:477 ~ 489
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:247 ~ 265
+Datasets/Exercice3/raw/Dion_Avdyli.scala:326 ~ 344
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:262 ~ 265
+Datasets/Exercice3/raw/Dion_Avdyli.scala:341 ~ 344
+Datasets/Exercice3/raw/Dion_Avdyli.scala:417 ~ 420
+Datasets/Exercice3/raw/Dion_Avdyli.scala:493 ~ 496
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:284 ~ 292
+Datasets/Exercice3/raw/Dion_Avdyli.scala:362 ~ 373
+Datasets/Exercice3/raw/Dion_Avdyli.scala:438 ~ 449
+Datasets/Exercice3/raw/Dion_Avdyli.scala:514 ~ 525
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Dion_Avdyli.scala:284 ~ 294
+Datasets/Exercice3/raw/Dion_Avdyli.scala:362 ~ 375
+Datasets/Exercice3/raw/Dion_Avdyli.scala:438 ~ 451
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 91.21%
+Total unique rate: 81.78%

@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:8">
+			<value>1</value>
+			<value>31</value>
+			<value>5</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:41">
+			<value>2</value>
+			<value>14</value>
+			<value>4</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:57">
+			<value>3</value>
+			<value>21</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:78">
+			<value>4</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:93">
+			<value>5</value>
+			<value>15</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:90">
+			<value>6</value>
+			<value>209</value>
+			<value>89</value>
+		</item>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:335">
+			<value>7</value>
+			<value>12</value>
+			<value>3</value>
+		</item>
+		<item name="modeadmin(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:347">
+			<value>8</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:352">
+			<value>9</value>
+			<value>106</value>
+			<value>43</value>
+		</item>
+		<average label="NCSS" value="47.111111111111114"/>
+		<average label="CCN" value="17.11111111111111"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala">
+			<value>1</value>
+			<value>423</value>
+			<value>154</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="423.0"/>
+		<average label="CCN" value="154.0"/>
+		<average label="Functions" value="9.0"/>
+		<sum label="NCSS" value="423"/>
+		<sum label="CCN" value="154"/>
+		<sum label="Functions" value="9"/>
+		<average label="NCSS" value="47.111111111111114"/>
+		<average label="CCN" value="17.11111111111111"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:171 ~ 177
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:198 ~ 203
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:231 ~ 236
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:264 ~ 269
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:297 ~ 302
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:198 ~ 208
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:231 ~ 241
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:264 ~ 274
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:297 ~ 307
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:198 ~ 208
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:231 ~ 241
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:183 ~ 188
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:216 ~ 221
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:249 ~ 254
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:282 ~ 287
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:315 ~ 320
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:216 ~ 221
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:249 ~ 254
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:282 ~ 287
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:315 ~ 320
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:249 ~ 261
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:282 ~ 294
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:315 ~ 327
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:377 ~ 386
+Datasets/Exercice3/raw/Diana_Clara_Fernandes.scala:405 ~ 414
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 52.63%
+Total unique rate: 87.80%

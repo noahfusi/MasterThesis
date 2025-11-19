@@ -1,0 +1,160 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:9">
+			<value>1</value>
+			<value>7</value>
+			<value>5</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:16">
+			<value>2</value>
+			<value>7</value>
+			<value>8</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:30">
+			<value>3</value>
+			<value>20</value>
+			<value>7</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:55">
+			<value>4</value>
+			<value>36</value>
+			<value>7</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:92">
+			<value>5</value>
+			<value>18</value>
+			<value>4</value>
+		</item>
+		<item name="modeClient(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:114">
+			<value>6</value>
+			<value>34</value>
+			<value>10</value>
+		</item>
+		<item name="verifierStock(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:149">
+			<value>7</value>
+			<value>2</value>
+			<value>1</value>
+		</item>
+		<item name="traiterBoisson(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:152">
+			<value>8</value>
+			<value>14</value>
+			<value>3</value>
+		</item>
+		<item name="gererCappuccino(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:168">
+			<value>9</value>
+			<value>18</value>
+			<value>2</value>
+		</item>
+		<item name="gererLatte(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:188">
+			<value>10</value>
+			<value>24</value>
+			<value>5</value>
+		</item>
+		<item name="choisirSucre(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:214">
+			<value>11</value>
+			<value>6</value>
+			<value>5</value>
+		</item>
+		<item name="choisirSupplementLait(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:221">
+			<value>12</value>
+			<value>7</value>
+			<value>5</value>
+		</item>
+		<item name="afficherRecapitulatif(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:229">
+			<value>13</value>
+			<value>34</value>
+			<value>11</value>
+		</item>
+		<item name="effectuerPaiement(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:266">
+			<value>14</value>
+			<value>8</value>
+			<value>1</value>
+		</item>
+		<item name="preparerBoisson(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:274">
+			<value>15</value>
+			<value>6</value>
+			<value>1</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:286">
+			<value>16</value>
+			<value>14</value>
+			<value>6</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:301">
+			<value>17</value>
+			<value>13</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:315">
+			<value>18</value>
+			<value>9</value>
+			<value>2</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:324">
+			<value>19</value>
+			<value>9</value>
+			<value>1</value>
+		</item>
+		<item name="demanderChoix(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:337">
+			<value>20</value>
+			<value>9</value>
+			<value>4</value>
+		</item>
+		<item name="demanderQuantite(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:346">
+			<value>21</value>
+			<value>2</value>
+			<value>1</value>
+		</item>
+		<item name="demanderQuantiteDouble(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:347">
+			<value>22</value>
+			<value>2</value>
+			<value>1</value>
+		</item>
+		<item name="readIntOption(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:348">
+			<value>23</value>
+			<value>2</value>
+			<value>3</value>
+		</item>
+		<item name="readDoubleOption(...) at Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala:349">
+			<value>24</value>
+			<value>2</value>
+			<value>3</value>
+		</item>
+		<average label="NCSS" value="12.625"/>
+		<average label="CCN" value="4.125"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Dossè_Kodjo_Fulbert_Agbodza.scala">
+			<value>1</value>
+			<value>292</value>
+			<value>99</value>
+			<value>24</value>
+		</item>
+		<average label="NCSS" value="292.0"/>
+		<average label="CCN" value="99.0"/>
+		<average label="Functions" value="24.0"/>
+		<sum label="NCSS" value="292"/>
+		<sum label="CCN" value="99"/>
+		<sum label="Functions" value="24"/>
+		<average label="NCSS" value="12.625"/>
+		<average label="CCN" value="4.125"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.91%

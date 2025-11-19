@@ -1,0 +1,117 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="addIngredient(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:15">
+			<value>1</value>
+			<value>8</value>
+			<value>4</value>
+		</item>
+		<item name="removeIngredient(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:23">
+			<value>2</value>
+			<value>15</value>
+			<value>8</value>
+		</item>
+		<item name="loadcsv(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:39">
+			<value>3</value>
+			<value>37</value>
+			<value>6</value>
+		</item>
+		<item name="savecsv(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:77">
+			<value>4</value>
+			<value>28</value>
+			<value>6</value>
+		</item>
+		<item name="InputManagement(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:109">
+			<value>5</value>
+			<value>15</value>
+			<value>6</value>
+		</item>
+		<item name="quitter(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:125">
+			<value>6</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="menu_principal(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:135">
+			<value>7</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:157">
+			<value>8</value>
+			<value>269</value>
+			<value>137</value>
+		</item>
+		<item name="menuAdmin(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:471">
+			<value>9</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:485">
+			<value>10</value>
+			<value>28</value>
+			<value>6</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:513">
+			<value>11</value>
+			<value>15</value>
+			<value>4</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:530">
+			<value>12</value>
+			<value>39</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:573">
+			<value>13</value>
+			<value>28</value>
+			<value>9</value>
+		</item>
+		<average label="NCSS" value="39.92307692307692"/>
+		<average label="CCN" value="15.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala">
+			<value>1</value>
+			<value>519</value>
+			<value>195</value>
+			<value>13</value>
+		</item>
+		<average label="NCSS" value="519.0"/>
+		<average label="CCN" value="195.0"/>
+		<average label="Functions" value="13.0"/>
+		<sum label="NCSS" value="519"/>
+		<sum label="CCN" value="195"/>
+		<sum label="Functions" value="13"/>
+		<average label="NCSS" value="39.92307692307692"/>
+		<average label="CCN" value="15.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:58 ~ 75
+Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:87 ~ 104
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:223 ~ 229
+Datasets/Exercice3/raw/Nicolas_Mark_Wilkinson.scala:261 ~ 267
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 11.01%
+Total unique rate: 95.53%
