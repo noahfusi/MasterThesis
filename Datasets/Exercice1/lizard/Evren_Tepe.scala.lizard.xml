@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/Evren_Tepe.scala:6">
+			<value>1</value>
+			<value>314</value>
+			<value>51</value>
+		</item>
+		<average label="NCSS" value="314.0"/>
+		<average label="CCN" value="51.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Evren_Tepe.scala">
+			<value>1</value>
+			<value>318</value>
+			<value>51</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="318.0"/>
+		<average label="CCN" value="51.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="318"/>
+		<sum label="CCN" value="51"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="314.0"/>
+		<average label="CCN" value="51.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

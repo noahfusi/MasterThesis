@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:8">
+			<value>1</value>
+			<value>6</value>
+			<value>2</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:13">
+			<value>2</value>
+			<value>190</value>
+			<value>47</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:239">
+			<value>3</value>
+			<value>13</value>
+			<value>3</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:255">
+			<value>4</value>
+			<value>29</value>
+			<value>4</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice2/raw/Saki_Cabdulqadir.scala:290">
+			<value>5</value>
+			<value>70</value>
+			<value>23</value>
+		</item>
+		<average label="NCSS" value="61.6"/>
+		<average label="CCN" value="15.8"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Saki_Cabdulqadir.scala">
+			<value>1</value>
+			<value>307</value>
+			<value>79</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="307.0"/>
+		<average label="CCN" value="79.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="307"/>
+		<sum label="CCN" value="79"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="61.6"/>
+		<average label="CCN" value="15.8"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.71%

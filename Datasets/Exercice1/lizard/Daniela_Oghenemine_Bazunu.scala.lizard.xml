@@ -1,0 +1,164 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="suppsucrepeu(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:32">
+			<value>1</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="suppsucremoyen(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:41">
+			<value>2</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="suppsucrebcp(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:50">
+			<value>3</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="prepalaitsuppx1(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:62">
+			<value>4</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="prepalaitsuppx2(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:74">
+			<value>5</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="prepalaitsuppx3(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:86">
+			<value>6</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="prepareexpresso(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:99">
+			<value>7</value>
+			<value>13</value>
+			<value>3</value>
+		</item>
+		<item name="preparecap(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:113">
+			<value>8</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="preparelatp(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:124">
+			<value>9</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="preparelatm(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:135">
+			<value>10</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="preparelatg(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:146">
+			<value>11</value>
+			<value>11</value>
+			<value>4</value>
+		</item>
+		<item name="calculerPrixFinal(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:509">
+			<value>12</value>
+			<value>14</value>
+			<value>5</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:496">
+			<value>13</value>
+			<value>10</value>
+			<value>2</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:4">
+			<value>14</value>
+			<value>408</value>
+			<value>82</value>
+		</item>
+		<average label="NCSS" value="39.642857142857146"/>
+		<average label="CCN" value="8.357142857142858"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala">
+			<value>1</value>
+			<value>544</value>
+			<value>117</value>
+			<value>14</value>
+		</item>
+		<average label="NCSS" value="544.0"/>
+		<average label="CCN" value="117.0"/>
+		<average label="Functions" value="14.0"/>
+		<sum label="NCSS" value="544"/>
+		<sum label="CCN" value="117"/>
+		<sum label="Functions" value="14"/>
+		<average label="NCSS" value="39.642857142857146"/>
+		<average label="CCN" value="8.357142857142858"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:184 ~ 191
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:245 ~ 252
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:317 ~ 324
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:377 ~ 384
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:437 ~ 444
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:245 ~ 272
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:317 ~ 345
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:377 ~ 405
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:437 ~ 465
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:317 ~ 374
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:377 ~ 434
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:437 ~ 494
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:317 ~ 376
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:377 ~ 436
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:192 ~ 206
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:253 ~ 267
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:325 ~ 340
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:385 ~ 400
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:445 ~ 460
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:208 ~ 244
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:268 ~ 304
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:220 ~ 241
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:280 ~ 300
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:351 ~ 374
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:411 ~ 434
+Datasets/Exercice1/raw/Daniela_Oghenemine_Bazunu.scala:471 ~ 494
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 114.38%
+Total unique rate: 69.21%

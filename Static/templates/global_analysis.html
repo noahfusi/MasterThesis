@@ -1,18 +1,33 @@
 {% extends "base.html" %}
 
+{% block extra_head %}
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+{% endblock %}
+
 {% block content %}
-<section class="placeholder">
-  <h1>Global analysis</h1>
-  <p class="current-dataset-hint">
-    {% if current_dataset %}
-    Current dataset:&nbsp;<strong>{{ current_dataset }}</strong>
-    {% else %}
-    No dataset selected.
-    {% endif %}
-  </p>
-  <p>
-    Use this space to display descriptive statistics, trends, and global KPIs for the
-    selected dataset.
-  </p>
+<section class="global-analysis-section">
+  <div class="global-analysis-header">
+    <div>
+      <h1>Global analysis</h1>
+      <p>Compare every file in the dataset by switching the metric below.</p>
+    </div>
+    <div class="global-analysis-dataset">
+      <span>Current dataset</span>
+      <strong id="global-analysis-dataset">{{ current_dataset or "None" }}</strong>
+    </div>
+  </div>
+
+  <div class="global-analysis-body" id="global-analysis">
+    <div class="global-analysis-controls">
+      <label for="global-analysis-metric">Select a metric</label>
+      <select id="global-analysis-metric" disabled>
+        <option value="">No metrics yet</option>
+      </select>
+    </div>
+    <p class="feedback" id="global-analysis-feedback">
+      {% if not current_dataset %}Select a dataset to load the analysis.{% endif %}
+    </p>
+    <div id="global-analysis-chart" class="global-analysis-chart" aria-label="Global metric distribution"></div>
+  </div>
 </section>
 {% endblock %}

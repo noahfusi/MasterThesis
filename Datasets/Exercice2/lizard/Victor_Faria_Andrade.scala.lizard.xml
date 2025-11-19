@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="pin(...) at Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:11">
+			<value>1</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:15">
+			<value>2</value>
+			<value>25</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:39">
+			<value>3</value>
+			<value>12</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:50">
+			<value>4</value>
+			<value>407</value>
+			<value>87</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:459">
+			<value>5</value>
+			<value>34</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:492">
+			<value>6</value>
+			<value>71</value>
+			<value>18</value>
+		</item>
+		<average label="NCSS" value="92.16666666666667"/>
+		<average label="CCN" value="19.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Victor_Faria_Andrade.scala">
+			<value>1</value>
+			<value>556</value>
+			<value>114</value>
+			<value>6</value>
+		</item>
+		<average label="NCSS" value="556.0"/>
+		<average label="CCN" value="114.0"/>
+		<average label="Functions" value="6.0"/>
+		<sum label="NCSS" value="556"/>
+		<sum label="CCN" value="114"/>
+		<sum label="Functions" value="6"/>
+		<average label="NCSS" value="92.16666666666667"/>
+		<average label="CCN" value="19.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:76 ~ 92
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:233 ~ 249
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:113 ~ 120
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:175 ~ 182
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:283 ~ 290
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:339 ~ 346
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:397 ~ 404
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:113 ~ 121
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:283 ~ 291
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:339 ~ 347
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:397 ~ 405
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:282 ~ 293
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:338 ~ 349
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:396 ~ 407
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:281 ~ 293
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:337 ~ 349
+Datasets/Exercice2/raw/Victor_Faria_Andrade.scala:395 ~ 407
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 23.06%
+Total unique rate: 95.98%

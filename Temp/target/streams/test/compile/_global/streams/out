@@ -1,0 +1,22 @@
+[error] /app/src/test/scala/testFile.scala:21:42: not found: value Nospresso
+[error]       val result = withInput("434343\n")(Nospresso.validatePin(0, pins))
+[error]                                          ^
+[error] /app/src/test/scala/testFile.scala:27:42: not found: value Nospresso
+[error]       val result = withInput("123456\n")(Nospresso.validatePin(0, pins))
+[error]                                          ^
+[error] /app/src/test/scala/testFile.scala:34:37: not found: value Nospresso
+[error]       val result = withInput(input)(Nospresso.validatePin(0, pins))
+[error]                                     ^
+[error] /app/src/test/scala/testFile.scala:51:9: not found: value Nospresso
+[error]         Nospresso.updatePin(0, pins)
+[error]         ^
+[error] /app/src/test/scala/testFile.scala:67:9: not found: value Nospresso
+[error]         Nospresso.restockMachine(0, coffee, sugar, milk)
+[error]         ^
+[error] /app/src/test/scala/testFile.scala:90:9: not found: value Nospresso
+[error]         Nospresso.serveClient(0, coffee, sugar, milk)
+[error]         ^
+[error] /app/src/test/scala/testFile.scala:109:9: not found: value Nospresso
+[error]         Nospresso.serveClient(0, coffee, sugar, milk)
+[error]         ^
+[error] 7 errors found

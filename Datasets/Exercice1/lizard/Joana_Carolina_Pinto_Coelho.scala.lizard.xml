@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala:9">
+			<value>1</value>
+			<value>378</value>
+			<value>106</value>
+		</item>
+		<average label="NCSS" value="378.0"/>
+		<average label="CCN" value="106.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala">
+			<value>1</value>
+			<value>385</value>
+			<value>106</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="385.0"/>
+		<average label="CCN" value="106.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="385"/>
+		<sum label="CCN" value="106"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="378.0"/>
+		<average label="CCN" value="106.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala:86 ~ 108
+Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala:122 ~ 144
+Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala:223 ~ 245
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala:122 ~ 146
+Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala:223 ~ 247
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala:159 ~ 183
+Datasets/Exercice1/raw/Joana_Carolina_Pinto_Coelho.scala:260 ~ 284
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 40.84%
+Total unique rate: 84.34%

@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:4">
+			<value>1</value>
+			<value>713</value>
+			<value>121</value>
+		</item>
+		<average label="NCSS" value="713.0"/>
+		<average label="CCN" value="121.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala">
+			<value>1</value>
+			<value>715</value>
+			<value>121</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="715.0"/>
+		<average label="CCN" value="121.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="715"/>
+		<sum label="CCN" value="121"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="713.0"/>
+		<average label="CCN" value="121.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:63 ~ 79
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:196 ~ 212
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:258 ~ 271
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:299 ~ 311
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:346 ~ 358
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:393 ~ 405
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:320 ~ 326
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:367 ~ 373
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:413 ~ 419
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:322 ~ 335
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:369 ~ 382
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:415 ~ 428
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:563 ~ 576
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:595 ~ 608
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:635 ~ 648
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:675 ~ 688
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:595 ~ 608
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:635 ~ 648
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:675 ~ 688
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:612 ~ 625
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:652 ~ 665
+Datasets/Exercice1/raw/Kilyan_Tchimbouka.scala:692 ~ 705
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 38.92%
+Total unique rate: 85.78%

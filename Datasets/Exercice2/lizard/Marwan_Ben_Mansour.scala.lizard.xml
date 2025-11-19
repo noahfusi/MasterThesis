@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:17">
+			<value>1</value>
+			<value>17</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:37">
+			<value>2</value>
+			<value>13</value>
+			<value>6</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:53">
+			<value>3</value>
+			<value>195</value>
+			<value>82</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:279">
+			<value>4</value>
+			<value>19</value>
+			<value>1</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:308">
+			<value>5</value>
+			<value>34</value>
+			<value>20</value>
+		</item>
+		<average label="NCSS" value="55.6"/>
+		<average label="CCN" value="22.4"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala">
+			<value>1</value>
+			<value>285</value>
+			<value>112</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="285.0"/>
+		<average label="CCN" value="112.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="285"/>
+		<sum label="CCN" value="112"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="55.6"/>
+		<average label="CCN" value="22.4"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:79 ~ 95
+Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:104 ~ 120
+Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:169 ~ 185
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:104 ~ 122
+Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:169 ~ 187
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:128 ~ 145
+Datasets/Exercice2/raw/Marwan_Ben_Mansour.scala:193 ~ 208
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 33.88%
+Total unique rate: 89.56%

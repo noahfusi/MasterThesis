@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/Sarah_Yahi.scala:15">
+			<value>1</value>
+			<value>22</value>
+			<value>5</value>
+		</item>
+		<item name="lireEntreeNumerique(...) at Datasets/Exercice1/raw/Sarah_Yahi.scala:46">
+			<value>2</value>
+			<value>40</value>
+			<value>10</value>
+		</item>
+		<item name="modeClient(...) at Datasets/Exercice1/raw/Sarah_Yahi.scala:100">
+			<value>3</value>
+			<value>123</value>
+			<value>30</value>
+		</item>
+		<item name="genererCodeTwint(...) at Datasets/Exercice1/raw/Sarah_Yahi.scala:294">
+			<value>4</value>
+			<value>16</value>
+			<value>1</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/Exercice1/raw/Sarah_Yahi.scala:325">
+			<value>5</value>
+			<value>22</value>
+			<value>2</value>
+		</item>
+		<average label="NCSS" value="44.6"/>
+		<average label="CCN" value="9.6"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Sarah_Yahi.scala">
+			<value>1</value>
+			<value>226</value>
+			<value>48</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="226.0"/>
+		<average label="CCN" value="48.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="226"/>
+		<sum label="CCN" value="48"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="44.6"/>
+		<average label="CCN" value="9.6"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

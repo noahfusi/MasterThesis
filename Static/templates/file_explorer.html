@@ -33,7 +33,10 @@
         <h2>Preview</h2>
         <span id="file-preview-name"></span>
       </div>
-      <pre id="file-content" class="file-preview-content"></pre>
+      <div class="file-preview-content-wrapper">
+        <div class="file-preview-line-numbers" id="file-line-numbers" aria-hidden="true"></div>
+        <pre id="file-content" class="file-preview-content"></pre>
+      </div>
     </div>
   </div>
   {% else %}

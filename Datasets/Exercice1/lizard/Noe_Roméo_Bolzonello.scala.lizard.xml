@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:6">
+			<value>1</value>
+			<value>513</value>
+			<value>114</value>
+		</item>
+		<average label="NCSS" value="513.0"/>
+		<average label="CCN" value="114.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala">
+			<value>1</value>
+			<value>516</value>
+			<value>114</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="516.0"/>
+		<average label="CCN" value="114.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="516"/>
+		<sum label="CCN" value="114"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="513.0"/>
+		<average label="CCN" value="114.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:64 ~ 75
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:146 ~ 158
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:303 ~ 315
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:146 ~ 175
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:303 ~ 332
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:112 ~ 122
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:251 ~ 261
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:432 ~ 442
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:125 ~ 141
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:272 ~ 288
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:453 ~ 470
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:204 ~ 225
+Datasets/Exercice1/raw/Noe_Roméo_Bolzonello.scala:385 ~ 406
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 45.73%
+Total unique rate: 83.15%

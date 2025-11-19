@@ -4,6 +4,7 @@ const API_ROUTES = {
   listFiles: "/datasets/files",
   fileContent: "/datasets/file",
   fileAnalysis: "/datasets/file/lizard",
+  globalMetrics: "/datasets/metrics/global",
 };
 
 const datasetSelect = document.getElementById("current-dataset-select");
@@ -24,13 +25,33 @@ const plagiarismContainer = document.getElementById("plagiarism-viewer");
 const plagiarismPrevButton = document.getElementById("plagiarism-prev");
 const plagiarismNextButton = document.getElementById("plagiarism-next");
 const plagiarismCounter = document.getElementById("plagiarism-counter");
+const globalAnalysisPanel = document.getElementById("global-analysis");
+const globalAnalysisMetricSelect = document.getElementById("global-analysis-metric");
+const globalAnalysisChart = document.getElementById("global-analysis-chart");
+const globalAnalysisFeedback = document.getElementById("global-analysis-feedback");
+const globalAnalysisDatasetLabel = document.getElementById("global-analysis-dataset");
+
+const DEFAULT_LIZARD_SUMMARY = "lizard_dataset.xml";
+const urlParams = new URLSearchParams(window.location.search || "");
+const initialExplorerDatasetParam = urlParams.get("dataset");
+const initialExplorerFileParam = urlParams.get("file") || urlParams.get("filename");
+let pendingFilePreview = initialExplorerFileParam;
+let pendingFilePreviewDataset = initialExplorerDatasetParam;
 
 const plagiarismState = {
   blocks: [],
   index: 0,
   dataset: plagiarismContainer ? plagiarismContainer.dataset.dataset : null,
-  summaryFilename: plagiarismContainer ? plagiarismContainer.dataset.summaryFilename : "lizard_dataset.xml",
+  summaryFilename: plagiarismContainer ? plagiarismContainer.dataset.summaryFilename : DEFAULT_LIZARD_SUMMARY,
   snippetCache: new Map(),
+};
+
+const duplicateSummaryCache = new Map();
+const globalAnalysisState = {
+  dataset: null,
+  metrics: [],
+  files: [],
+  metricKey: null,
 };
 
 async function requestJSON(url, options = {}) {
@@ -149,6 +170,8 @@ function resetFileExplorerState() {
 function renderFileList(files = [], dataset = null) {
   if (!fileListElement) return;
 
+  fileListElement.dataset.dataset = dataset || "";
+
   if (fileDatasetLabel) {
     fileDatasetLabel.textContent = dataset || "N/A";
   }
@@ -158,14 +181,17 @@ function renderFileList(files = [], dataset = null) {
     const item = document.createElement("li");
     item.textContent = dataset ? "No files found in raw folder." : "Select a dataset to list files.";
     fileListElement.appendChild(item);
+    void updateFileDuplicateBadges(dataset);
     return;
   }
 
   files.forEach((filename) => {
     const item = document.createElement("li");
     item.className = "dataset-row";
+    item.dataset.filename = filename;
 
     const label = document.createElement("span");
+    label.className = "file-entry-name";
     label.textContent = filename;
 
     const actions = document.createElement("div");
@@ -181,6 +207,19 @@ function renderFileList(files = [], dataset = null) {
     item.appendChild(actions);
     fileListElement.appendChild(item);
   });
+
+  void updateFileDuplicateBadges(dataset);
+
+  if (dataset && pendingFilePreview) {
+    const datasetMatches =
+      !pendingFilePreviewDataset || pendingFilePreviewDataset.toLowerCase() === dataset.toLowerCase();
+    if (datasetMatches) {
+      const targetFile = pendingFilePreview;
+      pendingFilePreview = null;
+      pendingFilePreviewDataset = null;
+      loadFileContent(targetFile);
+    }
+  }
 }
 
 async function refreshFileList() {
@@ -201,12 +240,54 @@ async function refreshFileList() {
   }
 }
 
-function showFilePreview(filename, content) {
+function showFilePreview(filename, content, highlightRanges = []) {
   if (!filePreviewPanel || !filePreviewContent) return;
   if (filePreviewName) {
     filePreviewName.textContent = filename;
   }
-  filePreviewContent.textContent = content;
+  const lines = typeof content === "string" ? content.split(/\r?\n/) : [];
+  if (!lines.length) {
+    lines.push("");
+  }
+  const mergedHighlights = mergeLineRanges(highlightRanges);
+  const lineNumbersElement = document.getElementById("file-line-numbers");
+  const codeElement = document.createElement("code");
+  if (lineNumbersElement) {
+    lineNumbersElement.innerHTML = "";
+  }
+  filePreviewContent.innerHTML = "";
+  let highlightIndex = 0;
+  for (let i = 0; i < lines.length; i += 1) {
+    const lineNumber = i + 1;
+    while (
+      highlightIndex < mergedHighlights.length &&
+      mergedHighlights[highlightIndex].endLine < lineNumber
+    ) {
+      highlightIndex += 1;
+    }
+    const currentRange = mergedHighlights[highlightIndex];
+    const isHighlighted =
+      currentRange && lineNumber >= currentRange.startLine && lineNumber <= currentRange.endLine;
+    if (lineNumbersElement) {
+      const lineDiv = document.createElement("div");
+      if (isHighlighted) {
+        lineDiv.classList.add("highlight");
+      }
+      lineDiv.textContent = lineNumber.toString();
+      lineNumbersElement.appendChild(lineDiv);
+    }
+    const lineSpan = document.createElement("span");
+    lineSpan.className = "file-preview-line";
+    if (isHighlighted) {
+      lineSpan.classList.add("highlight");
+    }
+    lineSpan.textContent = lines[i] || " ";
+    codeElement.appendChild(lineSpan);
+    if (i < lines.length - 1) {
+      codeElement.appendChild(document.createTextNode("\n"));
+    }
+  }
+  filePreviewContent.appendChild(codeElement);
   if (fileExplorerWrapper) {
     fileExplorerWrapper.classList.add("show-preview");
   }
@@ -216,8 +297,13 @@ async function loadFileContent(filename) {
   if (!filename) return;
   showMessage(fileListFeedback, `Loading ${filename}...`);
   try {
-    const data = await requestJSON(`${API_ROUTES.fileContent}?filename=${encodeURIComponent(filename)}`);
-    showFilePreview(data.filename, data.content);
+    const params = new URLSearchParams({ filename });
+    if (datasetSelect && datasetSelect.value) {
+      params.set("dataset", datasetSelect.value);
+    }
+    const data = await requestJSON(`${API_ROUTES.fileContent}?${params.toString()}`);
+    const highlightRanges = await getDuplicateRangesForFile(data.dataset, data.filename);
+    showFilePreview(data.filename, data.content, highlightRanges);
     showMessage(fileListFeedback, `Displaying ${data.filename}.`);
   } catch (error) {
     showMessage(fileListFeedback, error.message, true);
@@ -292,6 +378,547 @@ function extractRelativePath(fullPath) {
   return fullPath;
 }
 
+function blockHasMultipleFiles(block) {
+  if (!block) return false;
+  const files = new Set();
+  (block.entries || []).forEach((entry) => {
+    const relative = normalizeRelativePath(entry && (entry.relativePath || extractRelativePath(entry.filePath)));
+    if (relative) {
+      files.add(relative);
+    }
+  });
+  return files.size > 1;
+}
+
+function filterCrossFileBlocks(blocks = []) {
+  return (blocks || []).filter((block) => blockHasMultipleFiles(block));
+}
+
+function normalizeRelativePath(path) {
+  if (!path) return "";
+  return path.replace(/\\/g, "/");
+}
+
+function getPreferredSummaryFilename() {
+  if (plagiarismState.summaryFilename) {
+    return plagiarismState.summaryFilename;
+  }
+  if (plagiarismContainer && plagiarismContainer.dataset.summaryFilename) {
+    return plagiarismContainer.dataset.summaryFilename;
+  }
+  return DEFAULT_LIZARD_SUMMARY;
+}
+
+function duplicateSummaryCacheKey(dataset, summaryFilename) {
+  return `${dataset}::${summaryFilename || DEFAULT_LIZARD_SUMMARY}`;
+}
+
+function buildDuplicateIndex(blocks = []) {
+  const rangesByFile = new Map();
+  const metaByFile = new Map();
+  (blocks || []).forEach((block) => {
+    const fileSet = new Set();
+    (block.entries || []).forEach((entry) => {
+      if (!entry) return;
+      const relativeCandidate = entry.relativePath || extractRelativePath(entry.filePath);
+      const relativePath = normalizeRelativePath(relativeCandidate);
+      if (relativePath) {
+        fileSet.add(relativePath);
+      }
+    });
+    const isCrossFile = fileSet.size > 1;
+    const isSingleFileBlock = fileSet.size === 1;
+    (block.entries || []).forEach((entry) => {
+      if (!entry) return;
+      const relativeCandidate = entry.relativePath || extractRelativePath(entry.filePath);
+      const relativePath = normalizeRelativePath(relativeCandidate);
+      if (!relativePath) {
+        return;
+      }
+      const startLine = Number(entry.startLine);
+      const endLine = Number(entry.endLine);
+      if (Number.isFinite(startLine) && Number.isFinite(endLine)) {
+        if (!rangesByFile.has(relativePath)) {
+          rangesByFile.set(relativePath, []);
+        }
+        rangesByFile.get(relativePath).push({
+          startLine,
+          endLine,
+        });
+      }
+      if (!metaByFile.has(relativePath)) {
+        metaByFile.set(relativePath, { crossFile: false, selfOnly: false });
+      }
+      const meta = metaByFile.get(relativePath);
+      if (isCrossFile) {
+        meta.crossFile = true;
+      } else if (isSingleFileBlock) {
+        meta.selfOnly = true;
+      }
+    });
+  });
+  return { rangesByFile, metaByFile };
+}
+
+async function requestDuplicateSummary(dataset, summaryFilename) {
+  const params = new URLSearchParams({
+    dataset,
+    summary: "true",
+    filename: summaryFilename,
+  });
+  const data = await requestJSON(`${API_ROUTES.fileAnalysis}?${params.toString()}`);
+  const blocks = parseDuplicateBlocks(data.analysis || "");
+  const { rangesByFile, metaByFile } = buildDuplicateIndex(blocks);
+  return {
+    dataset,
+    filename: data.filename,
+    blocks,
+    rangesByFile,
+    metaByFile,
+  };
+}
+
+async function getDuplicateSummary(dataset) {
+  if (!dataset) return null;
+  const summaryFilename = getPreferredSummaryFilename();
+  const cacheKey = duplicateSummaryCacheKey(dataset, summaryFilename);
+  if (!duplicateSummaryCache.has(cacheKey)) {
+    duplicateSummaryCache.set(cacheKey, requestDuplicateSummary(dataset, summaryFilename));
+  }
+  try {
+    return await duplicateSummaryCache.get(cacheKey);
+  } catch (error) {
+    duplicateSummaryCache.delete(cacheKey);
+    throw error;
+  }
+}
+
+function getDuplicateRangesFromSummary(summary, filename) {
+  if (!summary || !summary.rangesByFile || !filename) return [];
+  const normalizedName = normalizeRelativePath(filename);
+  if (!normalizedName) return [];
+  const entries = summary.rangesByFile.get(normalizedName);
+  if (!entries || !entries.length) return [];
+  return mergeLineRanges(entries);
+}
+
+async function getDuplicateRangesForFile(dataset, filename) {
+  if (!dataset || !filename) return [];
+  try {
+    const summary = await getDuplicateSummary(dataset);
+    return getDuplicateRangesFromSummary(summary, filename);
+  } catch (error) {
+    if (error && typeof error.message === "string" && error.message.toLowerCase().includes("not found")) {
+      return [];
+    }
+    console.warn(`Unable to load duplicate ranges for ${filename}:`, error);
+    return [];
+  }
+}
+
+async function updateFileDuplicateBadges(dataset) {
+  if (!fileListElement) return;
+  fileListElement.querySelectorAll(".file-duplicate-badge").forEach((badge) => badge.remove());
+  fileListElement.querySelectorAll(".dataset-row").forEach((row) => row.classList.remove("has-duplicate-code"));
+  if (!dataset) return;
+
+  const expectedDataset = dataset || "";
+  let summary = null;
+  try {
+    summary = await getDuplicateSummary(dataset);
+  } catch (error) {
+    if (!(error && typeof error.message === "string" && error.message.toLowerCase().includes("not found"))) {
+      console.warn(`Unable to load duplicate summary for dataset "${dataset}":`, error);
+    }
+    return;
+  }
+  if (!summary || (fileListElement.dataset.dataset || "") !== expectedDataset) {
+    return;
+  }
+  const rangesByFile = summary.rangesByFile || new Map();
+  const metaByFile = summary.metaByFile || new Map();
+
+  fileListElement.querySelectorAll(".dataset-row").forEach((row) => {
+    const filename = (row.dataset && row.dataset.filename) || null;
+    const normalizedName = normalizeRelativePath(filename);
+    const hasRanges = normalizedName && rangesByFile.has(normalizedName);
+    const meta = normalizedName ? metaByFile.get(normalizedName) : null;
+    if (!hasRanges || !meta || (!meta.crossFile && !meta.selfOnly)) {
+      return;
+    }
+    const label = row.querySelector(".file-entry-name") || row.querySelector("span");
+    if (!label) return;
+    row.classList.add("has-duplicate-code");
+    if (meta.crossFile) {
+      const badge = document.createElement("span");
+      badge.className = "file-duplicate-badge possible-plagiarism";
+      badge.textContent = "Possible Plagiarism";
+      badge.title = "Duplicate block references multiple files.";
+      label.appendChild(badge);
+    }
+    if (meta.selfOnly) {
+      const badge = document.createElement("span");
+      badge.className = "file-duplicate-badge code-duplication";
+      badge.textContent = "Code duplication";
+      badge.title = "Duplicate block references only this file.";
+      label.appendChild(badge);
+    }
+  });
+}
+
+function updateGlobalAnalysisMetricOptions(metrics = []) {
+  if (!globalAnalysisMetricSelect) return;
+  globalAnalysisMetricSelect.innerHTML = "";
+  if (!metrics.length) {
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "No metrics available";
+    globalAnalysisMetricSelect.appendChild(option);
+    globalAnalysisMetricSelect.disabled = true;
+    return;
+  }
+  metrics.forEach((metric) => {
+    const option = document.createElement("option");
+    option.value = metric.key;
+    option.textContent = metric.label || metric.key;
+    globalAnalysisMetricSelect.appendChild(option);
+  });
+  globalAnalysisMetricSelect.disabled = false;
+  const activeKey = globalAnalysisState.metricKey || metrics[0].key;
+  globalAnalysisMetricSelect.value = activeKey;
+  globalAnalysisState.metricKey = activeKey;
+}
+
+function getMetricDefinition(metricKey) {
+  if (!metricKey) return null;
+  return (globalAnalysisState.metrics || []).find((metric) => metric.key === metricKey) || null;
+}
+
+function getMetricAverage(metricKey) {
+  const definition = getMetricDefinition(metricKey);
+  if (!definition) return null;
+  const value = definition.average;
+  return Number.isFinite(value) ? value : null;
+}
+
+function computeStandardDeviation(values = [], mean = null) {
+  if (!values.length) return null;
+  const actualMean =
+    Number.isFinite(mean) && mean !== null
+      ? mean
+      : values.reduce((sum, value) => sum + value, 0) / values.length;
+  const variance =
+    values.reduce((sum, value) => sum + (value - actualMean) ** 2, 0) / values.length;
+  if (!Number.isFinite(variance)) return null;
+  return Math.sqrt(variance);
+}
+
+function clearGlobalAnalysisChart() {
+  if (!globalAnalysisChart) return;
+  if (globalAnalysisChart.__plotlyClickHandler && typeof globalAnalysisChart.removeListener === "function") {
+    globalAnalysisChart.removeListener("plotly_click", globalAnalysisChart.__plotlyClickHandler);
+    globalAnalysisChart.__plotlyClickHandler = null;
+  }
+  if (window.Plotly) {
+    Plotly.purge(globalAnalysisChart);
+  } else {
+    globalAnalysisChart.innerHTML = "";
+  }
+}
+
+function renderGlobalAnalysisChart() {
+  if (!globalAnalysisChart || !globalAnalysisState.metricKey) {
+    clearGlobalAnalysisChart();
+    return;
+  }
+  if (!window.Plotly) {
+    showMessage(globalAnalysisFeedback, "Plotly library failed to load.", true);
+    return;
+  }
+  const metricKey = globalAnalysisState.metricKey;
+  const points = (globalAnalysisState.files || [])
+    .map((file, index) => {
+      const metrics = file.metrics || {};
+      const value = Number(metrics[metricKey]);
+      if (!Number.isFinite(value)) {
+        return null;
+      }
+      return {
+        x: index + 1,
+        y: value,
+        filename: file.path || file.raw_path || `File ${index + 1}`,
+      };
+    })
+    .filter(Boolean);
+  if (!points.length) {
+    clearGlobalAnalysisChart();
+    showMessage(globalAnalysisFeedback, `No values available for ${metricKey}.`, true);
+    return;
+  }
+  const trace = {
+    x: points.map((point) => point.x),
+    y: points.map((point) => point.y),
+    type: "scatter",
+    mode: "markers",
+  };
+  const values = points.map((point) => point.y);
+  const metricAverage = getMetricAverage(metricKey);
+  const stddev = computeStandardDeviation(values, metricAverage);
+  const hasAverage = Number.isFinite(metricAverage);
+  const stddevValid = Number.isFinite(stddev) && stddev > 0;
+  const upperThreshold =
+    hasAverage && stddevValid ? metricAverage + stddev * 2 : hasAverage ? metricAverage : null;
+  const lowerThreshold =
+    hasAverage && stddevValid ? metricAverage - stddev * 2 : hasAverage ? metricAverage : null;
+  const upperBand =
+    hasAverage && stddevValid ? metricAverage + stddev : hasAverage ? metricAverage : null;
+  const lowerBand =
+    hasAverage && stddevValid ? metricAverage - stddev : hasAverage ? metricAverage : null;
+  const pointStatuses = points.map((point) => {
+    if (Number.isFinite(upperThreshold) && point.y >= upperThreshold) {
+      return "High outlier";
+    }
+    if (Number.isFinite(lowerThreshold) && point.y <= lowerThreshold) {
+      return "Low outlier";
+    }
+    if (Number.isFinite(upperBand) && point.y >= upperBand) {
+      return "High band";
+    }
+    if (Number.isFinite(lowerBand) && point.y <= lowerBand) {
+      return "Low band";
+    }
+    return "Normal";
+  });
+  const colors = pointStatuses.map((status) => {
+    if (status === "High outlier") return "#dc2626";
+    if (status === "Low outlier") return "#1d4ed8";
+    if (status === "High band") return "#fb923c";
+    if (status === "Low band") return "#60a5fa";
+    return "#2563eb";
+  });
+  trace.marker = {
+    size: 10,
+    color: colors,
+    opacity: 0.9,
+    line: {
+      width: 1,
+      color: pointStatuses.map((status) => {
+        if (status === "High outlier") return "#991b1b";
+        if (status === "Low outlier") return "#1e40af";
+        if (status === "High band") return "#c2410c";
+        if (status === "Low band") return "#2563eb";
+        return "#1d4ed8";
+      }),
+    },
+  };
+  trace.customdata = points.map((point, index) => [point.filename, pointStatuses[index]]);
+  trace.hovertemplate = `<b>%{customdata[0]}</b><br>${metricKey}: %{y}<br>Status: %{customdata[1]}<extra></extra>`;
+
+  const shapes = [];
+  if (hasAverage) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: metricAverage,
+      y1: metricAverage,
+      line: {
+        color: "#94a3b8",
+        dash: "dot",
+        width: 2,
+      },
+    });
+  }
+  if (Number.isFinite(upperThreshold) && (!hasAverage || upperThreshold !== metricAverage)) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: upperThreshold,
+      y1: upperThreshold,
+      line: {
+        color: "#dc2626",
+        dash: "dash",
+        width: 1.5,
+      },
+    });
+  }
+  if (
+    Number.isFinite(lowerThreshold) &&
+    (!hasAverage || lowerThreshold !== metricAverage) &&
+    lowerThreshold !== upperThreshold
+  ) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: lowerThreshold,
+      y1: lowerThreshold,
+      line: {
+        color: "#1d4ed8",
+        dash: "dash",
+        width: 1.5,
+      },
+    });
+  }
+  if (Number.isFinite(upperBand) && (!hasAverage || upperBand !== metricAverage)) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: upperBand,
+      y1: upperBand,
+      line: {
+        color: "#fb923c",
+        dash: "dot",
+        width: 1,
+      },
+    });
+  }
+  if (
+    Number.isFinite(lowerBand) &&
+    (!hasAverage || lowerBand !== metricAverage) &&
+    lowerBand !== upperBand
+  ) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: lowerBand,
+      y1: lowerBand,
+      line: {
+        color: "#60a5fa",
+        dash: "dot",
+        width: 1,
+      },
+    });
+  }
+  const layout = {
+    margin: { l: 60, r: 20, t: 30, b: 40 },
+    xaxis: {
+      title: "File index",
+      zeroline: false,
+      showgrid: false,
+    },
+    yaxis: {
+      title: metricKey,
+      rangemode: "tozero",
+    },
+    hovermode: "closest",
+    showlegend: false,
+    shapes,
+  };
+  Plotly.react(globalAnalysisChart, [trace], layout, { responsive: true, displaylogo: false });
+  if (globalAnalysisChart.__plotlyClickHandler && typeof globalAnalysisChart.removeListener === "function") {
+    globalAnalysisChart.removeListener("plotly_click", globalAnalysisChart.__plotlyClickHandler);
+  }
+  if (typeof globalAnalysisChart.on === "function") {
+    const clickHandler = (event) => {
+      if (!event || !event.points || !event.points.length) {
+        return;
+      }
+      const point = event.points[0];
+      const filename = Array.isArray(point.customdata) ? point.customdata[0] : point.customdata;
+      openFileInExplorer(filename);
+    };
+    globalAnalysisChart.on("plotly_click", clickHandler);
+    globalAnalysisChart.__plotlyClickHandler = clickHandler;
+  }
+}
+
+async function refreshGlobalAnalysis() {
+  if (!globalAnalysisPanel) return;
+  const dataset = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
+  if (globalAnalysisDatasetLabel) {
+    globalAnalysisDatasetLabel.textContent = dataset || "None";
+  }
+  if (!dataset) {
+    globalAnalysisState.dataset = null;
+    globalAnalysisState.metrics = [];
+    globalAnalysisState.files = [];
+    globalAnalysisState.metricKey = null;
+    updateGlobalAnalysisMetricOptions([]);
+    clearGlobalAnalysisChart();
+    showMessage(globalAnalysisFeedback, "Select a dataset to load the analysis.");
+    return;
+  }
+  showMessage(globalAnalysisFeedback, "Loading metrics...");
+  try {
+    const params = new URLSearchParams({ dataset });
+    const data = await requestJSON(`${API_ROUTES.globalMetrics}?${params.toString()}`);
+    globalAnalysisState.dataset = data.dataset || dataset;
+    globalAnalysisState.metrics = data.metrics || [];
+    globalAnalysisState.files = data.files || [];
+    if (!globalAnalysisState.metrics.length || !globalAnalysisState.files.length) {
+      globalAnalysisState.metricKey = null;
+      updateGlobalAnalysisMetricOptions([]);
+      clearGlobalAnalysisChart();
+      showMessage(globalAnalysisFeedback, "No file metrics available.", true);
+      return;
+    }
+    if (
+      !globalAnalysisState.metricKey ||
+      !globalAnalysisState.metrics.some((metric) => metric.key === globalAnalysisState.metricKey)
+    ) {
+      globalAnalysisState.metricKey = globalAnalysisState.metrics[0].key;
+    }
+    updateGlobalAnalysisMetricOptions(globalAnalysisState.metrics);
+    renderGlobalAnalysisChart();
+    showMessage(globalAnalysisFeedback, `Loaded ${globalAnalysisState.files.length} file(s).`);
+  } catch (error) {
+    globalAnalysisState.metrics = [];
+    globalAnalysisState.files = [];
+    globalAnalysisState.metricKey = null;
+    updateGlobalAnalysisMetricOptions([]);
+    clearGlobalAnalysisChart();
+    showMessage(globalAnalysisFeedback, error.message, true);
+  }
+}
+
+function openFileInExplorer(filename) {
+  if (!filename) return;
+  const params = new URLSearchParams({ file: filename });
+  const dataset = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
+  if (dataset) {
+    params.set("dataset", dataset);
+  }
+  window.location.href = `/file-explorer?${params.toString()}`;
+}
+
+function mergeLineRanges(ranges = []) {
+  const normalized = (ranges || [])
+    .map((range) => {
+      if (!range) return null;
+      const startValue = Number(range.startLine ?? range.start ?? range.line);
+      const endValue = Number(range.endLine ?? range.end ?? range.line);
+      if (!Number.isFinite(startValue) || !Number.isFinite(endValue)) {
+        return null;
+      }
+      const startLine = Math.max(1, Math.min(startValue, endValue));
+      const endLine = Math.max(startLine, Math.max(startValue, endValue));
+      return { startLine, endLine };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.startLine - b.startLine);
+
+  const merged = [];
+  normalized.forEach((range) => {
+    const last = merged[merged.length - 1];
+    if (!last || range.startLine > last.endLine + 1) {
+      merged.push({ ...range });
+    } else {
+      last.endLine = Math.max(last.endLine, range.endLine);
+    }
+  });
+
+  return merged;
+}
+
 function showPlagiarismEmptyState(message) {
   if (!plagiarismContainer) return;
   plagiarismContainer.innerHTML = "";
@@ -331,13 +958,8 @@ async function fetchPlagiarismData() {
   plagiarismState.snippetCache.clear();
   showPlagiarismEmptyState("Loading duplicate blocks…");
   try {
-    const params = new URLSearchParams({
-      dataset,
-      summary: "true",
-      filename: plagiarismState.summaryFilename || "lizard_dataset.xml",
-    });
-    const data = await requestJSON(`${API_ROUTES.fileAnalysis}?${params.toString()}`);
-    const blocks = parseDuplicateBlocks(data.analysis || "");
+    const summary = await getDuplicateSummary(dataset);
+    const blocks = summary ? filterCrossFileBlocks(summary.blocks) : [];
     plagiarismState.blocks = blocks;
     plagiarismState.index = 0;
     updatePlagiarismControls();
@@ -529,6 +1151,9 @@ async function setCurrentDataset(name) {
     if (plagiarismContainer) {
       await refreshPlagiarismView();
     }
+    if (globalAnalysisPanel) {
+      await refreshGlobalAnalysis();
+    }
     showMessage(datasetFeedbackElement, `Current dataset: ${data.current_dataset || "None"}.`);
   } catch (error) {
     showMessage(datasetFeedbackElement, error.message, true);
@@ -538,6 +1163,9 @@ async function setCurrentDataset(name) {
     }
     if (plagiarismContainer) {
       refreshPlagiarismView();
+    }
+    if (globalAnalysisPanel) {
+      refreshGlobalAnalysis();
     }
   }
 }
@@ -550,6 +1178,13 @@ function initDatasetControls() {
   if (datasetSelect) {
     datasetSelect.addEventListener("change", (event) => {
       setCurrentDataset(event.target.value || null);
+    });
+  }
+
+  if (globalAnalysisMetricSelect) {
+    globalAnalysisMetricSelect.addEventListener("change", (event) => {
+      globalAnalysisState.metricKey = event.target.value || null;
+      renderGlobalAnalysisChart();
     });
   }
 
@@ -567,6 +1202,17 @@ function initDatasetControls() {
 
   if (plagiarismContainer) {
     initPlagiarismViewer();
+  }
+
+  if (globalAnalysisPanel) {
+    refreshGlobalAnalysis();
+  }
+
+  if (fileExplorerWrapper && initialExplorerDatasetParam && datasetSelect) {
+    const desiredDataset = initialExplorerDatasetParam;
+    if (!datasetSelect.value || datasetSelect.value !== desiredDataset) {
+      setCurrentDataset(desiredDataset);
+    }
   }
 }
 

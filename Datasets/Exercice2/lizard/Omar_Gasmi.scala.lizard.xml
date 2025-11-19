@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:9">
+			<value>1</value>
+			<value>80</value>
+			<value>31</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:93">
+			<value>2</value>
+			<value>21</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:118">
+			<value>3</value>
+			<value>17</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:140">
+			<value>4</value>
+			<value>196</value>
+			<value>57</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Omar_Gasmi.scala:346">
+			<value>5</value>
+			<value>41</value>
+			<value>7</value>
+		</item>
+		<average label="NCSS" value="71.0"/>
+		<average label="CCN" value="20.6"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Omar_Gasmi.scala">
+			<value>1</value>
+			<value>358</value>
+			<value>103</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="358.0"/>
+		<average label="CCN" value="103.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="358"/>
+		<sum label="CCN" value="103"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="71.0"/>
+		<average label="CCN" value="20.6"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Omar_Gasmi.scala:248 ~ 257
+Datasets/Exercice2/raw/Omar_Gasmi.scala:266 ~ 275
+Datasets/Exercice2/raw/Omar_Gasmi.scala:299 ~ 308
+Datasets/Exercice2/raw/Omar_Gasmi.scala:312 ~ 321
+Datasets/Exercice2/raw/Omar_Gasmi.scala:325 ~ 334
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice2/raw/Omar_Gasmi.scala:266 ~ 275
+Datasets/Exercice2/raw/Omar_Gasmi.scala:299 ~ 308
+Datasets/Exercice2/raw/Omar_Gasmi.scala:312 ~ 321
+Datasets/Exercice2/raw/Omar_Gasmi.scala:325 ~ 334
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 20.34%
+Total unique rate: 95.92%

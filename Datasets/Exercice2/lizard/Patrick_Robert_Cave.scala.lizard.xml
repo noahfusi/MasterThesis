@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="selectionMode(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:30">
+			<value>1</value>
+			<value>17</value>
+			<value>7</value>
+		</item>
+		<item name="selectionMachine(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:47">
+			<value>2</value>
+			<value>18</value>
+			<value>11</value>
+		</item>
+		<item name="verificationCode(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:249">
+			<value>3</value>
+			<value>26</value>
+			<value>4</value>
+		</item>
+		<item name="menuAdmin(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:277">
+			<value>4</value>
+			<value>14</value>
+			<value>5</value>
+		</item>
+		<item name="nouveauCode(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:291">
+			<value>5</value>
+			<value>17</value>
+			<value>6</value>
+		</item>
+		<item name="remplirMachine(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:308">
+			<value>6</value>
+			<value>22</value>
+			<value>4</value>
+		</item>
+		<item name="quitter(...) at Datasets/Exercice2/raw/Patrick_Robert_Cave.scala:334">
+			<value>7</value>
+			<value>28</value>
+			<value>7</value>
+		</item>
+		<average label="NCSS" value="20.285714285714285"/>
+		<average label="CCN" value="6.285714285714286"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Patrick_Robert_Cave.scala">
+			<value>1</value>
+			<value>329</value>
+			<value>44</value>
+			<value>7</value>
+		</item>
+		<average label="NCSS" value="329.0"/>
+		<average label="CCN" value="44.0"/>
+		<average label="Functions" value="7.0"/>
+		<sum label="NCSS" value="329"/>
+		<sum label="CCN" value="44"/>
+		<sum label="Functions" value="7"/>
+		<average label="NCSS" value="20.285714285714285"/>
+		<average label="CCN" value="6.285714285714286"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.88%

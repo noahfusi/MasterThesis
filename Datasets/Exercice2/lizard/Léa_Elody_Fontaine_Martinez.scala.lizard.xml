@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Léa_Elody_Fontaine_Martinez.scala:29">
+			<value>1</value>
+			<value>14</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Léa_Elody_Fontaine_Martinez.scala:43">
+			<value>2</value>
+			<value>9</value>
+			<value>2</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Léa_Elody_Fontaine_Martinez.scala:52">
+			<value>3</value>
+			<value>17</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Léa_Elody_Fontaine_Martinez.scala:69">
+			<value>4</value>
+			<value>214</value>
+			<value>71</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice2/raw/Léa_Elody_Fontaine_Martinez.scala:317">
+			<value>5</value>
+			<value>60</value>
+			<value>21</value>
+		</item>
+		<average label="NCSS" value="62.8"/>
+		<average label="CCN" value="20.2"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Léa_Elody_Fontaine_Martinez.scala">
+			<value>1</value>
+			<value>331</value>
+			<value>101</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="331.0"/>
+		<average label="CCN" value="101.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="331"/>
+		<sum label="CCN" value="101"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="62.8"/>
+		<average label="CCN" value="20.2"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice2/raw/Loris_Astori.scala:12">
+			<value>1</value>
+			<value>43</value>
+			<value>13</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Loris_Astori.scala:63">
+			<value>2</value>
+			<value>102</value>
+			<value>24</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Loris_Astori.scala:186">
+			<value>3</value>
+			<value>16</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Loris_Astori.scala:207">
+			<value>4</value>
+			<value>19</value>
+			<value>7</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Loris_Astori.scala:231">
+			<value>5</value>
+			<value>19</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="39.8"/>
+		<average label="CCN" value="9.8"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Loris_Astori.scala">
+			<value>1</value>
+			<value>203</value>
+			<value>49</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="203.0"/>
+		<average label="CCN" value="49.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="203"/>
+		<sum label="CCN" value="49"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="39.8"/>
+		<average label="CCN" value="9.8"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 98.64%

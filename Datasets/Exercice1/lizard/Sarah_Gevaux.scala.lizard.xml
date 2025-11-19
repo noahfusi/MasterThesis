@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/Sarah_Gevaux.scala:5">
+			<value>1</value>
+			<value>338</value>
+			<value>70</value>
+		</item>
+		<average label="NCSS" value="338.0"/>
+		<average label="CCN" value="70.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Sarah_Gevaux.scala">
+			<value>1</value>
+			<value>341</value>
+			<value>70</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="341.0"/>
+		<average label="CCN" value="70.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="341"/>
+		<sum label="CCN" value="70"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="338.0"/>
+		<average label="CCN" value="70.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:172 ~ 180
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:183 ~ 191
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:195 ~ 203
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:207 ~ 215
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:219 ~ 227
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:231 ~ 239
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:243 ~ 251
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:255 ~ 263
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:267 ~ 275
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:279 ~ 287
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:172 ~ 180
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:183 ~ 191
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:195 ~ 203
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:207 ~ 215
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:219 ~ 227
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:231 ~ 239
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:243 ~ 251
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:255 ~ 263
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:267 ~ 275
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:194 ~ 203
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:230 ~ 239
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:242 ~ 251
+Datasets/Exercice1/raw/Sarah_Gevaux.scala:278 ~ 287
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 47.02%
+Total unique rate: 89.68%

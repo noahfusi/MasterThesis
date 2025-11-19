@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/Alessandro_Caldara.scala:2">
+			<value>1</value>
+			<value>333</value>
+			<value>95</value>
+		</item>
+		<average label="NCSS" value="333.0"/>
+		<average label="CCN" value="95.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Alessandro_Caldara.scala">
+			<value>1</value>
+			<value>334</value>
+			<value>95</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="334.0"/>
+		<average label="CCN" value="95.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="334"/>
+		<sum label="CCN" value="95"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="333.0"/>
+		<average label="CCN" value="95.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:148 ~ 158
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:171 ~ 181
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:196 ~ 206
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:218 ~ 228
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:240 ~ 250
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:167 ~ 181
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:192 ~ 206
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:214 ~ 228
+Datasets/Exercice1/raw/Alessandro_Caldara.scala:236 ~ 250
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 25.48%
+Total unique rate: 93.32%

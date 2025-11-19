@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:7">
+			<value>1</value>
+			<value>10</value>
+			<value>3</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:17">
+			<value>2</value>
+			<value>11</value>
+			<value>3</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:31">
+			<value>3</value>
+			<value>47</value>
+			<value>12</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala:81">
+			<value>4</value>
+			<value>9</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="19.25"/>
+		<average label="CCN" value="4.75"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Togbedji_Kodjogan_Sossoukpe.scala">
+			<value>1</value>
+			<value>122</value>
+			<value>19</value>
+			<value>4</value>
+		</item>
+		<average label="NCSS" value="122.0"/>
+		<average label="CCN" value="19.0"/>
+		<average label="Functions" value="4.0"/>
+		<sum label="NCSS" value="122"/>
+		<sum label="CCN" value="19"/>
+		<sum label="Functions" value="4"/>
+		<average label="NCSS" value="19.25"/>
+		<average label="CCN" value="4.75"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

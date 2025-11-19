@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="afficherTexteCaractereParCaractere(...) at Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala:7">
+			<value>1</value>
+			<value>8</value>
+			<value>2</value>
+		</item>
+		<item name="afficherStocks(...) at Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala:15">
+			<value>2</value>
+			<value>7</value>
+			<value>1</value>
+		</item>
+		<item name="ajouterStock(...) at Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala:22">
+			<value>3</value>
+			<value>15</value>
+			<value>1</value>
+		</item>
+		<item name="verifierStock(...) at Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala:37">
+			<value>4</value>
+			<value>19</value>
+			<value>4</value>
+		</item>
+		<item name="deduireStock(...) at Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala:57">
+			<value>5</value>
+			<value>8</value>
+			<value>1</value>
+		</item>
+		<item name="genererCodePaiement(...) at Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala:243">
+			<value>6</value>
+			<value>11</value>
+			<value>2</value>
+		</item>
+		<item name="demarrerProgramme(...) at Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala:65">
+			<value>7</value>
+			<value>177</value>
+			<value>51</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala:6">
+			<value>8</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="31.125"/>
+		<average label="CCN" value="7.875"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Baptiste_Nawesi_Ihab_Wata.scala">
+			<value>1</value>
+			<value>246</value>
+			<value>63</value>
+			<value>8</value>
+		</item>
+		<average label="NCSS" value="246.0"/>
+		<average label="CCN" value="63.0"/>
+		<average label="Functions" value="8.0"/>
+		<sum label="NCSS" value="246"/>
+		<sum label="CCN" value="63"/>
+		<sum label="Functions" value="8"/>
+		<average label="NCSS" value="31.125"/>
+		<average label="CCN" value="7.875"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 100.00%

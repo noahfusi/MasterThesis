@@ -68,7 +68,7 @@ def _write_analysis(dataset: str, raw_root: Path, file_path: Path, raw_output: s
 
 
 def _filter_duplicate_blocks(report: str) -> str:
-    """Remove duplicate sections referencing only a single file."""
+    """Filter duplicate sections according to configured requirements."""
     lines = report.splitlines()
     filtered: list[str] = []
     i = 0
@@ -95,7 +95,7 @@ def _filter_duplicate_blocks(report: str) -> str:
                     start, end = int(match.group(1)), int(match.group(2))
                     if end >= start:
                         spans.append(end - start)
-            include_block = len(files) > 1
+            include_block = bool(files)
             if include_block and MIN_DUPLICATE_LINES > 0:
                 include_block = any(span >= MIN_DUPLICATE_LINES for span in spans)
             if include_block:

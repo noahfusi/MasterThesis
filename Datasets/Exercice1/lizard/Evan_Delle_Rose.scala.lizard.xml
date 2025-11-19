@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/Evan_Delle_Rose.scala:4">
+			<value>1</value>
+			<value>570</value>
+			<value>139</value>
+		</item>
+		<average label="NCSS" value="570.0"/>
+		<average label="CCN" value="139.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/Evan_Delle_Rose.scala">
+			<value>1</value>
+			<value>572</value>
+			<value>139</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="572.0"/>
+		<average label="CCN" value="139.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="572"/>
+		<sum label="CCN" value="139"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="570.0"/>
+		<average label="CCN" value="139.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:121 ~ 133
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:229 ~ 240
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:424 ~ 435
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:229 ~ 276
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:424 ~ 463
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:383 ~ 400
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:632 ~ 650
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:208 ~ 219
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:389 ~ 400
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:638 ~ 650
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:306 ~ 324
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:513 ~ 529
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:342 ~ 381
+Datasets/Exercice1/raw/Evan_Delle_Rose.scala:583 ~ 624
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 47.27%
+Total unique rate: 79.96%

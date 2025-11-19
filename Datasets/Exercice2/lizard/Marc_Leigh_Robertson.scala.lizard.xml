@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Marc_Leigh_Robertson.scala:9">
+			<value>1</value>
+			<value>12</value>
+			<value>2</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Marc_Leigh_Robertson.scala:25">
+			<value>2</value>
+			<value>10</value>
+			<value>4</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Marc_Leigh_Robertson.scala:42">
+			<value>3</value>
+			<value>183</value>
+			<value>84</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Marc_Leigh_Robertson.scala:315">
+			<value>4</value>
+			<value>23</value>
+			<value>7</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice2/raw/Marc_Leigh_Robertson.scala:361">
+			<value>5</value>
+			<value>59</value>
+			<value>26</value>
+		</item>
+		<average label="NCSS" value="57.4"/>
+		<average label="CCN" value="24.6"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Marc_Leigh_Robertson.scala">
+			<value>1</value>
+			<value>286</value>
+			<value>123</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="286.0"/>
+		<average label="CCN" value="123.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="286"/>
+		<sum label="CCN" value="123"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="57.4"/>
+		<average label="CCN" value="24.6"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.46%

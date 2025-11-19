@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:33">
+			<value>1</value>
+			<value>21</value>
+			<value>3</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:55">
+			<value>2</value>
+			<value>15</value>
+			<value>5</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:71">
+			<value>3</value>
+			<value>37</value>
+			<value>10</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:112">
+			<value>4</value>
+			<value>183</value>
+			<value>49</value>
+		</item>
+		<item name="main(...) at Datasets/Exercice2/raw/Anja_Maendly.scala:4">
+			<value>5</value>
+			<value>56</value>
+			<value>18</value>
+		</item>
+		<average label="NCSS" value="62.4"/>
+		<average label="CCN" value="17.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Anja_Maendly.scala">
+			<value>1</value>
+			<value>310</value>
+			<value>85</value>
+			<value>5</value>
+		</item>
+		<average label="NCSS" value="310.0"/>
+		<average label="CCN" value="85.0"/>
+		<average label="Functions" value="5.0"/>
+		<sum label="NCSS" value="310"/>
+		<sum label="CCN" value="85"/>
+		<sum label="Functions" value="5"/>
+		<average label="NCSS" value="62.4"/>
+		<average label="CCN" value="17.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.65%

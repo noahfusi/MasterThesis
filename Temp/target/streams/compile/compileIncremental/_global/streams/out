@@ -1,0 +1,69 @@
+[debug] [zinc] IncrementalCompile -----------
+[debug] IncrementalCompile.incrementalCompile
+[debug] previous = Stamps for: 2 products, 1 sources, 1 libraries
+[debug] current source = Set(${BASE}/src/main/scala/Abo_Cedric_Daniel_Yao.scala)
+[debug] > initialChanges = InitialChanges(Changes(added = Set(${BASE}/src/main/scala/Abo_Cedric_Daniel_Yao.scala), removed = Set(${BASE}/src/main/scala/Nospresso.scala), changed = Set(), unmodified = ...),Set(),Set(),API Changes: Set())
+[debug] 
+[debug] Initial source changes:
+[debug] 	removed: Set(${BASE}/src/main/scala/Nospresso.scala)
+[debug] 	added: Set(${BASE}/src/main/scala/Abo_Cedric_Daniel_Yao.scala)
+[debug] 	modified: Set()
+[debug] Invalidated products: Set()
+[debug] External API changes: API Changes: Set()
+[debug] Modified binary dependencies: Set()
+[debug] Initial directly invalidated classes: Set(Main)
+[debug] Sources indirectly invalidated by:
+[debug] 	product: Set()
+[debug] 	binary dep: Set()
+[debug] 	external source: Set()
+[debug] all 1 sources are invalidated
+[debug] Initial set of included nodes: Main
+[debug] Recompiling all sources: number of invalidated sources > 50.0% of all sources
+[debug] compilation cycle 1
+[info] compiling 1 Scala source to /app/target/scala-2.13/classes ...
+[debug] Getting org.scala-sbt:compiler-bridge_2.13:1.6.0:compile for Scala 2.13.0
+[info] Non-compiled module 'compiler-bridge_2.13' for Scala 2.13.0. Compiling...
+[debug] Creating plain compiler interface for 2.13.0.
+[debug]   > Arguments: 
+[debug] 	-d
+[debug] 	/tmp/sbt_3d80ed68
+[debug] 	-nowarn
+[debug] 	-bootclasspath
+[debug] 	/root/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.0/scala-library-2.13.0.jar
+[debug] 	-classpath
+[debug] 	/root/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-interface/1.6.0/compiler-interface-1.6.0.jar:/root/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/util-interface/1.6.0/util-interface-1.6.0.jar:/root/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-sbt/compiler-bridge_2.13/1.6.0/compiler-bridge_2.13-1.6.0-sources.jar:/root/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.13.0/scala-compiler-2.13.0.jar:/root/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.13.0/scala-reflect-2.13.0.jar:/root/.cache/coursier/v1/https/repo1.maven.org/maven2/jline/jline/2.14.6/jline-2.14.6.jar
+[debug] 	/tmp/sbt_6482e056/scala/ZincCompat.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/API.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/AbstractZincFile.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/Analyzer.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/CallbackGlobal.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/ClassName.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/Compat.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/CompilerBridge.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/ConsoleBridge.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/DelegatingReporter.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/Dependency.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/ExtractAPI.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/ExtractUsedNames.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/GlobalHelpers.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/InteractiveConsoleBridge.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/InteractiveConsoleFactoryBridge.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/InteractiveConsoleHelper.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/InteractiveConsoleResponse.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/JarUtils.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/JavaUtils.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/LocalToNonLocalClass.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/LocateClassFile.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/Log.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/Message.scala
+[debug] 	/tmp/sbt_6482e056/xsbt/ScaladocBridge.scala
+[debug]       
+[info]   Compilation completed in 27.494s.
+[debug] [zinc] Running cached compiler 1b8ca3aa for Scala compiler version 2.13.0
+[debug] [zinc] The Scala compiler is invoked with:
+[debug] 	-bootclasspath
+[debug] 	/root/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.13.0/scala-library-2.13.0.jar
+[debug] 	-classpath
+[debug] 	/app/target/scala-2.13/classes
+[debug] Scala compilation took 32.059256792 s
+[info] done compiling

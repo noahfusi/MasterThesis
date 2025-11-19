@@ -1,0 +1,80 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala:16">
+			<value>1</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<item name="menuPrincipal(...) at Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala:22">
+			<value>2</value>
+			<value>35</value>
+			<value>10</value>
+		</item>
+		<item name="validatePin(...) at Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala:70">
+			<value>3</value>
+			<value>22</value>
+			<value>4</value>
+		</item>
+		<item name="updatePin(...) at Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala:99">
+			<value>4</value>
+			<value>15</value>
+			<value>5</value>
+		</item>
+		<item name="serveClient(...) at Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala:120">
+			<value>5</value>
+			<value>124</value>
+			<value>46</value>
+		</item>
+		<item name="restockMachine(...) at Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala:289">
+			<value>6</value>
+			<value>13</value>
+			<value>1</value>
+		</item>
+		<item name="modeAdmin(...) at Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala:307">
+			<value>7</value>
+			<value>21</value>
+			<value>5</value>
+		</item>
+		<item name="quitter(...) at Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala:338">
+			<value>8</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="29.75"/>
+		<average label="CCN" value="9.125"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice2/raw/Sirine_Louna_Zaïdi.scala">
+			<value>1</value>
+			<value>239</value>
+			<value>73</value>
+			<value>8</value>
+		</item>
+		<average label="NCSS" value="239.0"/>
+		<average label="CCN" value="73.0"/>
+		<average label="Functions" value="8.0"/>
+		<sum label="NCSS" value="239"/>
+		<sum label="CCN" value="73"/>
+		<sum label="Functions" value="8"/>
+		<average label="NCSS" value="29.75"/>
+		<average label="CCN" value="9.125"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Total duplicate rate: 0.00%
+Total unique rate: 99.21%

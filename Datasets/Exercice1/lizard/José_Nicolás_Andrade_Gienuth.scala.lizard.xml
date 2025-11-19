@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="https://raw.githubusercontent.com/terryyin/lizard/master/lizard.xsl"?>
+<cppncss>
+	<measure type="Function">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+		</labels>
+		<item name="main(...) at Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala:4">
+			<value>1</value>
+			<value>307</value>
+			<value>119</value>
+		</item>
+		<average label="NCSS" value="307.0"/>
+		<average label="CCN" value="119.0"/>
+	</measure>
+	<measure type="File">
+		<labels>
+			<label>Nr.</label>
+			<label>NCSS</label>
+			<label>CCN</label>
+			<label>Functions</label>
+		</labels>
+		<item name="Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala">
+			<value>1</value>
+			<value>309</value>
+			<value>119</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="309.0"/>
+		<average label="CCN" value="119.0"/>
+		<average label="Functions" value="1.0"/>
+		<sum label="NCSS" value="309"/>
+		<sum label="CCN" value="119"/>
+		<sum label="Functions" value="1"/>
+		<average label="NCSS" value="307.0"/>
+		<average label="CCN" value="119.0"/>
+	</measure>
+</cppncss>
+
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala:63 ~ 86
+Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala:95 ~ 118
+Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala:168 ~ 191
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala:95 ~ 122
+Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala:168 ~ 196
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala:122 ~ 145
+Datasets/Exercice1/raw/José_Nicolás_Andrade_Gienuth.scala:196 ~ 218
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 45.16%
+Total unique rate: 85.40%
