@@ -40,3 +40,11 @@ async def file_analysis(request: Request):
 async def file_explorer(request: Request):
     """Page to explore dataset files."""
     return templates.TemplateResponse("file_explorer.html", _context(request, "File explorer", "explorer"))
+
+
+@router.get("/solution-clustering", name="solution-clustering")
+async def solution_clustering(request: Request):
+    """Placeholder page to explore solution clusters."""
+    return templates.TemplateResponse(
+        "solution_clustering.html", _context(request, "Solution clustering", "clustering")
+    )

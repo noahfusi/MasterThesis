@@ -5,6 +5,7 @@ const API_ROUTES = {
   fileContent: "/datasets/file",
   fileAnalysis: "/datasets/file/lizard",
   globalMetrics: "/datasets/metrics/global",
+  clustering: "/clustering/run",
 };
 
 const datasetSelect = document.getElementById("current-dataset-select");
@@ -33,6 +34,22 @@ const globalAnalysisFeedback = document.getElementById("global-analysis-feedback
 const globalAnalysisDatasetLabel = document.getElementById("global-analysis-dataset");
 const globalAnalysisReferenceName = document.getElementById("global-analysis-reference-name");
 const globalAnalysisReferenceInfo = document.getElementById("global-analysis-reference-info");
+const clusteringForm = document.getElementById("clustering-form");
+const clusteringLaunchButton = document.getElementById("launch-clustering");
+const clusteringAlgorithmSelect = document.getElementById("clustering-algorithm");
+const clusteringKMeansParams = document.getElementById("kmeans-params");
+const clusteringClusterSlider = document.getElementById("cluster-count");
+const clusteringClusterValue = document.getElementById("cluster-count-value");
+const clusteringHdbscanParams = document.getElementById("hdbscan-params");
+const clusteringMinClusterSizeInput = document.getElementById("hdbscan-min-cluster-size");
+const clusteringMinSamplesInput = document.getElementById("hdbscan-min-samples");
+const clusteringFeedback = document.getElementById("clustering-feedback");
+const clusteringChart = document.getElementById("clustering-chart");
+const clusteringSummary = document.getElementById("clustering-summary");
+const clusteringMetricSelect = document.getElementById("clustering-metric-select");
+const clusteringMetricChart = document.getElementById("clustering-metric-chart");
+const clusteringMetricFeedback = document.getElementById("clustering-metric-feedback");
+const clusteringMetricDatasetLabel = document.getElementById("clustering-metric-dataset");
 
 const DEFAULT_LIZARD_SUMMARY = "lizard_dataset.xml";
 const urlParams = new URLSearchParams(window.location.search || "");
@@ -60,6 +77,13 @@ const globalAnalysisState = {
 const fileListState = {
   files: [],
   dataset: null,
+};
+const clusteringState = {
+  dataset: null,
+  algorithm: null,
+  points: [],
+  metrics: [],
+  metricKey: null,
 };
 let lastDuplicateSummary = null;
 let lastDuplicateSummaryDataset = null;
@@ -1314,6 +1338,461 @@ async function setCurrentDataset(name) {
   }
 }
 
+function formatMetricValue(value) {
+  if (typeof value !== "number" || Number.isNaN(value) || !Number.isFinite(value)) {
+    return value ?? "-";
+  }
+  const absValue = Math.abs(value);
+  if (absValue >= 1000 || absValue < 0.01) {
+    return value.toPrecision(3);
+  }
+  return value.toFixed(2);
+}
+
+function getClusterColor(cluster) {
+  if (!Number.isFinite(cluster) || cluster < 0) {
+    return "#94a3b8";
+  }
+  const palette = [
+    "#2563eb",
+    "#f97316",
+    "#22c55e",
+    "#a855f7",
+    "#facc15",
+    "#0ea5e9",
+    "#ef4444",
+    "#14b8a6",
+    "#d946ef",
+    "#fb7185",
+  ];
+  return palette[cluster % palette.length];
+}
+
+function getClusterLabel(cluster) {
+  if (!Number.isFinite(cluster) || cluster < 0) return "Noise";
+  return `Cluster ${cluster + 1}`;
+}
+
+function updateClusteringAlgorithmState() {
+  if (!clusteringAlgorithmSelect) return;
+  const isKMeans = (clusteringAlgorithmSelect.value || "kmeans") === "kmeans";
+  if (clusteringKMeansParams) {
+    clusteringKMeansParams.hidden = !isKMeans;
+  }
+  if (clusteringHdbscanParams) {
+    clusteringHdbscanParams.hidden = isKMeans;
+  }
+}
+
+function updateClusterSliderLabel() {
+  if (!clusteringClusterSlider || !clusteringClusterValue) return;
+  const value = clusteringClusterSlider.value || "0";
+  clusteringClusterValue.textContent = `${value} clusters`;
+}
+
+function sanitizeHdbscanInputs() {
+  if (clusteringMinClusterSizeInput) {
+    const min = Number(clusteringMinClusterSizeInput.min) || 2;
+    const max = Number(clusteringMinClusterSizeInput.max) || 200;
+    let value = Number(clusteringMinClusterSizeInput.value);
+    if (!Number.isFinite(value) || value < min) value = min;
+    if (value > max) value = max;
+    clusteringMinClusterSizeInput.value = String(Math.round(value));
+  }
+  if (clusteringMinSamplesInput) {
+    const min = Number(clusteringMinSamplesInput.min) || 1;
+    const max = Number(clusteringMinSamplesInput.max) || 200;
+    let value = Number(clusteringMinSamplesInput.value);
+    if (!Number.isFinite(value) || value < min) value = min;
+    if (value > max) value = max;
+    clusteringMinSamplesInput.value = String(Math.round(value));
+  }
+}
+
+function updateClusteringMetricDataset(value) {
+  if (clusteringMetricDatasetLabel) {
+    clusteringMetricDatasetLabel.textContent = value || "None";
+  }
+}
+
+function updateClusteringMetricOptions(metrics = []) {
+  if (!clusteringMetricSelect) return;
+  clusteringMetricSelect.innerHTML = "";
+  if (!metrics.length) {
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "No metrics";
+    clusteringMetricSelect.appendChild(option);
+    clusteringMetricSelect.disabled = true;
+    clusteringState.metricKey = null;
+    return;
+  }
+  metrics.forEach((metricKey) => {
+    const option = document.createElement("option");
+    option.value = metricKey;
+    option.textContent = metricKey;
+    clusteringMetricSelect.appendChild(option);
+  });
+  clusteringMetricSelect.disabled = false;
+  const active =
+    clusteringState.metricKey && metrics.includes(clusteringState.metricKey)
+      ? clusteringState.metricKey
+      : metrics[0];
+  clusteringState.metricKey = active;
+  clusteringMetricSelect.value = active;
+}
+
+function clearClusteringMetricChart() {
+  if (!clusteringMetricChart) return;
+  if (window.Plotly) {
+    Plotly.purge(clusteringMetricChart);
+  } else {
+    clusteringMetricChart.innerHTML = "";
+  }
+}
+
+function renderClusteringMetricChart() {
+  if (!clusteringMetricChart || !clusteringState.metricKey) {
+    clearClusteringMetricChart();
+    return;
+  }
+  if (!window.Plotly) {
+    showMessage(clusteringMetricFeedback, "Plotly library failed to load.", true);
+    return;
+  }
+  const metricKey = clusteringState.metricKey;
+  const points = (clusteringState.points || [])
+    .map((point, index) => {
+      const metrics = point.metrics || {};
+      const value = Number(metrics[metricKey]);
+      if (!Number.isFinite(value)) {
+        return null;
+      }
+      return {
+        x: index + 1,
+        y: value,
+        filename: point.path || point.raw_path || `File ${index + 1}`,
+        cluster: typeof point.cluster === "number" ? point.cluster : -1,
+      };
+    })
+    .filter(Boolean);
+  if (!points.length) {
+    clearClusteringMetricChart();
+    showMessage(clusteringMetricFeedback, `No values for ${metricKey}.`, true);
+    return;
+  }
+  const values = points.map((point) => point.y);
+  const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+  const stddev = computeStandardDeviation(values, mean);
+  const hasAverage = Number.isFinite(mean);
+  const stddevValid = Number.isFinite(stddev) && stddev > 0;
+  const upperThreshold = hasAverage && stddevValid ? mean + stddev * 2 : hasAverage ? mean : null;
+  const lowerThreshold = hasAverage && stddevValid ? mean - stddev * 2 : hasAverage ? mean : null;
+  const upperBand = hasAverage && stddevValid ? mean + stddev : hasAverage ? mean : null;
+  const lowerBand = hasAverage && stddevValid ? mean - stddev : hasAverage ? mean : null;
+
+  const colors = points.map((point) => getClusterColor(point.cluster));
+  const trace = {
+    x: points.map((point) => point.x),
+    y: values,
+    type: "scatter",
+    mode: "markers",
+    marker: {
+      size: 11,
+      opacity: 0.9,
+      color: colors,
+      line: { width: 1, color: colors.map((color) => color) },
+    },
+    customdata: points.map((point) => [point.filename, getClusterLabel(point.cluster)]),
+    hovertemplate: `<b>%{customdata[0]}</b><br>${metricKey}: %{y}<br>%{customdata[1]}<extra></extra>`,
+  };
+
+  const shapes = [];
+  if (hasAverage) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: mean,
+      y1: mean,
+      line: { color: "#94a3b8", dash: "dot", width: 2 },
+    });
+  }
+  if (Number.isFinite(upperThreshold) && upperThreshold !== mean) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: upperThreshold,
+      y1: upperThreshold,
+      line: { color: "#dc2626", dash: "dash", width: 1.5 },
+    });
+  }
+  if (
+    Number.isFinite(lowerThreshold) &&
+    lowerThreshold !== mean &&
+    lowerThreshold !== upperThreshold
+  ) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: lowerThreshold,
+      y1: lowerThreshold,
+      line: { color: "#1d4ed8", dash: "dash", width: 1.5 },
+    });
+  }
+  if (Number.isFinite(upperBand) && upperBand !== mean) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: upperBand,
+      y1: upperBand,
+      line: { color: "#fb923c", dash: "dot", width: 1 },
+    });
+  }
+  if (
+    Number.isFinite(lowerBand) &&
+    lowerBand !== mean &&
+    lowerBand !== upperBand
+  ) {
+    shapes.push({
+      type: "line",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: lowerBand,
+      y1: lowerBand,
+      line: { color: "#60a5fa", dash: "dot", width: 1 },
+    });
+  }
+
+  const layout = {
+    margin: { l: 60, r: 20, t: 30, b: 40 },
+    xaxis: { title: "File index", zeroline: false, showgrid: false },
+    yaxis: { title: metricKey, rangemode: "tozero" },
+    hovermode: "closest",
+    showlegend: false,
+    shapes,
+  };
+  Plotly.react(clusteringMetricChart, [trace], layout, { responsive: true, displaylogo: false });
+  showMessage(
+    clusteringMetricFeedback,
+    `Distribution affichée pour ${metricKey} (${points.length} fichier${points.length > 1 ? "s" : ""}).`,
+  );
+}
+
+function renderClusteringSummary(data) {
+  if (!clusteringSummary) return;
+  clusteringSummary.innerHTML = "<h2>Clusters</h2>";
+  const body = document.createElement("div");
+  body.className = "clustering-summary-body";
+  const clusters = (data && Array.isArray(data.clusters) && data.clusters.length) ? data.clusters : null;
+  if (!clusters) {
+    const empty = document.createElement("p");
+    empty.textContent = "Aucun cluster disponible pour le moment.";
+    body.appendChild(empty);
+  } else {
+    const grid = document.createElement("div");
+    grid.className = "clustering-summary-grid";
+    clusters.forEach((cluster) => {
+      const card = document.createElement("article");
+      card.className = "clustering-summary-card";
+      const centroidPreview = (cluster.centroid || [])
+        .slice(0, 2)
+        .map((value) => formatMetricValue(value))
+        .join(", ");
+      card.innerHTML = `
+        <h3>${cluster.label || `Cluster ${cluster.id + 1}`}</h3>
+        <p>Taille: ${cluster.size}</p>
+        <p>Centroïde (aperçu): ${centroidPreview || "-"}</p>
+      `;
+      const metrics = cluster && typeof cluster.metrics === "object" ? cluster.metrics : null;
+      if (metrics && Object.keys(metrics).length) {
+        const metricsContainer = document.createElement("div");
+        metricsContainer.className = "cluster-metrics";
+        const metricsTitle = document.createElement("p");
+        metricsTitle.className = "cluster-metrics-title";
+        metricsTitle.textContent = "Métriques moyennes";
+        metricsContainer.appendChild(metricsTitle);
+        const metricList = document.createElement("dl");
+        metricList.className = "cluster-metrics-grid";
+        const orderedKeys = Array.isArray(data.metrics) && data.metrics.length
+          ? data.metrics
+          : Object.keys(metrics);
+        orderedKeys.forEach((key) => {
+          if (!(key in metrics)) return;
+          const dt = document.createElement("dt");
+          dt.textContent = key;
+          const dd = document.createElement("dd");
+          dd.textContent = formatMetricValue(metrics[key]);
+          metricList.appendChild(dt);
+          metricList.appendChild(dd);
+        });
+        metricsContainer.appendChild(metricList);
+        card.appendChild(metricsContainer);
+      }
+      grid.appendChild(card);
+    });
+    body.appendChild(grid);
+  }
+  if (data && typeof data.noise === "number" && data.noise > 0) {
+    const noise = document.createElement("p");
+    noise.className = "clustering-summary-noise";
+    noise.textContent = `${data.noise} fichier(s) marqués comme bruit.`;
+    body.appendChild(noise);
+  }
+  clusteringSummary.appendChild(body);
+}
+
+function renderClusteringResults(data) {
+  const datasetName = data && data.dataset ? data.dataset : clusteringState.dataset;
+  clusteringState.dataset = datasetName || null;
+  clusteringState.algorithm = data && data.algorithm ? data.algorithm : null;
+  clusteringState.points = Array.isArray(data && data.points) ? data.points : [];
+  clusteringState.metrics = Array.isArray(data && data.metrics) ? data.metrics : [];
+
+  updateClusteringMetricDataset(datasetName);
+  updateClusteringMetricOptions(clusteringState.metrics);
+  if (!clusteringState.metrics.length) {
+    showMessage(
+      clusteringMetricFeedback,
+      "Lancez un clustering pour afficher la distribution des métriques.",
+    );
+  }
+  renderClusteringMetricChart();
+
+  if (!data || !Array.isArray(data.points)) {
+    if (clusteringChart) {
+      clusteringChart.innerHTML = "";
+    }
+    renderClusteringSummary(data);
+    return;
+  }
+
+  if (clusteringChart && window.Plotly) {
+    const hoverTexts = data.points.map((point) => {
+      const lines = [`${point.path}`];
+      const metrics = point.metrics || {};
+      Object.keys(metrics).forEach((key) => {
+        lines.push(`${key}: ${formatMetricValue(metrics[key])}`);
+      });
+      return lines.join("<br>");
+    });
+    const trace = {
+      type: "scatter",
+      mode: "markers",
+      x: data.points.map((point) => point.x || 0),
+      y: data.points.map((point) => point.y || 0),
+      text: hoverTexts,
+      marker: {
+        size: 12,
+        opacity: 0.85,
+        color: data.points.map((point) => (typeof point.cluster === "number" ? point.cluster : -1)),
+        colorscale: "Viridis",
+        showscale: true,
+        colorbar: { title: "Cluster" },
+      },
+    };
+    const layout = {
+      xaxis: { title: (data.axes && data.axes.x) || "Component 1" },
+      yaxis: { title: (data.axes && data.axes.y) || "Component 2" },
+      margin: { t: 30, r: 10, b: 50, l: 50 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "rgba(0,0,0,0)",
+    };
+    Plotly.react(clusteringChart, [trace], layout, { responsive: true });
+  }
+
+  renderClusteringSummary(data);
+}
+
+async function runClusteringJob() {
+  if (!clusteringLaunchButton) return;
+  const algorithm = clusteringAlgorithmSelect ? clusteringAlgorithmSelect.value : "kmeans";
+  const payload = { algorithm };
+  if (algorithm === "kmeans") {
+    if (!clusteringClusterSlider) {
+      showMessage(clusteringFeedback, "Le paramètre k-means est introuvable.", true);
+      return;
+    }
+    payload.cluster_count = Number(clusteringClusterSlider.value);
+  } else {
+    sanitizeHdbscanInputs();
+    if (!clusteringMinClusterSizeInput || !clusteringMinSamplesInput) {
+      showMessage(clusteringFeedback, "Les paramètres HDBSCAN sont requis.", true);
+      return;
+    }
+    const minClusterSize = Number(clusteringMinClusterSizeInput.value);
+    const minSamples = Number(clusteringMinSamplesInput.value);
+    if (!Number.isFinite(minClusterSize) || !Number.isFinite(minSamples)) {
+      showMessage(clusteringFeedback, "Valeurs HDBSCAN invalides.", true);
+      return;
+    }
+    payload.min_cluster_size = minClusterSize;
+    payload.min_samples = minSamples;
+  }
+
+  showMessage(clusteringFeedback, "Clustering en cours...");
+  clusteringLaunchButton.disabled = true;
+  try {
+    const result = await requestJSON(API_ROUTES.clustering, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    renderClusteringResults(result);
+    const pointCount = Array.isArray(result.points) ? result.points.length : 0;
+    showMessage(
+      clusteringFeedback,
+      `Clustering ${result.algorithm} terminé (${pointCount} fichier${pointCount > 1 ? "s" : ""}).`,
+    );
+  } catch (error) {
+    showMessage(clusteringFeedback, error.message, true);
+    if (clusteringChart && window.Plotly) {
+      Plotly.purge(clusteringChart);
+      clusteringChart.innerHTML = "";
+    }
+  } finally {
+    clusteringLaunchButton.disabled = false;
+  }
+}
+
+function initClusteringUI() {
+  if (clusteringForm) {
+    clusteringForm.addEventListener("submit", (event) => event.preventDefault());
+  }
+  if (clusteringAlgorithmSelect) {
+    clusteringAlgorithmSelect.addEventListener("change", updateClusteringAlgorithmState);
+    updateClusteringAlgorithmState();
+  }
+  if (clusteringClusterSlider) {
+    clusteringClusterSlider.addEventListener("input", updateClusterSliderLabel);
+    updateClusterSliderLabel();
+  }
+  if (clusteringMinClusterSizeInput) {
+    clusteringMinClusterSizeInput.addEventListener("change", sanitizeHdbscanInputs);
+  }
+  if (clusteringMinSamplesInput) {
+    clusteringMinSamplesInput.addEventListener("change", sanitizeHdbscanInputs);
+  }
+  sanitizeHdbscanInputs();
+  if (clusteringMetricSelect) {
+    clusteringMetricSelect.addEventListener("change", (event) => {
+      clusteringState.metricKey = event.target.value || null;
+      renderClusteringMetricChart();
+    });
+  }
+  if (clusteringLaunchButton) {
+    clusteringLaunchButton.addEventListener("click", runClusteringJob);
+  }
+}
+
 function initDatasetControls() {
   if (uploadForm) {
     uploadForm.addEventListener("submit", handleUpload);
@@ -1356,6 +1835,10 @@ function initDatasetControls() {
 
   if (globalAnalysisPanel) {
     refreshGlobalAnalysis();
+  }
+
+  if (clusteringChart || clusteringForm || clusteringLaunchButton) {
+    initClusteringUI();
   }
 
   if (fileExplorerWrapper && initialExplorerDatasetParam && datasetSelect) {

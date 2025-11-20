@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% set clustering_disabled = "disabled" if not current_dataset else "" %}
+{% set clustering_hint = "Select a dataset to enable the clustering pipeline." if not current_dataset else "Tune the parameters and relaunch the clustering job to refresh the insights." %}
+
+{% block extra_head %}
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+{% endblock %}
+
+{% block content_classes %}content-bleed{% endblock %}
+
+{% block content %}
+<section class="clustering-wrapper">
+  <section class="clustering-hero">
+    <div class="clustering-hero-text">
+      <p class="clustering-eyebrow">Exploratory pipeline</p>
+      <h1>Solution clustering</h1>
+      <p>
+        Regroupez les solutions similaires dans le dataset courant, mettez en évidence les familles d'approche
+        et détectez les candidats nécessitant une revue. Choisissez simplement k-means ou HDBSCAN, ajustez les
+        paramètres puis lancez le regroupement.
+      </p>
+    </div>
+    <div class="clustering-hero-status">
+      <div class="clustering-dataset">
+        <span>Current dataset</span>
+        <strong>{{ current_dataset or "None" }}</strong>
+      </div>
+      <p class="clustering-hint" id="clustering-hint">{{ clustering_hint }}</p>
+      <div class="clustering-actions">
+        <button type="button" class="clustering-primary" id="launch-clustering" {{ clustering_disabled }}>
+          Launch clustering
+        </button>
+        <button type="button" class="clustering-secondary" disabled>Schedule run</button>
+      </div>
+      <small>Choisissez un algorithme et lancez le regroupement des métriques.</small>
+    </div>
+  </section>
+
+  <section class="clustering-config">
+    <div class="clustering-controls">
+      <h2>Pipeline configuration</h2>
+      <ol class="clustering-progress">
+        <li class="is-done">
+          <span class="step-label">Dataset</span>
+          <span>{{ "Loaded" if current_dataset else "Pending" }}</span>
+        </li>
+        <li class="is-running">
+          <span class="step-label">Algorithm</span>
+          <span>Select strategy</span>
+        </li>
+        <li class="is-waiting">
+          <span class="step-label">Execution</span>
+          <span>Prêt</span>
+        </li>
+      </ol>
+      <form class="clustering-form" id="clustering-form">
+        <label>
+          Algorithme de clustering
+          <select id="clustering-algorithm" name="algorithm" {{ clustering_disabled }}>
+            <option value="kmeans" selected>k-means</option>
+            <option value="hdbscan">HDBSCAN</option>
+          </select>
+        </label>
+        <div class="clustering-fieldset" id="kmeans-params">
+          <span>Paramètres k-means</span>
+          <div class="clustering-slider">
+            <label for="cluster-count">Nombre de clusters désiré</label>
+            <input
+              type="range"
+              id="cluster-count"
+              name="cluster_count"
+              min="2"
+              max="20"
+              value="8"
+              {{ clustering_disabled }}
+            />
+            <output id="cluster-count-value" for="cluster-count">8 clusters</output>
+          </div>
+        </div>
+        <div class="clustering-fieldset" id="hdbscan-params" hidden>
+          <span>Paramètres HDBSCAN</span>
+          <div class="clustering-inline-inputs">
+            <label>
+              Min cluster size
+              <input
+                type="number"
+                id="hdbscan-min-cluster-size"
+                name="hdbscan_min_cluster_size"
+                min="2"
+                max="200"
+                value="5"
+                {{ clustering_disabled }}
+              />
+            </label>
+            <label>
+              Min samples
+              <input
+                type="number"
+                id="hdbscan-min-samples"
+                name="hdbscan_min_samples"
+                min="1"
+                max="200"
+                value="5"
+                {{ clustering_disabled }}
+              />
+            </label>
+          </div>
+        </div>
+      </form>
+      <div class="clustering-presets">
+        <div>
+          <span>Last run</span>
+          <strong>Not available</strong>
+        </div>
+        <div>
+          <span>Estimated duration</span>
+          <strong>6-8 minutes</strong>
+        </div>
+        <div>
+          <span>Output</span>
+          <strong>clusters.jsonl</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="clustering-results">
+    <div class="clustering-main">
+      <div class="clustering-chart-card">
+        <div class="clustering-results-header">
+          <div>
+            <h2>Projection 2D</h2>
+            <p>Affichage Plotly des points normalisés colorés par cluster.</p>
+          </div>
+        </div>
+        <p class="feedback" id="clustering-feedback">
+          {% if not current_dataset %}Sélectionnez un dataset pour lancer le clustering.{% endif %}
+        </p>
+        <div id="clustering-chart" class="clustering-chart" aria-label="Clustering projection"></div>
+      </div>
+      <div class="clustering-metric-card">
+        <div class="clustering-results-header">
+          <div>
+            <h2>Distribution des métriques</h2>
+            <p>Visualisez les mêmes mesures que dans Global analysis, colorées par cluster.</p>
+          </div>
+          <div class="clustering-filter">
+            <label for="clustering-metric-select">Metric</label>
+            <select id="clustering-metric-select" disabled>
+              <option value="">No metrics</option>
+            </select>
+          </div>
+        </div>
+        <div class="clustering-metric-dataset">
+          <span>Current dataset</span>
+          <strong id="clustering-metric-dataset">{{ current_dataset or "None" }}</strong>
+        </div>
+        <p class="feedback" id="clustering-metric-feedback">
+          {% if not current_dataset %}Lancez un clustering pour activer la visualisation.{% endif %}
+        </p>
+        <div
+          id="clustering-metric-chart"
+          class="clustering-chart"
+          aria-label="Metric distribution by cluster"
+        ></div>
+      </div>
+    </div>
+    <div class="clustering-summary" id="clustering-summary">
+      <h2>Clusters</h2>
+      <div class="clustering-summary-body">
+        <p>Les statistiques détaillées apparaîtront après l'exécution du clustering.</p>
+      </div>
+    </div>
+  </section>
+</section>
+{% endblock %}

@@ -1,0 +1,67 @@
+================================================
+  NLOC    CCN   token  PARAM  length  location  
+------------------------------------------------
+       4      1     20      0       5 pin@11-15@Datasets/e2/raw/Victor_Faria_Andrade.scala
+      25      4    131      2      25 validatePin@15-39@Datasets/e2/raw/Victor_Faria_Andrade.scala
+      12      3     81      2      12 updatePin@39-50@Datasets/e2/raw/Victor_Faria_Andrade.scala
+     407     87   2300      4     410 serveClient@50-459@Datasets/e2/raw/Victor_Faria_Andrade.scala
+      34      1    247      4      34 restockMachine@459-492@Datasets/e2/raw/Victor_Faria_Andrade.scala
+      71     18    339      1      74 main@492-565@Datasets/e2/raw/Victor_Faria_Andrade.scala
+1 file analyzed.
+==============================================================
+NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
+--------------------------------------------------------------
+    556      92.2    19.0      519.7         6     Datasets/e2/raw/Victor_Faria_Andrade.scala
+
+===========================================================================================================
+!!!! Warnings (cyclomatic_complexity > 15 or length > 1000 or nloc > 1000000 or parameter_count > 100) !!!!
+================================================
+  NLOC    CCN   token  PARAM  length  location  
+------------------------------------------------
+     407     87   2300      4     410 serveClient@50-459@Datasets/e2/raw/Victor_Faria_Andrade.scala
+      71     18    339      1      74 main@492-565@Datasets/e2/raw/Victor_Faria_Andrade.scala
+==========================================================================================
+Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc Rt
+------------------------------------------------------------------------------------------
+       556      92.2    19.0      519.7        6            2      0.33    0.86
+Duplicates
+===================================
+Duplicate block:
+--------------------------
+Datasets/e2/raw/Victor_Faria_Andrade.scala:76 ~ 92
+Datasets/e2/raw/Victor_Faria_Andrade.scala:233 ~ 249
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/e2/raw/Victor_Faria_Andrade.scala:113 ~ 120
+Datasets/e2/raw/Victor_Faria_Andrade.scala:175 ~ 182
+Datasets/e2/raw/Victor_Faria_Andrade.scala:283 ~ 290
+Datasets/e2/raw/Victor_Faria_Andrade.scala:339 ~ 346
+Datasets/e2/raw/Victor_Faria_Andrade.scala:397 ~ 404
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/e2/raw/Victor_Faria_Andrade.scala:113 ~ 121
+Datasets/e2/raw/Victor_Faria_Andrade.scala:283 ~ 291
+Datasets/e2/raw/Victor_Faria_Andrade.scala:339 ~ 347
+Datasets/e2/raw/Victor_Faria_Andrade.scala:397 ~ 405
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/e2/raw/Victor_Faria_Andrade.scala:282 ~ 293
+Datasets/e2/raw/Victor_Faria_Andrade.scala:338 ~ 349
+Datasets/e2/raw/Victor_Faria_Andrade.scala:396 ~ 407
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Duplicate block:
+--------------------------
+Datasets/e2/raw/Victor_Faria_Andrade.scala:281 ~ 293
+Datasets/e2/raw/Victor_Faria_Andrade.scala:337 ~ 349
+Datasets/e2/raw/Victor_Faria_Andrade.scala:395 ~ 407
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Total duplicate rate: 23.06%
+Total unique rate: 95.98%

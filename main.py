@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from Routers.clustering import router as clustering_router
 from Routers.current_dataset import router as current_dataset_router
 from Routers.files import router as files_router
 from Routers.metrics import router as metrics_router
@@ -12,6 +13,7 @@ app.mount("/static", StaticFiles(directory="Static"), name="static")
 app.include_router(files_router)
 app.include_router(current_dataset_router)
 app.include_router(metrics_router)
+app.include_router(clustering_router)
 app.include_router(pages_router)
 
 
