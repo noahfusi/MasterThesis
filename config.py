@@ -40,39 +40,39 @@ PROCESSING_PHASES = {
 # Threshold descriptions exposed to the UI
 THRESHOLD_DESCRIPTIONS: dict[str, dict[str, str]] = {
     "generic": {
-        "aboveFence": "Value far above the dataset—investigate first.",
-        "aboveQ3": "Value above most files—confirm the difference is warranted.",
-        "belowFence": "Extremely low value—could indicate an incomplete or atypical file.",
-        "belowQ1": "Below most files—confirm this behavior is intended.",
+        "aboveFence": "Value far above the dataset—investigate first; prioritize reviewing logic and intent.",
+        "aboveQ3": "Value above most files—confirm the difference is warranted and consistent with expectations.",
+        "belowFence": "Extremely low value—could indicate an incomplete or atypical file; verify coverage and inputs.",
+        "belowQ1": "Below most files—confirm this behavior is intended and not missing required work.",
     },
     "duplication": {
-        "aboveFence": "Very high duplication—likely heavy copy/paste or redundant fragments.",
-        "aboveQ3": "Notable duplication—consolidate repeated sections or try to extract duplicated code into functions.",
-        "belowFence": "Low duplication—positive, but confirm the file is not overly minimal.",
-        "belowQ1": "Low duplication—positive, but confirm the file is not overly minimal.",
+        "aboveFence": "Very high duplication—likely heavy copy/paste or redundant fragments; refactor into shared helpers.",
+        "aboveQ3": "Notable duplication—consolidate repeated sections or extract shared helpers to reduce redundancy.",
+        "belowFence": "Low duplication—positive, but confirm the file is not overly minimal or missing logic.",
+        "belowQ1": "Low duplication—positive, but confirm the file is not overly minimal or missing logic.",
     },
     "complexity": {
-        "aboveFence": "Extreme cyclomatic complexity—prioritize a refactor.",
-        "aboveQ3": "High complexity—consider splitting or simplifying conditional branches.",
-        "belowFence": "Very low complexity—could indicate a stub or incomplete code.",
-        "belowQ1": "Low complexity—could indicate a stub or incomplete code.",
+        "aboveFence": "Extreme cyclomatic complexity—prioritize a refactor; break apart branches and nestings.",
+        "aboveQ3": "High complexity—consider splitting or simplifying conditional branches and loops.",
+        "belowFence": "Very low complexity—could indicate a stub or incomplete code; confirm expected behavior exists.",
+        "belowQ1": "Low complexity—could indicate a stub or incomplete code; confirm expected behavior exists.",
     },
     "size": {
-        "aboveFence": "Large file—risk of a God object; split into smaller modules.",
-        "aboveQ3": "Larger than most—see if responsibilities can be extracted.",
-        "belowFence": "Very short file—ensure expected logic is not missing.",
-        "belowQ1": "Short file—ensure expected logic is not missing.",
+        "aboveFence": "Large file—risk of a God object; split into smaller modules and separate responsibilities.",
+        "aboveQ3": "Larger than most—see if responsibilities can be extracted or separated for clarity.",
+        "belowFence": "Very short file—ensure expected logic is not missing or offloaded incorrectly.",
+        "belowQ1": "Short file—ensure expected logic is not missing or overly stubbed.",
     },
     "functions": {
-        "aboveFence": "Many functions—possible mix of responsibilities; consider grouping by domain.",
-        "aboveQ3": "Function count above the norm—quickly review for grouping opportunities.",
-        "belowFence": "Few functions—the file may be too limited or still a stub.",
-        "belowQ1": "Few functions—the file may be too limited or still a stub.",
+        "aboveFence": "Many functions—possible mix of responsibilities; consider grouping by domain and reducing churn.",
+        "aboveQ3": "Function count above the norm—review for grouping opportunities and cohesion.",
+        "belowFence": "Few functions—the file may be too limited or still a stub; validate completeness.",
+        "belowQ1": "Few functions—the file may be too limited or still a stub; validate completeness.",
         "zero": "No functions—file likely incomplete or incorrect.",
     },
     "nesting": {
-        "aboveFence": "Very deep nesting—refactor by extracting functions to reduce depth.",
-        "aboveQ3": "High nesting—simplify branches or use early returns.",
+        "aboveFence": "Very deep nesting—refactor by extracting functions to reduce depth and improve readability.",
+        "aboveQ3": "High nesting—simplify branches or use early returns to flatten logic.",
     },
 }
 
@@ -91,6 +91,17 @@ CLUSTERING_METRIC_KEYS: list[str] = [
 DEFAULT_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
 DEFAULT_OLLAMA_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL", "bge-m3")
 DEFAULT_OLLAMA_TIMEOUT = 60.0
+FEEDBACK_MODEL = "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
+FEEDBACK_PROMPT_WITH_REQUIREMENTS = (
+    "You are a code reviewer. Given the following programming assignment requirements and a student's code, "
+    "provide concise, actionable feedback (strengths, issues, and suggested fixes). "
+    "Requirements:\\n{requirements}\\n\\nCode for {filename}:\\n{code}"
+)
+FEEDBACK_PROMPT_NO_REQUIREMENTS = (
+    "You are a code reviewer. Provide concise, actionable feedback (strengths, issues, and suggested fixes) "
+    "for the following code file: {filename}.\\n\\nCode:\\n{code}"
+)
+FEEDBACK_OUTPUT_DIRNAME = "feedbacks"
 
 # Lizard analysis defaults
 DEFAULT_LIZARD_BIN = "lizard"
@@ -106,3 +117,66 @@ AUTOTEST_SCALA_BIN = "scala"
 AUTOTEST_SCALAC_BIN = "scalac"
 AUTOTEST_DEFAULT_COMMAND_DELAY = 0.5
 AUTOTEST_DEFAULT_SCENARIO_TIMEOUT = 15
+
+# User-facing messages (shared between backend and frontend)
+MESSAGES: dict[str, str] = {
+    # Datasets
+    "DATASET_CREATED_PROCESSING": 'Dataset "{dataset}" created. Processing in progress...',
+    "DATASET_ALREADY_EXISTS": "Dataset already exists.",
+    "DATASET_NOT_FOUND": "Dataset not found.",
+    "DATASET_DELETED": 'Dataset "{dataset}" deleted.',
+    "DATASET_INVALID_NAME": "Dataset name contains invalid characters.",
+    "DATASET_NO_SELECTION": "No dataset selected.",
+    "DATASET_STATUS_FAILED": "Dataset processing failed.",
+    "DATASET_READY": 'Dataset "{dataset}" ready.',
+    "INVALID_ZIP": "File must be a .zip archive.",
+    "INVALID_FILE_PATH": "Invalid file path.",
+    # Files
+    "FILE_NOT_FOUND": "File not found.",
+    "RAW_FOLDER_MISSING": "Raw folder not found.",
+    # Metrics / Lizard
+    "LIZARD_NOT_FOUND": "Lizard analysis not found.",
+    # Clustering
+    "CLUSTERING_NO_DATA": "No usable data for this feature mode. Check metrics and embeddings.",
+    "CLUSTERING_KMEANS_COUNT_REQUIRED": "Cluster count is required to run k-means.",
+    "CLUSTERING_HDBSCAN_PARAMS_REQUIRED": "HDBSCAN parameters are required.",
+    "CLUSTERING_INVALID_HDBSCAN_VALUES": "Invalid HDBSCAN values.",
+    "CLUSTERING_AUTO_HDBSCAN": "Auto-searching HDBSCAN parameters...",
+    "CLUSTERING_AUTO_KMEANS": "Auto-searching best k...",
+    "CLUSTERING_RUNNING": "Running clustering...",
+    "CLUSTERING_AUTO_KMEANS_ON": "Auto k-means enabled (silhouette score).",
+    "CLUSTERING_AUTO_KMEANS_OFF": "Auto k-means disabled.",
+    "CLUSTERING_AUTO_HDBSCAN_ON": "Auto HDBSCAN enabled; parameters locked.",
+    "CLUSTERING_AUTO_HDBSCAN_OFF": "Auto mode disabled.",
+    "CLUSTERING_COMPLETED": 'Clustering {algorithm} completed{details} ({count} file{plural}).',
+    "CLUSTERING_LOADED": 'Clustering {algorithm} loaded{details} ({count} file{plural}).',
+    "CLUSTERING_NO_METRICS": "Run a clustering job to display the metric distribution.",
+    "CLUSTERING_NO_VALUES": "No values available for this metric.",
+    "CLUSTERING_DISTRIBUTION": "Showing distribution for {metric} ({count} file{plural}).",
+    # Students/reporting
+    "STUDENTS_SELECT_DATASET": "Select a dataset to display outliers.",
+    "STUDENTS_LOADING": "Loading precomputed metrics...",
+    "STUDENTS_NO_OUTLIERS": "No files outside the Q1-Q3 range.",
+    "STUDENTS_NO_CARDS": "No cards for this metric.",
+    "STUDENTS_OUTLIERS_COUNT": "Showing outliers for {count} card{plural}.",
+    "STUDENTS_NO_FILES": "No files.",
+    "STUDENTS_NO_METRICS": "No metrics",
+    "LABEL_MEDIAN": "Median",
+    "LABEL_FENCES": "Fences",
+    "REPORT_GENERATING": "Generating report...",
+    "REPORT_READY": "Report generated and downloaded.",
+    # Uploads
+    "UPLOAD_REFERENCE_START": 'Uploading reference for {dataset}...',
+    "UPLOAD_REFERENCE_SUCCESS": 'Reference file "{filename}" saved for {dataset}.',
+    "UPLOAD_REQUIREMENTS_START": 'Uploading requirements for {dataset}...',
+    "UPLOAD_REQUIREMENTS_SUCCESS": 'Requirements "{filename}" saved for {dataset}.',
+    "UPLOAD_DATASET_START": "Uploading dataset...",
+    "UPLOAD_IN_PROGRESS": "Uploading...",
+    "NO_DATASETS": "No datasets yet.",
+    # Confirmation
+    "CONFIRM_DELETE_DATASET": 'Delete dataset "{dataset}"?',
+    # Generic
+    "ACTION_FAILED": "Operation failed.",
+    "FEEDBACK_DATASET_QUEUED": "Dataset-wide feedback generation queued (not implemented).",
+    "FEEDBACK_FILE_QUEUED": "Feedback generation queued (not implemented).",
+}
