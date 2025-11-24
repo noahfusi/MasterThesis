@@ -3,6 +3,8 @@ from __future__ import annotations
 from typing import Literal
 
 import csv
+import json
+from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -13,60 +15,148 @@ from Clustering import (
     project_to_components,
     run_hdbscan_clustering,
     run_kmeans_clustering,
+    auto_kmeans_with_silhouette,
+    auto_hdbscan_with_dbcv,
+    build_feature_dataset,
 )
-from Files.dataset_manager import dataset_path, get_current_dataset, normalize_dataset_name
+from Files.dataset_manager import dataset_path
 from Metrics.other_metrics import load_metrics_entries
+from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error
 
 router = APIRouter(prefix="/clustering", tags=["clustering"])
 
 
+def _average_vector(vectors: list[list[float]]) -> list[float]:
+    if not vectors:
+        return []
+    return [sum(values) / len(vectors) for values in zip(*vectors)]
+
+
+def _load_structural_embeddings(dataset: str) -> dict[str, list[float]]:
+    root = dataset_path(dataset) / "structural_embeddings"
+    if not root.exists():
+        return {}
+
+    embeddings: dict[str, list[float]] = {}
+    for path in root.rglob("*.embedding.json"):
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        segments = payload.get("segments") or []
+        vectors: list[list[float]] = []
+        for segment in segments:
+            embedding = segment.get("embedding")
+            if isinstance(embedding, list) and all(isinstance(x, (int, float)) for x in embedding):
+                vectors.append([float(x) for x in embedding])
+        if not vectors:
+            continue
+        dim = len(vectors[0])
+        vectors = [vec for vec in vectors if len(vec) == dim]
+        if not vectors:
+            continue
+        averaged = [sum(values) / len(vectors) for values in zip(*vectors)]
+        source = payload.get("source") or path.relative_to(root).as_posix()
+        normalized_source = str(source).replace("\\", "/")
+        normalized_source = normalized_source.replace(".structural.txt", "")
+        normalized_source = normalized_source.lstrip("/")
+        embeddings[normalized_source] = averaged
+    return embeddings
+
+
 class ClusteringRequest(BaseModel):
+    """
+    @brief Request payload for triggering clustering.
+    """
     dataset: str | None = None
     algorithm: Literal["kmeans", "hdbscan"] = "kmeans"
     cluster_count: int | None = Field(default=None, ge=2, le=200)
     min_cluster_size: int | None = Field(default=None, ge=2, le=500)
     min_samples: int | None = Field(default=None, ge=1, le=500)
+    auto_hdbscan: bool = False
+    auto_kmeans: bool = False
+    feature_mode: Literal["metrics", "embeddings", "both"] = "metrics"
+    embedding_dims: int = Field(default=16, ge=2, le=128)
 
 
 @router.post("/run")
 async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
-    dataset_name = payload.dataset or get_current_dataset()
-    if not dataset_name:
-        raise HTTPException(status_code=400, detail="Sélectionnez un dataset avant de lancer le clustering.")
-    try:
-        dataset_name = normalize_dataset_name(dataset_name)
-    except ValueError as exc:
-        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    """
+    @brief Run clustering on a dataset using k-means or hdbscan.
+    @param payload Request body configuring dataset and algorithm parameters.
+    @return Clustering result including points, clusters, and projection axes.
+    @throws HTTPException On validation errors or missing metrics.
+    """
+    dataset_name, _ = resolve_dataset_or_http_error(payload.dataset, require_raw=True)
+    ensure_dataset_ready(dataset_name)
+    feature_mode = payload.feature_mode or "metrics"
+    embedding_dims = payload.embedding_dims or 16
 
     files = load_metrics_entries(dataset_name)
-    if not files:
-        raise HTTPException(
-            status_code=404,
-            detail="Aucune métrique disponible. Générez 'metrics.csv' pour ce dataset avant de lancer le clustering.",
-        )
-    normalized = normalize_dataset(files, METRIC_KEYS)
+    embeddings = _load_structural_embeddings(dataset_name) if feature_mode in {"embeddings", "both"} else {}
+    metrics_lookup: dict[str, dict[str, object]] = {
+        entry.get("path", "").replace("\\", "/"): entry.get("metrics") or {} for entry in files
+    }
+    normalized = build_feature_dataset(
+        files,
+        embeddings,
+        feature_mode=feature_mode,
+        embedding_dims=embedding_dims,
+        metric_keys=METRIC_KEYS,
+    )
     if not normalized.entries:
-        raise HTTPException(status_code=400, detail="Impossible de normaliser les métriques des fichiers.")
+        raise HTTPException(
+            status_code=400,
+            detail="Aucune donnée exploitable pour ce mode de caractérisation. Vérifiez les métriques et embeddings.",
+        )
+
+    response_metric_keys = list(normalized.metric_keys) if normalized.metric_keys else []
+    if not response_metric_keys and metrics_lookup:
+        # fallback to all available metric keys for display when clustering ran without metrics
+        sample_metrics = next(iter(metrics_lookup.values()))
+        response_metric_keys = sorted(sample_metrics.keys())
 
     parameters: dict[str, object] = {}
     if payload.algorithm == "kmeans":
-        if not payload.cluster_count:
-            raise HTTPException(
-                status_code=400, detail="Le nombre de clusters est requis pour exécuter k-means."
-            )
-        result = run_kmeans_clustering(normalized, payload.cluster_count)
-        parameters["cluster_count"] = payload.cluster_count
+        if payload.auto_kmeans:
+            result, chosen = auto_kmeans_with_silhouette(normalized)
+            parameters.update({"mode": "auto", **chosen})
+        else:
+            if not payload.cluster_count:
+                raise HTTPException(
+                    status_code=400, detail="Le nombre de clusters est requis pour exécuter k-means."
+                )
+            result = run_kmeans_clustering(normalized, payload.cluster_count)
+            parameters["cluster_count"] = payload.cluster_count
     else:
-        heuristic = max(3, min(len(normalized.entries) // 8 or 2, 25))
-        min_cluster_size = payload.min_cluster_size or heuristic
-        min_cluster_size = max(2, min(min_cluster_size, len(normalized.entries)))
-        min_samples = payload.min_samples or max(1, min_cluster_size // 2)
-        min_samples = max(1, min(min_samples, min_cluster_size))
-        result = run_hdbscan_clustering(
-            normalized, min_cluster_size=min_cluster_size, min_samples=min_samples
-        )
-        parameters["min_cluster_size"] = min_cluster_size
-        parameters["min_samples"] = min_samples
+        try:
+            if payload.auto_hdbscan:
+                result, chosen = auto_hdbscan_with_dbcv(normalized)
+                parameters.update({"mode": "auto", **chosen})
+                min_cluster_size = chosen.get("min_cluster_size")
+                min_samples = chosen.get("min_samples")
+            else:
+                heuristic = max(3, min(len(normalized.entries) // 8 or 2, 25))
+                min_cluster_size = payload.min_cluster_size or heuristic
+                min_cluster_size = max(2, min(min_cluster_size, len(normalized.entries)))
+                min_samples = payload.min_samples or max(1, min_cluster_size // 2)
+                min_samples = max(1, min(min_samples, min_cluster_size))
+                result = run_hdbscan_clustering(
+                    normalized, min_cluster_size=min_cluster_size, min_samples=min_samples
+                )
+                parameters["min_cluster_size"] = min_cluster_size
+        except RuntimeError as exc:
+            raise HTTPException(
+                status_code=400,
+                detail="HDBSCAN n'a produit aucun cluster. Ajustez min_cluster_size/min_samples ou utilisez le mode auto.",
+            ) from exc
+        parameters["min_samples"] = min_samples if min_samples is not None else parameters.get("min_samples")
+    parameters["feature_mode"] = feature_mode
+    parameters["embedding_dims"] = embedding_dims
+    print(
+        f"[clustering] dataset={dataset_name} algo={payload.algorithm} mode={feature_mode} "
+        f"dims={embedding_dims} params={parameters}"
+    )
 
     projection, axes = project_to_components(normalized, components=2)
     if not projection:
@@ -77,14 +167,14 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     points_payload: list[dict[str, object]] = []
     cluster_metric_sums: dict[int, dict[str, float]] = {}
     cluster_counts: dict[int, int] = {}
-    metric_keys = list(normalized.metric_keys)
+    metric_keys = list(response_metric_keys)
     for entry, label, coords in zip(normalized.entries, result.labels, projection):
-        metrics_snapshot = {key: entry.metrics.get(key) for key in metric_keys}
+        metrics_snapshot_base = metrics_lookup.get(entry.path, {})
+        metrics_snapshot = {key: metrics_snapshot_base.get(key) for key in metric_keys} if metric_keys else metrics_snapshot_base
         if label >= 0:
             cluster_counts[label] = cluster_counts.get(label, 0) + 1
             sums = cluster_metric_sums.setdefault(label, {})
-            for key in metric_keys:
-                value = metrics_snapshot.get(key)
+            for key, value in (metrics_snapshot.items() if metrics_snapshot else []):
                 if isinstance(value, (int, float)):
                     sums[key] = sums.get(key, 0.0) + float(value)
         x, y = coords
@@ -124,7 +214,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
         "dataset": dataset_name,
         "algorithm": payload.algorithm,
         "parameters": parameters,
-        "metrics": normalized.metric_keys,
+        "metrics": response_metric_keys,
         "points": points_payload,
         "clusters": clusters_payload,
         "axes": {"x": axes[0], "y": axes[1]},
@@ -132,7 +222,27 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     }
 
 
+@router.get("/last", name="last-clustering")
+async def read_last_clustering(dataset: str | None = None) -> dict[str, object]:
+    """
+    @brief Charger le dernier clustering persisté pour un dataset.
+    @param dataset Nom du dataset à charger (optionnel, utilise le dataset courant).
+    @return Résultat de clustering mis en cache.
+    @throws HTTPException Si aucun clustering n'est disponible ou sur erreur d'E/S.
+    """
+    dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=True)
+    ensure_dataset_ready(dataset_name)
+    return _load_cached_clustering(dataset_name)
+
+
 def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str, object]]) -> None:
+    """
+    @brief Persist clustering projection to a CSV file for reuse.
+    @param dataset Dataset name owning the clustering.
+    @param algorithm Algorithm identifier stored alongside the results.
+    @param points List of clustering point payloads to serialize.
+    @throws HTTPException If the CSV cannot be written.
+    """
     target = dataset_path(dataset) / "clustering.csv"
     fieldnames = ["path", "cluster", "x", "y", "algorithm"]
     try:
@@ -152,3 +262,111 @@ def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str,
                 )
     except OSError as exc:
         raise HTTPException(status_code=500, detail=f"Impossible d'enregistrer le clustering: {exc}") from exc
+
+
+def _load_cached_clustering(dataset: str) -> dict[str, object]:
+    cache_path = dataset_path(dataset) / "clustering.csv"
+    if not cache_path.exists():
+        raise HTTPException(status_code=404, detail="Aucun clustering existant pour ce dataset.")
+
+    try:
+        with cache_path.open("r", encoding="utf-8") as handle:
+            reader = csv.DictReader(handle)
+            records = list(reader)
+    except OSError as exc:
+        raise HTTPException(status_code=500, detail=f"Impossible de lire le clustering: {exc}") from exc
+
+    if not records:
+        raise HTTPException(status_code=404, detail="Aucun clustering existant pour ce dataset.")
+
+    algorithm = records[0].get("algorithm") or "hdbscan"
+    point_lookup: dict[str, dict[str, object]] = {}
+    for row in records:
+        raw_path = (row.get("path") or "").strip()
+        if not raw_path:
+            continue
+        path = raw_path.replace("\\", "/")
+        cluster = -1
+        try:
+            cluster = int(row.get("cluster") or -1)
+        except ValueError:
+            cluster = -1
+        try:
+            x = float(row.get("x") or 0.0)
+            y = float(row.get("y") or 0.0)
+        except ValueError:
+            x, y = 0.0, 0.0
+        point_lookup[path] = {"cluster": cluster, "coords": (x, y)}
+
+    files = load_metrics_entries(dataset)
+    if not files:
+        raise HTTPException(status_code=404, detail="Aucune métrique disponible pour recharger le clustering.")
+
+    normalized = normalize_dataset(files, METRIC_KEYS)
+    if not normalized.entries:
+        raise HTTPException(status_code=400, detail="Impossible de normaliser les métriques pour le clustering.")
+
+    metric_keys = list(normalized.metric_keys)
+    cluster_metric_sums: dict[int, dict[str, float]] = {}
+    cluster_counts: dict[int, int] = {}
+    clusters_vectors: dict[int, list[list[float]]] = {}
+    points_payload: list[dict[str, object]] = []
+    labels: list[int] = []
+
+    for entry in normalized.entries:
+        info = point_lookup.get(entry.path)
+        label = int(info["cluster"]) if info and "cluster" in info else -1
+        labels.append(label)
+        metrics_snapshot = {key: entry.metrics.get(key) for key in metric_keys}
+        if label >= 0:
+            cluster_counts[label] = cluster_counts.get(label, 0) + 1
+            sums = cluster_metric_sums.setdefault(label, {})
+            for key in metric_keys:
+                value = metrics_snapshot.get(key)
+                if isinstance(value, (int, float)):
+                    sums[key] = sums.get(key, 0.0) + float(value)
+            clusters_vectors.setdefault(label, []).append(entry.vector)
+
+        coords = info["coords"] if info and "coords" in info else (0.0, 0.0)
+        points_payload.append(
+            {
+                "path": entry.path,
+                "cluster": label,
+                "x": coords[0],
+                "y": coords[1],
+                "metrics": metrics_snapshot,
+            }
+        )
+
+    clusters_payload = []
+    for cluster_id, count in sorted(cluster_counts.items()):
+        sums = cluster_metric_sums.get(cluster_id, {})
+        averages: dict[str, float] = {}
+        for key in metric_keys:
+            total = sums.get(key)
+            if total is not None:
+                averages[key] = total / count
+        centroid = _average_vector(clusters_vectors.get(cluster_id, []))
+        clusters_payload.append(
+            {
+                "id": cluster_id,
+                "label": f"Cluster {cluster_id + 1}",
+                "size": count,
+                "centroid": centroid,
+                "metrics": averages,
+            }
+        )
+
+    noise = sum(1 for label in labels if label == -1)
+    axes = {"x": "Component 1", "y": "Component 2"}
+    parameters = {"mode": "cached", "source": "clustering.csv"}
+    return {
+        "dataset": dataset,
+        "algorithm": algorithm,
+        "parameters": parameters,
+        "metrics": metric_keys,
+        "points": points_payload,
+        "clusters": clusters_payload,
+        "axes": axes,
+        "noise": noise,
+    }

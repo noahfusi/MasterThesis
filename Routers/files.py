@@ -6,7 +6,8 @@ import zipfile
 from io import BytesIO
 from pathlib import Path
 
-from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile, status
+from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Query, UploadFile, status
+import logging
 
 from Files.dataset_manager import (
     dataset_exists,
@@ -16,21 +17,31 @@ from Files.dataset_manager import (
     normalize_dataset_name,
     set_current_dataset,
 )
+from Files.dataset_status import dataset_lock, is_ready, load_status, mark_failed, update_status
 from Metrics import SUMMARY_FILENAME, dataset_summary_path
-from Metrics.other_metrics import (
-    build_reference_metrics,
-    extract_file_metrics,
-    generate_other_metrics,
-    load_reference_metrics,
-)
+from Metrics.other_metrics import build_reference_metrics, generate_other_metrics
+from Metrics.students import build_students_outliers
 from Lizard.run_analysis import LIZARD_FOLDER, analyze_dataset, _run_lizard
 from Tree_Sitter.structural_ast import build_rich_structural_representation
 from LLM.ollama import DEFAULT_EMBED_MODEL, OllamaError, request_embedding
+from Routers.utils import (
+    ensure_dataset_ready,
+    read_utf8_or_error,
+    resolve_dataset_or_http_error,
+    resolve_relative_file,
+)
 
 router = APIRouter(prefix="/datasets", tags=["datasets"])
+logger = logging.getLogger("uvicorn.error")
 
 
 def _safe_extract(archive: zipfile.ZipFile, destination: Path) -> None:
+    """
+    @brief Safely extract a ZIP archive while preventing path traversal.
+    @param archive Opened ZIP archive to extract.
+    @param destination Target directory where files should be extracted.
+    @throws HTTPException If an entry attempts to escape the destination.
+    """
     destination = destination.resolve()
     for member in archive.infolist():
         member_path = Path(member.filename)
@@ -46,12 +57,75 @@ STRUCTURAL_SOURCE_EXTENSIONS = {".scala"}
 STRUCTURAL_EMBEDDING_SUFFIX = ".embedding.json"
 RAW_FOLDER = "raw"
 
+PROCESSING_PHASES = {
+    "extracting": "Extraction du dataset.",
+    "analyzing_lizard": "Analyse Lizard en cours.",
+    "computing_metrics": "Génération des métriques dérivées.",
+    "computing_outliers": "Calcul des seuils étudiants.",
+    "building_structural": "Construction des vues structurelles.",
+    "building_embeddings": "Génération des embeddings structurels.",
+    "ready": "Dataset prêt.",
+}
 
+
+def _process_dataset_pipeline(dataset_name: str) -> None:
+    raw_dir = dataset_path(dataset_name) / RAW_FOLDER
+    with dataset_lock(dataset_name):
+        if is_ready(load_status(dataset_name)):
+            return
+        try:
+            update_status(
+                dataset_name, state="running", phase="analyzing_lizard", message=PROCESSING_PHASES["analyzing_lizard"]
+            )
+            analyze_dataset(dataset_name, "lizard")
+
+            update_status(
+                dataset_name,
+                state="running",
+                phase="computing_metrics",
+                message=PROCESSING_PHASES["computing_metrics"],
+            )
+            generate_other_metrics(dataset_name)
+
+            update_status(
+                dataset_name,
+                state="running",
+                phase="computing_outliers",
+                message=PROCESSING_PHASES["computing_outliers"],
+            )
+            build_students_outliers(dataset_name)
+
+            update_status(
+                dataset_name,
+                state="running",
+                phase="building_structural",
+                message=PROCESSING_PHASES["building_structural"],
+            )
+            _generate_structural_views(dataset_name, raw_dir)
+
+            update_status(
+                dataset_name,
+                state="running",
+                phase="building_embeddings",
+                message=PROCESSING_PHASES["building_embeddings"],
+            )
+            _generate_structural_embeddings(dataset_name)
+
+            update_status(dataset_name, state="ready", phase="ready", message=PROCESSING_PHASES["ready"])
+        except Exception as exc:  # pragma: no cover - background error path
+            mark_failed(dataset_name, phase="failed", error=str(exc))
 def _generate_structural_views(dataset_name: str, raw_dir: Path) -> str:
+    """
+    @brief Generate structural AST representations for supported source files.
+    @param dataset_name Name of the dataset being processed.
+    @param raw_dir Path to the dataset raw files directory.
+    @return Status message indicating generation outcome.
+    """
     structural_root = dataset_path(dataset_name) / "structural"
     structural_root.mkdir(parents=True, exist_ok=True)
     generated = 0
     skipped = 0
+    failures = 0
 
     for file_path in raw_dir.rglob("*"):
         if not file_path.is_file():
@@ -68,17 +142,28 @@ def _generate_structural_views(dataset_name: str, raw_dir: Path) -> str:
             output_path.parent.mkdir(parents=True, exist_ok=True)
             output_path.write_text(representation, encoding="utf-8")
             generated += 1
-        except Exception:
-            skipped += 1
+        except UnicodeDecodeError as exc:
+            failures += 1
+            logger.warning("Structural view skipped (decode error) for %s: %s", file_path, exc)
+        except Exception as exc:  # pragma: no cover - unexpected parse errors
+            failures += 1
+            logger.exception("Structural view failed for %s: %s", file_path, exc)
 
     if generated:
         return f"Structural AST generated for {generated} file(s)."
+    if failures:
+        return f"Structural AST failed for {failures} file(s); see logs."
     if skipped:
         return "Structural AST skipped: unsupported file types."
     return "No files available for structural AST."
 
 
 def _load_structural_segments(structural_file: Path) -> list[dict[str, object]]:
+    """
+    @brief Load structural segments from a structural representation file.
+    @param structural_file Path to a structural file (text or JSON).
+    @return List of segment dictionaries or a single entry with raw text.
+    """
     try:
         content = structural_file.read_text(encoding="utf-8")
     except OSError:
@@ -128,6 +213,11 @@ def _load_structural_segments(structural_file: Path) -> list[dict[str, object]]:
 
 
 def _generate_structural_embeddings(dataset_name: str) -> str:
+    """
+    @brief Build embeddings for structural segments of a dataset.
+    @param dataset_name Name of the dataset to process.
+    @return Status message indicating embedding generation outcome.
+    """
     structural_root = dataset_path(dataset_name) / "structural"
     if not structural_root.exists():
         return "Structural embeddings skipped: no structural files."
@@ -157,7 +247,8 @@ def _generate_structural_embeddings(dataset_name: str) -> str:
                 continue
             try:
                 embedding = request_embedding(text)
-            except (OllamaError, ValueError):
+            except (OllamaError, ValueError) as exc:
+                logger.warning("Embedding generation skipped for %s (segment %s): %s", structural_file, index, exc)
                 skipped_segments += 1
                 continue
 
@@ -191,9 +282,18 @@ def _generate_structural_embeddings(dataset_name: str) -> str:
     if skipped_segments:
         return "Structural embeddings skipped: unable to process segments."
     return "No structural segments available for embeddings."
+
+
 def _dataset_response(
     message: str | None = None, dataset: str | None = None, extra: dict[str, object] | None = None
 ) -> dict[str, object]:
+    """
+    @brief Build a standard dataset response payload.
+    @param message Optional status or info message.
+    @param dataset Dataset name to include in the payload.
+    @param extra Additional key/value pairs to merge into the response.
+    @return Structured response containing datasets and current selection.
+    """
     payload: dict[str, object] = {
         "datasets": list_datasets(),
         "current_dataset": get_current_dataset(),
@@ -209,11 +309,43 @@ def _dataset_response(
 
 @router.get("", name="list-datasets")
 async def list_existing_datasets() -> dict[str, object]:
+    """
+    @brief List available datasets and current selection.
+    @return Payload containing dataset list and current dataset.
+    """
     return _dataset_response()
 
 
+@router.get("/{dataset_name}/status", name="dataset-status")
+async def dataset_status(dataset_name: str) -> dict[str, object]:
+    """
+    @brief Retrieve processing status for a dataset.
+    @param dataset_name Name of the dataset.
+    @return Status payload including current phase and state.
+    """
+    try:
+        sanitized = normalize_dataset_name(dataset_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    target_dir = dataset_path(sanitized)
+    if not target_dir.exists():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dataset not found.")
+
+    return load_status(sanitized)
+
+
 @router.post("", status_code=status.HTTP_201_CREATED, name="create-dataset")
-async def create_dataset(name: str = Form(...), file: UploadFile = File(...)) -> dict[str, object]:
+async def create_dataset(
+    name: str = Form(...), file: UploadFile = File(...), background_tasks: BackgroundTasks = None
+) -> dict[str, object]:
+    """
+    @brief Create a new dataset from an uploaded ZIP archive.
+    @param name Desired dataset name.
+    @param file Uploaded ZIP file containing raw sources.
+    @return Response detailing creation status and analysis outcomes.
+    @throws HTTPException On validation errors or extraction failures.
+    """
     try:
         sanitized_name = normalize_dataset_name(name)
     except ValueError as exc:
@@ -232,6 +364,14 @@ async def create_dataset(name: str = Form(...), file: UploadFile = File(...)) ->
         raw_dir.mkdir(parents=True, exist_ok=False)
     except FileExistsError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Dataset already exists.") from exc
+
+    # Extraction synchronously, puis traitement en tâche de fond
+    update_status(
+        sanitized_name,
+        state="running",
+        phase="extracting",
+        message=PROCESSING_PHASES["extracting"],
+    )
 
     file_bytes = await file.read()
     try:
@@ -256,46 +396,34 @@ async def create_dataset(name: str = Form(...), file: UploadFile = File(...)) ->
         except ValueError:
             pass
 
-    analysis_status = None
-    try:
-        analyze_dataset(sanitized_name, "lizard")
-        analysis_status = "Lizard analysis completed."
-    except RuntimeError as exc:
-        analysis_status = f"Lizard analysis failed: {exc}"
+    update_status(
+        sanitized_name,
+        state="queued",
+        phase="queued",
+        message="Analyse planifiée en tâche de fond.",
+    )
 
-    other_metrics_status = None
-    try:
-        other_metrics_status = generate_other_metrics(sanitized_name)
-    except Exception as exc:  # pragma: no cover - derived metrics errors
-        other_metrics_status = f"Other metrics failed: {exc}"
+    if background_tasks is not None:
+        background_tasks.add_task(_process_dataset_pipeline, sanitized_name)
+    else:
+        _process_dataset_pipeline(sanitized_name)
 
-    structural_status = None
-    try:
-        structural_status = _generate_structural_views(sanitized_name, raw_dir)
-    except Exception as exc:  # pragma: no cover - optional dependency
-        structural_status = f"Structural AST failed: {exc}"
-
-    embedding_status = None
-    try:
-        embedding_status = _generate_structural_embeddings(sanitized_name)
-    except Exception as exc:  # pragma: no cover - external dependency
-        embedding_status = f"Structural embeddings failed: {exc}"
-
-    extra = {}
-    if analysis_status:
-        extra["analysis_status"] = analysis_status
-    if other_metrics_status:
-        extra["other_metrics_status"] = other_metrics_status
-    if structural_status:
-        extra["structural_status"] = structural_status
-    if embedding_status:
-        extra["embedding_status"] = embedding_status
-
-    return _dataset_response(message="Dataset created", dataset=sanitized_name, extra=extra or None)
+    status_payload = load_status(sanitized_name)
+    return _dataset_response(
+        message="Dataset créé, traitement en cours.",
+        dataset=sanitized_name,
+        extra={"status": status_payload} if status_payload else None,
+    )
 
 
 @router.delete("/{dataset_name}", status_code=status.HTTP_200_OK, name="delete-dataset")
 async def delete_dataset(dataset_name: str) -> dict[str, object]:
+    """
+    @brief Delete a dataset and clear current selection if needed.
+    @param dataset_name Name of the dataset to remove.
+    @return Response containing updated dataset information.
+    @throws HTTPException If the dataset is not found or invalid.
+    """
     try:
         sanitized = normalize_dataset_name(dataset_name)
     except ValueError as exc:
@@ -313,47 +441,29 @@ async def delete_dataset(dataset_name: str) -> dict[str, object]:
     return _dataset_response(message="Dataset deleted", dataset=sanitized)
 
 
-def _resolve_dataset_folder(dataset: str | None) -> tuple[str, Path]:
-    dataset_name = dataset or get_current_dataset()
-    if not dataset_name:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No dataset selected.")
-    try:
-        sanitized = normalize_dataset_name(dataset_name)
-    except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
-
-    base_dir = dataset_path(sanitized)
-    if not base_dir.exists():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dataset not found.")
-
-    raw_dir = base_dir / "raw"
-    if not raw_dir.exists() or not raw_dir.is_dir():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Raw folder not found.")
-    return sanitized, raw_dir
-
-
 @router.get("/files", name="list-files")
 async def list_files(dataset: str | None = None) -> dict[str, object]:
-    dataset_name, raw_dir = _resolve_dataset_folder(dataset)
+    """
+    @brief List raw files contained in a dataset.
+    @param dataset Optional dataset name to override the current selection.
+    @return Mapping with dataset name and relative file paths.
+    """
+    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
     files = sorted(str(path.relative_to(raw_dir)).replace("\\", "/") for path in raw_dir.rglob("*") if path.is_file())
     return {"dataset": dataset_name, "files": files}
 
 
 @router.get("/file", name="file")
 async def read_file(filename: str = Query(..., alias="filename"), dataset: str | None = None) -> dict[str, object]:
-    dataset_name, raw_dir = _resolve_dataset_folder(dataset)
-
-    relative_path = Path(filename)
-    if relative_path.is_absolute() or ".." in relative_path.parts:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
-
-    target_path = (raw_dir / relative_path).resolve()
-    if not str(target_path).startswith(str(raw_dir.resolve())):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
-
-    if not target_path.is_file():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found.")
-
+    """
+    @brief Read the contents of a raw file within a dataset.
+    @param filename Relative file path to read.
+    @param dataset Optional dataset override.
+    @return Payload including file content and encoding.
+    @throws HTTPException If the path is invalid or file missing.
+    """
+    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
+    target_path, relative_name = resolve_relative_file(raw_dir, filename)
     try:
         content = target_path.read_text(encoding="utf-8")
         encoding = "utf-8"
@@ -363,7 +473,7 @@ async def read_file(filename: str = Query(..., alias="filename"), dataset: str |
 
     return {
         "dataset": dataset_name,
-        "filename": str(relative_path).replace("\\", "/"),
+        "filename": relative_name,
         "encoding": encoding,
         "content": content,
     }
@@ -375,7 +485,16 @@ async def read_file_lizard_analysis(
     dataset: str | None = None,
     summary: bool = Query(False, alias="summary"),
 ) -> dict[str, object]:
-    dataset_name, raw_dir = _resolve_dataset_folder(dataset)
+    """
+    @brief Fetch Lizard analysis for a file or dataset summary.
+    @param filename Relative file path whose analysis is requested.
+    @param dataset Optional dataset override.
+    @param summary Whether to return the dataset summary instead of a file.
+    @return Analysis payload and format metadata.
+    @throws HTTPException On invalid paths or missing analysis files.
+    """
+    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
+    ensure_dataset_ready(dataset_name)
 
     if summary:
         summary_filename = filename or SUMMARY_FILENAME
@@ -384,12 +503,8 @@ async def read_file_lizard_analysis(
             summary_path = dataset_path(dataset_name) / summary_filename
         if not summary_path.exists():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lizard analysis not found.")
-        try:
-            analysis_data = summary_path.read_text(encoding="utf-8")
-        except OSError as exc:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to read analysis file."
-            ) from exc
+
+        analysis_data = read_utf8_or_error(summary_path, detail="Unable to read analysis file.")
         analysis_format = summary_path.suffix.replace(".", "") or "xml"
         return {
             "dataset": dataset_name,
@@ -401,72 +516,40 @@ async def read_file_lizard_analysis(
     if not filename:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
 
-    relative_path = Path(filename)
-    if relative_path.is_absolute() or ".." in relative_path.parts:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
-
-    raw_file = (raw_dir / relative_path).resolve()
-    if not str(raw_file).startswith(str(raw_dir.resolve())):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
-
-    if not raw_file.is_file():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found.")
+    _, relative_name = resolve_relative_file(raw_dir, filename)
+    relative_path = Path(relative_name)
 
     analysis_dir = dataset_path(dataset_name) / "lizard"
-    xml_path = (analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.xml")
-    csv_path = (analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.csv")
-    json_path = (analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.json")
+    candidates = [
+        ((analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.xml"), "xml"),
+        ((analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.csv"), "csv"),
+        ((analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.json"), "json"),
+    ]
 
-    analysis_file = None
-    analysis_format = None
-    if xml_path.exists():
-        analysis_file = xml_path
-        analysis_format = "xml"
-    elif csv_path.exists():
-        analysis_file = csv_path
-        analysis_format = "csv"
-    elif json_path.exists():
-        analysis_file = json_path
-        analysis_format = "json"
-    else:
+    analysis_file = next((path for path, _ in candidates if path.exists()), None)
+    if analysis_file is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lizard analysis not found.")
 
-    try:
-        analysis_data = analysis_file.read_text(encoding="utf-8")
-    except OSError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to read analysis file."
-        ) from exc
+    analysis_format = next(fmt for path, fmt in candidates if path == analysis_file)
+    analysis_data = read_utf8_or_error(analysis_file, detail="Unable to read analysis file.")
 
     return {
         "dataset": dataset_name,
-        "filename": str(relative_path).replace("\\", "/"),
+        "filename": relative_name,
         "analysis": analysis_data,
         "analysis_format": analysis_format,
     }
 
 
-@router.get("/metrics/global", name="global-metrics")
-async def read_global_metrics(dataset: str | None = None) -> dict[str, object]:
-    dataset_name, _ = _resolve_dataset_folder(dataset)
-    summary_path = dataset_summary_path(dataset_name)
-    if not summary_path.exists():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lizard analysis not found.")
-    try:
-        summary_text = summary_path.read_text(encoding="utf-8")
-    except OSError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to read summary file."
-        ) from exc
-    metrics, files = extract_file_metrics(dataset_name, summary_text)
-    if not metrics or not files:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No file metrics available.")
-    reference = load_reference_metrics(dataset_name)
-    return {"dataset": dataset_name, "metrics": metrics, "files": files, "reference": reference}
-
-
 @router.post("/{dataset_name}/reference", name="upload-reference-file")
 async def upload_reference_file(dataset_name: str, file: UploadFile = File(...)) -> dict[str, object]:
+    """
+    @brief Upload a reference solution and compute its metrics via Lizard.
+    @param dataset_name Dataset to associate with the reference file.
+    @param file Uploaded code file to analyze.
+    @return Computed reference metrics for the uploaded file.
+    @throws HTTPException On validation or analysis errors.
+    """
     try:
         sanitized = normalize_dataset_name(dataset_name)
     except ValueError as exc:
@@ -500,3 +583,36 @@ async def upload_reference_file(dataset_name: str, file: UploadFile = File(...))
     metrics = build_reference_metrics(sanitized, reference_name, analysis_output, code_text)
 
     return {"dataset": sanitized, "filename": reference_name, "metrics": metrics}
+
+
+@router.post("/{dataset_name}/requirements", name="upload-requirements-file")
+async def upload_requirements_file(dataset_name: str, file: UploadFile = File(...)) -> dict[str, object]:
+    """
+    @brief Upload a requirements file and store it inside the dataset folder.
+    @param dataset_name Dataset to associate with the requirements file.
+    @param file Uploaded requirements file.
+    @return Basic payload confirming persistence.
+    @throws HTTPException On validation or write errors.
+    """
+    try:
+        sanitized = normalize_dataset_name(dataset_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    dataset_dir = dataset_path(sanitized)
+    if not dataset_dir.exists():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dataset not found.")
+    if not file.filename:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
+
+    requirements_dir = dataset_dir / "requirements"
+    requirements_dir.mkdir(parents=True, exist_ok=True)
+    requirements_name = Path(file.filename).name
+    target_path = requirements_dir / requirements_name
+    try:
+        contents = await file.read()
+        target_path.write_bytes(contents)
+    except OSError as exc:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
+
+    return {"dataset": sanitized, "filename": requirements_name, "path": target_path.as_posix()}

@@ -11,16 +11,29 @@ router = APIRouter(prefix="/current-dataset", tags=["current_dataset"])
 
 
 class DatasetSelection(BaseModel):
+    """
+    @brief Request payload specifying the dataset to select.
+    """
     dataset_name: Optional[str] = None
 
 
 @router.get("", name="get-current-dataset")
 async def read_current_dataset() -> dict[str, Optional[str]]:
+    """
+    @brief Retrieve the currently selected dataset.
+    @return Mapping with current dataset and list of available datasets.
+    """
     return {"current_dataset": get_current_dataset(), "datasets": list_datasets()}
 
 
 @router.post("", name="set-current-dataset")
 async def update_current_dataset(selection: DatasetSelection) -> dict[str, Optional[str]]:
+    """
+    @brief Update the currently selected dataset.
+    @param selection Body payload containing the dataset name.
+    @return Mapping with the updated current dataset.
+    @throws HTTPException On validation errors.
+    """
     try:
         current = set_current_dataset(selection.dataset_name)
     except ValueError as exc:

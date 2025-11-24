@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block extra_head %}
+<script defer src="{{ url_for('static', path='js/dataset_management.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <section class="placeholder dataset-hero">
   <h1>Dataset management</h1>
@@ -24,6 +28,15 @@
     <button type="submit">Upload</button>
   </form>
   <p class="feedback" id="dataset-upload-status"></p>
+  <div id="dataset-processing-panel" class="dataset-processing-panel" style="display: none;">
+    <div class="processing-header">
+      <strong id="dataset-processing-name"></strong>
+      <span id="dataset-processing-state" class="badge"></span>
+    </div>
+    <div id="dataset-processing-phase" class="processing-phase"></div>
+    <div id="dataset-processing-message" class="processing-message"></div>
+  </div>
+  <p class="feedback" id="dataset-status-feedback"></p>
 </section>
 
 <section class="dataset-section">

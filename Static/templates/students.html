@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/students.css') }}" />
+<script defer src="{{ url_for('static', path='js/students.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="students-hero">
+  <div class="students-hero-text">
+    <p class="students-eyebrow">Students</p>
+    <h1>Repérer les fichiers hors de l'IQR</h1>
+    <p>
+      Les colonnes ci-dessous listent les fichiers dont les métriques sortent de la plage interquartile
+      (Q1-Q3) du dataset. Utilisez le sélecteur de dataset dans l’entête pour changer de contexte.
+    </p>
+  </div>
+  <div class="students-hero-actions">
+    <div class="students-dataset-pill">
+      <span>Dataset actif</span>
+      <strong id="students-dataset">{{ current_dataset or "Aucun" }}</strong>
+    </div>
+    <button id="students-generate-report" type="button">Generate Markdown report</button>
+    <p id="students-report-feedback" class="feedback"></p>
+  </div>
+</section>
+
+<section id="students-page" class="students-outliers">
+  <div class="section-heading">
+    <h2>Groupes par écart-type</h2>
+    <div class="students-controls">
+      <label>
+        Choisir une métrique
+        <select id="students-metric-select"></select>
+      </label>
+      <p id="students-feedback" class="feedback"></p>
+    </div>
+  </div>
+  <div id="students-metrics-grid" class="students-metrics-grid"></div>
+
+  <template id="students-bucket-template">
+    <article class="students-metric-card" data-metric="">
+      <div class="students-metric-header">
+        <h3 class="students-metric-title"></h3>
+        <div class="students-metric-meta"></div>
+      </div>
+
+      <div class="students-bucket-columns">
+        <div class="students-bucket" data-group="aboveFence">
+          <h4>> Q3 + 1.5×IQR</h4>
+          <small>Au-dessus de la borne supérieure étendue</small>
+          <p class="students-threshold-comment" data-threshold="aboveFence">Valeur au-dessus de Q3 + 1.5×IQR.</p>
+          <ul class="students-bucket-list">
+            <li>Aucun fichier</li>
+          </ul>
+        </div>
+        <div class="students-bucket" data-group="aboveQ3">
+          <h4>> Q3</h4>
+          <small>Au-dessus du troisième quartile</small>
+          <p class="students-threshold-comment" data-threshold="aboveQ3">Valeur au-dessus de Q3.</p>
+          <ul class="students-bucket-list">
+            <li>Aucun fichier</li>
+          </ul>
+        </div>
+        <div class="students-bucket" data-group="belowQ1">
+          <h4>< Q1</h4>
+          <small>En dessous du premier quartile</small>
+          <p class="students-threshold-comment" data-threshold="belowQ1">Valeur en dessous de Q1.</p>
+          <ul class="students-bucket-list">
+            <li>Aucun fichier</li>
+          </ul>
+        </div>
+        <div class="students-bucket" data-group="belowFence">
+          <h4>< Q1 - 1.5×IQR</h4>
+          <small>En dessous de la borne inférieure étendue</small>
+          <p class="students-threshold-comment" data-threshold="belowFence">Valeur en dessous de Q1 - 1.5×IQR.</p>
+          <ul class="students-bucket-list">
+            <li>Aucun fichier</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+  </template>
+</section>
+{% endblock %}

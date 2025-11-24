@@ -7,6 +7,8 @@ Usage examples:
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import multiprocessing
 import subprocess
 import sys
 from pathlib import Path
@@ -22,16 +24,32 @@ MIN_DUPLICATE_LINES = 30
 
 
 def _available_datasets() -> list[str]:
+    """
+    @brief Retrieve available datasets from the dataset manager.
+    @return List of dataset names.
+    """
     return list_datasets()
 
 
 def _iter_files(root: Path) -> Iterable[Path]:
+    """
+    @brief Iterate over all files under a root directory.
+    @param root Directory to recurse.
+    @return Generator yielding file paths.
+    """
     for path in sorted(root.rglob("*")):
         if path.is_file():
             yield path
 
 
 def _run_lizard(lizard_bin: str, target: Path) -> str:
+    """
+    @brief Execute Lizard on a single target and return its output.
+    @param lizard_bin Path to the Lizard executable.
+    @param target File or directory to analyze.
+    @return Raw stdout from Lizard.
+    @throws RuntimeError When execution fails or Lizard is missing.
+    """
     cmd = [
         lizard_bin,
         "-l",
@@ -57,6 +75,14 @@ def _run_lizard(lizard_bin: str, target: Path) -> str:
 
 
 def _write_analysis(dataset: str, raw_root: Path, file_path: Path, raw_output: str) -> Path:
+    """
+    @brief Persist Lizard XML output alongside the analyzed file.
+    @param dataset Dataset name for resolving output location.
+    @param raw_root Root raw folder for the dataset.
+    @param file_path File that was analyzed.
+    @param raw_output Raw XML output produced by Lizard.
+    @return Path to the written analysis file.
+    """
     relative = file_path.relative_to(raw_root)
     output_root = dataset_path(dataset) / LIZARD_FOLDER
     target = output_root / relative
@@ -68,7 +94,11 @@ def _write_analysis(dataset: str, raw_root: Path, file_path: Path, raw_output: s
 
 
 def _filter_duplicate_blocks(report: str) -> str:
-    """Filter duplicate sections according to configured requirements."""
+    """
+    @brief Filter duplicate detection blocks based on configured thresholds.
+    @param report Combined textual report output.
+    @return Report text with filtered duplicate blocks.
+    """
     lines = report.splitlines()
     filtered: list[str] = []
     i = 0
@@ -121,7 +151,26 @@ def _filter_duplicate_blocks(report: str) -> str:
     return output
 
 
+def _analyze_file_job(args: tuple[str, str, str, str]) -> tuple[str, str] | tuple[str, Exception]:
+    """Run lizard for a single file; returns (relative_path, output) or (relative_path, error)."""
+    dataset, raw_dir_str, relative_str, lizard_bin = args
+    raw_dir = Path(raw_dir_str)
+    try:
+        raw_path = raw_dir / relative_str
+        target = raw_path
+        output = _run_lizard(lizard_bin, target)
+        return relative_str, output
+    except Exception as exc:  # pragma: no cover - worker error path
+        return relative_str, exc
+
+
 def analyze_dataset(dataset: str, lizard_bin: str) -> None:
+    """
+    @brief Run Lizard analysis for all files in a dataset and persist results.
+    @param dataset Dataset name to analyze.
+    @param lizard_bin Executable path for Lizard.
+    @throws RuntimeError On validation errors or Lizard failures.
+    """
     try:
         normalized = normalize_dataset_name(dataset)
     except ValueError as exc:
@@ -137,26 +186,45 @@ def analyze_dataset(dataset: str, lizard_bin: str) -> None:
         return
 
     print(f"[run] Lizard analysis for dataset '{normalized}' on {len(files)} file(s)...")
-    for file_path in files:
-        try:
-            raw_output = _run_lizard(lizard_bin, file_path)
-            output_path = _write_analysis(normalized, raw_dir, file_path, raw_output)
-            print(f"  ✓ {file_path.relative_to(raw_dir)} -> {output_path.relative_to(dataset_path(normalized))}")
-            if SHOW_LIZARD_OUTPUT:
-                if raw_output.strip():
+    max_workers = max(1, min(multiprocessing.cpu_count(), 8))
+    tasks = [
+        (normalized, str(raw_dir), str(path.relative_to(raw_dir)), lizard_bin)
+        for path in files
+    ]
+
+    with ProcessPoolExecutor(max_workers=max_workers) as executor:
+        futures = {executor.submit(_analyze_file_job, task): task for task in tasks}
+        for future in as_completed(futures):
+            rel = futures[future][2]
+            try:
+                relative_str, result = future.result()
+            except Exception as exc:  # pragma: no cover - aggregator failure
+                print(f"  ✗ Failed to analyze {rel}: {exc}")
+                continue
+
+            file_path = raw_dir / relative_str
+            if isinstance(result, Exception):
+                print(f"  ✗ Failed to analyze {relative_str}: {result}")
+                continue
+            raw_output = result
+            try:
+                output_path = _write_analysis(normalized, raw_dir, file_path, raw_output)
+                print(f"  ✓ {file_path.relative_to(raw_dir)} -> {output_path.relative_to(dataset_path(normalized))}")
+                if SHOW_LIZARD_OUTPUT:
+                    if raw_output.strip():
+                        print("    └─ Lizard output:")
+                        print("\n".join(f"       {line}" for line in raw_output.strip().splitlines()))
+                    else:
+                        print("    └─ Lizard output: <empty>")
+            except RuntimeError as exc:
+                message = str(exc)
+                raw_output = ""
+                if isinstance(exc.args, tuple) and len(exc.args) > 1:
+                    raw_output = exc.args[1] or ""
+                print(f"  ✗ Failed to analyze {file_path}: {message}")
+                if SHOW_LIZARD_OUTPUT and raw_output:
                     print("    └─ Lizard output:")
                     print("\n".join(f"       {line}" for line in raw_output.strip().splitlines()))
-                else:
-                    print("    └─ Lizard output: <empty>")
-        except RuntimeError as exc:
-            message = str(exc)
-            raw_output = ""
-            if isinstance(exc.args, tuple) and len(exc.args) > 1:
-                raw_output = exc.args[1] or ""
-            print(f"  ✗ Failed to analyze {file_path}: {message}")
-            if SHOW_LIZARD_OUTPUT and raw_output:
-                print("    └─ Lizard output:")
-                print("\n".join(f"       {line}" for line in raw_output.strip().splitlines()))
 
     # Dataset-wide run
     try:
@@ -185,6 +253,11 @@ def analyze_dataset(dataset: str, lizard_bin: str) -> None:
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
+    """
+    @brief Configure and parse CLI arguments for the analyzer.
+    @param argv Argument vector excluding the executable.
+    @return Parsed arguments namespace.
+    """
     parser = argparse.ArgumentParser(description="Run Lizard analysis on dataset files.")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--dataset", help="Name of the dataset to analyze.")
@@ -194,6 +267,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """
+    @brief Entrypoint for running Lizard analysis via CLI.
+    @param argv Optional command-line arguments override.
+    @return Exit code indicating success (0) or failure (1).
+    """
     args = parse_args(argv or sys.argv[1:])
     datasets: Iterable[str]
     if args.all:

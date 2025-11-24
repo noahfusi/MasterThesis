@@ -192,15 +192,36 @@ def generate_other_metrics(dataset: str) -> str:
             continue
         row: dict[str, object] = {"path": file_path}
         base_metrics = entry.get("metrics") or {}
+        functions_count = None
+        raw_ccn = None
+        raw_ncss = None
         for key, value in base_metrics.items():
             if value in (None, ""):
                 continue
             column = key if isinstance(key, str) else str(key)
             if isinstance(value, (int, float)):
-                row[column] = float(value)
+                numeric_value = float(value)
+                row[column] = numeric_value
+                if column.lower() == "functions":
+                    functions_count = numeric_value
+                elif column.lower() == "ccn":
+                    raw_ccn = numeric_value
+                elif column.lower() == "ncss":
+                    raw_ncss = numeric_value
             else:
                 row[column] = value
             metric_names.add(column)
+
+        if functions_count == 0:
+            functions_count = 1.0
+            row["Functions"] = functions_count
+        if functions_count is not None:
+            if raw_ccn is not None:
+                row["CCN/Functions"] = raw_ccn / functions_count if functions_count else raw_ccn
+                metric_names.add("CCN/Functions")
+            if raw_ncss is not None:
+                row["NCSS/Functions"] = raw_ncss / functions_count if functions_count else raw_ncss
+                metric_names.add("NCSS/Functions")
 
         lizard_file = dataset_path(dataset) / LIZARD_FOLDER / Path(file_path)
         suffix = lizard_file.suffix

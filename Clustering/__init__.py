@@ -6,6 +6,12 @@ from .engine import (
     project_to_components,
     run_hdbscan_clustering,
     run_kmeans_clustering,
+    auto_kmeans_with_silhouette,
+    auto_hdbscan_with_dbcv,
+    build_feature_dataset,
+    robust_scale_matrix,
+    collect_metric_vectors,
+    project_embeddings,
 )
 
 __all__ = [
@@ -16,4 +22,10 @@ __all__ = [
     "project_to_components",
     "run_kmeans_clustering",
     "run_hdbscan_clustering",
+    "auto_kmeans_with_silhouette",
+    "auto_hdbscan_with_dbcv",
+    "build_feature_dataset",
+    "robust_scale_matrix",
+    "collect_metric_vectors",
+    "project_embeddings",
 ]

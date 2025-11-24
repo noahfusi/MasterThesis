@@ -1,0 +1,199 @@
+.file-explorer-full {
+  padding: 2rem 3rem 3rem;
+  background: var(--bg);
+  min-height: calc(100vh - 140px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.file-explorer-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.file-explorer-actions button {
+  background: var(--accent);
+}
+
+.file-explorer-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr);
+  gap: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  min-height: 60vh;
+  background: var(--card);
+}
+
+.file-explorer-grid.show-preview {
+  grid-template-columns: minmax(280px, 1fr) 2fr;
+}
+
+.file-list-panel,
+.file-preview-panel {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-preview-panel {
+  border-left: 1px solid #e5e7eb;
+  display: none;
+  background: #0f172a;
+}
+
+.file-explorer-grid.show-preview .file-preview-panel {
+  display: flex;
+}
+
+.file-preview-panel .section-heading {
+  color: #e2e8f0;
+}
+
+.file-preview-panel h2 {
+  color: inherit;
+}
+
+.file-preview-panel span {
+  color: #94a3b8;
+}
+
+.file-preview-panel pre {
+  flex: 1;
+}
+
+.file-preview-content-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #0f172a;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  min-height: 240px;
+  max-height: 70vh;
+  flex: 1;
+}
+
+.file-preview-line-numbers {
+  background: rgba(15, 23, 42, 0.9);
+  color: #94a3b8;
+  padding: 1rem 0.75rem;
+  text-align: right;
+  font-family: "JetBrains Mono", "Fira Code", Menlo, monospace;
+  font-size: 0.85rem;
+  overflow: hidden;
+  min-width: 3.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.file-preview-line-numbers div {
+  line-height: 1.4;
+}
+
+.file-preview-content {
+  background: transparent;
+  color: #e2e8f0;
+  padding: 1rem;
+  min-height: 240px;
+  white-space: pre-wrap;
+  overflow: auto;
+  font-family: "JetBrains Mono", "Fira Code", Menlo, monospace;
+}
+
+.file-preview-content code {
+  display: block;
+}
+
+.file-preview-line {
+  display: block;
+  white-space: pre-wrap;
+  line-height: 1.4;
+  padding-left: 0.25rem;
+}
+
+.file-preview-line.highlight {
+  background: rgba(34, 197, 94, 0.15);
+  border-left: 3px solid #22c55e;
+  padding-left: 0.5rem;
+}
+
+.file-preview-line-numbers div.highlight {
+  background: rgba(34, 197, 94, 0.15);
+  color: #c6f6d5;
+}
+
+.file-explorer-empty {
+  background: var(--card);
+  border-radius: 1.25rem;
+  padding: 3rem;
+  text-align: center;
+  border: 1px dashed #d1d5db;
+}
+
+.file-list-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.file-list-filters select {
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.85rem;
+}
+
+.dataset-row.has-duplicate-code .file-entry-name {
+  color: #f97316;
+}
+
+.file-duplicate-badge {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(148, 163, 184, 0.12);
+  color: #475569;
+}
+
+.file-duplicate-badge.possible-plagiarism {
+  border-color: rgba(249, 115, 22, 0.4);
+  background: rgba(249, 115, 22, 0.12);
+  color: #c2410c;
+}
+
+.file-duplicate-badge.code-duplication {
+  border-color: rgba(14, 165, 233, 0.4);
+  background: rgba(14, 165, 233, 0.12);
+  color: #0369a1;
+}
+
+.file-warning-badge {
+  border-color: rgba(248, 113, 113, 0.5);
+  background: rgba(248, 113, 113, 0.14);
+  color: #b91c1c;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.file-no-functions {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.14);
+  color: #1d4ed8;
+}
+
+.file-badge-container {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-left: 0.5rem;
+}

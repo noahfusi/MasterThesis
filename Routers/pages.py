@@ -9,6 +9,13 @@ router = APIRouter()
 
 
 def _context(request: Request, page_title: str, active_page: str) -> dict[str, object]:
+    """
+    @brief Build shared template context for navigation pages.
+    @param request Incoming FastAPI request object.
+    @param page_title Title to display on the page.
+    @param active_page Identifier for the active navigation tab.
+    @return Context dictionary for template rendering.
+    """
     return {
         "request": request,
         "page_title": page_title,
@@ -20,31 +27,61 @@ def _context(request: Request, page_title: str, active_page: str) -> dict[str, o
 
 @router.get("/", name="dataset-management")
 async def dataset_management(request: Request):
-    """Landing page with dataset management placeholder."""
+    """
+    @brief Render the dataset management landing page.
+    @param request Incoming FastAPI request.
+    @return Jinja2 response for the dataset management page.
+    """
     return templates.TemplateResponse("dataset_management.html", _context(request, "Dataset management", "dataset"))
 
 
 @router.get("/global-analysis", name="global-analysis")
 async def global_analysis(request: Request):
-    """Placeholder page for global analysis."""
+    """
+    @brief Render the global analysis placeholder page.
+    @param request Incoming FastAPI request.
+    @return Jinja2 response for the global analysis page.
+    """
     return templates.TemplateResponse("global_analysis.html", _context(request, "Global analysis", "global"))
 
 
 @router.get("/file-analysis", name="file-analysis")
 async def file_analysis(request: Request):
-    """Placeholder page for per-file analysis."""
+    """
+    @brief Render the per-file analysis placeholder page.
+    @param request Incoming FastAPI request.
+    @return Jinja2 response for the file analysis page.
+    """
     return templates.TemplateResponse("file_analysis.html", _context(request, "File analysis", "file"))
 
 
 @router.get("/file-explorer", name="file-explorer")
 async def file_explorer(request: Request):
-    """Page to explore dataset files."""
+    """
+    @brief Render the dataset file explorer page.
+    @param request Incoming FastAPI request.
+    @return Jinja2 response for the file explorer page.
+    """
     return templates.TemplateResponse("file_explorer.html", _context(request, "File explorer", "explorer"))
 
 
 @router.get("/solution-clustering", name="solution-clustering")
 async def solution_clustering(request: Request):
-    """Placeholder page to explore solution clusters."""
+    """
+    @brief Render the solution clustering placeholder page.
+    @param request Incoming FastAPI request.
+    @return Jinja2 response for the solution clustering page.
+    """
     return templates.TemplateResponse(
         "solution_clustering.html", _context(request, "Solution clustering", "clustering")
     )
+
+
+@router.get("/students", name="students")
+async def students_page(request: Request):
+    """
+    @brief Render the students placeholder page.
+    @param request Incoming FastAPI request.
+    @return Jinja2 response for the students page.
+    """
+    return templates.TemplateResponse("students.html", _context(request, "Students", "students"))
