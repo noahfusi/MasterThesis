@@ -65,6 +65,7 @@ def resolve_relative_file(
     @throws HTTPException If the path is invalid or the file does not exist.
     """
     relative_path = Path(filename)
+    # Block absolute paths and parent traversal attempts early.
     if relative_path.is_absolute() or ".." in relative_path.parts:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
 

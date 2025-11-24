@@ -28,12 +28,22 @@ router = APIRouter(prefix="/clustering", tags=["clustering"])
 
 
 def _average_vector(vectors: list[list[float]]) -> list[float]:
+    """
+    @brief Compute the average vector (centroid) for a collection of vectors.
+    @param vectors List of numeric vectors.
+    @return Averaged vector or empty list when no input.
+    """
     if not vectors:
         return []
     return [sum(values) / len(vectors) for values in zip(*vectors)]
 
 
 def _load_structural_embeddings(dataset: str) -> dict[str, list[float]]:
+    """
+    @brief Load precomputed structural embeddings and collapse per-file averages.
+    @param dataset Dataset name.
+    @return Mapping of normalized file path to embedding vector.
+    """
     root = dataset_path(dataset) / "structural_embeddings"
     if not root.exists():
         return {}
@@ -98,6 +108,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     metrics_lookup: dict[str, dict[str, object]] = {
         entry.get("path", "").replace("\\", "/"): entry.get("metrics") or {} for entry in files
     }
+    # Build the feature matrix for clustering (metrics, embeddings, or both).
     normalized = build_feature_dataset(
         files,
         embeddings,
@@ -106,10 +117,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
         metric_keys=METRIC_KEYS,
     )
     if not normalized.entries:
-        raise HTTPException(
-            status_code=400,
-            detail="No usable data for this feature mode. Check metrics and embeddings.",
-        )
+        raise HTTPException(status_code=400, detail=config.MESSAGES["CLUSTERING_NO_DATA"])
 
     response_metric_keys = list(normalized.metric_keys) if normalized.metric_keys else []
     if not response_metric_keys and metrics_lookup:
@@ -124,7 +132,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
             parameters.update({"mode": "auto", **chosen})
         else:
             if not payload.cluster_count:
-                raise HTTPException(status_code=400, detail="Cluster count is required to run k-means.")
+                raise HTTPException(status_code=400, detail=config.MESSAGES["CLUSTERING_KMEANS_COUNT_REQUIRED"])
             result = run_kmeans_clustering(normalized, payload.cluster_count)
             parameters["cluster_count"] = payload.cluster_count
     else:
@@ -135,6 +143,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
                 min_cluster_size = chosen.get("min_cluster_size")
                 min_samples = chosen.get("min_samples")
             else:
+                # Heuristic defaults scale with dataset size to avoid degenerate clusters.
                 heuristic = max(3, min(len(normalized.entries) // 8 or 2, 25))
                 min_cluster_size = payload.min_cluster_size or heuristic
                 min_cluster_size = max(2, min(min_cluster_size, len(normalized.entries)))
@@ -147,7 +156,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
         except RuntimeError as exc:
             raise HTTPException(
                 status_code=400,
-                detail="HDBSCAN n'a produit aucun cluster. Ajustez min_cluster_size/min_samples ou utilisez le mode auto.",
+                detail="HDBSCAN did not produce any clusters. Adjust min_cluster_size/min_samples or use auto mode.",
             ) from exc
         parameters["min_samples"] = min_samples if min_samples is not None else parameters.get("min_samples")
     parameters["feature_mode"] = feature_mode
@@ -157,6 +166,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
         f"dims={embedding_dims} params={parameters}"
     )
 
+    # Reduce to 2D for visualization; fallback to trivial axes if PCA fails.
     projection, axes = project_to_components(normalized, components=2)
     if not projection:
         projection = [(0.0, 0.0) for _ in normalized.entries]
@@ -167,6 +177,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     cluster_metric_sums: dict[int, dict[str, float]] = {}
     cluster_counts: dict[int, int] = {}
     metric_keys = list(response_metric_keys)
+    # Walk normalized entries alongside labels to build response payloads and cluster aggregates.
     for entry, label, coords in zip(normalized.entries, result.labels, projection):
         metrics_snapshot_base = metrics_lookup.get(entry.path, {})
         metrics_snapshot = {key: metrics_snapshot_base.get(key) for key in metric_keys} if metric_keys else metrics_snapshot_base
@@ -264,19 +275,25 @@ def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str,
 
 
 def _load_cached_clustering(dataset: str) -> dict[str, object]:
+    """
+    @brief Reload clustering results from the CSV cache and recompute summaries.
+    @param dataset Dataset name.
+    @return Clustering payload reconstructed from cached labels and fresh metrics.
+    @throws HTTPException When cache or metrics are unavailable/invalid.
+    """
     cache_path = dataset_path(dataset) / config.CLUSTERING_CACHE_FILENAME
     if not cache_path.exists():
-        raise HTTPException(status_code=404, detail="Aucun clustering existant pour ce dataset.")
+        raise HTTPException(status_code=404, detail=config.MESSAGES["CLUSTERING_NO_METRICS"])
 
     try:
         with cache_path.open("r", encoding="utf-8") as handle:
             reader = csv.DictReader(handle)
             records = list(reader)
     except OSError as exc:
-        raise HTTPException(status_code=500, detail=f"Impossible de lire le clustering: {exc}") from exc
+        raise HTTPException(status_code=500, detail=f"Unable to read clustering: {exc}") from exc
 
     if not records:
-        raise HTTPException(status_code=404, detail="Aucun clustering existant pour ce dataset.")
+        raise HTTPException(status_code=404, detail=config.MESSAGES["CLUSTERING_NO_METRICS"])
 
     algorithm = records[0].get("algorithm") or "hdbscan"
     point_lookup: dict[str, dict[str, object]] = {}
@@ -299,12 +316,13 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
 
     files = load_metrics_entries(dataset)
     if not files:
-        raise HTTPException(status_code=404, detail="No metrics available to reload clustering.")
+        raise HTTPException(status_code=404, detail=config.MESSAGES["CLUSTERING_NO_METRICS"])
 
     normalized = normalize_dataset(files, METRIC_KEYS)
     if not normalized.entries:
         raise HTTPException(status_code=400, detail="Unable to normalize metrics for clustering.")
 
+    # Rebuild per-point payloads and cluster summaries using cached labels and fresh metrics.
     metric_keys = list(normalized.metric_keys)
     cluster_metric_sums: dict[int, dict[str, float]] = {}
     cluster_counts: dict[int, int] = {}

@@ -22,21 +22,20 @@
         a review. Choose k-means or HDBSCAN, tune the parameters, then launch the clustering.
       </p>
     </div>
-    <div class="clustering-hero-status">
-      <div class="clustering-dataset">
-        <span>Current dataset</span>
-        <strong>{{ current_dataset or "None" }}</strong>
+      <div class="clustering-hero-status">
+        <div class="clustering-dataset">
+          <span>Current dataset</span>
+          <strong>{{ current_dataset or "None" }}</strong>
+        </div>
+        <p class="clustering-hint" id="clustering-hint">{{ clustering_hint }}</p>
+        <div class="clustering-actions">
+          <button type="button" class="clustering-primary" id="launch-clustering" {{ clustering_disabled }}>
+            Launch clustering
+          </button>
+        </div>
+        <small>Pick an algorithm and launch the clustering run.</small>
       </div>
-      <p class="clustering-hint" id="clustering-hint">{{ clustering_hint }}</p>
-      <div class="clustering-actions">
-        <button type="button" class="clustering-primary" id="launch-clustering" {{ clustering_disabled }}>
-          Launch clustering
-        </button>
-        <button type="button" class="clustering-secondary" disabled>Schedule run</button>
-      </div>
-      <small>Pick an algorithm and launch the clustering run.</small>
-    </div>
-  </section>
+    </section>
 
   <section class="clustering-config">
     <div class="clustering-config-grid">
@@ -153,20 +152,6 @@
             </div>
           </div>
         </form>
-        <div class="clustering-presets">
-          <div>
-            <span>Last run</span>
-            <strong>Not available</strong>
-          </div>
-          <div>
-            <span>Estimated duration</span>
-            <strong>6-8 minutes</strong>
-          </div>
-          <div>
-            <span>Output</span>
-            <strong>clusters.jsonl</strong>
-          </div>
-        </div>
       </div>
     </div>
   </section>

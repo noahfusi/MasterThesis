@@ -1,7 +1,7 @@
 (function () {
   const app = window.App || {};
   const { API_ROUTES, utils = {}, dataset = {}, onReady = (fn) => fn() } = app;
-  const { requestJSON, showMessage } = utils;
+  const { requestJSON, showMessage, getMessage } = utils;
   const { refreshDatasets, setCurrentDataset, getDatasetStatus, pollDatasetStatus } = dataset;
 
   const datasetListElement = document.getElementById("dataset-list");
@@ -31,7 +31,10 @@
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-    showMessage(datasetFeedbackElement, `Uploading reference for ${datasetName}...`);
+    showMessage(
+      datasetFeedbackElement,
+      getMessage("UPLOAD_REFERENCE_START", { dataset: datasetName }, `Uploading reference for ${datasetName}...`),
+    );
     try {
       const response = await fetch(`/datasets/${encodeURIComponent(datasetName)}/reference`, {
         method: "POST",
@@ -42,7 +45,14 @@
         throw new Error(payload.detail || payload.message || response.statusText);
       }
       const data = await response.json();
-      showMessage(datasetFeedbackElement, `Reference file "${data.filename}" saved for ${datasetName}.`);
+      showMessage(
+        datasetFeedbackElement,
+        getMessage(
+          "UPLOAD_REFERENCE_SUCCESS",
+          { filename: data.filename, dataset: datasetName },
+          `Reference file "${data.filename}" saved for ${datasetName}.`,
+        ),
+      );
     } catch (error) {
       showMessage(datasetFeedbackElement, error.message, true);
     }
@@ -52,7 +62,10 @@
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-    showMessage(datasetFeedbackElement, `Uploading requirements for ${datasetName}...`);
+    showMessage(
+      datasetFeedbackElement,
+      getMessage("UPLOAD_REQUIREMENTS_START", { dataset: datasetName }, `Uploading requirements for ${datasetName}...`),
+    );
     try {
       const response = await fetch(`/datasets/${encodeURIComponent(datasetName)}/requirements`, {
         method: "POST",
@@ -63,21 +76,28 @@
         throw new Error(payload.detail || payload.message || response.statusText);
       }
       const data = await response.json();
-      showMessage(datasetFeedbackElement, `Requirements "${data.filename}" saved for ${datasetName}.`);
+      showMessage(
+        datasetFeedbackElement,
+        getMessage(
+          "UPLOAD_REQUIREMENTS_SUCCESS",
+          { filename: data.filename, dataset: datasetName },
+          `Requirements "${data.filename}" saved for ${datasetName}.`,
+        ),
+      );
     } catch (error) {
       showMessage(datasetFeedbackElement, error.message, true);
     }
   }
 
   async function deleteDataset(name) {
-    if (!window.confirm(`Delete dataset "${name}"?`)) {
+    if (!window.confirm(getMessage("CONFIRM_DELETE_DATASET", { dataset: name }, `Delete dataset "${name}"?`))) {
       return;
     }
     try {
       await requestJSON(`${API_ROUTES.datasets}/${encodeURIComponent(name)}`, {
         method: "DELETE",
       });
-      showMessage(datasetFeedbackElement, `Dataset "${name}" deleted.`);
+      showMessage(datasetFeedbackElement, getMessage("DATASET_DELETED", { dataset: name }, `Dataset "${name}" deleted.`));
       await loadDatasets();
     } catch (error) {
       showMessage(datasetFeedbackElement, error.message, true);
@@ -87,7 +107,10 @@
   async function handleSelectDataset(name) {
     try {
       await setCurrentDataset(name || null);
-      showMessage(datasetFeedbackElement, `Current dataset: ${name || "None"}.`);
+      showMessage(
+        datasetFeedbackElement,
+        getMessage("DATASET_READY", { dataset: name || "None" }, `Current dataset: ${name || "None"}.`),
+      );
       updateCurrentDatasetDisplay(name);
       await loadDatasets();
     } catch (error) {
@@ -101,7 +124,7 @@
     datasetListElement.innerHTML = "";
     if (!datasets.length) {
       const empty = document.createElement("li");
-      empty.textContent = "No datasets yet.";
+      empty.textContent = getMessage("NO_DATASETS", {}, "No datasets yet.");
       datasetListElement.appendChild(empty);
       return;
     }
@@ -194,14 +217,21 @@
     if (!uploadForm) return;
 
     const formData = new FormData(uploadForm);
-    showMessage(uploadStatusElement, "Uploading...");
+    showMessage(uploadStatusElement, getMessage("UPLOAD_IN_PROGRESS", {}, "Uploading..."));
 
     try {
       const data = await requestJSON(API_ROUTES.datasets, {
         method: "POST",
         body: formData,
       });
-      showMessage(uploadStatusElement, `Dataset "${data.dataset}" created. Processing in progress...`);
+      showMessage(
+        uploadStatusElement,
+        getMessage(
+          "DATASET_CREATED_PROCESSING",
+          { dataset: data.dataset },
+          `Dataset "${data.dataset}" created. Processing in progress...`,
+        ),
+      );
       uploadForm.reset();
       if (data && data.dataset) {
         watchDatasetStatus(data.dataset, data.status);

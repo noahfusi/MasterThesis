@@ -9,6 +9,7 @@
     describeThreshold,
     getClusterColor,
     getClusterLabel,
+    getMessage,
   } = utils;
 
   const clusteringForm = document.getElementById("clustering-form");
@@ -335,7 +336,11 @@
       .filter(Boolean);
     if (!points.length) {
       clearClusteringMetricChart();
-      showMessage(clusteringMetricFeedback, `No values for ${metricKey}.`, true);
+      showMessage(
+        clusteringMetricFeedback,
+        getMessage("CLUSTERING_NO_VALUES", { metric: metricKey }, `No values for ${metricKey}.`),
+        true,
+      );
       return;
     }
     const values = points.map((point) => point.y);
@@ -454,7 +459,11 @@
     Plotly.react(clusteringMetricChart, [trace], layout, { responsive: true, displaylogo: false });
     showMessage(
       clusteringMetricFeedback,
-      `Showing distribution for ${metricKey} (${points.length} file${points.length > 1 ? "s" : ""}).`,
+      getMessage(
+        "CLUSTERING_DISTRIBUTION",
+        { metric: metricKey, count: points.length, plural: points.length > 1 ? "s" : "" },
+        `Showing distribution for ${metricKey} (${points.length} file${points.length > 1 ? "s" : ""}).`,
+      ),
     );
   }
 
@@ -464,6 +473,15 @@
     const body = document.createElement("div");
     body.className = "clustering-summary-body";
     const clusters = data && Array.isArray(data.clusters) && data.clusters.length ? data.clusters : null;
+    const makeWarning = (text, severity = "danger") => {
+      const note = document.createElement("p");
+      note.className = "cluster-warning-note";
+      if (severity === "warning") {
+        note.classList.add("is-warning");
+      }
+      note.textContent = text;
+      return note;
+    };
     if (!clusters) {
       const empty = document.createElement("p");
       empty.textContent = "No clusters available yet.";
@@ -481,11 +499,12 @@
           .map((value) => formatMetricValue(value))
           .join(", ");
         card.innerHTML = `
-        <h3>${derived.title || cluster.label || `Cluster ${cluster.id + 1}`}</h3>
+        <h3>${cluster.label || `Cluster ${cluster.id + 1}`}</h3>
         <p>Size: ${cluster.size}</p>
         <p>Centroid (preview): ${centroidPreview || "-"}</p>
       `;
         if (derived.reasons && derived.reasons.length) {
+          card.appendChild(makeWarning("Elevated metrics detected", "warning"));
           const reasons = document.createElement("ul");
           reasons.className = "cluster-reasons";
           derived.reasons.forEach((text) => {
@@ -522,10 +541,9 @@
             return Number.isFinite(value) ? value : null;
           })();
           if (functionsMean === 0) {
-            const note = document.createElement("p");
-            note.className = "cluster-warning-note";
-            note.textContent = "Average functions is 0 — likely files with errors or invalid parsing.";
-            metricsContainer.appendChild(note);
+            metricsContainer.appendChild(
+              makeWarning("Average functions is 0 — likely files with errors or invalid parsing.", "danger"),
+            );
           }
           metricsContainer.appendChild(metricList);
           card.appendChild(metricsContainer);
@@ -577,7 +595,10 @@
     updateClusteringMetricDataset(datasetName);
     updateClusteringMetricOptions(clusteringState.metrics);
     if (!clusteringState.metrics.length) {
-      showMessage(clusteringMetricFeedback, "Run a clustering job to display the metric distribution.");
+      showMessage(
+        clusteringMetricFeedback,
+        getMessage("CLUSTERING_NO_METRICS", {}, "Run a clustering job to display the metric distribution."),
+      );
     }
     renderClusteringMetricChart();
 
@@ -642,7 +663,7 @@
         payload.auto_kmeans = true;
       } else {
         if (!clusteringClusterSlider) {
-          showMessage(clusteringFeedback, "k-means parameter not found.", true);
+          showMessage(clusteringFeedback, getMessage("CLUSTERING_KMEANS_COUNT_REQUIRED", {}, "k-means parameter not found."), true);
           return;
         }
         payload.cluster_count = Number(clusteringClusterSlider.value);
@@ -654,13 +675,21 @@
       } else {
         sanitizeHdbscanInputs();
         if (!clusteringMinClusterSizeInput || !clusteringMinSamplesInput) {
-          showMessage(clusteringFeedback, "HDBSCAN parameters are required.", true);
+          showMessage(
+            clusteringFeedback,
+            getMessage("CLUSTERING_HDBSCAN_PARAMS_REQUIRED", {}, "HDBSCAN parameters are required."),
+            true,
+          );
           return;
         }
         const minClusterSize = Number(clusteringMinClusterSizeInput.value);
         const minSamples = Number(clusteringMinSamplesInput.value);
         if (!Number.isFinite(minClusterSize) || !Number.isFinite(minSamples)) {
-          showMessage(clusteringFeedback, "Invalid HDBSCAN values.", true);
+          showMessage(
+            clusteringFeedback,
+            getMessage("CLUSTERING_INVALID_HDBSCAN_VALUES", {}, "Invalid HDBSCAN values."),
+            true,
+          );
           return;
         }
         payload.min_cluster_size = minClusterSize;
@@ -671,10 +700,10 @@
     showMessage(
       clusteringFeedback,
       isAutoHdbscan
-        ? "Auto-searching HDBSCAN parameters..."
+        ? getMessage("CLUSTERING_AUTO_HDBSCAN", {}, "Auto-searching HDBSCAN parameters...")
         : isAutoKMeans
-          ? "Auto-searching best k..."
-          : "Running clustering...",
+          ? getMessage("CLUSTERING_AUTO_KMEANS", {}, "Auto-searching best k...")
+          : getMessage("CLUSTERING_RUNNING", {}, "Running clustering..."),
     );
     clusteringLaunchButton.disabled = true;
     try {
@@ -688,9 +717,11 @@
       const paramsDetail = formatClusteringParameters(result.algorithm, result.parameters);
       showMessage(
         clusteringFeedback,
-        `Clustering ${result.algorithm} completed${paramsDetail} (${pointCount} file${
-          pointCount > 1 ? "s" : ""
-        }).`,
+        getMessage(
+          "CLUSTERING_COMPLETED",
+          { algorithm: result.algorithm, details: paramsDetail, count: pointCount, plural: pointCount > 1 ? "s" : "" },
+          `Clustering ${result.algorithm} completed${paramsDetail} (${pointCount} file${pointCount > 1 ? "s" : ""}).`,
+        ),
       );
     } catch (error) {
       showMessage(clusteringFeedback, error.message, true);
@@ -712,9 +743,11 @@
       const paramsDetail = formatClusteringParameters(data.algorithm, data.parameters);
       showMessage(
         clusteringFeedback,
-        `Clustering ${data.algorithm || ""} loaded${paramsDetail} (${pointCount} file${
-          pointCount > 1 ? "s" : ""
-        }).`,
+        getMessage(
+          "CLUSTERING_LOADED",
+          { algorithm: data.algorithm || "", details: paramsDetail, count: pointCount, plural: pointCount > 1 ? "s" : "" },
+          `Clustering ${data.algorithm || ""} loaded${paramsDetail} (${pointCount} file${pointCount > 1 ? "s" : ""}).`,
+        ),
       );
     } catch (error) {
       // No cached clustering available; stay silent.
@@ -750,8 +783,8 @@
         }
         setKMeansAutoMode(!clusteringState.autoKMeans);
         const message = clusteringState.autoKMeans
-          ? "Auto k-means enabled (silhouette score)."
-          : "Auto k-means disabled.";
+          ? getMessage("CLUSTERING_AUTO_KMEANS_ON", {}, "Auto k-means enabled (silhouette score).")
+          : getMessage("CLUSTERING_AUTO_KMEANS_OFF", {}, "Auto k-means disabled.");
         showMessage(clusteringFeedback, message);
       });
     }
@@ -769,8 +802,8 @@
         }
         setHdbscanAutoMode(!clusteringState.autoHdbscan);
         const message = clusteringState.autoHdbscan
-          ? "Auto HDBSCAN enabled; parameters locked."
-          : "Auto mode disabled.";
+          ? getMessage("CLUSTERING_AUTO_HDBSCAN_ON", {}, "Auto HDBSCAN enabled; parameters locked.")
+          : getMessage("CLUSTERING_AUTO_HDBSCAN_OFF", {}, "Auto mode disabled.");
         showMessage(clusteringFeedback, message);
       });
     }

@@ -18,10 +18,21 @@ STUDENTS_REPORT_FILENAME = config.STUDENTS_REPORT_FILENAME
 
 
 def _students_report_path(dataset_name: str) -> Path:
+    """
+    @brief Compute the path to the students outliers report for a dataset.
+    @param dataset_name Dataset name.
+    @return Filesystem path to the report.
+    """
     return dataset_path(dataset_name) / REPORTS_SUBDIR / STUDENTS_REPORT_FILENAME
 
 
 def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tuple[Path, int, bool]:
+    """
+    @brief Render the students outliers markdown report to disk.
+    @param dataset_name Dataset name.
+    @param outliers Outliers payload previously computed.
+    @return Tuple of (report_path, highlighted_metrics_count, has_combined_findings).
+    """
     buckets = outliers.get("buckets") or []
     if not isinstance(buckets, list):
         buckets = []
@@ -69,6 +80,7 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
 
     highlighted_metrics = 0
     for bucket in buckets:
+        # Buckets represent one metric with its outlier groups.
         groups = bucket.get("groups") or {}
         above_fence = groups.get("aboveFence") or []
         above_q3 = groups.get("aboveQ3") or []
@@ -123,6 +135,7 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
         metrics_data = file_entry.get("metrics") or {}
         if not isinstance(metrics_data, dict):
             continue
+        # Aggregate repeated signals so the report can highlight stronger patterns.
         duplication_high = any(
             _is_high_metric(entry)
             for key, entry in metrics_data.items()
@@ -150,6 +163,11 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
         )
 
         filename = file_entry.get("filename") or file_entry.get("path") or "Unknown file"
+
+        if duplication_high and ncss_high:
+            combined_findings.append(
+                f"- Heavy duplication in a large file: `{filename}` — high NCSS with duplicated blocks suggests weak structure."
+            )
 
         if duplication_high and (functions_low or ncss_high):
             reasons = []
@@ -255,6 +273,7 @@ async def download_report(dataset: str | None = None):
     dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=True)
     ensure_dataset_ready(dataset_name)
 
+    # Always regenerate to keep descriptions and findings fresh before download.
     try:
         outliers = load_students_outliers(dataset_name)
     except RuntimeError as exc:

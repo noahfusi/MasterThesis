@@ -1,18 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="placeholder">
-  <h1>File analysis</h1>
-  <p class="current-dataset-hint">
-    {% if current_dataset %}
-    Current dataset:&nbsp;<strong>{{ current_dataset }}</strong>
-    {% else %}
-    No dataset selected.
-    {% endif %}
-  </p>
-  <p>
-    Present detailed insights for a specific file: column overviews, value distributions,
-    or quality checks.
-  </p>
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/file_analysis.css') }}" />
+<script defer src="{{ url_for('static', path='js/file_analysis.js') }}"></script>
+{% endblock %}
+
+<section class="file-analysis">
+  <header class="file-analysis-header">
+    <div>
+      <p class="eyebrow">Dataset</p>
+      <h1>File feedback</h1>
+      <p class="current-dataset-hint">
+        {% if current_dataset %}
+        Current dataset:&nbsp;<strong>{{ current_dataset }}</strong>
+        {% else %}
+        No dataset selected.
+        {% endif %}
+      </p>
+    </div>
+    <div class="file-analysis-actions">
+      <button id="generate-dataset-feedback" type="button" class="primary">Generate feedback for dataset</button>
+      <p id="file-analysis-feedback" class="feedback"></p>
+    </div>
+  </header>
+
+  <div class="file-analysis-body">
+    <div class="file-list" id="file-analysis-list" aria-label="Files in dataset"></div>
+  </div>
 </section>
 {% endblock %}

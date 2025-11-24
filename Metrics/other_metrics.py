@@ -21,14 +21,29 @@ REQUIRED_COLUMNS = set(config.CLUSTERING_METRIC_KEYS)
 
 
 def metrics_csv_path(dataset: str) -> Path:
+    """
+    @brief Return the CSV path storing derived metrics for a dataset.
+    @param dataset Dataset name.
+    @return Filesystem path to the metrics CSV.
+    """
     return dataset_path(dataset) / METRICS_FILENAME
 
 
 def reference_metrics_path(dataset: str) -> Path:
+    """
+    @brief Return the JSON path storing reference metrics for a dataset.
+    @param dataset Dataset name.
+    @return Filesystem path to the reference metrics JSON.
+    """
     return dataset_path(dataset) / REFERENCE_METRICS_FILENAME
 
 
 def _load_metrics_csv(dataset: str) -> tuple[list[str], list[dict[str, object]]]:
+    """
+    @brief Load the metrics CSV (generating it on demand when missing/invalid).
+    @param dataset Dataset name.
+    @return Tuple of fieldnames and row dicts.
+    """
     path = metrics_csv_path(dataset)
 
     def _read_rows() -> tuple[list[str], list[dict[str, object]]]:
@@ -56,12 +71,23 @@ def _load_metrics_csv(dataset: str) -> tuple[list[str], list[dict[str, object]]]
 
 
 def extract_file_metrics(dataset: str, summary_text: str) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    """
+    @brief Merge base Lizard summary metrics with locally computed ones.
+    @param dataset Dataset name.
+    @param summary_text Raw Lizard summary XML content.
+    @return Tuple of metric definitions and enriched per-file metrics.
+    """
     metric_defs, files = parse_summary_metrics(summary_text)
     merge_other_metrics(dataset, metric_defs, files)
     return metric_defs, files
 
 
 def _normalize_path(value: str | None) -> str | None:
+    """
+    @brief Normalize a reported path to a raw-relative path when possible.
+    @param value Raw path string from reports/CSV.
+    @return Normalized path or None.
+    """
     if not value:
         return None
     normalized = value.replace("\\", "/")
@@ -73,6 +99,12 @@ def _normalize_path(value: str | None) -> str | None:
 
 
 def merge_other_metrics(dataset: str, metric_definitions: list[dict[str, object]], files: list[dict[str, object]]) -> None:
+    """
+    @brief Enrich summary metrics with derived metrics from CSV (nesting, duplication, ratios).
+    @param dataset Dataset name.
+    @param metric_definitions Base metric definitions list to extend.
+    @param files File metric entries to mutate with additional metrics.
+    """
     fieldnames, data = _load_metrics_csv(dataset)
     if not fieldnames or not data:
         return
@@ -123,7 +155,11 @@ def merge_other_metrics(dataset: str, metric_definitions: list[dict[str, object]
 
 
 def load_metrics_entries(dataset: str) -> list[dict[str, object]]:
-    """Return clustering-ready entries sourced from the dataset metrics CSV."""
+    """
+    @brief Return clustering-ready entries sourced from the dataset metrics CSV.
+    @param dataset Dataset name.
+    @return List of entries with normalized paths and metrics.
+    """
 
     fieldnames, rows = _load_metrics_csv(dataset)
     if not fieldnames or not rows:
@@ -153,6 +189,11 @@ def load_metrics_entries(dataset: str) -> list[dict[str, object]]:
 
 
 def generate_other_metrics(dataset: str) -> str:
+    """
+    @brief Generate derived metrics CSV for a dataset using Lizard outputs and source code.
+    @param dataset Dataset name.
+    @return Status text describing generation outcome.
+    """
     summary_path = dataset_summary_path(dataset)
     path = metrics_csv_path(dataset)
     if not summary_path.exists():
@@ -267,6 +308,11 @@ def generate_other_metrics(dataset: str) -> str:
 
 
 def load_reference_metrics(dataset: str) -> dict[str, object] | None:
+    """
+    @brief Load stored reference metrics for a dataset.
+    @param dataset Dataset name.
+    @return Metrics payload or None when unavailable/invalid.
+    """
     path = reference_metrics_path(dataset)
     if not path.exists():
         return None
@@ -277,6 +323,12 @@ def load_reference_metrics(dataset: str) -> dict[str, object] | None:
 
 
 def store_reference_metrics(dataset: str, filename: str, metrics: dict[str, object]) -> None:
+    """
+    @brief Persist reference metrics to disk.
+    @param dataset Dataset name.
+    @param filename Reference filename analyzed.
+    @param metrics Metrics payload to store.
+    """
     payload = {"filename": filename, "metrics": metrics}
     path = reference_metrics_path(dataset)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -284,6 +336,14 @@ def store_reference_metrics(dataset: str, filename: str, metrics: dict[str, obje
 
 
 def build_reference_metrics(dataset: str, filename: str, lizard_output: str, code_text: str | None) -> dict[str, object]:
+    """
+    @brief Build and store reference metrics combining Lizard output and nesting depth.
+    @param dataset Dataset name.
+    @param filename Reference filename analyzed.
+    @param lizard_output Raw Lizard XML output.
+    @param code_text Optional source code content for nesting computation.
+    @return Metrics payload stored to disk.
+    """
     metrics = parse_reference_metrics(lizard_output)
     if code_text:
         nesting = compute_max_nesting_depth(code_text)
@@ -294,6 +354,11 @@ def build_reference_metrics(dataset: str, filename: str, lizard_output: str, cod
 
 
 def _safe_float(value: str | None) -> float | None:
+    """
+    @brief Safely parse a string to float.
+    @param value Raw string value.
+    @return Parsed float or None when invalid.
+    """
     if value is None:
         return None
     text = value.strip()
@@ -307,6 +372,11 @@ def _safe_float(value: str | None) -> float | None:
 
 
 def _parse_lizard_file_metrics(report: str) -> dict[str, float]:
+    """
+    @brief Parse file-level metrics from a single Lizard XML report.
+    @param report Raw XML text.
+    @return Mapping of metric labels to numeric values.
+    """
     report = sanitize_summary_xml(report)
     try:
         root = ET.fromstring(report)
@@ -346,6 +416,11 @@ def _parse_lizard_file_metrics(report: str) -> dict[str, float]:
 
 
 def _extract_function_averages(root: ET.Element) -> dict[str, float]:
+    """
+    @brief Extract function-level average metrics from a Lizard XML root.
+    @param root Parsed XML root element.
+    @return Mapping of averages keyed by label.
+    """
     measure = root.find(".//measure[@type='Function']")
     if measure is None:
         return {}

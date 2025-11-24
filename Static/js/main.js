@@ -9,11 +9,16 @@ App.API_ROUTES = {
   globalMetrics: "/metrics/global",
   studentsOutliers: "/metrics/students",
   thresholdDescriptions: "/metrics/threshold-descriptions",
+  messages: "/meta/messages",
   clustering: "/clustering/run",
   clusteringLast: "/clustering/last",
   generateReport: "/reports/generate-report",
   downloadReport: (dataset) => `/reports/download-report${dataset ? `?dataset=${encodeURIComponent(dataset)}` : ""}`,
   datasetStatus: (name) => `/datasets/${encodeURIComponent(name)}/status`,
+  feedbackFile: "/feedback/file",
+  feedbackDataset: "/feedback/dataset",
+  feedbackList: "/feedback/files",
+  feedbackRead: "/feedback/file",
 };
 
 const DEFAULT_LIZARD_SUMMARY = "lizard_dataset.xml";
@@ -113,6 +118,8 @@ function computeQuartiles(values = []) {
 
 let thresholdDescriptionsCache = null;
 let thresholdDescriptionsPromise = null;
+let messagesPromise = null;
+App.messages = App.messages || {};
 
 async function getThresholdDescriptions() {
   if (thresholdDescriptionsCache) return thresholdDescriptionsCache;
@@ -151,7 +158,29 @@ function describeThreshold(metricKey, bucketKey) {
   return (descriptions[category] && descriptions[category][bucket]) || (descriptions.generic && descriptions.generic[bucket]) || "";
 }
 
+function loadMessages() {
+  if (messagesPromise) return messagesPromise;
+  messagesPromise = (async () => {
+    try {
+      const payload = await requestJSON(App.API_ROUTES.messages);
+      App.messages = payload.messages || {};
+    } catch (err) {
+      App.messages = App.messages || {};
+    }
+    return App.messages;
+  })();
+  return messagesPromise;
+}
+
+function getMessage(key, params = undefined, fallback = "") {
+  const catalog = App.messages || {};
+  const template = (key && catalog[key]) || fallback || key || "";
+  if (!params) return template;
+  return Object.keys(params).reduce((text, paramKey) => text.replace(new RegExp(`{${paramKey}}`, "g"), params[paramKey]), template);
+}
+
 void getThresholdDescriptions();
+void loadMessages();
 
 function getClusterColor(cluster) {
   if (!Number.isFinite(cluster) || cluster < 0) {
@@ -486,6 +515,8 @@ App.utils = {
   computeStandardDeviation,
   computeQuartiles,
   describeThreshold,
+  getMessage,
+  loadMessages,
   getClusterColor,
   getClusterLabel,
   openFileInExplorer,

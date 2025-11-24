@@ -1,7 +1,7 @@
 (function () {
   const app = window.App || {};
   const { API_ROUTES, utils = {}, onReady = (fn) => fn() } = app;
-  const { requestJSON, showMessage, formatMetricValue } = utils;
+  const { requestJSON, showMessage, formatMetricValue, getMessage } = utils;
 
   const datasetSelect = document.getElementById("current-dataset-select");
   const studentsPanel = document.getElementById("students-page");
@@ -45,7 +45,7 @@
     if (!metrics.length) {
       const placeholder = document.createElement("option");
       placeholder.value = "";
-      placeholder.textContent = "No metrics";
+      placeholder.textContent = getMessage("STUDENTS_NO_METRICS", {}, "No metrics");
       studentsMetricSelect.appendChild(placeholder);
       studentsMetricSelect.disabled = true;
       return;
@@ -73,10 +73,10 @@
     const meta = card.querySelector(".students-metric-meta");
     if (title) title.textContent = bucket.label || bucket.key;
     if (meta) {
-      const medianPart = Number.isFinite(bucket.median) ? ` • Median: ${formatMetricValue(bucket.median)}` : "";
+      const medianPart = Number.isFinite(bucket.median) ? ` • ${getMessage("LABEL_MEDIAN", {}, "Median")}: ${formatMetricValue(bucket.median)}` : "";
       const fencesPart =
         Number.isFinite(bucket.lowerFence) && Number.isFinite(bucket.upperFence)
-          ? ` • Fences: ${formatMetricValue(bucket.lowerFence)} / ${formatMetricValue(bucket.upperFence)}`
+          ? ` • ${getMessage("LABEL_FENCES", {}, "Fences")}: ${formatMetricValue(bucket.lowerFence)} / ${formatMetricValue(bucket.upperFence)}`
           : "";
       meta.textContent = `Q1: ${formatMetricValue(bucket.q1)} • Q3: ${formatMetricValue(bucket.q3)}${medianPart}${fencesPart}`;
     }
@@ -96,7 +96,7 @@
       const items = (bucket.groups && bucket.groups[groupKey]) || [];
       if (!items.length) {
         const empty = document.createElement("li");
-        empty.textContent = "No files";
+        empty.textContent = getMessage("STUDENTS_NO_FILES", {}, "No files");
         list.appendChild(empty);
         return;
       }
@@ -123,7 +123,7 @@
     if (!metricBuckets.length) {
       const empty = document.createElement("p");
       empty.className = "students-empty";
-      empty.textContent = "No files outside the Q1-Q3 range.";
+      empty.textContent = getMessage("STUDENTS_NO_OUTLIERS", {}, "No files outside the Q1-Q3 range.");
       studentsGrid.appendChild(empty);
       return;
     }
@@ -189,13 +189,13 @@
   async function generateAndDownloadReport() {
     const datasetName = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
     if (!datasetName) {
-      showMessage(reportFeedback, "Select a dataset to generate a report.", true);
+      showMessage(reportFeedback, getMessage("STUDENTS_SELECT_DATASET", {}, "Select a dataset to generate a report."), true);
       return;
     }
     if (reportButton) {
       reportButton.disabled = true;
     }
-    showMessage(reportFeedback, "Generating report...");
+    showMessage(reportFeedback, getMessage("REPORT_GENERATING", {}, "Generating report..."));
     try {
       await requestJSON(API_ROUTES.generateReport, {
         method: "POST",
@@ -203,7 +203,7 @@
         body: JSON.stringify({ dataset: datasetName }),
       });
       await downloadReport(datasetName);
-      showMessage(reportFeedback, "Report generated and downloaded.");
+      showMessage(reportFeedback, getMessage("REPORT_READY", {}, "Report generated and downloaded."));
     } catch (error) {
       showMessage(reportFeedback, error.message, true);
     } finally {
@@ -225,10 +225,10 @@
       studentsState.cards = [];
       updateStudentsMetricSelect([], null);
       renderStudentsBuckets([]);
-      showMessage(studentsFeedback, "Select a dataset to display outliers.", true);
+      showMessage(studentsFeedback, getMessage("STUDENTS_SELECT_DATASET", {}, "Select a dataset to display outliers."), true);
       return;
     }
-    showMessage(studentsFeedback, "Loading precomputed metrics...");
+    showMessage(studentsFeedback, getMessage("STUDENTS_LOADING", {}, "Loading precomputed metrics..."));
     try {
       const params = new URLSearchParams({ dataset: datasetName });
       const data = await requestJSON(`${API_ROUTES.studentsOutliers}?${params.toString()}`);
@@ -247,8 +247,12 @@
       showMessage(
         studentsFeedback,
         targetCount
-          ? `Showing outliers for ${targetCount} card${targetCount > 1 ? "s" : ""}.`
-          : "No files outside the Q1-Q3 range.",
+          ? getMessage(
+              "STUDENTS_OUTLIERS_COUNT",
+              { count: targetCount, plural: targetCount > 1 ? "s" : "" },
+              `Showing outliers for ${targetCount} card${targetCount > 1 ? "s" : ""}.`,
+            )
+          : getMessage("STUDENTS_NO_OUTLIERS", {}, "No files outside the Q1-Q3 range."),
         targetCount === 0,
       );
     } catch (error) {
@@ -274,8 +278,12 @@
         showMessage(
           studentsFeedback,
           visibleCount
-            ? `Showing outliers for ${visibleCount} card${visibleCount > 1 ? "s" : ""}.`
-            : "No cards for this metric.",
+            ? getMessage(
+                "STUDENTS_OUTLIERS_COUNT",
+                { count: visibleCount, plural: visibleCount > 1 ? "s" : "" },
+                `Showing outliers for ${visibleCount} card${visibleCount > 1 ? "s" : ""}.`,
+              )
+            : getMessage("STUDENTS_NO_CARDS", {}, "No cards for this metric."),
           !visibleCount,
         );
       });

@@ -14,10 +14,20 @@ STUDENTS_OUTLIERS_FILENAME = config.STUDENTS_OUTLIERS_FILENAME
 
 
 def students_outliers_path(dataset: str) -> Path:
+    """
+    @brief Return the path to the students outliers JSON for a dataset.
+    @param dataset Dataset name.
+    @return Filesystem path to the outliers file.
+    """
     return dataset_path(dataset) / STUDENTS_OUTLIERS_FILENAME
 
 
 def _coerce_number(value: object) -> float | None:
+    """
+    @brief Convert a value to a finite float when possible.
+    @param value Candidate numeric value.
+    @return Finite float or None.
+    """
     try:
         number = float(value)  # type: ignore[arg-type]
     except (TypeError, ValueError):
@@ -28,6 +38,12 @@ def _coerce_number(value: object) -> float | None:
 
 
 def _percentile(sorted_values: list[float], percentile: float) -> float | None:
+    """
+    @brief Compute a percentile on a pre-sorted list.
+    @param sorted_values Sorted numeric values.
+    @param percentile Fraction between 0 and 1.
+    @return Approximated percentile value or None.
+    """
     if not sorted_values:
         return None
     pos = (len(sorted_values) - 1) * percentile
@@ -39,6 +55,11 @@ def _percentile(sorted_values: list[float], percentile: float) -> float | None:
 
 
 def _compute_quartiles(values: Iterable[float]) -> tuple[float | None, float | None, float | None]:
+    """
+    @brief Compute Q1/median/Q3 for an iterable of numbers.
+    @param values Iterable of raw numeric-like values.
+    @return Tuple (q1, median, q3) or Nones when unavailable.
+    """
     filtered = []
     for value in values:
         number = _coerce_number(value)
@@ -54,6 +75,11 @@ def _compute_quartiles(values: Iterable[float]) -> tuple[float | None, float | N
 
 
 def _normalize_filename(file_entry: dict[str, object]) -> str:
+    """
+    @brief Normalize filename/path display in outlier entries.
+    @param file_entry File entry dict.
+    @return Normalized path string.
+    """
     path = file_entry.get("path") or file_entry.get("raw_path") or file_entry.get("filename")
     if isinstance(path, str) and path.strip():
         return path.replace("\\", "/")
@@ -72,6 +98,18 @@ def _flag_file_thresholds(
     below_fence: bool,
     zero: bool = False,
 ) -> None:
+    """
+    @brief Mark a file as crossing a threshold for a given metric.
+    @param file_flags Aggregate flag store mutated in place.
+    @param filename Normalized filename.
+    @param metric_key Metric identifier.
+    @param value Observed value.
+    @param high True when above Q3.
+    @param extra_high True when above Q3 + 1.5*IQR.
+    @param below_q1 True when below Q1.
+    @param below_fence True when below Q1 - 1.5*IQR.
+    @param zero True when value is exactly zero (functions metric).
+    """
     record = file_flags.setdefault(filename, {"filename": filename, "metrics": {}, "flags": {}})
     metric_record = record["metrics"].setdefault(
         metric_key,
@@ -101,6 +139,13 @@ def _flag_file_thresholds(
 def _build_metric_bucket(
     metric: dict[str, object], files: list[dict[str, object]], file_flags: dict[str, dict[str, object]]
 ) -> dict[str, object] | None:
+    """
+    @brief Build a bucket payload describing outliers for one metric.
+    @param metric Metric definition dict.
+    @param files File entries with metrics.
+    @param file_flags Aggregate flags to populate.
+    @return Bucket payload or None when no outliers.
+    """
     key = metric.get("key")
     if not key or not isinstance(key, str):
         return None
@@ -185,6 +230,11 @@ def _build_metric_bucket(
 
 
 def build_students_outliers(dataset: str) -> dict[str, object]:
+    """
+    @brief Compute and persist outlier analysis for a dataset.
+    @param dataset Dataset name.
+    @return Outliers payload written to disk.
+    """
     summary_path = dataset_summary_path(dataset)
     if not summary_path.exists():
         raise RuntimeError("Lizard analysis not found.")
@@ -236,6 +286,11 @@ def build_students_outliers(dataset: str) -> dict[str, object]:
 
 
 def load_students_outliers(dataset: str) -> dict[str, object]:
+    """
+    @brief Load or compute outlier analysis for a dataset.
+    @param dataset Dataset name.
+    @return Outliers payload.
+    """
     path = students_outliers_path(dataset)
     if path.exists():
         try:
@@ -252,6 +307,12 @@ THRESHOLD_DESCRIPTIONS: dict[str, dict[str, str]] = config.THRESHOLD_DESCRIPTION
 
 
 def _describe_threshold(metric_key: str, bucket_key: str) -> str:
+    """
+    @brief Return a human-readable description for a threshold bucket.
+    @param metric_key Metric identifier.
+    @param bucket_key Bucket key (aboveFence, aboveQ3, belowQ1, belowFence, zero).
+    @return Description string.
+    """
     key = metric_key.lower()
     is_duplication = "duplication" in key
     is_complexity = "ccn" in key or "complex" in key
@@ -275,7 +336,11 @@ def _describe_threshold(metric_key: str, bucket_key: str) -> str:
 
 
 def _apply_threshold_comments(payload: dict[str, object]) -> bool:
-    """Ensure bucket comments reflect the latest threshold descriptions."""
+    """
+    @brief Ensure bucket comments reflect the latest threshold descriptions.
+    @param payload Outliers payload to update in place.
+    @return True when comments were updated.
+    """
     buckets = payload.get("buckets")
     if not isinstance(buckets, list):
         return False

@@ -404,7 +404,7 @@
 
 .cluster-metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
   gap: 0.2rem 0.75rem;
   font-size: 0.85rem;
 }
@@ -439,6 +439,11 @@
   color: #b91c1c;
   font-size: 0.85rem;
   font-weight: 600;
+}
+
+.cluster-warning-note.is-warning {
+  background: #fef9c3;
+  color: #854d0e;
 }
 
 .clustering-summary-noise {

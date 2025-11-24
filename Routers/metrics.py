@@ -21,6 +21,7 @@ def _context(request: Request, page_title: str) -> dict[str, object]:
     @param page_title Title to display on the page.
     @return Context dictionary for template rendering.
     """
+    # Shared nav payload keeps page highlighting consistent across metrics pages.
     return {
         "request": request,
         "page_title": page_title,

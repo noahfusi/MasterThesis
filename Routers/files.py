@@ -61,8 +61,14 @@ PROCESSING_PHASES = config.PROCESSING_PHASES
 
 
 def _process_dataset_pipeline(dataset_name: str) -> None:
+    """
+    @brief Orchestrate the full dataset processing pipeline (lizard, metrics, outliers, structure, embeddings).
+    @param dataset_name Dataset name to process.
+    @note Guarded by a per-dataset lock to avoid concurrent runs.
+    """
     raw_dir = dataset_path(dataset_name) / RAW_FOLDER
     with dataset_lock(dataset_name):
+        # Avoid duplicate work when a ready status already exists (e.g., concurrent requests).
         if is_ready(load_status(dataset_name)):
             return
         try:
@@ -318,11 +324,11 @@ async def dataset_status(dataset_name: str) -> dict[str, object]:
     try:
         sanitized = normalize_dataset_name(dataset_name)
     except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=config.MESSAGES["DATASET_INVALID_NAME"]) from exc
 
     target_dir = dataset_path(sanitized)
     if not target_dir.exists():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dataset not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["DATASET_NOT_FOUND"])
 
     return load_status(sanitized)
 
@@ -341,13 +347,13 @@ async def create_dataset(
     try:
         sanitized_name = normalize_dataset_name(name)
     except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=config.MESSAGES["DATASET_INVALID_NAME"]) from exc
 
     if dataset_exists(sanitized_name):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Dataset already exists.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=config.MESSAGES["DATASET_ALREADY_EXISTS"])
 
     if not file.filename or not file.filename.lower().endswith(".zip"):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="File must be a .zip archive.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=config.MESSAGES["INVALID_ZIP"])
 
     dataset_dir = dataset_path(sanitized_name)
     raw_dir = dataset_dir / RAW_FOLDER
@@ -355,7 +361,7 @@ async def create_dataset(
     try:
         raw_dir.mkdir(parents=True, exist_ok=False)
     except FileExistsError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Dataset already exists.") from exc
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=config.MESSAGES["DATASET_ALREADY_EXISTS"]) from exc
 
     # Extract synchronously, then process in the background
     update_status(
@@ -371,7 +377,7 @@ async def create_dataset(
             _safe_extract(archive, raw_dir)
     except zipfile.BadZipFile as exc:
         shutil.rmtree(dataset_dir, ignore_errors=True)
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid .zip archive.") from exc
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=config.MESSAGES["INVALID_ZIP"]) from exc
     except HTTPException:
         shutil.rmtree(dataset_dir, ignore_errors=True)
         raise
@@ -388,11 +394,12 @@ async def create_dataset(
         except ValueError:
             pass
 
+    # Queue the heavy processing pipeline; if background_tasks is missing, run inline as a fallback.
     update_status(
         sanitized_name,
         state="queued",
         phase="queued",
-        message="Analysis scheduled in background.",
+        message=config.MESSAGES["DATASET_CREATED_PROCESSING"].format(dataset=sanitized_name),
     )
 
     if background_tasks is not None:
@@ -402,7 +409,7 @@ async def create_dataset(
 
     status_payload = load_status(sanitized_name)
     return _dataset_response(
-        message="Dataset created, processing in progress.",
+        message=config.MESSAGES["DATASET_CREATED_PROCESSING"].format(dataset=sanitized_name),
         dataset=sanitized_name,
         extra={"status": status_payload} if status_payload else None,
     )
@@ -416,21 +423,14 @@ async def delete_dataset(dataset_name: str) -> dict[str, object]:
     @return Response containing updated dataset information.
     @throws HTTPException If the dataset is not found or invalid.
     """
-    try:
-        sanitized = normalize_dataset_name(dataset_name)
-    except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
-
-    target_dir = dataset_path(sanitized)
-    if not target_dir.exists():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dataset not found.")
+    sanitized, target_dir = resolve_dataset_or_http_error(dataset_name, require_raw=False)
 
     shutil.rmtree(target_dir)
 
     if get_current_dataset() == sanitized:
         set_current_dataset(None)
 
-    return _dataset_response(message="Dataset deleted", dataset=sanitized)
+    return _dataset_response(message=config.MESSAGES["DATASET_DELETED"].format(dataset=sanitized), dataset=sanitized)
 
 
 @router.get("/files", name="list-files")
@@ -545,11 +545,11 @@ async def upload_reference_file(dataset_name: str, file: UploadFile = File(...))
     try:
         sanitized = normalize_dataset_name(dataset_name)
     except ValueError as exc:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=config.MESSAGES["DATASET_INVALID_NAME"]) from exc
 
     dataset_dir = dataset_path(sanitized)
     if not dataset_dir.exists():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dataset not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["DATASET_NOT_FOUND"])
     if not file.filename:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
 
@@ -593,7 +593,7 @@ async def upload_requirements_file(dataset_name: str, file: UploadFile = File(..
 
     dataset_dir = dataset_path(sanitized)
     if not dataset_dir.exists():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Dataset not found.")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["DATASET_NOT_FOUND"])
     if not file.filename:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
 
