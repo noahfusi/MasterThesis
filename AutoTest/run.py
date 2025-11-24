@@ -3,23 +3,29 @@ import subprocess
 import json
 import re
 import shutil
+import sys
 import time
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+import config
 
 # -------------------------------------------------
 # CONFIG
 # -------------------------------------------------
 
-# On derive les chemins par rapport au dossier de ce script pour éviter
-# les erreurs lorsque le script est lancé depuis un autre répertoire.
-BASE_DIR     = os.path.dirname(os.path.abspath(__file__))
-STUDENT_FILE = os.path.join(BASE_DIR, "Main.scala")   # fichier scala du student
-TEST_FILE    = os.path.join(BASE_DIR, "tests.json")     # fichier JSON avec scénarios
-OUTPUT_DIR   = os.path.join(BASE_DIR, "work")                 # dossier de compilation
-SCALA_BIN    = "scala"
-SCALAC_BIN   = "scalac"
+BASE_DIR = config.AUTOTEST_BASE_DIR
+STUDENT_FILE = config.AUTOTEST_STUDENT_FILE  # fichier scala du student
+TEST_FILE = config.AUTOTEST_TEST_FILE  # fichier JSON avec scénarios
+OUTPUT_DIR = config.AUTOTEST_OUTPUT_DIR  # dossier de compilation
+SCALA_BIN = config.AUTOTEST_SCALA_BIN
+SCALAC_BIN = config.AUTOTEST_SCALAC_BIN
 
-DEFAULT_COMMAND_DELAY = 0.5   # délai par défaut entre les inputs
-DEFAULT_SCENARIO_TIMEOUT = 15
+DEFAULT_COMMAND_DELAY = config.AUTOTEST_DEFAULT_COMMAND_DELAY  # délai par défaut entre les inputs
+DEFAULT_SCENARIO_TIMEOUT = config.AUTOTEST_DEFAULT_SCENARIO_TIMEOUT
 
 # -------------------------------------------------
 # UTILS

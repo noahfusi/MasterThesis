@@ -15,12 +15,13 @@ from pathlib import Path
 import re
 from typing import Iterable
 
+import config
 from Files.dataset_manager import dataset_path, list_datasets, normalize_dataset_name
 
-RAW_FOLDER = "raw"
-LIZARD_FOLDER = "lizard"
-SHOW_LIZARD_OUTPUT = False
-MIN_DUPLICATE_LINES = 30
+RAW_FOLDER = config.RAW_FOLDER_NAME
+LIZARD_FOLDER = config.LIZARD_FOLDER_NAME
+SHOW_LIZARD_OUTPUT = config.LIZARD_SHOW_OUTPUT
+MIN_DUPLICATE_LINES = config.LIZARD_MIN_DUPLICATE_LINES
 
 
 def _available_datasets() -> list[str]:
@@ -262,7 +263,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--dataset", help="Name of the dataset to analyze.")
     group.add_argument("--all", action="store_true", help="Analyze every available dataset.")
-    parser.add_argument("--lizard-bin", default="lizard", help="Path to the Lizard executable (default: lizard)")
+    parser.add_argument(
+        "--lizard-bin",
+        default=config.DEFAULT_LIZARD_BIN,
+        help=f"Path to the Lizard executable (default: {config.DEFAULT_LIZARD_BIN})",
+    )
     return parser.parse_args(argv)
 
 

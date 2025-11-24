@@ -5,7 +5,8 @@
     requestJSON,
     showMessage,
     formatMetricValue,
-    computeStandardDeviation,
+    computeQuartiles,
+    describeThreshold,
     getClusterColor,
     getClusterLabel,
   } = utils;
@@ -151,7 +152,7 @@
     if (clusteringKMeansAutoButton) {
       clusteringKMeansAutoButton.classList.toggle("active", clusteringState.autoKMeans);
       clusteringKMeansAutoButton.textContent = clusteringState.autoKMeans
-        ? "Auto k-means activé"
+        ? "Auto k-means enabled"
         : "Auto k-means (silhouette)";
     }
     if (clusteringClusterSlider) {
@@ -207,7 +208,7 @@
     if (clusteringAutoButton) {
       clusteringAutoButton.classList.toggle("active", clusteringState.autoHdbscan);
       clusteringAutoButton.textContent = clusteringState.autoHdbscan
-        ? "Auto HDBSCAN activé"
+        ? "Auto HDBSCAN enabled"
         : "Auto-tune HDBSCAN";
     }
     if (clusteringMinClusterSizeInput) {
@@ -338,14 +339,31 @@
       return;
     }
     const values = points.map((point) => point.y);
-    const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
-    const stddev = computeStandardDeviation(values, mean);
-    const hasAverage = Number.isFinite(mean);
-    const stddevValid = Number.isFinite(stddev) && stddev > 0;
-    const upperThreshold = hasAverage && stddevValid ? mean + stddev * 2 : hasAverage ? mean : null;
-    const lowerThreshold = hasAverage && stddevValid ? mean - stddev * 2 : hasAverage ? mean : null;
-    const upperBand = hasAverage && stddevValid ? mean + stddev : hasAverage ? mean : null;
-    const lowerBand = hasAverage && stddevValid ? mean - stddev : hasAverage ? mean : null;
+    const { q1, q3, median } = computeQuartiles(values);
+    const hasQ1 = Number.isFinite(q1);
+    const hasQ3 = Number.isFinite(q3);
+    const iqr = hasQ1 && hasQ3 ? q3 - q1 : null;
+    const hasIqr = Number.isFinite(iqr) && iqr > 0;
+    const lowerFence = hasIqr ? q1 - iqr * 1.5 : null;
+    const upperFence = hasIqr ? q3 + iqr * 1.5 : null;
+    const pointStatuses = points.map((point) => {
+      if (Number.isFinite(upperFence) && point.y > upperFence) return "Above Q3 + 1.5×IQR";
+      if (hasQ3 && point.y > q3) return "Above Q3";
+      if (Number.isFinite(lowerFence) && point.y < lowerFence) return "Below Q1 - 1.5×IQR";
+      if (hasQ1 && point.y < q1) return "Below Q1";
+      return "Within IQR";
+    });
+    const statusToBucketKey = {
+      "Above Q3 + 1.5×IQR": "aboveFence",
+      "Above Q3": "aboveQ3",
+      "Below Q1 - 1.5×IQR": "belowFence",
+      "Below Q1": "belowQ1",
+    };
+    const statusComments = pointStatuses.map((status) => {
+      const bucketKey = statusToBucketKey[status] || null;
+      if (!bucketKey) return "Within the dataset's interquartile range.";
+      return describeThreshold(metricKey, bucketKey) || "Within the dataset's interquartile range.";
+    });
 
     const colors = points.map((point) => getClusterColor(point.cluster));
     const trace = {
@@ -359,64 +377,69 @@
         color: colors,
         line: { width: 1, color: colors.map((color) => color) },
       },
-      customdata: points.map((point) => [point.filename, getClusterLabel(point.cluster)]),
-      hovertemplate: `<b>%{customdata[0]}</b><br>${metricKey}: %{y}<br>%{customdata[1]}<extra></extra>`,
+      customdata: points.map((point, index) => [
+        point.filename,
+        getClusterLabel(point.cluster),
+        pointStatuses[index],
+        statusComments[index],
+      ]),
+      hovertemplate: `<b>%{customdata[0]}</b><br>${metricKey}: %{y}<br>%{customdata[1]}<br>Status: %{customdata[2]}<br>%{customdata[3]}<extra></extra>`,
     };
 
     const shapes = [];
-    if (hasAverage) {
+    if (Number.isFinite(q1)) {
       shapes.push({
         type: "line",
         xref: "paper",
         x0: 0,
         x1: 1,
-        y0: mean,
-        y1: mean,
-        line: { color: "#94a3b8", dash: "dot", width: 2 },
+        y0: q1,
+        y1: q1,
+        line: { color: "#0ea5e9", dash: "dot", width: 1.5 },
       });
     }
-    if (Number.isFinite(upperThreshold) && upperThreshold !== mean) {
+    if (Number.isFinite(q3)) {
       shapes.push({
         type: "line",
         xref: "paper",
         x0: 0,
         x1: 1,
-        y0: upperThreshold,
-        y1: upperThreshold,
-        line: { color: "#dc2626", dash: "dash", width: 1.5 },
+        y0: q3,
+        y1: q3,
+        line: { color: "#0ea5e9", dash: "dot", width: 1.5 },
       });
     }
-    if (Number.isFinite(lowerThreshold) && lowerThreshold !== mean && lowerThreshold !== upperThreshold) {
+    if (Number.isFinite(lowerFence)) {
       shapes.push({
         type: "line",
         xref: "paper",
         x0: 0,
         x1: 1,
-        y0: lowerThreshold,
-        y1: lowerThreshold,
-        line: { color: "#1d4ed8", dash: "dash", width: 1.5 },
+        y0: lowerFence,
+        y1: lowerFence,
+        line: { color: "#1e3a8a", dash: "dash", width: 2 },
       });
     }
-    if (Number.isFinite(upperBand) && upperBand !== mean) {
+    if (Number.isFinite(upperFence)) {
       shapes.push({
         type: "line",
         xref: "paper",
         x0: 0,
         x1: 1,
-        y0: upperBand,
-        y1: upperBand,
-        line: { color: "#fb923c", dash: "dot", width: 1 },
+        y0: upperFence,
+        y1: upperFence,
+        line: { color: "#b91c1c", dash: "dash", width: 2 },
       });
     }
-    if (Number.isFinite(lowerBand) && lowerBand !== mean && lowerBand !== upperBand) {
+    if (Number.isFinite(median)) {
       shapes.push({
         type: "line",
         xref: "paper",
         x0: 0,
         x1: 1,
-        y0: lowerBand,
-        y1: lowerBand,
-        line: { color: "#60a5fa", dash: "dot", width: 1 },
+        y0: median,
+        y1: median,
+        line: { color: "#94a3b8", dash: "dot", width: 1 },
       });
     }
 
@@ -431,7 +454,7 @@
     Plotly.react(clusteringMetricChart, [trace], layout, { responsive: true, displaylogo: false });
     showMessage(
       clusteringMetricFeedback,
-      `Distribution affichée pour ${metricKey} (${points.length} fichier${points.length > 1 ? "s" : ""}).`,
+      `Showing distribution for ${metricKey} (${points.length} file${points.length > 1 ? "s" : ""}).`,
     );
   }
 
@@ -443,7 +466,7 @@
     const clusters = data && Array.isArray(data.clusters) && data.clusters.length ? data.clusters : null;
     if (!clusters) {
       const empty = document.createElement("p");
-      empty.textContent = "Aucun cluster disponible pour le moment.";
+      empty.textContent = "No clusters available yet.";
       body.appendChild(empty);
     } else {
       const metricStats = computeClusterMetricStats(clusters, data.metrics || []);
@@ -459,8 +482,8 @@
           .join(", ");
         card.innerHTML = `
         <h3>${derived.title || cluster.label || `Cluster ${cluster.id + 1}`}</h3>
-        <p>Taille: ${cluster.size}</p>
-        <p>Centroïde (aperçu): ${centroidPreview || "-"}</p>
+        <p>Size: ${cluster.size}</p>
+        <p>Centroid (preview): ${centroidPreview || "-"}</p>
       `;
         if (derived.reasons && derived.reasons.length) {
           const reasons = document.createElement("ul");
@@ -478,7 +501,7 @@
           metricsContainer.className = "cluster-metrics";
           const metricsTitle = document.createElement("p");
           metricsTitle.className = "cluster-metrics-title";
-          metricsTitle.textContent = "Métriques moyennes";
+          metricsTitle.textContent = "Average metrics";
           metricsContainer.appendChild(metricsTitle);
           const metricList = document.createElement("dl");
           metricList.className = "cluster-metrics-grid";
@@ -514,7 +537,7 @@
     if (data && typeof data.noise === "number" && data.noise > 0) {
       const noise = document.createElement("p");
       noise.className = "clustering-summary-noise";
-      noise.textContent = `${data.noise} fichier(s) marqués comme bruit.`;
+      noise.textContent = `${data.noise} file(s) flagged as noise.`;
       body.appendChild(noise);
     }
     clusteringSummary.appendChild(body);
@@ -554,7 +577,7 @@
     updateClusteringMetricDataset(datasetName);
     updateClusteringMetricOptions(clusteringState.metrics);
     if (!clusteringState.metrics.length) {
-      showMessage(clusteringMetricFeedback, "Lancez un clustering pour afficher la distribution des métriques.");
+      showMessage(clusteringMetricFeedback, "Run a clustering job to display the metric distribution.");
     }
     renderClusteringMetricChart();
 
@@ -619,7 +642,7 @@
         payload.auto_kmeans = true;
       } else {
         if (!clusteringClusterSlider) {
-          showMessage(clusteringFeedback, "Le paramètre k-means est introuvable.", true);
+          showMessage(clusteringFeedback, "k-means parameter not found.", true);
           return;
         }
         payload.cluster_count = Number(clusteringClusterSlider.value);
@@ -631,13 +654,13 @@
       } else {
         sanitizeHdbscanInputs();
         if (!clusteringMinClusterSizeInput || !clusteringMinSamplesInput) {
-          showMessage(clusteringFeedback, "Les paramètres HDBSCAN sont requis.", true);
+          showMessage(clusteringFeedback, "HDBSCAN parameters are required.", true);
           return;
         }
         const minClusterSize = Number(clusteringMinClusterSizeInput.value);
         const minSamples = Number(clusteringMinSamplesInput.value);
         if (!Number.isFinite(minClusterSize) || !Number.isFinite(minSamples)) {
-          showMessage(clusteringFeedback, "Valeurs HDBSCAN invalides.", true);
+          showMessage(clusteringFeedback, "Invalid HDBSCAN values.", true);
           return;
         }
         payload.min_cluster_size = minClusterSize;
@@ -648,10 +671,10 @@
     showMessage(
       clusteringFeedback,
       isAutoHdbscan
-        ? "Recherche automatique des paramètres HDBSCAN..."
+        ? "Auto-searching HDBSCAN parameters..."
         : isAutoKMeans
-          ? "Recherche automatique du meilleur k..."
-          : "Clustering en cours...",
+          ? "Auto-searching best k..."
+          : "Running clustering...",
     );
     clusteringLaunchButton.disabled = true;
     try {
@@ -665,7 +688,7 @@
       const paramsDetail = formatClusteringParameters(result.algorithm, result.parameters);
       showMessage(
         clusteringFeedback,
-        `Clustering ${result.algorithm} terminé${paramsDetail} (${pointCount} fichier${
+        `Clustering ${result.algorithm} completed${paramsDetail} (${pointCount} file${
           pointCount > 1 ? "s" : ""
         }).`,
       );
@@ -689,7 +712,7 @@
       const paramsDetail = formatClusteringParameters(data.algorithm, data.parameters);
       showMessage(
         clusteringFeedback,
-        `Clustering ${data.algorithm || ""} chargé${paramsDetail} (${pointCount} fichier${
+        `Clustering ${data.algorithm || ""} loaded${paramsDetail} (${pointCount} file${
           pointCount > 1 ? "s" : ""
         }).`,
       );
@@ -727,8 +750,8 @@
         }
         setKMeansAutoMode(!clusteringState.autoKMeans);
         const message = clusteringState.autoKMeans
-          ? "Mode automatique k-means activé (silhouette score)."
-          : "Mode automatique k-means désactivé.";
+          ? "Auto k-means enabled (silhouette score)."
+          : "Auto k-means disabled.";
         showMessage(clusteringFeedback, message);
       });
     }
@@ -746,8 +769,8 @@
         }
         setHdbscanAutoMode(!clusteringState.autoHdbscan);
         const message = clusteringState.autoHdbscan
-          ? "Mode automatique HDBSCAN activé, paramètres verrouillés."
-          : "Mode automatique désactivé.";
+          ? "Auto HDBSCAN enabled; parameters locked."
+          : "Auto mode disabled.";
         showMessage(clusteringFeedback, message);
       });
     }

@@ -3,8 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 
-DATASETS_DIR = Path("Datasets")
-DATASETS_DIR.mkdir(parents=True, exist_ok=True)
+import config
+
+config.DATASETS_DIR.mkdir(parents=True, exist_ok=True)
 
 _current_dataset: Optional[str] = None
 
@@ -21,7 +22,7 @@ def normalize_dataset_name(name: str) -> str:
 def dataset_path(name: str) -> Path:
     """Return the filesystem path for a dataset without creating it."""
     sanitized = normalize_dataset_name(name)
-    return DATASETS_DIR / sanitized
+    return config.DATASETS_DIR / sanitized
 
 
 def dataset_exists(name: str) -> bool:
@@ -32,7 +33,7 @@ def dataset_exists(name: str) -> bool:
 
 
 def list_datasets() -> list[str]:
-    return sorted(p.name for p in DATASETS_DIR.iterdir() if p.is_dir())
+    return sorted(p.name for p in config.DATASETS_DIR.iterdir() if p.is_dir())
 
 
 def get_current_dataset() -> Optional[str]:

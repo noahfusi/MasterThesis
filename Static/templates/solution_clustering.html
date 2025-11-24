@@ -18,9 +18,8 @@
       <p class="clustering-eyebrow">Exploratory pipeline</p>
       <h1>Solution clustering</h1>
       <p>
-        Regroupez les solutions similaires dans le dataset courant, mettez en évidence les familles d'approche
-        et détectez les candidats nécessitant une revue. Choisissez simplement k-means ou HDBSCAN, ajustez les
-        paramètres puis lancez le regroupement.
+        Group similar solutions in the current dataset, surface approach families, and spot candidates needing
+        a review. Choose k-means or HDBSCAN, tune the parameters, then launch the clustering.
       </p>
     </div>
     <div class="clustering-hero-status">
@@ -35,23 +34,23 @@
         </button>
         <button type="button" class="clustering-secondary" disabled>Schedule run</button>
       </div>
-      <small>Choisissez un algorithme et lancez le regroupement des métriques.</small>
+      <small>Pick an algorithm and launch the clustering run.</small>
     </div>
   </section>
 
   <section class="clustering-config">
     <div class="clustering-config-grid">
       <div class="clustering-controls">
-        <h2>Caractérisation</h2>
+        <h2>Feature selection</h2>
         <form class="clustering-form">
           <div class="clustering-fieldset" id="feature-config">
             <span>Sources</span>
             <label>
-              Mode de données
+              Data mode
               <select id="feature-mode-select" name="feature_mode" {{ clustering_disabled }}>
-                <option value="metrics" selected>Métriques uniquement</option>
-                <option value="embeddings">Embeddings structurels</option>
-                <option value="both">Métriques + Embeddings</option>
+                <option value="metrics" selected>Metrics only</option>
+                <option value="embeddings">Structural embeddings</option>
+                <option value="both">Metrics + Embeddings</option>
               </select>
             </label>
             <div class="clustering-slider" id="embedding-dims-container" hidden>
@@ -83,22 +82,22 @@
           </li>
           <li class="is-waiting">
             <span class="step-label">Execution</span>
-            <span>Prêt</span>
+            <span>Ready</span>
           </li>
         </ol>
         <form class="clustering-form" id="clustering-form">
           <div class="clustering-algorithm-module">
             <label>
-              Algorithme de clustering
+              Clustering algorithm
               <select id="clustering-algorithm" name="algorithm" {{ clustering_disabled }}>
                 <option value="kmeans" selected>k-means</option>
                 <option value="hdbscan">HDBSCAN</option>
               </select>
             </label>
             <div class="clustering-fieldset" id="kmeans-params">
-              <span>Paramètres k-means</span>
+              <span>k-means parameters</span>
               <div class="clustering-slider">
-                <label for="cluster-count">Nombre de clusters désiré</label>
+                <label for="cluster-count">Desired cluster count</label>
                 <input
                   type="range"
                   id="cluster-count"
@@ -114,11 +113,11 @@
                 <button type="button" class="clustering-secondary" id="kmeans-auto-button" {{ clustering_disabled }}>
                   Auto k-means
                 </button>
-                <small>Sélection automatique de k via le silhouette score.</small>
+                <small>Automatically choose k via silhouette score.</small>
               </div>
             </div>
             <div class="clustering-fieldset" id="hdbscan-params" hidden>
-              <span>Paramètres HDBSCAN</span>
+              <span>HDBSCAN parameters</span>
               <div class="clustering-inline-inputs">
                 <label>
                   Min cluster size
@@ -149,7 +148,7 @@
                 <button type="button" class="clustering-secondary" id="hdbscan-auto-button" {{ clustering_disabled }}>
                   Auto-tune HDBSCAN
                 </button>
-                <small>Recherche automatique des hyperparamètres via silhouette score.</small>
+                <small>Auto-search hyperparameters via silhouette score.</small>
               </div>
             </div>
           </div>
@@ -178,19 +177,19 @@
         <div class="clustering-results-header">
           <div>
             <h2>Projection 2D</h2>
-            <p>Affichage Plotly des points normalisés colorés par cluster.</p>
+            <p>Plotly view of normalized points colored by cluster.</p>
           </div>
         </div>
         <p class="feedback" id="clustering-feedback">
-          {% if not current_dataset %}Sélectionnez un dataset pour lancer le clustering.{% endif %}
+          {% if not current_dataset %}Select a dataset to run clustering.{% endif %}
         </p>
         <div id="clustering-chart" class="clustering-chart" aria-label="Clustering projection"></div>
       </div>
       <div class="clustering-metric-card">
         <div class="clustering-results-header">
           <div>
-            <h2>Distribution des métriques</h2>
-            <p>Visualisez les mêmes mesures que dans Global analysis, colorées par cluster.</p>
+            <h2>Metric distribution</h2>
+            <p>View the same measures as Global analysis, colored by cluster.</p>
           </div>
           <div class="clustering-filter">
             <label for="clustering-metric-select">Metric</label>
@@ -204,7 +203,7 @@
           <strong id="clustering-metric-dataset">{{ current_dataset or "None" }}</strong>
         </div>
         <p class="feedback" id="clustering-metric-feedback">
-          {% if not current_dataset %}Lancez un clustering pour activer la visualisation.{% endif %}
+          {% if not current_dataset %}Run a clustering job to enable the visualization.{% endif %}
         </p>
         <div
           id="clustering-metric-chart"
@@ -216,7 +215,7 @@
     <div class="clustering-summary" id="clustering-summary">
       <h2>Clusters</h2>
       <div class="clustering-summary-body">
-        <p>Les statistiques détaillées apparaîtront après l'exécution du clustering.</p>
+        <p>Detailed statistics will appear after the clustering run finishes.</p>
       </div>
     </div>
   </section>

@@ -132,35 +132,35 @@
     const upperFence = hasIqr ? q3 + iqr * 1.5 : null;
     const pointStatuses = points.map((point) => {
       if (Number.isFinite(upperFence) && point.y > upperFence) {
-        return "Au-dessus de Q3 + 1.5×IQR";
+        return "Above Q3 + 1.5×IQR";
       }
       if (hasQ3 && point.y > q3) {
-        return "Au-dessus de Q3";
+        return "Above Q3";
       }
       if (Number.isFinite(lowerFence) && point.y < lowerFence) {
-        return "En dessous de Q1 - 1.5×IQR";
+        return "Below Q1 - 1.5×IQR";
       }
       if (hasQ1 && point.y < q1) {
-        return "En dessous de Q1";
+        return "Below Q1";
       }
-      return "Dans l'IQR";
+      return "Within IQR";
     });
     const statusToBucketKey = {
-      "Au-dessus de Q3 + 1.5×IQR": "aboveFence",
-      "Au-dessus de Q3": "aboveQ3",
-      "En dessous de Q1 - 1.5×IQR": "belowFence",
-      "En dessous de Q1": "belowQ1",
+      "Above Q3 + 1.5×IQR": "aboveFence",
+      "Above Q3": "aboveQ3",
+      "Below Q1 - 1.5×IQR": "belowFence",
+      "Below Q1": "belowQ1",
     };
     const statusComments = pointStatuses.map((status) => {
       const bucketKey = statusToBucketKey[status] || null;
-      if (!bucketKey) return "Dans l'intervalle interquartile du dataset.";
+      if (!bucketKey) return "Within the dataset's interquartile range.";
       return describeThreshold(metricKey, bucketKey);
     });
     const colors = pointStatuses.map((status) => {
-      if (status === "Au-dessus de Q3 + 1.5×IQR") return "#b91c1c";
-      if (status === "Au-dessus de Q3") return "#dc2626";
-      if (status === "En dessous de Q1 - 1.5×IQR") return "#1e3a8a";
-      if (status === "En dessous de Q1") return "#1d4ed8";
+      if (status === "Above Q3 + 1.5×IQR") return "#b91c1c";
+      if (status === "Above Q3") return "#dc2626";
+      if (status === "Below Q1 - 1.5×IQR") return "#1e3a8a";
+      if (status === "Below Q1") return "#1d4ed8";
       return "#22c55e";
     });
     trace.marker = {
@@ -170,10 +170,10 @@
       line: {
         width: 1,
         color: pointStatuses.map((status) => {
-          if (status === "Au-dessus de Q3 + 1.5×IQR") return "#7f1d1d";
-          if (status === "Au-dessus de Q3") return "#991b1b";
-          if (status === "En dessous de Q1 - 1.5×IQR") return "#111827";
-          if (status === "En dessous de Q1") return "#1e40af";
+          if (status === "Above Q3 + 1.5×IQR") return "#7f1d1d";
+          if (status === "Above Q3") return "#991b1b";
+          if (status === "Below Q1 - 1.5×IQR") return "#111827";
+          if (status === "Below Q1") return "#1e40af";
           return "#15803d";
         }),
       },

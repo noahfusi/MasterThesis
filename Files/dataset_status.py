@@ -7,9 +7,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict
 
+import config
 from Files.dataset_manager import dataset_path
 
-STATUS_FILENAME = "status.json"
+STATUS_FILENAME = config.STATUS_FILENAME
 
 _LOCKS: dict[str, threading.Lock] = {}
 _LOCKS_MUTEX = threading.Lock()

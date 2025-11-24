@@ -5,11 +5,12 @@ import math
 from pathlib import Path
 from typing import Iterable
 
+import config
 from Files.dataset_manager import dataset_path
 from Metrics.other_metrics import extract_file_metrics
 from Metrics.utils import dataset_summary_path
 
-STUDENTS_OUTLIERS_FILENAME = "students_outliers.json"
+STUDENTS_OUTLIERS_FILENAME = config.STUDENTS_OUTLIERS_FILENAME
 
 
 def students_outliers_path(dataset: str) -> Path:
@@ -69,20 +70,32 @@ def _flag_file_thresholds(
     extra_high: bool,
     below_q1: bool,
     below_fence: bool,
+    zero: bool = False,
 ) -> None:
     record = file_flags.setdefault(filename, {"filename": filename, "metrics": {}, "flags": {}})
     metric_record = record["metrics"].setdefault(
-        metric_key, {"value": value, "high": False, "extra_high": False, "below_q1": False, "below_fence": False}
+        metric_key,
+        {
+            "value": value,
+            "high": False,
+            "extra_high": False,
+            "below_q1": False,
+            "below_fence": False,
+            "zero": False,
+        },
     )
     metric_record["value"] = value
     metric_record["high"] = bool(metric_record.get("high")) or high or extra_high
     metric_record["extra_high"] = bool(metric_record.get("extra_high")) or extra_high
     metric_record["below_q1"] = bool(metric_record.get("below_q1")) or below_q1 or below_fence
     metric_record["below_fence"] = bool(metric_record.get("below_fence")) or below_fence
+    metric_record["zero"] = bool(metric_record.get("zero")) or zero
 
     flags = record.setdefault("flags", {})
     flags[f"{metric_key} high"] = bool(flags.get(f"{metric_key} high")) or high or extra_high
     flags[f"{metric_key} extra high"] = bool(flags.get(f"{metric_key} extra high")) or extra_high
+    if zero:
+        flags[f"{metric_key} zero"] = True
 
 
 def _build_metric_bucket(
@@ -112,11 +125,11 @@ def _build_metric_bucket(
     upper_fence = q3 + 1.5 * iqr if iqr >= 0 else None
     lower_fence = q1 - 1.5 * iqr if iqr >= 0 else None
 
+    is_functions_metric = "function" in key.lower()
     groups = {"aboveFence": [], "aboveQ3": [], "belowQ1": [], "belowFence": []}
-    comments = {
-        group_key: _describe_threshold(key, group_key)
-        for group_key in ("aboveFence", "aboveQ3", "belowQ1", "belowFence")
-    }
+    if is_functions_metric:
+        groups["zero"] = []
+    comments = {group_key: _describe_threshold(key, group_key) for group_key in groups}
     for entry in per_file_values:
         value = entry["value"]
         filename = entry["filename"]
@@ -125,7 +138,10 @@ def _build_metric_bucket(
         below_q1 = value < q1
         extra_low = lower_fence is not None and value < lower_fence
 
-        if extra_high:
+        zero_flag = is_functions_metric and value == 0
+        if zero_flag:
+            groups["zero"].append(entry)
+        elif extra_high:
             groups["aboveFence"].append(entry)
         elif high:
             groups["aboveQ3"].append(entry)
@@ -143,6 +159,7 @@ def _build_metric_bucket(
             extra_high=extra_high,
             below_q1=below_q1,
             below_fence=extra_low,
+            zero=zero_flag,
         )
 
     if not any(groups.values()):
@@ -222,48 +239,16 @@ def load_students_outliers(dataset: str) -> dict[str, object]:
     path = students_outliers_path(dataset)
     if path.exists():
         try:
-            return json.loads(path.read_text(encoding="utf-8"))
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            if _apply_threshold_comments(payload):
+                path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+            return payload
         except (OSError, json.JSONDecodeError):
             pass
     return build_students_outliers(dataset)
 
 
-THRESHOLD_DESCRIPTIONS: dict[str, dict[str, str]] = {
-    "generic": {
-        "aboveFence": "Valeur très au-dessus du reste du dataset – investiguer en priorité.",
-        "aboveQ3": "Valeur au-dessus de la plupart des fichiers – vérifier nécessité de cette différence.",
-        "belowFence": "Valeur extrêmement basse – peut signaler un fichier incomplet ou atypique.",
-        "belowQ1": "Valeur sous la majorité – confirmer que ce comportement est voulu.",
-    },
-    "duplication": {
-        "aboveFence": "Duplication très élevée – risque fort de copier/coller massif ou fragments générés.",
-        "aboveQ3": "Duplication notable – consolider les sections répétées ou mutualiser les helpers.",
-        "belowFence": "Duplication faible – bon signe, mais vérifier que le fichier n'est pas trop minimal.",
-        "belowQ1": "Duplication faible – bon signe, mais vérifier que le fichier n'est pas trop minimal.",
-    },
-    "complexity": {
-        "aboveFence": "Complexité cyclomatique extrême – prioriser une refonte (fonctions trop ramifiées).",
-        "aboveQ3": "Complexité élevée – envisager de scinder ou simplifier les branches conditionnelles.",
-        "belowFence": "Complexité très basse – peut indiquer un stub ou un code incomplet.",
-        "belowQ1": "Complexité très basse – peut indiquer un stub ou un code incomplet.",
-    },
-    "size": {
-        "aboveFence": "Fichier volumineux – risque de God object; découper en modules plus ciblés.",
-        "aboveQ3": "Taille supérieure à la majorité – vérifier si des responsabilités peuvent être extraites.",
-        "belowFence": "Fichier très court – s'assurer qu'il ne manque pas de logique attendue.",
-        "belowQ1": "Fichier très court – s'assurer qu'il ne manque pas de logique attendue.",
-    },
-    "functions": {
-        "aboveFence": "Beaucoup de fonctions – possible mélange de responsabilités, penser à regrouper par domaine.",
-        "aboveQ3": "Nombre de fonctions au-dessus de la norme – audit rapide pour regrouper ce qui peut l'être.",
-        "belowFence": "Peu de fonctions – fichier peut être trop limité ou encore un squelette.",
-        "belowQ1": "Peu de fonctions – fichier peut être trop limité ou encore un squelette.",
-    },
-    "nesting": {
-        "aboveFence": "Imbrication très profonde – refactoriser en extrayant des fonctions pour réduire la profondeur.",
-        "aboveQ3": "Imbrication élevée – simplifier les branches ou utiliser un early return.",
-    },
-}
+THRESHOLD_DESCRIPTIONS: dict[str, dict[str, str]] = config.THRESHOLD_DESCRIPTIONS
 
 
 def _describe_threshold(metric_key: str, bucket_key: str) -> str:
@@ -287,3 +272,29 @@ def _describe_threshold(metric_key: str, bucket_key: str) -> str:
         return THRESHOLD_DESCRIPTIONS["nesting"].get(bucket, THRESHOLD_DESCRIPTIONS["generic"].get(bucket, ""))
 
     return THRESHOLD_DESCRIPTIONS["generic"].get(bucket, "")
+
+
+def _apply_threshold_comments(payload: dict[str, object]) -> bool:
+    """Ensure bucket comments reflect the latest threshold descriptions."""
+    buckets = payload.get("buckets")
+    if not isinstance(buckets, list):
+        return False
+    changed = False
+    for bucket in buckets:
+        if not isinstance(bucket, dict):
+            continue
+        metric_key = bucket.get("key")
+        if not isinstance(metric_key, str):
+            continue
+        groups = bucket.get("groups") or {}
+        if not isinstance(groups, dict):
+            groups = {}
+        comments: dict[str, str] = {}
+        for group_key in ("aboveFence", "aboveQ3", "belowQ1", "belowFence", "zero"):
+            desc = _describe_threshold(metric_key, group_key)
+            if desc:
+                comments[group_key] = desc
+        if comments and comments != bucket.get("comments"):
+            bucket["comments"] = comments
+            changed = True
+    return changed

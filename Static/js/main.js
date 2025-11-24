@@ -112,21 +112,31 @@ function computeQuartiles(values = []) {
 }
 
 let thresholdDescriptionsCache = null;
+let thresholdDescriptionsPromise = null;
 
 async function getThresholdDescriptions() {
   if (thresholdDescriptionsCache) return thresholdDescriptionsCache;
-  try {
-    const payload = await requestJSON(App.API_ROUTES.thresholdDescriptions);
-    thresholdDescriptionsCache = payload.descriptions || {};
-    return thresholdDescriptionsCache;
-  } catch (error) {
-    thresholdDescriptionsCache = {};
-    return thresholdDescriptionsCache;
+  if (!thresholdDescriptionsPromise) {
+    thresholdDescriptionsPromise = (async () => {
+      try {
+        const payload = await requestJSON(App.API_ROUTES.thresholdDescriptions);
+        thresholdDescriptionsCache = payload.descriptions || {};
+        return thresholdDescriptionsCache;
+      } catch (error) {
+        thresholdDescriptionsCache = {};
+        return thresholdDescriptionsCache;
+      }
+    })();
   }
+  return thresholdDescriptionsPromise;
 }
 
-async function describeThreshold(metricKey, bucketKey) {
-  const descriptions = await getThresholdDescriptions();
+function describeThreshold(metricKey, bucketKey) {
+  if (!thresholdDescriptionsCache) {
+    void getThresholdDescriptions();
+    return "";
+  }
+  const descriptions = thresholdDescriptionsCache;
   const bucket = bucketKey || "";
   if (!descriptions || !metricKey) return "";
   const key = metricKey.toLowerCase();
@@ -140,6 +150,8 @@ async function describeThreshold(metricKey, bucketKey) {
 
   return (descriptions[category] && descriptions[category][bucket]) || (descriptions.generic && descriptions.generic[bucket]) || "";
 }
+
+void getThresholdDescriptions();
 
 function getClusterColor(cluster) {
   if (!Number.isFinite(cluster) || cluster < 0) {

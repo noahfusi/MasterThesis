@@ -1,9 +1,10 @@
+import config
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 
 from Files.dataset_manager import get_current_dataset, list_datasets
 
-templates = Jinja2Templates(directory="Static/templates")
+templates = Jinja2Templates(directory=config.TEMPLATES_DIR)
 
 router = APIRouter()
 

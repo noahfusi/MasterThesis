@@ -45,7 +45,7 @@
     if (!metrics.length) {
       const placeholder = document.createElement("option");
       placeholder.value = "";
-      placeholder.textContent = "Aucune métrique";
+      placeholder.textContent = "No metrics";
       studentsMetricSelect.appendChild(placeholder);
       studentsMetricSelect.disabled = true;
       return;
@@ -73,10 +73,10 @@
     const meta = card.querySelector(".students-metric-meta");
     if (title) title.textContent = bucket.label || bucket.key;
     if (meta) {
-      const medianPart = Number.isFinite(bucket.median) ? ` • Médiane: ${formatMetricValue(bucket.median)}` : "";
+      const medianPart = Number.isFinite(bucket.median) ? ` • Median: ${formatMetricValue(bucket.median)}` : "";
       const fencesPart =
         Number.isFinite(bucket.lowerFence) && Number.isFinite(bucket.upperFence)
-          ? ` • Bornes: ${formatMetricValue(bucket.lowerFence)} / ${formatMetricValue(bucket.upperFence)}`
+          ? ` • Fences: ${formatMetricValue(bucket.lowerFence)} / ${formatMetricValue(bucket.upperFence)}`
           : "";
       meta.textContent = `Q1: ${formatMetricValue(bucket.q1)} • Q3: ${formatMetricValue(bucket.q3)}${medianPart}${fencesPart}`;
     }
@@ -96,7 +96,7 @@
       const items = (bucket.groups && bucket.groups[groupKey]) || [];
       if (!items.length) {
         const empty = document.createElement("li");
-        empty.textContent = "Aucun fichier";
+        empty.textContent = "No files";
         list.appendChild(empty);
         return;
       }
@@ -123,7 +123,7 @@
     if (!metricBuckets.length) {
       const empty = document.createElement("p");
       empty.className = "students-empty";
-      empty.textContent = "Aucun fichier en dehors de la plage Q1-Q3.";
+      empty.textContent = "No files outside the Q1-Q3 range.";
       studentsGrid.appendChild(empty);
       return;
     }
@@ -189,13 +189,13 @@
   async function generateAndDownloadReport() {
     const datasetName = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
     if (!datasetName) {
-      showMessage(reportFeedback, "Sélectionnez un dataset pour générer un rapport.", true);
+      showMessage(reportFeedback, "Select a dataset to generate a report.", true);
       return;
     }
     if (reportButton) {
       reportButton.disabled = true;
     }
-    showMessage(reportFeedback, "Génération du rapport en cours...");
+    showMessage(reportFeedback, "Generating report...");
     try {
       await requestJSON(API_ROUTES.generateReport, {
         method: "POST",
@@ -203,7 +203,7 @@
         body: JSON.stringify({ dataset: datasetName }),
       });
       await downloadReport(datasetName);
-      showMessage(reportFeedback, "Rapport généré et téléchargé.");
+      showMessage(reportFeedback, "Report generated and downloaded.");
     } catch (error) {
       showMessage(reportFeedback, error.message, true);
     } finally {
@@ -216,7 +216,7 @@
   async function refreshStudentsOutliers() {
     const datasetName = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
     if (studentsDatasetLabel) {
-      studentsDatasetLabel.textContent = datasetName || "Aucun";
+      studentsDatasetLabel.textContent = datasetName || "None";
     }
     if (!datasetName) {
       studentsState.dataset = null;
@@ -225,10 +225,10 @@
       studentsState.cards = [];
       updateStudentsMetricSelect([], null);
       renderStudentsBuckets([]);
-      showMessage(studentsFeedback, "Sélectionnez un dataset pour afficher les écarts.", true);
+      showMessage(studentsFeedback, "Select a dataset to display outliers.", true);
       return;
     }
-    showMessage(studentsFeedback, "Chargement des métriques pré-calculées...");
+    showMessage(studentsFeedback, "Loading precomputed metrics...");
     try {
       const params = new URLSearchParams({ dataset: datasetName });
       const data = await requestJSON(`${API_ROUTES.studentsOutliers}?${params.toString()}`);
@@ -247,8 +247,8 @@
       showMessage(
         studentsFeedback,
         targetCount
-          ? `Affichage des écarts pour ${targetCount} carte${targetCount > 1 ? "s" : ""}.`
-          : "Aucun fichier en dehors de la plage Q1-Q3.",
+          ? `Showing outliers for ${targetCount} card${targetCount > 1 ? "s" : ""}.`
+          : "No files outside the Q1-Q3 range.",
         targetCount === 0,
       );
     } catch (error) {
@@ -274,8 +274,8 @@
         showMessage(
           studentsFeedback,
           visibleCount
-            ? `Affichage des écarts pour ${visibleCount} carte${visibleCount > 1 ? "s" : ""}.`
-            : "Aucune carte pour cette métrique.",
+            ? `Showing outliers for ${visibleCount} card${visibleCount > 1 ? "s" : ""}.`
+            : "No cards for this metric.",
           !visibleCount,
         );
       });

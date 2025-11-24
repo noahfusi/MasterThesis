@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import math
 from typing import Sequence
 
+import config
 try:  # pragma: no cover - required for k-means
     from sklearn.cluster import KMeans as _sklearn_KMeans  # type: ignore
 except Exception as exc:  # pragma: no cover
@@ -37,15 +38,7 @@ try:  # pragma: no cover - optional dependency for CH score
 except Exception:  # pragma: no cover
     _calinski_harabasz_score = None
 
-METRIC_KEYS: list[str] = [
-    "NCSS",
-    "CCN",
-    "Functions",
-    "Duplication (%)",
-    "Max nesting depth",
-    "NCSS/Functions",
-    "CCN/Functions",
-]
+METRIC_KEYS: list[str] = list(config.CLUSTERING_METRIC_KEYS)
 
 
 @dataclass(slots=True)

@@ -9,6 +9,7 @@ from pathlib import Path
 from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Query, UploadFile, status
 import logging
 
+import config
 from Files.dataset_manager import (
     dataset_exists,
     dataset_path,
@@ -53,19 +54,10 @@ def _safe_extract(archive: zipfile.ZipFile, destination: Path) -> None:
     archive.extractall(destination)
 
 
-STRUCTURAL_SOURCE_EXTENSIONS = {".scala"}
-STRUCTURAL_EMBEDDING_SUFFIX = ".embedding.json"
-RAW_FOLDER = "raw"
-
-PROCESSING_PHASES = {
-    "extracting": "Extraction du dataset.",
-    "analyzing_lizard": "Analyse Lizard en cours.",
-    "computing_metrics": "Génération des métriques dérivées.",
-    "computing_outliers": "Calcul des seuils étudiants.",
-    "building_structural": "Construction des vues structurelles.",
-    "building_embeddings": "Génération des embeddings structurels.",
-    "ready": "Dataset prêt.",
-}
+STRUCTURAL_SOURCE_EXTENSIONS = config.STRUCTURAL_SOURCE_EXTENSIONS
+STRUCTURAL_EMBEDDING_SUFFIX = config.STRUCTURAL_EMBEDDING_SUFFIX
+RAW_FOLDER = config.RAW_FOLDER_NAME
+PROCESSING_PHASES = config.PROCESSING_PHASES
 
 
 def _process_dataset_pipeline(dataset_name: str) -> None:
@@ -121,7 +113,7 @@ def _generate_structural_views(dataset_name: str, raw_dir: Path) -> str:
     @param raw_dir Path to the dataset raw files directory.
     @return Status message indicating generation outcome.
     """
-    structural_root = dataset_path(dataset_name) / "structural"
+    structural_root = dataset_path(dataset_name) / config.STRUCTURAL_FOLDER_NAME
     structural_root.mkdir(parents=True, exist_ok=True)
     generated = 0
     skipped = 0
@@ -218,11 +210,11 @@ def _generate_structural_embeddings(dataset_name: str) -> str:
     @param dataset_name Name of the dataset to process.
     @return Status message indicating embedding generation outcome.
     """
-    structural_root = dataset_path(dataset_name) / "structural"
+    structural_root = dataset_path(dataset_name) / config.STRUCTURAL_FOLDER_NAME
     if not structural_root.exists():
         return "Structural embeddings skipped: no structural files."
 
-    embeddings_root = dataset_path(dataset_name) / "structural_embeddings"
+    embeddings_root = dataset_path(dataset_name) / config.STRUCTURAL_EMBEDDINGS_FOLDER_NAME
     embeddings_root.mkdir(parents=True, exist_ok=True)
 
     generated_segments = 0
@@ -358,14 +350,14 @@ async def create_dataset(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="File must be a .zip archive.")
 
     dataset_dir = dataset_path(sanitized_name)
-    raw_dir = dataset_dir / "raw"
+    raw_dir = dataset_dir / RAW_FOLDER
 
     try:
         raw_dir.mkdir(parents=True, exist_ok=False)
     except FileExistsError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Dataset already exists.") from exc
 
-    # Extraction synchronously, puis traitement en tâche de fond
+    # Extract synchronously, then process in the background
     update_status(
         sanitized_name,
         state="running",
@@ -400,7 +392,7 @@ async def create_dataset(
         sanitized_name,
         state="queued",
         phase="queued",
-        message="Analyse planifiée en tâche de fond.",
+        message="Analysis scheduled in background.",
     )
 
     if background_tasks is not None:
@@ -410,7 +402,7 @@ async def create_dataset(
 
     status_payload = load_status(sanitized_name)
     return _dataset_response(
-        message="Dataset créé, traitement en cours.",
+        message="Dataset created, processing in progress.",
         dataset=sanitized_name,
         extra={"status": status_payload} if status_payload else None,
     )
@@ -519,7 +511,7 @@ async def read_file_lizard_analysis(
     _, relative_name = resolve_relative_file(raw_dir, filename)
     relative_path = Path(relative_name)
 
-    analysis_dir = dataset_path(dataset_name) / "lizard"
+    analysis_dir = dataset_path(dataset_name) / LIZARD_FOLDER
     candidates = [
         ((analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.xml"), "xml"),
         ((analysis_dir / relative_path).with_suffix(relative_path.suffix + ".lizard.csv"), "csv"),

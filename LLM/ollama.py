@@ -2,16 +2,17 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 from typing import Iterable, List
 from urllib import error, parse, request
+
+import config
 
 __all__ = ["OllamaError", "request_embedding"]
 
 logger = logging.getLogger('uvicorn.error')
 
-DEFAULT_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-DEFAULT_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL", "bge-m3")
+DEFAULT_OLLAMA_BASE_URL = config.DEFAULT_OLLAMA_BASE_URL
+DEFAULT_EMBED_MODEL = config.DEFAULT_OLLAMA_EMBED_MODEL
 
 
 class OllamaError(RuntimeError):
@@ -36,7 +37,7 @@ def request_embedding(
     model: str | None = None,
     *,
     base_url: str | None = None,
-    timeout: float = 60.0,
+    timeout: float = config.DEFAULT_OLLAMA_TIMEOUT,
 ) -> list[float]:
     """
     Request an embedding vector for the provided text from Ollama.

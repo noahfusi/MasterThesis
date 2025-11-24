@@ -7,13 +7,14 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
+import config
 from Files.dataset_manager import dataset_path
 from Metrics.students import load_students_outliers
 from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error, resolve_relative_file
 
 router = APIRouter(prefix="/reports", tags=["reports"])
-REPORTS_SUBDIR = "reports"
-STUDENTS_REPORT_FILENAME = "students_outliers_report.md"
+REPORTS_SUBDIR = config.REPORTS_SUBDIR
+STUDENTS_REPORT_FILENAME = config.STUDENTS_REPORT_FILENAME
 
 
 def _students_report_path(dataset_name: str) -> Path:

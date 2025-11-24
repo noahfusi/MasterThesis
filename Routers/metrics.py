@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import config
 from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.templating import Jinja2Templates
 
@@ -10,7 +11,7 @@ from Metrics.students import THRESHOLD_DESCRIPTIONS, load_students_outliers
 from Routers.utils import ensure_dataset_ready, read_utf8_or_error, resolve_dataset_or_http_error
 
 router = APIRouter()
-templates = Jinja2Templates(directory="Static/templates")
+templates = Jinja2Templates(directory=config.TEMPLATES_DIR)
 
 
 def _context(request: Request, page_title: str) -> dict[str, object]:

@@ -6,6 +6,7 @@ import csv
 import json
 from pathlib import Path
 
+import config
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
@@ -107,7 +108,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     if not normalized.entries:
         raise HTTPException(
             status_code=400,
-            detail="Aucune donnée exploitable pour ce mode de caractérisation. Vérifiez les métriques et embeddings.",
+            detail="No usable data for this feature mode. Check metrics and embeddings.",
         )
 
     response_metric_keys = list(normalized.metric_keys) if normalized.metric_keys else []
@@ -123,9 +124,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
             parameters.update({"mode": "auto", **chosen})
         else:
             if not payload.cluster_count:
-                raise HTTPException(
-                    status_code=400, detail="Le nombre de clusters est requis pour exécuter k-means."
-                )
+                raise HTTPException(status_code=400, detail="Cluster count is required to run k-means.")
             result = run_kmeans_clustering(normalized, payload.cluster_count)
             parameters["cluster_count"] = payload.cluster_count
     else:
@@ -225,9 +224,9 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
 @router.get("/last", name="last-clustering")
 async def read_last_clustering(dataset: str | None = None) -> dict[str, object]:
     """
-    @brief Charger le dernier clustering persisté pour un dataset.
-    @param dataset Nom du dataset à charger (optionnel, utilise le dataset courant).
-    @return Résultat de clustering mis en cache.
+    @brief Load the last saved clustering for a dataset.
+    @param dataset Dataset name (optional, uses current selection).
+    @return Cached clustering result.
     @throws HTTPException Si aucun clustering n'est disponible ou sur erreur d'E/S.
     """
     dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=True)
@@ -243,7 +242,7 @@ def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str,
     @param points List of clustering point payloads to serialize.
     @throws HTTPException If the CSV cannot be written.
     """
-    target = dataset_path(dataset) / "clustering.csv"
+    target = dataset_path(dataset) / config.CLUSTERING_CACHE_FILENAME
     fieldnames = ["path", "cluster", "x", "y", "algorithm"]
     try:
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -265,7 +264,7 @@ def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str,
 
 
 def _load_cached_clustering(dataset: str) -> dict[str, object]:
-    cache_path = dataset_path(dataset) / "clustering.csv"
+    cache_path = dataset_path(dataset) / config.CLUSTERING_CACHE_FILENAME
     if not cache_path.exists():
         raise HTTPException(status_code=404, detail="Aucun clustering existant pour ce dataset.")
 
@@ -300,11 +299,11 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
 
     files = load_metrics_entries(dataset)
     if not files:
-        raise HTTPException(status_code=404, detail="Aucune métrique disponible pour recharger le clustering.")
+        raise HTTPException(status_code=404, detail="No metrics available to reload clustering.")
 
     normalized = normalize_dataset(files, METRIC_KEYS)
     if not normalized.entries:
-        raise HTTPException(status_code=400, detail="Impossible de normaliser les métriques pour le clustering.")
+        raise HTTPException(status_code=400, detail="Unable to normalize metrics for clustering.")
 
     metric_keys = list(normalized.metric_keys)
     cluster_metric_sums: dict[int, dict[str, float]] = {}

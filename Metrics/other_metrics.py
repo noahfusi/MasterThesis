@@ -5,27 +5,19 @@ import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
+import config
 from Files.dataset_manager import dataset_path
 from Metrics import dataset_summary_path
 from Lizard.metrics import extract_duplicate_rate, parse_reference_metrics, parse_summary_metrics, sanitize_summary_xml
-from Lizard.run_analysis import LIZARD_FOLDER
 try:
     from Tree_Sitter.metrics import compute_max_nesting_depth
 except Exception:  # pragma: no cover - optional dependency
     def compute_max_nesting_depth(code: str) -> int | None:
         return None
 
-METRICS_FILENAME = "metrics.csv"
-REFERENCE_METRICS_FILENAME = "reference_metrics.json"
-REQUIRED_COLUMNS = {
-    "NCSS",
-    "CCN",
-    "Functions",
-    "NCSS/Functions",
-    "CCN/Functions",
-    "Duplication (%)",
-    "Max nesting depth",
-}
+METRICS_FILENAME = config.METRICS_FILENAME
+REFERENCE_METRICS_FILENAME = config.REFERENCE_METRICS_FILENAME
+REQUIRED_COLUMNS = set(config.CLUSTERING_METRIC_KEYS)
 
 
 def metrics_csv_path(dataset: str) -> Path:
@@ -223,7 +215,7 @@ def generate_other_metrics(dataset: str) -> str:
                 row["NCSS/Functions"] = raw_ncss / functions_count if functions_count else raw_ncss
                 metric_names.add("NCSS/Functions")
 
-        lizard_file = dataset_path(dataset) / LIZARD_FOLDER / Path(file_path)
+        lizard_file = dataset_path(dataset) / config.LIZARD_FOLDER_NAME / Path(file_path)
         suffix = lizard_file.suffix
         lizard_file = lizard_file.with_suffix((suffix or "") + ".lizard.xml")
         if lizard_file.exists():

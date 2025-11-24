@@ -201,7 +201,7 @@
         method: "POST",
         body: formData,
       });
-      showMessage(uploadStatusElement, `Dataset "${data.dataset}" créé. Traitement en cours...`);
+      showMessage(uploadStatusElement, `Dataset "${data.dataset}" created. Processing in progress...`);
       uploadForm.reset();
       if (data && data.dataset) {
         watchDatasetStatus(data.dataset, data.status);
@@ -257,7 +257,7 @@
       onUpdate: renderStatus,
       onReady: (status) => {
         renderStatus(status);
-        showMessage(datasetStatusFeedback, `Dataset "${name}" prêt.`, false);
+        showMessage(datasetStatusFeedback, `Dataset "${name}" ready.`, false);
         stopWatching();
         void loadDatasets();
       },
