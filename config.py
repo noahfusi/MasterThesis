@@ -46,8 +46,8 @@ THRESHOLD_DESCRIPTIONS: dict[str, dict[str, str]] = {
         "belowQ1": "Below most files—confirm this behavior is intended.",
     },
     "duplication": {
-        "aboveFence": "Very high duplication—likely heavy copy/paste or generated fragments.",
-        "aboveQ3": "Notable duplication—consolidate repeated sections or shared helpers.",
+        "aboveFence": "Very high duplication—likely heavy copy/paste or redundant fragments.",
+        "aboveQ3": "Notable duplication—consolidate repeated sections or try to extract duplicated code into functions.",
         "belowFence": "Low duplication—positive, but confirm the file is not overly minimal.",
         "belowQ1": "Low duplication—positive, but confirm the file is not overly minimal.",
     },
