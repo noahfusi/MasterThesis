@@ -2,21 +2,27 @@
 
 {% set clustering_disabled = "disabled" if not current_dataset else "" %}
 {% set clustering_hint = "Select a dataset to enable the clustering pipeline." if not current_dataset else "Tune the parameters and relaunch the clustering job to refresh the insights." %}
+{% set theme_items = clustering_themes|dictsort %}
+{% set default_theme_label = theme_items[0][1]["label"] if theme_items else "None" %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', path='css/clustering.css') }}" />
 <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+<script>
+  window.App = window.App || {};
+  window.App.clusteringThemes = {{ clustering_themes | tojson }};
+</script>
 <script defer src="{{ url_for('static', path='js/clustering.js') }}"></script>
 {% endblock %}
 
 {% block content_classes %}content-bleed{% endblock %}
 
 {% block content %}
-<section class="clustering-wrapper">
-  <section class="clustering-hero">
-    <div class="clustering-hero-text">
-      <p class="clustering-eyebrow">Exploratory pipeline</p>
-      <h1>Solution clustering</h1>
+  <section class="clustering-wrapper">
+    <section class="clustering-hero">
+      <div class="clustering-hero-text">
+        <p class="clustering-eyebrow">Exploratory pipeline</p>
+        <h1>Solution clustering</h1>
       <p>
         Group similar solutions in the current dataset, surface approach families, and spot candidates needing
         a review. Choose k-means or HDBSCAN, tune the parameters, then launch the clustering.
@@ -38,122 +44,155 @@
     </section>
 
   <section class="clustering-config">
-    <div class="clustering-config-grid">
-      <div class="clustering-controls">
-        <h2>Feature selection</h2>
-        <form class="clustering-form">
-          <div class="clustering-fieldset" id="feature-config">
-            <span>Sources</span>
-            <label>
-              Data mode
-              <select id="feature-mode-select" name="feature_mode" {{ clustering_disabled }}>
-                <option value="metrics" selected>Metrics only</option>
-                <option value="embeddings">Structural embeddings</option>
-                <option value="both">Metrics + Embeddings</option>
-              </select>
-            </label>
-            <div class="clustering-slider" id="embedding-dims-container" hidden>
-              <label for="embedding-dims">Dimensions PCA (embeddings)</label>
-              <input
-                type="range"
-                id="embedding-dims"
-                name="embedding_dims"
-                min="2"
-                max="64"
-                value="16"
-                {{ clustering_disabled }}
-              />
-              <output id="embedding-dims-value" for="embedding-dims">16 dimensions</output>
+    <div class="clustering-controls clustering-controls-merged">
+      <div class="clustering-flat-grid">
+        <div class="theme-config-card feature-card">
+          <div class="theme-config-header">
+            <div>
+              <p class="clustering-eyebrow">Features</p>
+              <h3>Feature selection</h3>
+              <p class="clustering-hint">Choose metrics vs structural embeddings.</p>
             </div>
           </div>
-        </form>
-      </div>
-      <div class="clustering-controls">
-        <h2>Pipeline configuration</h2>
-        <ol class="clustering-progress">
-          <li class="is-done">
-            <span class="step-label">Dataset</span>
-            <span>{{ "Loaded" if current_dataset else "Pending" }}</span>
-          </li>
-          <li class="is-running">
-            <span class="step-label">Algorithm</span>
-            <span>Select strategy</span>
-          </li>
-          <li class="is-waiting">
-            <span class="step-label">Execution</span>
-            <span>Ready</span>
-          </li>
-        </ol>
-        <form class="clustering-form" id="clustering-form">
-          <div class="clustering-algorithm-module">
-            <label>
-              Clustering algorithm
-              <select id="clustering-algorithm" name="algorithm" {{ clustering_disabled }}>
-                <option value="kmeans" selected>k-means</option>
-                <option value="hdbscan">HDBSCAN</option>
-              </select>
-            </label>
-            <div class="clustering-fieldset" id="kmeans-params">
-              <span>k-means parameters</span>
-              <div class="clustering-slider">
-                <label for="cluster-count">Desired cluster count</label>
+          <form class="clustering-form">
+            <div class="clustering-fieldset" id="feature-config">
+              <span>Sources</span>
+              <label>
+                Data mode
+                <select id="feature-mode-select" name="feature_mode" {{ clustering_disabled }}>
+                  <option value="metrics" selected>Metrics only</option>
+                  <option value="embeddings">Structural embeddings</option>
+                  <option value="both">Metrics + Embeddings</option>
+                </select>
+              </label>
+              <div class="clustering-slider" id="embedding-dims-container" hidden>
+                <label for="embedding-dims">Dimensions PCA (embeddings)</label>
                 <input
                   type="range"
-                  id="cluster-count"
-                  name="cluster_count"
+                  id="embedding-dims"
+                  name="embedding_dims"
                   min="2"
-                  max="20"
-                  value="8"
+                  max="64"
+                  value="16"
                   {{ clustering_disabled }}
                 />
-                <output id="cluster-count-value" for="cluster-count">8 clusters</output>
-              </div>
-              <div class="clustering-auto-row">
-                <button type="button" class="clustering-secondary" id="kmeans-auto-button" {{ clustering_disabled }}>
-                  Auto k-means
-                </button>
-                <small>Automatically choose k via silhouette score.</small>
+                <output id="embedding-dims-value" for="embedding-dims">16 dimensions</output>
               </div>
             </div>
-            <div class="clustering-fieldset" id="hdbscan-params" hidden>
-              <span>HDBSCAN parameters</span>
-              <div class="clustering-inline-inputs">
-                <label>
-                  Min cluster size
-                  <input
-                    type="number"
-                    id="hdbscan-min-cluster-size"
-                    name="hdbscan_min_cluster_size"
-                    min="2"
-                    max="200"
-                    value="5"
-                    {{ clustering_disabled }}
-                  />
-                </label>
-                <label>
-                  Min samples
-                  <input
-                    type="number"
-                    id="hdbscan-min-samples"
-                    name="hdbscan_min_samples"
-                    min="1"
-                    max="200"
-                    value="5"
-                    {{ clustering_disabled }}
-                  />
-                </label>
-              </div>
-              <div class="clustering-inline-inputs">
-                <button type="button" class="clustering-secondary" id="hdbscan-auto-button" {{ clustering_disabled }}>
-                  Auto-tune HDBSCAN
-                </button>
-                <small>Auto-search hyperparameters via silhouette score.</small>
-              </div>
+          </form>
+        </div>
+        {% for key, theme in theme_items %}
+        {% set slug = key.replace(' ', '_') %}
+        <div class="theme-config-card" data-theme-id="{{ key }}">
+          <div class="theme-config-header">
+            <div>
+              <p class="clustering-eyebrow">Theme</p>
+              <h3>{{ theme["label"] }}</h3>
+              <p class="clustering-hint">{{ theme["description"] }}</p>
+            </div>
+            <div class="clustering-theme-metric-badges">
+              {% for metric in theme["metrics"] %}
+              <span>{{ metric }}</span>
+              {% endfor %}
             </div>
           </div>
-        </form>
+          <form class="clustering-form theme-config-form">
+            <div class="clustering-algorithm-module">
+              <label>
+                Clustering algorithm
+                <select class="theme-algorithm" name="algorithm-{{ slug }}" {{ clustering_disabled }}>
+                  <option value="kmeans" selected>k-means</option>
+                  <option value="hdbscan">HDBSCAN</option>
+                </select>
+              </label>
+              <div class="clustering-fieldset theme-kmeans-params">
+                <span>k-means parameters</span>
+                <div class="clustering-slider">
+                  <label>Desired cluster count</label>
+                  <input
+                    type="range"
+                    class="theme-cluster-count"
+                    min="2"
+                    max="20"
+                    value="8"
+                    {{ clustering_disabled }}
+                  />
+                  <output class="theme-cluster-value">8 clusters</output>
+                </div>
+                <div class="clustering-auto-row">
+                  <button type="button" class="clustering-secondary theme-kmeans-auto" {{ clustering_disabled }}>
+                    Auto k-means
+                  </button>
+                  <small>Automatically choose k via silhouette score.</small>
+                </div>
+              </div>
+              <div class="clustering-fieldset theme-hdbscan-params" hidden>
+                <span>HDBSCAN parameters</span>
+                <div class="clustering-inline-inputs">
+                  <label>
+                    Min cluster size
+                    <input
+                      type="number"
+                      class="theme-hdbscan-min-size"
+                      min="2"
+                      max="200"
+                      value="5"
+                      {{ clustering_disabled }}
+                    />
+                  </label>
+                  <label>
+                    Min samples
+                    <input
+                      type="number"
+                      class="theme-hdbscan-min-samples"
+                      min="1"
+                      max="200"
+                      value="5"
+                      {{ clustering_disabled }}
+                    />
+                  </label>
+                </div>
+                <div class="clustering-inline-inputs">
+                  <button type="button" class="clustering-secondary theme-hdbscan-auto" {{ clustering_disabled }}>
+                    Auto-tune HDBSCAN
+                  </button>
+                  <small>Auto-search hyperparameters via silhouette score.</small>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        {% endfor %}
       </div>
     </div>
+  </section>
+
+  <div class="clustering-progress-banner" id="clustering-progress-banner" hidden>
+    <div class="clustering-progress-indicator">
+      <span class="clustering-spinner" aria-hidden="true"></span>
+      <div>
+        <p class="clustering-progress-title">Clustering in progress</p>
+        <p class="clustering-progress-text" id="clustering-progress-text">Preparing themes…</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="clustering-themes">
+    <div class="clustering-themes-header">
+      <div>
+        <p class="clustering-eyebrow">Perspectives</p>
+        <h2>Pick a clustering theme</h2>
+        <p>Each theme runs its own clustering with a tailored metric bundle.</p>
+      </div>
+      <div class="clustering-theme-active">
+        <span>Active theme</span>
+        <strong id="clustering-active-theme">{{ default_theme_label }}</strong>
+      </div>
+    </div>
+    <div class="clustering-theme-grid" id="clustering-theme-tabs">
+      <p class="clustering-hint">Themes will appear once clustering is ready.</p>
+    </div>
+    <div class="clustering-theme-metrics" id="clustering-theme-metrics"></div>
   </section>
 
   <section class="clustering-results">
@@ -163,6 +202,7 @@
           <div>
             <h2>Projection 2D</h2>
             <p>Plotly view of normalized points colored by cluster.</p>
+            <p class="clustering-theme-chip" id="clustering-active-chip">Theme: {{ default_theme_label }}</p>
           </div>
         </div>
         <p class="feedback" id="clustering-feedback">

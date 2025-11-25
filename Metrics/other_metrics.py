@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -18,6 +19,8 @@ except Exception:  # pragma: no cover - optional dependency
 METRICS_FILENAME = config.METRICS_FILENAME
 REFERENCE_METRICS_FILENAME = config.REFERENCE_METRICS_FILENAME
 REQUIRED_COLUMNS = set(config.CLUSTERING_METRIC_KEYS)
+_COMMENT_PATTERN = re.compile(r"//.*?$|/\*.*?\*/", re.DOTALL | re.MULTILINE)
+_STRING_PATTERN = re.compile(r'"""(?:.|\n)*?"""|"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'', re.DOTALL)
 
 
 def metrics_csv_path(dataset: str) -> Path:
@@ -96,6 +99,68 @@ def _normalize_path(value: str | None) -> str | None:
     if idx != -1:
         return normalized[idx + len(marker) :]
     return normalized
+
+
+def _strip_comments_and_strings(code: str) -> str:
+    """
+    @brief Remove comments and string literals for lightweight keyword counting.
+    @param code Raw source code.
+    @return Code without strings/comments to avoid noisy keyword matches.
+    """
+    without_strings = _STRING_PATTERN.sub(" ", code or "")
+    return _COMMENT_PATTERN.sub(" ", without_strings)
+
+
+def _count_keyword_occurrences(code: str) -> dict[str, int]:
+    """
+    @brief Count branching/loop/variable keywords in Scala-like code.
+    @param code Raw source code.
+    @return Mapping of keyword category to counts.
+    """
+    if not code:
+        return {"if": 0, "loops": 0, "vars": 0}
+    cleaned = _strip_comments_and_strings(code)
+    return {
+        "if": len(re.findall(r"\bif\b", cleaned, flags=re.IGNORECASE)),
+        "loops": len(re.findall(r"\b(for|while|do)\b", cleaned, flags=re.IGNORECASE)),
+        "vars": len(re.findall(r"\b(val|var)\b", cleaned)),
+    }
+
+
+def _safe_ratio(numerator: float, denominator: float | None) -> float:
+    """Return a safe ratio, falling back to 0 when the denominator is invalid."""
+    try:
+        denom = float(denominator) if denominator is not None else 0.0
+    except (TypeError, ValueError):
+        denom = 0.0
+    return float(numerator) / denom if denom else 0.0
+
+
+def _compute_keyword_metrics(code: str | None, raw_ncss: float | None, functions_count: float | None) -> dict[str, float]:
+    """
+    @brief Compute lightweight metrics derived from keyword counts.
+    @param code Source code (may be None).
+    @param raw_ncss NCSS value to normalize per-line metrics.
+    @param functions_count Number of functions to normalize variable density.
+    @return Dictionary of keyword-derived metrics.
+    """
+    metrics = {
+        "If/NCSS": 0.0,
+        "Loops/NCSS": 0.0,
+        "Total variables": 0.0,
+        "Vars/Functions": 0.0,
+        "Vars/NCSS": 0.0,
+    }
+    if not code:
+        return metrics
+    counts = _count_keyword_occurrences(code)
+    variables_count = counts.get("vars", 0)
+    metrics["Total variables"] = float(variables_count)
+    metrics["If/NCSS"] = _safe_ratio(counts.get("if", 0), raw_ncss)
+    metrics["Loops/NCSS"] = _safe_ratio(counts.get("loops", 0), raw_ncss)
+    metrics["Vars/NCSS"] = _safe_ratio(variables_count, raw_ncss)
+    metrics["Vars/Functions"] = _safe_ratio(variables_count, functions_count)
+    return metrics
 
 
 def merge_other_metrics(dataset: str, metric_definitions: list[dict[str, object]], files: list[dict[str, object]]) -> None:
@@ -256,6 +321,18 @@ def generate_other_metrics(dataset: str) -> str:
                 row["NCSS/Functions"] = raw_ncss / functions_count if functions_count else raw_ncss
                 metric_names.add("NCSS/Functions")
 
+        default_keyword_metrics = {
+            "Max nesting depth": 0.0,
+            "If/NCSS": 0.0,
+            "Loops/NCSS": 0.0,
+            "Total variables": 0.0,
+            "Vars/Functions": 0.0,
+            "Vars/NCSS": 0.0,
+        }
+        for key, value in default_keyword_metrics.items():
+            row.setdefault(key, value)
+            metric_names.add(key)
+
         lizard_file = dataset_path(dataset) / config.LIZARD_FOLDER_NAME / Path(file_path)
         suffix = lizard_file.suffix
         lizard_file = lizard_file.with_suffix((suffix or "") + ".lizard.xml")
@@ -273,6 +350,8 @@ def generate_other_metrics(dataset: str) -> str:
                 if duplicate_rate is not None:
                     row["Duplication (%)"] = duplicate_rate
                     metric_names.add("Duplication (%)")
+        row.setdefault("Duplication (%)", row.get("Duplication (%)", 0.0))
+        metric_names.add("Duplication (%)")
 
         source_file = raw_root / Path(file_path)
         if source_file.exists():
@@ -280,11 +359,12 @@ def generate_other_metrics(dataset: str) -> str:
                 code = source_file.read_text(encoding="utf-8")
             except OSError:
                 code = None
+            keyword_metrics = _compute_keyword_metrics(code, raw_ncss, functions_count)
+            row.update(keyword_metrics)
             if code:
                 nesting = compute_max_nesting_depth(code)
                 if isinstance(nesting, (int, float)):
                     row["Max nesting depth"] = nesting
-                    metric_names.add("Max nesting depth")
 
         rows.append(row)
 

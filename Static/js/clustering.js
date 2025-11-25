@@ -12,18 +12,8 @@
     getMessage,
   } = utils;
 
-  const clusteringForm = document.getElementById("clustering-form");
+  const clusteringForm = document.querySelector(".theme-config-form"); // representative form for event prevention
   const clusteringLaunchButton = document.getElementById("launch-clustering");
-  const clusteringAlgorithmSelect = document.getElementById("clustering-algorithm");
-  const clusteringClusterSlider = document.getElementById("cluster-count");
-  const clusteringClusterSliderInitialDisabled = clusteringClusterSlider ? clusteringClusterSlider.disabled : false;
-  const clusteringClusterValue = document.getElementById("cluster-count-value");
-  const clusteringKMeansParams = document.getElementById("kmeans-params");
-  const clusteringKMeansAutoButton = document.getElementById("kmeans-auto-button");
-  const clusteringHdbscanParams = document.getElementById("hdbscan-params");
-  const clusteringMinClusterSizeInput = document.getElementById("hdbscan-min-cluster-size");
-  const clusteringMinSamplesInput = document.getElementById("hdbscan-min-samples");
-  const clusteringAutoButton = document.getElementById("hdbscan-auto-button");
   const featureModeSelect = document.getElementById("feature-mode-select");
   const embeddingDimsContainer = document.getElementById("embedding-dims-container");
   const embeddingDimsSlider = document.getElementById("embedding-dims");
@@ -35,17 +25,60 @@
   const clusteringMetricChart = document.getElementById("clustering-metric-chart");
   const clusteringMetricFeedback = document.getElementById("clustering-metric-feedback");
   const clusteringMetricDatasetLabel = document.getElementById("clustering-metric-dataset");
+  const themeTabsContainer = document.getElementById("clustering-theme-tabs");
+  const themeMetricsContainer = document.getElementById("clustering-theme-metrics");
+  const activeThemeLabel = document.getElementById("clustering-active-theme");
+  const activeThemeChip = document.getElementById("clustering-active-chip");
+  const progressBanner = document.getElementById("clustering-progress-banner");
+  const progressText = document.getElementById("clustering-progress-text");
+  const themeConfigCards = document.querySelectorAll(".theme-config-card");
+
+  const CLUSTERING_THEMES = Object.entries(app.clusteringThemes || {}).map(([id, payload]) => ({
+    id,
+    label: payload && payload.label ? payload.label : id,
+    metrics: (payload && payload.metrics) || [],
+    description: payload && payload.description ? payload.description : "",
+  }));
+  if (!CLUSTERING_THEMES.length) {
+    CLUSTERING_THEMES.push(
+      {
+        id: "complexity",
+        label: "Complexity and logic structure",
+        metrics: ["CCN", "Max nesting depth", "If/NCSS", "Loops/NCSS"],
+        description: "Focus on branching depth and control flow.",
+      },
+      {
+        id: "size",
+        label: "Size and duplication",
+        metrics: ["NCSS", "Duplication (%)"],
+        description: "Highlight small vs. oversized files and duplication.",
+      },
+      {
+        id: "functions",
+        label: "Split into functions",
+        metrics: ["Functions", "NCSS/Functions", "Vars/Functions"],
+        description: "Check how code is split across functions.",
+      },
+      {
+        id: "style",
+        label: "Style",
+        metrics: ["Total variables", "Vars/NCSS"],
+        description: "Surface variable density and stylistic footprint.",
+      },
+    );
+  }
+  const themeLookup = new Map(CLUSTERING_THEMES.map((theme) => [theme.id, theme]));
 
   if (!clusteringChart && !clusteringForm && !clusteringLaunchButton) return;
 
   const clusteringState = {
     dataset: null,
     algorithm: null,
-    points: [],
-    metrics: [],
+    results: {},
+    metricKeyByTheme: {},
     metricKey: null,
-    autoKMeans: false,
-    autoHdbscan: false,
+    activeTheme: CLUSTERING_THEMES[0] ? CLUSTERING_THEMES[0].id : null,
+    themeParams: {},
     featureMode: "metrics",
     embeddingDims: 16,
   };
@@ -67,6 +100,87 @@
       stats[key] = { mean, stddev };
     });
     return stats;
+  }
+
+  function getThemeById(themeId) {
+    if (!themeId) return null;
+    return themeLookup.get(themeId) || null;
+  }
+
+  function getActiveResult() {
+    if (!clusteringState.activeTheme) return null;
+    return clusteringState.results[clusteringState.activeTheme] || null;
+  }
+
+  function updateActiveThemeUI(themeId) {
+    const theme = getThemeById(themeId);
+    if (activeThemeLabel) {
+      activeThemeLabel.textContent = theme ? theme.label : "None";
+    }
+    if (activeThemeChip) {
+      activeThemeChip.textContent = theme ? `Theme: ${theme.label}` : "Theme: None";
+    }
+    if (themeTabsContainer) {
+      themeTabsContainer.querySelectorAll(".clustering-theme-card").forEach((node) => {
+        const isActive = node.dataset.themeId === themeId;
+        node.classList.toggle("is-active", isActive);
+      });
+    }
+    if (themeMetricsContainer) {
+      themeMetricsContainer.innerHTML = "";
+      if (theme && Array.isArray(theme.metrics) && theme.metrics.length) {
+        const heading = document.createElement("p");
+        heading.textContent = "Metrics used for this theme:";
+        const list = document.createElement("div");
+        list.className = "clustering-theme-badges";
+        theme.metrics.forEach((metric) => {
+          const badge = document.createElement("span");
+          badge.textContent = metric;
+          list.appendChild(badge);
+        });
+        themeMetricsContainer.appendChild(heading);
+        themeMetricsContainer.appendChild(list);
+      }
+    }
+  }
+
+  function renderThemeCards() {
+    if (!themeTabsContainer) return;
+    themeTabsContainer.innerHTML = "";
+    CLUSTERING_THEMES.forEach((theme) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "clustering-theme-card";
+      button.dataset.themeId = theme.id;
+      const metrics = Array.isArray(theme.metrics) ? theme.metrics : [];
+      button.innerHTML = `
+        <div class="clustering-theme-card__header">
+          <span class="clustering-theme-name">${theme.label}</span>
+          <small>${theme.description || "Focused clustering bundle."}</small>
+        </div>
+        <div class="clustering-theme-metric-badges">
+          ${metrics.map((metric) => `<span>${metric}</span>`).join("")}
+        </div>
+      `;
+      button.addEventListener("click", () => setActiveTheme(theme.id));
+      themeTabsContainer.appendChild(button);
+    });
+    updateActiveThemeUI(clusteringState.activeTheme);
+  }
+
+  function setActiveTheme(themeId) {
+    if (!themeId || !themeLookup.has(themeId)) return;
+    clusteringState.activeTheme = themeId;
+    clusteringState.metricKey = clusteringState.metricKeyByTheme[themeId] || null;
+    updateActiveThemeUI(themeId);
+    const activeResult = getActiveResult();
+    const metrics = activeResult
+      ? (Array.isArray(activeResult.metrics) && activeResult.metrics.length
+          ? activeResult.metrics
+          : deriveMetricKeysFromPoints(activeResult.points))
+      : (getThemeById(themeId)?.metrics || []);
+    updateClusteringMetricOptions(metrics, themeId);
+    renderActiveClustering();
   }
 
   function deriveClusterLabel(cluster, metricStats) {
@@ -154,42 +268,85 @@
     fieldset.style.display = visible ? "" : "none";
   }
 
-  function setKMeansAutoMode(enabled) {
-    clusteringState.autoKMeans = Boolean(enabled);
-    if (clusteringKMeansAutoButton) {
-      clusteringKMeansAutoButton.classList.toggle("active", clusteringState.autoKMeans);
-      clusteringKMeansAutoButton.textContent = clusteringState.autoKMeans
-        ? "Auto k-means enabled"
-        : "Auto k-means (silhouette)";
+  const themeControls = {};
+  clusteringState.themeParams = {};
+
+  function setThemeKMeansAutoMode(themeId, enabled) {
+    const controls = themeControls[themeId];
+    const state = clusteringState.themeParams[themeId] || {};
+    state.autoKMeans = Boolean(enabled);
+    clusteringState.themeParams[themeId] = state;
+    if (controls?.kmeansAuto) {
+      controls.kmeansAuto.classList.toggle("active", state.autoKMeans);
+      controls.kmeansAuto.textContent = state.autoKMeans ? "Auto k-means enabled" : "Auto k-means (silhouette)";
     }
-    if (clusteringClusterSlider) {
-      clusteringClusterSlider.disabled = clusteringClusterSliderInitialDisabled || clusteringState.autoKMeans;
+    if (controls?.clusterSlider) {
+      controls.clusterSlider.disabled = state.autoKMeans;
     }
   }
 
-  function updateClusteringAlgorithmState() {
-    if (!clusteringAlgorithmSelect) return;
-    const isKMeans = (clusteringAlgorithmSelect.value || "kmeans") === "kmeans";
-    toggleFieldsetVisibility(clusteringKMeansParams, isKMeans);
-    toggleFieldsetVisibility(clusteringHdbscanParams, !isKMeans);
-    if (clusteringKMeansAutoButton) {
-      clusteringKMeansAutoButton.disabled = !isKMeans;
+  function setThemeHdbscanAutoMode(themeId, enabled) {
+    const controls = themeControls[themeId];
+    const state = clusteringState.themeParams[themeId] || {};
+    state.autoHdbscan = Boolean(enabled);
+    clusteringState.themeParams[themeId] = state;
+    if (controls?.hdbscanAuto) {
+      controls.hdbscanAuto.classList.toggle("active", state.autoHdbscan);
+      controls.hdbscanAuto.textContent = state.autoHdbscan ? "Auto HDBSCAN enabled" : "Auto-tune HDBSCAN";
     }
-    if (clusteringAutoButton) {
-      clusteringAutoButton.disabled = isKMeans;
+    if (controls?.minClusterSize) {
+      controls.minClusterSize.disabled = state.autoHdbscan;
     }
-    if (!isKMeans && clusteringState.autoKMeans) {
-      setKMeansAutoMode(false);
-    }
-    if (isKMeans && clusteringState.autoHdbscan) {
-      setHdbscanAutoMode(false);
+    if (controls?.minSamples) {
+      controls.minSamples.disabled = state.autoHdbscan;
     }
   }
 
-  function updateClusterSliderLabel() {
-    if (!clusteringClusterSlider || !clusteringClusterValue) return;
-    const value = clusteringClusterSlider.value || "0";
-    clusteringClusterValue.textContent = `${value} clusters`;
+  function sanitizeThemeHdbscanInputs(themeId) {
+    const controls = themeControls[themeId];
+    if (controls?.minClusterSize) {
+      const min = Number(controls.minClusterSize.min) || 2;
+      const max = Number(controls.minClusterSize.max) || 200;
+      let value = Number(controls.minClusterSize.value);
+      if (!Number.isFinite(value) || value < min) value = min;
+      if (value > max) value = max;
+      controls.minClusterSize.value = String(Math.round(value));
+    }
+    if (controls?.minSamples) {
+      const min = Number(controls.minSamples.min) || 1;
+      const max = Number(controls.minSamples.max) || 200;
+      let value = Number(controls.minSamples.value);
+      if (!Number.isFinite(value) || value < min) value = min;
+      if (value > max) value = max;
+      controls.minSamples.value = String(Math.round(value));
+    }
+  }
+
+  function updateThemeClusterLabel(themeId) {
+    const controls = themeControls[themeId];
+    if (!controls?.clusterSlider || !controls?.clusterValue) return;
+    controls.clusterValue.textContent = `${controls.clusterSlider.value || 0} clusters`;
+  }
+
+  function updateThemeAlgorithmState(themeId) {
+    const controls = themeControls[themeId];
+    if (!controls || !controls.algorithm) return;
+    const state = clusteringState.themeParams[themeId] || {};
+    const isKMeans = (controls.algorithm.value || "kmeans") === "kmeans";
+    toggleFieldsetVisibility(controls.kmeansParams, isKMeans);
+    toggleFieldsetVisibility(controls.hdbscanParams, !isKMeans);
+    if (controls.kmeansAuto) {
+      controls.kmeansAuto.disabled = !isKMeans;
+    }
+    if (controls.hdbscanAuto) {
+      controls.hdbscanAuto.disabled = isKMeans;
+    }
+    if (!isKMeans && state.autoKMeans) {
+      setThemeKMeansAutoMode(themeId, false);
+    }
+    if (isKMeans && state.autoHdbscan) {
+      setThemeHdbscanAutoMode(themeId, false);
+    }
   }
 
   function updateEmbeddingDimsLabel() {
@@ -210,39 +367,62 @@
     updateEmbeddingDimsLabel();
   }
 
-  function setHdbscanAutoMode(enabled) {
-    clusteringState.autoHdbscan = Boolean(enabled);
-    if (clusteringAutoButton) {
-      clusteringAutoButton.classList.toggle("active", clusteringState.autoHdbscan);
-      clusteringAutoButton.textContent = clusteringState.autoHdbscan
-        ? "Auto HDBSCAN enabled"
-        : "Auto-tune HDBSCAN";
-    }
-    if (clusteringMinClusterSizeInput) {
-      clusteringMinClusterSizeInput.disabled = clusteringState.autoHdbscan;
-    }
-    if (clusteringMinSamplesInput) {
-      clusteringMinSamplesInput.disabled = clusteringState.autoHdbscan;
-    }
-  }
-
-  function sanitizeHdbscanInputs() {
-    if (clusteringMinClusterSizeInput) {
-      const min = Number(clusteringMinClusterSizeInput.min) || 2;
-      const max = Number(clusteringMinClusterSizeInput.max) || 200;
-      let value = Number(clusteringMinClusterSizeInput.value);
-      if (!Number.isFinite(value) || value < min) value = min;
-      if (value > max) value = max;
-      clusteringMinClusterSizeInput.value = String(Math.round(value));
-    }
-    if (clusteringMinSamplesInput) {
-      const min = Number(clusteringMinSamplesInput.min) || 1;
-      const max = Number(clusteringMinSamplesInput.max) || 200;
-      let value = Number(clusteringMinSamplesInput.value);
-      if (!Number.isFinite(value) || value < min) value = min;
-      if (value > max) value = max;
-      clusteringMinSamplesInput.value = String(Math.round(value));
-    }
+  function initThemeControls() {
+    themeConfigCards.forEach((card) => {
+      const themeId = card.dataset.themeId;
+      if (!themeId) return;
+      const algorithm = card.querySelector(".theme-algorithm");
+      const clusterSlider = card.querySelector(".theme-cluster-count");
+      const clusterValue = card.querySelector(".theme-cluster-value");
+      const kmeansParams = card.querySelector(".theme-kmeans-params");
+      const hdbscanParams = card.querySelector(".theme-hdbscan-params");
+      const kmeansAuto = card.querySelector(".theme-kmeans-auto");
+      const hdbscanAuto = card.querySelector(".theme-hdbscan-auto");
+      const minClusterSize = card.querySelector(".theme-hdbscan-min-size");
+      const minSamples = card.querySelector(".theme-hdbscan-min-samples");
+      themeControls[themeId] = {
+        algorithm,
+        clusterSlider,
+        clusterValue,
+        kmeansParams,
+        hdbscanParams,
+        kmeansAuto,
+        hdbscanAuto,
+        minClusterSize,
+        minSamples,
+      };
+      clusteringState.themeParams[themeId] = clusteringState.themeParams[themeId] || {
+        autoKMeans: false,
+        autoHdbscan: false,
+      };
+      updateThemeClusterLabel(themeId);
+      updateThemeAlgorithmState(themeId);
+      sanitizeThemeHdbscanInputs(themeId);
+      if (algorithm) {
+        algorithm.addEventListener("change", () => updateThemeAlgorithmState(themeId));
+      }
+      if (clusterSlider) {
+        clusterSlider.addEventListener("input", () => updateThemeClusterLabel(themeId));
+      }
+      if (kmeansAuto) {
+        kmeansAuto.addEventListener("click", () => {
+          setThemeHdbscanAutoMode(themeId, false);
+          setThemeKMeansAutoMode(themeId, !clusteringState.themeParams[themeId].autoKMeans);
+        });
+      }
+      if (hdbscanAuto) {
+        hdbscanAuto.addEventListener("click", () => {
+          setThemeKMeansAutoMode(themeId, false);
+          setThemeHdbscanAutoMode(themeId, !clusteringState.themeParams[themeId].autoHdbscan);
+        });
+      }
+      if (minClusterSize) {
+        minClusterSize.addEventListener("change", () => sanitizeThemeHdbscanInputs(themeId));
+      }
+      if (minSamples) {
+        minSamples.addEventListener("change", () => sanitizeThemeHdbscanInputs(themeId));
+      }
+    });
   }
 
   function updateClusteringMetricDataset(value) {
@@ -251,7 +431,25 @@
     }
   }
 
-  function updateClusteringMetricOptions(metrics = []) {
+  function getClusteringLastUrl(themeId) {
+    if (typeof API_ROUTES.clusteringLast === "function") {
+      return API_ROUTES.clusteringLast(themeId);
+    }
+    if (themeId) {
+      return `${API_ROUTES.clusteringLast}?theme=${encodeURIComponent(themeId)}`;
+    }
+    return API_ROUTES.clusteringLast;
+  }
+
+  function setProgress(isRunning, text = "") {
+    if (!progressBanner) return;
+    progressBanner.hidden = !isRunning;
+    if (progressText) {
+      progressText.textContent = text || (isRunning ? "Running clustering…" : "");
+    }
+  }
+
+  function updateClusteringMetricOptions(metrics = [], themeId = clusteringState.activeTheme) {
     if (!clusteringMetricSelect) return;
     clusteringMetricSelect.innerHTML = "";
     if (!metrics.length) {
@@ -260,7 +458,10 @@
       option.textContent = "No metrics";
       clusteringMetricSelect.appendChild(option);
       clusteringMetricSelect.disabled = true;
-      clusteringState.metricKey = null;
+      clusteringState.metricKeyByTheme[themeId] = null;
+      if (themeId === clusteringState.activeTheme) {
+        clusteringState.metricKey = null;
+      }
       return;
     }
     metrics.forEach((metricKey) => {
@@ -270,12 +471,13 @@
       clusteringMetricSelect.appendChild(option);
     });
     clusteringMetricSelect.disabled = false;
-    const active =
-      clusteringState.metricKey && metrics.includes(clusteringState.metricKey)
-        ? clusteringState.metricKey
-        : metrics[0];
-    clusteringState.metricKey = active;
-    clusteringMetricSelect.value = active;
+    const previous = clusteringState.metricKeyByTheme[themeId];
+    const active = previous && metrics.includes(previous) ? previous : metrics[0];
+    clusteringState.metricKeyByTheme[themeId] = active;
+    if (themeId === clusteringState.activeTheme) {
+      clusteringState.metricKey = active;
+      clusteringMetricSelect.value = active;
+    }
   }
 
   function clearClusteringMetricChart() {
@@ -315,8 +517,9 @@
     return parts.length ? ` [${parts.join(" · ")}]` : "";
   }
 
-  function renderClusteringMetricChart() {
-    if (!clusteringMetricChart || !clusteringState.metricKey) {
+  function renderClusteringMetricChart(data = getActiveResult()) {
+    const metricKey = clusteringState.metricKeyByTheme[clusteringState.activeTheme] || clusteringState.metricKey;
+    if (!clusteringMetricChart || !metricKey) {
       clearClusteringMetricChart();
       return;
     }
@@ -324,8 +527,15 @@
       showMessage(clusteringMetricFeedback, "Plotly library failed to load.", true);
       return;
     }
-    const metricKey = clusteringState.metricKey;
-    const points = (clusteringState.points || [])
+    if (!data || !Array.isArray(data.points) || !data.points.length) {
+      clearClusteringMetricChart();
+      showMessage(
+        clusteringMetricFeedback,
+        getMessage("CLUSTERING_NO_METRICS", {}, "Run a clustering job to display the metric distribution."),
+      );
+      return;
+    }
+    const points = (data && data.points ? data.points : [])
       .map((point, index) => {
         const metrics = point.metrics || {};
         const value = Number(metrics[metricKey]);
@@ -673,49 +883,40 @@
     return Array.from(keys);
   }
 
-  function renderClusteringResults(data) {
-    const datasetName = data && data.dataset ? data.dataset : clusteringState.dataset;
-    const parameters = (data && data.parameters) || {};
-    clusteringState.dataset = datasetName || null;
-    clusteringState.algorithm = data && data.algorithm ? data.algorithm : null;
-    clusteringState.points = Array.isArray(data && data.points) ? data.points : [];
-    const incomingMetrics = Array.isArray(data && data.metrics) ? data.metrics : [];
-    const derivedMetrics = deriveMetricKeysFromPoints(clusteringState.points);
-    clusteringState.metrics = incomingMetrics.length ? incomingMetrics : derivedMetrics;
+  function renderActiveClustering() {
+    const data = getActiveResult();
+    const themeId = clusteringState.activeTheme;
+    updateActiveThemeUI(themeId);
+    const metrics =
+      data && Array.isArray(data.metrics) && data.metrics.length
+        ? data.metrics
+        : deriveMetricKeysFromPoints(data && data.points ? data.points : []);
 
-    if (data && data.algorithm === "kmeans") {
-      setKMeansAutoMode(parameters.mode === "auto");
-      const clusterCount = Number(parameters.cluster_count);
-      if (clusteringClusterSlider && Number.isFinite(clusterCount)) {
-        clusteringClusterSlider.value = String(clusterCount);
-        updateClusterSliderLabel();
-      }
-    }
-
-    updateClusteringMetricDataset(datasetName);
-    updateClusteringMetricOptions(clusteringState.metrics);
-    if (!clusteringState.metrics.length) {
+    updateClusteringMetricDataset(data && data.dataset ? data.dataset : clusteringState.dataset);
+    updateClusteringMetricOptions(metrics, themeId);
+    if (!metrics.length) {
       showMessage(
         clusteringMetricFeedback,
         getMessage("CLUSTERING_NO_METRICS", {}, "Run a clustering job to display the metric distribution."),
       );
     }
-    renderClusteringMetricChart();
+    renderClusteringMetricChart(data);
 
     if (!data || !Array.isArray(data.points)) {
       if (clusteringChart) {
         clusteringChart.innerHTML = "";
       }
       renderClusteringSummary(data);
+      renderMembershipTable(data);
       return;
     }
 
     if (clusteringChart && window.Plotly) {
       const hoverTexts = data.points.map((point) => {
         const lines = [`${point.path}`];
-        const metrics = point.metrics || {};
-        Object.keys(metrics).forEach((key) => {
-          lines.push(`${key}: ${formatMetricValue(metrics[key])}`);
+        const pointMetrics = point.metrics || {};
+        Object.keys(pointMetrics).forEach((key) => {
+          lines.push(`${key}: ${formatMetricValue(pointMetrics[key])}`);
         });
         return lines.join("<br>");
       });
@@ -753,84 +954,110 @@
     renderMembershipTable(data);
   }
 
+  function renderClusteringResults(themeId, data) {
+    if (!data) return;
+    const datasetName = data.dataset || clusteringState.dataset;
+    const parameters = data.parameters || {};
+    const incomingMetrics = Array.isArray(data.metrics) ? data.metrics : [];
+    const derivedMetrics = deriveMetricKeysFromPoints(data.points || []);
+    const metrics = incomingMetrics.length ? incomingMetrics : derivedMetrics;
+    clusteringState.dataset = datasetName || clusteringState.dataset;
+    clusteringState.algorithm = data.algorithm || clusteringState.algorithm;
+    const selectedMetric =
+      clusteringState.metricKeyByTheme[themeId] && metrics.includes(clusteringState.metricKeyByTheme[themeId])
+        ? clusteringState.metricKeyByTheme[themeId]
+        : metrics[0] || null;
+    clusteringState.metricKeyByTheme[themeId] = selectedMetric;
+    clusteringState.results[themeId] = { ...data, metrics };
+    if (!clusteringState.activeTheme) {
+      clusteringState.activeTheme = themeId;
+    }
+
+    if (clusteringState.activeTheme === themeId) {
+      clusteringState.metricKey = selectedMetric;
+      updateClusteringMetricDataset(datasetName);
+      updateClusteringMetricOptions(metrics, themeId);
+      renderActiveClustering();
+    }
+  }
+
   async function runClusteringJob() {
     if (!clusteringLaunchButton) return;
     updateFeatureConfigState();
     updateEmbeddingDimsLabel();
-    const algorithm = clusteringAlgorithmSelect ? clusteringAlgorithmSelect.value : "kmeans";
+    const themesPayload = CLUSTERING_THEMES.map((theme) => {
+      const controls = themeControls[theme.id] || {};
+      const params = clusteringState.themeParams[theme.id] || {};
+      const algorithm = controls.algorithm ? controls.algorithm.value : "kmeans";
+      const payload = {
+        theme: theme.id,
+        algorithm,
+      };
+      if (algorithm === "kmeans") {
+        if (params.autoKMeans) {
+          payload.auto_kmeans = true;
+        } else if (controls.clusterSlider) {
+          payload.cluster_count = Number(controls.clusterSlider.value);
+        }
+      } else if (algorithm === "hdbscan") {
+        if (params.autoHdbscan) {
+          payload.auto_hdbscan = true;
+        } else {
+          sanitizeThemeHdbscanInputs(theme.id);
+          payload.min_cluster_size = Number(controls.minClusterSize ? controls.minClusterSize.value : 5);
+          payload.min_samples = Number(controls.minSamples ? controls.minSamples.value : 5);
+        }
+      }
+      return payload;
+    });
+
     const payload = {
-      algorithm,
       feature_mode: clusteringState.featureMode || "metrics",
       embedding_dims: Number(clusteringState.embeddingDims) || 16,
+      themes: themesPayload,
     };
-    const isAutoKMeans = algorithm === "kmeans" && clusteringState.autoKMeans;
-    const isAutoHdbscan = algorithm === "hdbscan" && clusteringState.autoHdbscan;
-    if (algorithm === "kmeans") {
-      setHdbscanAutoMode(false);
-      if (isAutoKMeans) {
-        payload.auto_kmeans = true;
-      } else {
-        if (!clusteringClusterSlider) {
-          showMessage(clusteringFeedback, getMessage("CLUSTERING_KMEANS_COUNT_REQUIRED", {}, "k-means parameter not found."), true);
-          return;
-        }
-        payload.cluster_count = Number(clusteringClusterSlider.value);
-      }
-    } else {
-      setKMeansAutoMode(false);
-      if (isAutoHdbscan) {
-        payload.auto_hdbscan = true;
-      } else {
-        sanitizeHdbscanInputs();
-        if (!clusteringMinClusterSizeInput || !clusteringMinSamplesInput) {
-          showMessage(
-            clusteringFeedback,
-            getMessage("CLUSTERING_HDBSCAN_PARAMS_REQUIRED", {}, "HDBSCAN parameters are required."),
-            true,
-          );
-          return;
-        }
-        const minClusterSize = Number(clusteringMinClusterSizeInput.value);
-        const minSamples = Number(clusteringMinSamplesInput.value);
-        if (!Number.isFinite(minClusterSize) || !Number.isFinite(minSamples)) {
-          showMessage(
-            clusteringFeedback,
-            getMessage("CLUSTERING_INVALID_HDBSCAN_VALUES", {}, "Invalid HDBSCAN values."),
-            true,
-          );
-          return;
-        }
-        payload.min_cluster_size = minClusterSize;
-        payload.min_samples = minSamples;
-      }
-    }
 
     showMessage(
       clusteringFeedback,
-      isAutoHdbscan
-        ? getMessage("CLUSTERING_AUTO_HDBSCAN", {}, "Auto-searching HDBSCAN parameters...")
-        : isAutoKMeans
-          ? getMessage("CLUSTERING_AUTO_KMEANS", {}, "Auto-searching best k...")
-          : getMessage("CLUSTERING_RUNNING", {}, "Running clustering..."),
+      getMessage("CLUSTERING_RUNNING", {}, "Running clustering..."),
     );
     clusteringLaunchButton.disabled = true;
+    setProgress(true, "Running clustering across themes…");
     try {
+      const successes = {};
+      const failures = [];
+      setProgress(true, `Clustering ${themesPayload.length} theme(s)…`);
       const result = await requestJSON(API_ROUTES.clustering, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      renderClusteringResults(result);
-      const pointCount = Array.isArray(result.points) ? result.points.length : 0;
-      const paramsDetail = formatClusteringParameters(result.algorithm, result.parameters);
-      showMessage(
-        clusteringFeedback,
-        getMessage(
-          "CLUSTERING_COMPLETED",
-          { algorithm: result.algorithm, details: paramsDetail, count: pointCount, plural: pointCount > 1 ? "s" : "" },
-          `Clustering ${result.algorithm} completed${paramsDetail} (${pointCount} file${pointCount > 1 ? "s" : ""}).`,
-        ),
-      );
+      const resultMap = result && result.results ? result.results : result.theme ? { [result.theme]: result } : {};
+      Object.entries(resultMap).forEach(([themeId, value]) => renderClusteringResults(themeId, value));
+      if (!clusteringState.activeTheme && Object.keys(resultMap).length) {
+        clusteringState.activeTheme = Object.keys(resultMap)[0];
+      }
+      if (clusteringState.activeTheme) {
+        setActiveTheme(clusteringState.activeTheme);
+      }
+      const active = getActiveResult();
+      if (active) {
+        const pointCount = Array.isArray(active.points) ? active.points.length : 0;
+        const paramsDetail = formatClusteringParameters(active.algorithm, active.parameters);
+        showMessage(
+          clusteringFeedback,
+          getMessage(
+            "CLUSTERING_COMPLETED",
+            {
+              algorithm: active.algorithm,
+              details: paramsDetail,
+              count: pointCount,
+              plural: pointCount > 1 ? "s" : "",
+            },
+            `Clustering completed${paramsDetail} (${pointCount} file${pointCount > 1 ? "s" : ""}).`,
+          ),
+        );
+      }
     } catch (error) {
       showMessage(clusteringFeedback, error.message, true);
       if (clusteringChart && window.Plotly) {
@@ -838,31 +1065,48 @@
         clusteringChart.innerHTML = "";
       }
     } finally {
+      setProgress(false);
       clusteringLaunchButton.disabled = false;
     }
   }
 
   async function loadCachedClustering() {
     if (!clusteringChart && !clusteringForm) return;
-    try {
-      const data = await requestJSON(API_ROUTES.clusteringLast);
-      renderClusteringResults(data);
+    let loaded = 0;
+    for (const theme of CLUSTERING_THEMES) {
+      try {
+        const data = await requestJSON(getClusteringLastUrl(theme.id));
+        renderClusteringResults(theme.id, data);
+        loaded += 1;
+      } catch (error) {
+        // Ignore missing cache for this theme.
+      }
+    }
+    if (!getActiveResult() && Object.keys(clusteringState.results).length) {
+      clusteringState.activeTheme = Object.keys(clusteringState.results)[0];
+    }
+    if (getActiveResult() && loaded) {
+      setActiveTheme(clusteringState.activeTheme);
+      const data = getActiveResult();
       const pointCount = Array.isArray(data.points) ? data.points.length : 0;
       const paramsDetail = formatClusteringParameters(data.algorithm, data.parameters);
+      const themeName = getThemeById(clusteringState.activeTheme)?.label || clusteringState.activeTheme;
       showMessage(
         clusteringFeedback,
         getMessage(
           "CLUSTERING_LOADED",
           { algorithm: data.algorithm || "", details: paramsDetail, count: pointCount, plural: pointCount > 1 ? "s" : "" },
-          `Clustering ${data.algorithm || ""} loaded${paramsDetail} (${pointCount} file${pointCount > 1 ? "s" : ""}).`,
+          `Loaded cached clustering for ${themeName}${paramsDetail} (${pointCount} file${pointCount > 1 ? "s" : ""}).`,
         ),
       );
-    } catch (error) {
-      // No cached clustering available; stay silent.
     }
   }
 
   function initClusteringUI() {
+    renderThemeCards();
+    if (clusteringState.activeTheme) {
+      updateActiveThemeUI(clusteringState.activeTheme);
+    }
     if (clusteringForm) {
       clusteringForm.addEventListener("submit", (event) => event.preventDefault());
     }
@@ -874,58 +1118,25 @@
       embeddingDimsSlider.addEventListener("input", updateEmbeddingDimsLabel);
       updateEmbeddingDimsLabel();
     }
-    if (clusteringAlgorithmSelect) {
-      clusteringAlgorithmSelect.addEventListener("change", updateClusteringAlgorithmState);
-      updateClusteringAlgorithmState();
-    }
-    if (clusteringClusterSlider) {
-      clusteringClusterSlider.addEventListener("input", updateClusterSliderLabel);
-      updateClusterSliderLabel();
-    }
-    setKMeansAutoMode(clusteringState.autoKMeans);
-    if (clusteringKMeansAutoButton) {
-      clusteringKMeansAutoButton.addEventListener("click", () => {
-        if (clusteringAlgorithmSelect) {
-          clusteringAlgorithmSelect.value = "kmeans";
-          updateClusteringAlgorithmState();
-        }
-        setKMeansAutoMode(!clusteringState.autoKMeans);
-        const message = clusteringState.autoKMeans
-          ? getMessage("CLUSTERING_AUTO_KMEANS_ON", {}, "Auto k-means enabled (silhouette score).")
-          : getMessage("CLUSTERING_AUTO_KMEANS_OFF", {}, "Auto k-means disabled.");
-        showMessage(clusteringFeedback, message);
-      });
-    }
-    if (clusteringMinClusterSizeInput) {
-      clusteringMinClusterSizeInput.addEventListener("change", sanitizeHdbscanInputs);
-    }
-    if (clusteringMinSamplesInput) {
-      clusteringMinSamplesInput.addEventListener("change", sanitizeHdbscanInputs);
-    }
-    if (clusteringAutoButton) {
-      clusteringAutoButton.addEventListener("click", () => {
-        if (clusteringAlgorithmSelect) {
-          clusteringAlgorithmSelect.value = "hdbscan";
-          updateClusteringAlgorithmState();
-        }
-        setHdbscanAutoMode(!clusteringState.autoHdbscan);
-        const message = clusteringState.autoHdbscan
-          ? getMessage("CLUSTERING_AUTO_HDBSCAN_ON", {}, "Auto HDBSCAN enabled; parameters locked.")
-          : getMessage("CLUSTERING_AUTO_HDBSCAN_OFF", {}, "Auto mode disabled.");
-        showMessage(clusteringFeedback, message);
-      });
-    }
-    sanitizeHdbscanInputs();
+    initThemeControls();
     if (clusteringMetricSelect) {
       clusteringMetricSelect.addEventListener("change", (event) => {
-        clusteringState.metricKey = event.target.value || null;
+        const key = event.target.value || null;
+        clusteringState.metricKey = key;
+        if (clusteringState.activeTheme) {
+          clusteringState.metricKeyByTheme[clusteringState.activeTheme] = key;
+        }
         renderClusteringMetricChart();
       });
     }
     if (clusteringLaunchButton) {
       clusteringLaunchButton.addEventListener("click", runClusteringJob);
     }
+    if (clusteringState.activeTheme) {
+      setActiveTheme(clusteringState.activeTheme);
+    }
     void loadCachedClustering();
+    setProgress(false);
   }
 
   onReady(initClusteringUI);

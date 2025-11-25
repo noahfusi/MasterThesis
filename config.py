@@ -78,15 +78,31 @@ THRESHOLD_DESCRIPTIONS: dict[str, dict[str, str]] = {
 }
 
 # Clustering defaults
-CLUSTERING_METRIC_KEYS: list[str] = [
-    "NCSS",
-    "CCN",
-    "Functions",
-    "Duplication (%)",
-    "Max nesting depth",
-    "NCSS/Functions",
-    "CCN/Functions",
-]
+CLUSTERING_THEMES: dict[str, dict[str, object]] = {
+    "complexity": {
+        "label": "Complexity and logic structure",
+        "metrics": ["CCN", "Max nesting depth", "If/NCSS", "Loops/NCSS"],
+        "description": "Focus on branching, depth, and control-flow shape.",
+    },
+    "size": {
+        "label": "Size and duplication",
+        "metrics": ["NCSS", "Duplication (%)"],
+        "description": "Highlight very small or oversized files and duplicated code.",
+    },
+    "functions": {
+        "label": "Split into functions",
+        "metrics": ["Functions", "NCSS/Functions", "Vars/Functions"],
+        "description": "Check whether logic is broken down into smaller pieces.",
+    },
+    "style": {
+        "label": "Style",
+        "metrics": ["Total variables", "Vars/NCSS"],
+        "description": "Look at naming density and variable usage.",
+    },
+}
+CLUSTERING_METRIC_KEYS: list[str] = sorted(
+    {metric for theme in CLUSTERING_THEMES.values() for metric in theme.get("metrics", [])} | {"CCN/Functions"}
+)
 
 # Ollama defaults
 DEFAULT_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")

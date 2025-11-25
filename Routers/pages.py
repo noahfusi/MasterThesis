@@ -73,9 +73,9 @@ async def solution_clustering(request: Request):
     @param request Incoming FastAPI request.
     @return Jinja2 response for the solution clustering page.
     """
-    return templates.TemplateResponse(
-        "solution_clustering.html", _context(request, "Solution clustering", "clustering")
-    )
+    context = _context(request, "Solution clustering", "clustering")
+    context["clustering_themes"] = config.CLUSTERING_THEMES
+    return templates.TemplateResponse("solution_clustering.html", context)
 
 
 @router.get("/students", name="students")

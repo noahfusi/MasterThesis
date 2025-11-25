@@ -27,6 +27,36 @@ from LLM.ollama import generate_completion
 from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error
 
 router = APIRouter(prefix="/clustering", tags=["clustering"])
+THEMES = config.CLUSTERING_THEMES
+
+
+def _resolve_theme(theme: str | None) -> tuple[str, dict[str, object]]:
+    """
+    @brief Validate and normalize a requested clustering theme.
+    @param theme Theme identifier from the request (may be None).
+    @return Tuple of normalized theme key and its configuration.
+    @throws HTTPException When an unknown theme is requested.
+    """
+    if THEMES:
+        if theme:
+            normalized = str(theme).strip().lower().replace(" ", "_")
+            for key in THEMES:
+                if key.lower() == normalized:
+                    return key, THEMES[key]
+            raise HTTPException(status_code=400, detail=f"Unknown clustering theme '{theme}'.")
+        default_key = next(iter(THEMES))
+        return default_key, THEMES[default_key]
+    return "default", {"label": "Default", "metrics": METRIC_KEYS}
+
+
+def _cache_path(dataset: str, theme: str | None, filename: str) -> Path:
+    """
+    @brief Build a cache path that is namespaced per theme.
+    """
+    base = Path(filename)
+    suffix = f"_{theme}" if theme else ""
+    target_name = f"{base.stem}{suffix}{base.suffix}" if suffix else filename
+    return dataset_path(dataset) / target_name
 
 
 def _average_vector(vectors: list[list[float]]) -> list[float]:
@@ -107,6 +137,8 @@ class ClusteringRequest(BaseModel):
     @brief Request payload for triggering clustering.
     """
     dataset: str | None = None
+    theme: str | None = None
+    themes: list[ThemeClusteringConfig] | None = None
     algorithm: Literal["kmeans", "hdbscan"] = "kmeans"
     cluster_count: int | None = Field(default=None, ge=2, le=200)
     min_cluster_size: int | None = Field(default=None, ge=2, le=500)
@@ -115,6 +147,22 @@ class ClusteringRequest(BaseModel):
     auto_kmeans: bool = False
     feature_mode: Literal["metrics", "embeddings", "both"] = "metrics"
     embedding_dims: int = Field(default=16, ge=2, le=128)
+
+
+class ThemeClusteringConfig(BaseModel):
+    """
+    @brief Per-theme clustering configuration.
+    """
+    dataset: str | None = None
+    theme: str | None = None
+    algorithm: Literal["kmeans", "hdbscan"] = "kmeans"
+    cluster_count: int | None = Field(default=None, ge=2, le=200)
+    min_cluster_size: int | None = Field(default=None, ge=2, le=500)
+    min_samples: int | None = Field(default=None, ge=1, le=500)
+    auto_hdbscan: bool = False
+    auto_kmeans: bool = False
+    feature_mode: Literal["metrics", "embeddings", "both"] | None = None
+    embedding_dims: int | None = Field(default=None, ge=2, le=128)
 
 
 @router.post("/run")
@@ -127,195 +175,257 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     """
     dataset_name, _ = resolve_dataset_or_http_error(payload.dataset, require_raw=True)
     ensure_dataset_ready(dataset_name)
-    feature_mode = payload.feature_mode or "metrics"
-    embedding_dims = payload.embedding_dims or 16
-
-    files = load_metrics_entries(dataset_name)
-    embeddings = _load_structural_embeddings(dataset_name) if feature_mode in {"embeddings", "both"} else {}
-    metrics_lookup: dict[str, dict[str, object]] = {
-        entry.get("path", "").replace("\\", "/"): entry.get("metrics") or {} for entry in files
-    }
-    # Build the feature matrix for clustering (metrics, embeddings, or both).
-    normalized = build_feature_dataset(
-        files,
-        embeddings,
-        feature_mode=feature_mode,
-        embedding_dims=embedding_dims,
-        metric_keys=METRIC_KEYS,
-    )
-    if not normalized.entries:
+    base_files = load_metrics_entries(dataset_name)
+    if not base_files:
         raise HTTPException(status_code=400, detail=config.MESSAGES["CLUSTERING_NO_DATA"])
 
-    response_metric_keys = list(normalized.metric_keys) if normalized.metric_keys else []
-    if not response_metric_keys and metrics_lookup:
-        # fallback to all available metric keys for display when clustering ran without metrics
-        sample_metrics = next(iter(metrics_lookup.values()))
-        response_metric_keys = sorted(sample_metrics.keys())
+    def run_for_theme(
+        *,
+        theme_key: str,
+        theme_config: dict[str, object],
+        algorithm: str,
+        cluster_count: int | None,
+        min_cluster_size: int | None,
+        min_samples: int | None,
+        auto_hdbscan: bool,
+        auto_kmeans: bool,
+        feature_mode: str,
+        embedding_dims: int,
+    ) -> dict[str, object]:
+        metric_keys_for_theme = list(theme_config.get("metrics") or METRIC_KEYS)
+        embeddings = _load_structural_embeddings(dataset_name) if feature_mode in {"embeddings", "both"} else {}
+        metrics_lookup: dict[str, dict[str, object]] = {
+            entry.get("path", "").replace("\\", "/"): entry.get("metrics") or {} for entry in base_files
+        }
+        normalized = build_feature_dataset(
+            base_files,
+            embeddings,
+            feature_mode=feature_mode,
+            embedding_dims=embedding_dims,
+            metric_keys=metric_keys_for_theme,
+        )
+        if not normalized.entries:
+            raise HTTPException(status_code=400, detail=config.MESSAGES["CLUSTERING_NO_DATA"])
 
-    parameters: dict[str, object] = {}
-    if payload.algorithm == "kmeans":
-        if payload.auto_kmeans:
-            result, chosen = auto_kmeans_with_silhouette(normalized)
-            parameters.update({"mode": "auto", **chosen})
-        else:
-            if not payload.cluster_count:
-                raise HTTPException(status_code=400, detail=config.MESSAGES["CLUSTERING_KMEANS_COUNT_REQUIRED"])
-            result = run_kmeans_clustering(normalized, payload.cluster_count)
-            parameters["cluster_count"] = payload.cluster_count
-    else:
-        try:
-            if payload.auto_hdbscan:
-                result, chosen = auto_hdbscan_with_dbcv(normalized)
+        response_metric_keys = list(normalized.metric_keys) if normalized.metric_keys else []
+        if not response_metric_keys and metrics_lookup:
+            sample_metrics = next(iter(metrics_lookup.values()))
+            response_metric_keys = sorted(sample_metrics.keys())
+
+        parameters: dict[str, object] = {}
+        if algorithm == "kmeans":
+            if auto_kmeans:
+                result, chosen = auto_kmeans_with_silhouette(normalized)
                 parameters.update({"mode": "auto", **chosen})
-                min_cluster_size = chosen.get("min_cluster_size")
-                min_samples = chosen.get("min_samples")
             else:
-                # Heuristic defaults scale with dataset size to avoid degenerate clusters.
-                heuristic = max(3, min(len(normalized.entries) // 8 or 2, 25))
-                min_cluster_size = payload.min_cluster_size or heuristic
-                min_cluster_size = max(2, min(min_cluster_size, len(normalized.entries)))
-                min_samples = payload.min_samples or max(1, min_cluster_size // 2)
-                min_samples = max(1, min(min_samples, min_cluster_size))
-                result = run_hdbscan_clustering(
-                    normalized, min_cluster_size=min_cluster_size, min_samples=min_samples
-                )
-                parameters["min_cluster_size"] = min_cluster_size
-        except RuntimeError as exc:
-            raise HTTPException(
-                status_code=400,
-                detail="HDBSCAN did not produce any clusters. Adjust min_cluster_size/min_samples or use auto mode.",
-            ) from exc
-        parameters["min_samples"] = min_samples if min_samples is not None else parameters.get("min_samples")
-    parameters["feature_mode"] = feature_mode
-    parameters["embedding_dims"] = embedding_dims
-    print(
-        f"[clustering] dataset={dataset_name} algo={payload.algorithm} mode={feature_mode} "
-        f"dims={embedding_dims} params={parameters}"
-    )
-
-    # Reduce to 2D for visualization; fallback to trivial axes if PCA fails.
-    projection, axes = project_to_components(normalized, components=2)
-    if not projection:
-        projection = [(0.0, 0.0) for _ in normalized.entries]
-    if len(axes) < 2:
-        axes = ["Component 1", "Component 2"]
-
-    points_payload: list[dict[str, object]] = []
-    cluster_metric_sums: dict[int, dict[str, float]] = {}
-    cluster_counts: dict[int, int] = {}
-    # Precompute dataset-level averages for LLM label prompt.
-    dataset_metric_averages: dict[str, float] = {}
-    for key in response_metric_keys:
-        values = [entry.metrics.get(key) for entry in normalized.entries if isinstance(entry.metrics.get(key), (int, float, float))]
-        if values:
-            dataset_metric_averages[key] = sum(values) / len(values)
-    metric_keys = list(response_metric_keys)
-    # Walk normalized entries alongside labels to build response payloads and cluster aggregates.
-    for idx, (entry, label, coords) in enumerate(zip(normalized.entries, result.labels, projection)):
-        metrics_snapshot_base = metrics_lookup.get(entry.path, {})
-        metrics_snapshot = {key: metrics_snapshot_base.get(key) for key in metric_keys} if metric_keys else metrics_snapshot_base
-        probs = None
-        if result.probabilities and idx < len(result.probabilities):
-            probs = result.probabilities[idx]
-        if label >= 0:
-            cluster_counts[label] = cluster_counts.get(label, 0) + 1
-            sums = cluster_metric_sums.setdefault(label, {})
-            for key, value in (metrics_snapshot.items() if metrics_snapshot else []):
-                if isinstance(value, (int, float)):
-                    sums[key] = sums.get(key, 0.0) + float(value)
-        x, y = coords
-        points_payload.append(
-            {
-                "path": entry.path,
-                "cluster": label,
-                "x": x,
-                "y": y,
-                "metrics": metrics_snapshot,
-                "probabilities": probs,
-            }
+                if not cluster_count:
+                    raise HTTPException(status_code=400, detail=config.MESSAGES["CLUSTERING_KMEANS_COUNT_REQUIRED"])
+                result = run_kmeans_clustering(normalized, cluster_count)
+                parameters["cluster_count"] = cluster_count
+        else:
+            try:
+                if auto_hdbscan:
+                    result, chosen = auto_hdbscan_with_dbcv(normalized)
+                    parameters.update({"mode": "auto", **chosen})
+                    min_cluster_size = chosen.get("min_cluster_size")
+                    min_samples = chosen.get("min_samples")
+                else:
+                    heuristic = max(3, min(len(normalized.entries) // 8 or 2, 25))
+                    min_cluster_size = min_cluster_size or heuristic
+                    min_cluster_size = max(2, min(min_cluster_size, len(normalized.entries)))
+                    min_samples = min_samples or max(1, min_cluster_size // 2)
+                    min_samples = max(1, min(min_samples, min_cluster_size))
+                    result = run_hdbscan_clustering(
+                        normalized, min_cluster_size=min_cluster_size, min_samples=min_samples
+                    )
+                    parameters["min_cluster_size"] = min_cluster_size
+            except RuntimeError as exc:
+                raise HTTPException(
+                    status_code=400,
+                    detail="HDBSCAN did not produce any clusters. Adjust min_cluster_size/min_samples or use auto mode.",
+                ) from exc
+            parameters["min_samples"] = min_samples if min_samples is not None else parameters.get("min_samples")
+        parameters["feature_mode"] = feature_mode
+        parameters["embedding_dims"] = embedding_dims
+        print(
+            f"[clustering] dataset={dataset_name} theme={theme_key} algo={algorithm} mode={feature_mode} "
+            f"dims={embedding_dims} params={parameters}"
         )
 
-    _persist_clustering_csv(dataset_name, payload.algorithm, points_payload)
+        projection, axes = project_to_components(normalized, components=2)
+        if not projection:
+            projection = [(0.0, 0.0) for _ in normalized.entries]
+        if len(axes) < 2:
+            axes = ["Component 1", "Component 2"]
 
-    clusters_payload = []
-    for info in result.clusters:
-        averages: dict[str, float] = {}
-        count = cluster_counts.get(info.id, 0)
-        if count:
-            sums = cluster_metric_sums.get(info.id, {})
-            for key in metric_keys:
-                total = sums.get(key)
-                if total is not None:
-                    averages[key] = total / count
-        label_text = f"Cluster {info.id + 1}"
-        description_text = None
-        try:
-            representative = next((p for p in points_payload if p.get("cluster") == info.id), None)
-            representative_content = None
-            if representative:
-                rep_path = dataset_path(dataset_name) / config.RAW_FOLDER_NAME / (representative.get("path") or "")
-                if rep_path.is_file():
-                    try:
-                        representative_content = rep_path.read_text(encoding="utf-8")
-                    except OSError:
-                        representative_content = None
-            prompt = config.CLUSTER_LABEL_PROMPT.format(
-                cluster_metrics=averages,
-                dataset_metrics=dataset_metric_averages,
-                representative=representative_content or (representative.get("path") if representative else "N/A"),
+        points_payload: list[dict[str, object]] = []
+        cluster_metric_sums: dict[int, dict[str, float]] = {}
+        cluster_counts: dict[int, int] = {}
+        dataset_metric_averages: dict[str, float] = {}
+        for key in response_metric_keys:
+            values = [
+                entry.metrics.get(key)
+                for entry in normalized.entries
+                if isinstance(entry.metrics.get(key), (int, float, float))
+            ]
+            if values:
+                dataset_metric_averages[key] = sum(values) / len(values)
+        metric_keys = list(response_metric_keys)
+        for idx, (entry, label, coords) in enumerate(zip(normalized.entries, result.labels, projection)):
+            metrics_snapshot_base = metrics_lookup.get(entry.path, {})
+            metrics_snapshot = {key: metrics_snapshot_base.get(key) for key in metric_keys} if metric_keys else metrics_snapshot_base
+            probs = None
+            if result.probabilities and idx < len(result.probabilities):
+                probs = result.probabilities[idx]
+            if label >= 0:
+                cluster_counts[label] = cluster_counts.get(label, 0) + 1
+                sums = cluster_metric_sums.setdefault(label, {})
+                for key, value in (metrics_snapshot.items() if metrics_snapshot else []):
+                    if isinstance(value, (int, float)):
+                        sums[key] = sums.get(key, 0.0) + float(value)
+            x, y = coords
+            points_payload.append(
+                {
+                    "path": entry.path,
+                    "cluster": label,
+                    "x": x,
+                    "y": y,
+                    "metrics": metrics_snapshot,
+                    "probabilities": probs,
+                }
             )
-            completion = generate_completion(prompt)
-            parsed_label, parsed_description = _parse_llm_label(completion, label_text)
-            label_text = parsed_label or label_text
-            description_text = parsed_description or description_text
-        except Exception:
-            label_text = label_text
-        clusters_payload.append(
+
+        _persist_clustering_csv(dataset_name, algorithm, points_payload, theme_key)
+
+        clusters_payload = []
+        for info in result.clusters:
+            averages: dict[str, float] = {}
+            count = cluster_counts.get(info.id, 0)
+            if count:
+                sums = cluster_metric_sums.get(info.id, {})
+                for key in metric_keys:
+                    total = sums.get(key)
+                    if total is not None:
+                        averages[key] = total / count
+            label_text = f"Cluster {info.id + 1}"
+            description_text = None
+            try:
+                representative = next((p for p in points_payload if p.get("cluster") == info.id), None)
+                representative_content = None
+                if representative:
+                    rep_path = dataset_path(dataset_name) / config.RAW_FOLDER_NAME / (representative.get("path") or "")
+                    if rep_path.is_file():
+                        try:
+                            representative_content = rep_path.read_text(encoding="utf-8")
+                        except OSError:
+                            representative_content = None
+                prompt = config.CLUSTER_LABEL_PROMPT.format(
+                    cluster_metrics=averages,
+                    dataset_metrics=dataset_metric_averages,
+                    representative=representative_content or (representative.get("path") if representative else "N/A"),
+                )
+                completion = generate_completion(prompt)
+                parsed_label, parsed_description = _parse_llm_label(completion, label_text)
+                label_text = parsed_label or label_text
+                description_text = parsed_description or description_text
+            except Exception:
+                label_text = label_text
+            clusters_payload.append(
+                {
+                    "id": info.id,
+                    "label": f"Cluster {info.id + 1}: {label_text}",
+                    "size": info.size,
+                    "centroid": info.centroid,
+                    "metrics": averages,
+                    "description": description_text,
+                }
+            )
+        _persist_clustering_meta(dataset_name, algorithm, parameters, clusters_payload, theme_key)
+
+        return {
+            "dataset": dataset_name,
+            "theme": theme_key,
+            "theme_label": theme_config.get("label") or theme_key,
+            "theme_metrics": metric_keys_for_theme,
+            "algorithm": algorithm,
+            "parameters": parameters,
+            "metrics": response_metric_keys,
+            "points": points_payload,
+            "clusters": clusters_payload,
+            "axes": {"x": axes[0], "y": axes[1]},
+            "noise": result.noise,
+        }
+
+    requests: list[dict[str, object]] = []
+    if payload.themes:
+        for theme_cfg in payload.themes:
+            theme_key, resolved_config = _resolve_theme(theme_cfg.theme)
+            requests.append(
+                {
+                    "theme_key": theme_key,
+                    "theme_config": resolved_config,
+                    "algorithm": theme_cfg.algorithm or payload.algorithm,
+                    "cluster_count": theme_cfg.cluster_count or payload.cluster_count,
+                    "min_cluster_size": theme_cfg.min_cluster_size or payload.min_cluster_size,
+                    "min_samples": theme_cfg.min_samples or payload.min_samples,
+                    "auto_hdbscan": bool(theme_cfg.auto_hdbscan or False),
+                    "auto_kmeans": bool(theme_cfg.auto_kmeans or False),
+                    "feature_mode": theme_cfg.feature_mode or payload.feature_mode or "metrics",
+                    "embedding_dims": theme_cfg.embedding_dims or payload.embedding_dims or 16,
+                }
+            )
+    else:
+        theme_key, resolved_config = _resolve_theme(payload.theme)
+        requests.append(
             {
-                "id": info.id,
-                "label": f"Cluster {info.id + 1}: {label_text}",
-                "size": info.size,
-                "centroid": info.centroid,
-                "metrics": averages,
-                "description": description_text,
+                "theme_key": theme_key,
+                "theme_config": resolved_config,
+                "algorithm": payload.algorithm,
+                "cluster_count": payload.cluster_count,
+                "min_cluster_size": payload.min_cluster_size,
+                "min_samples": payload.min_samples,
+                "auto_hdbscan": payload.auto_hdbscan,
+                "auto_kmeans": payload.auto_kmeans,
+                "feature_mode": payload.feature_mode or "metrics",
+                "embedding_dims": payload.embedding_dims or 16,
             }
         )
-    _persist_clustering_meta(dataset_name, payload.algorithm, parameters, clusters_payload)
 
-    return {
-        "dataset": dataset_name,
-        "algorithm": payload.algorithm,
-        "parameters": parameters,
-        "metrics": response_metric_keys,
-        "points": points_payload,
-        "clusters": clusters_payload,
-        "axes": {"x": axes[0], "y": axes[1]},
-        "noise": result.noise,
-    }
+    results: dict[str, object] = {}
+    for params in requests:
+        result_payload = run_for_theme(**params)
+        results[params["theme_key"]] = result_payload
+
+    if len(results) == 1:
+        return next(iter(results.values()))
+    return {"dataset": dataset_name, "results": results}
 
 
 @router.get("/last", name="last-clustering")
-async def read_last_clustering(dataset: str | None = None) -> dict[str, object]:
+async def read_last_clustering(dataset: str | None = None, theme: str | None = None) -> dict[str, object]:
     """
     @brief Load the last saved clustering for a dataset.
     @param dataset Dataset name (optional, uses current selection).
+    @param theme Theme identifier (optional, defaults to first theme).
     @return Cached clustering result.
     @throws HTTPException Si aucun clustering n'est disponible ou sur erreur d'E/S.
     """
     dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=True)
     ensure_dataset_ready(dataset_name)
-    return _load_cached_clustering(dataset_name)
+    theme_key, theme_config = _resolve_theme(theme)
+    return _load_cached_clustering(dataset_name, theme_key, list(theme_config.get("metrics") or METRIC_KEYS))
 
 
-def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str, object]]) -> None:
+def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str, object]], theme: str | None) -> None:
     """
     @brief Persist clustering projection to a CSV file for reuse.
     @param dataset Dataset name owning the clustering.
     @param algorithm Algorithm identifier stored alongside the results.
     @param points List of clustering point payloads to serialize.
+    @param theme Optional theme key to namespace the cache.
     @throws HTTPException If the CSV cannot be written.
     """
-    target = dataset_path(dataset) / config.CLUSTERING_CACHE_FILENAME
+    target = _cache_path(dataset, theme, config.CLUSTERING_CACHE_FILENAME)
     fieldnames = ["path", "cluster", "x", "y", "algorithm", "probabilities"]
     try:
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -342,13 +452,23 @@ def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str,
 
 
 def _persist_clustering_meta(
-    dataset: str, algorithm: str, parameters: dict[str, object], clusters: list[dict[str, object]]
+    dataset: str,
+    algorithm: str,
+    parameters: dict[str, object],
+    clusters: list[dict[str, object]],
+    theme: str | None,
 ) -> None:
     """
     @brief Persist clustering metadata (labels, descriptions, metrics) to JSON.
     """
-    target = dataset_path(dataset) / config.CLUSTERING_META_FILENAME
-    payload = {"dataset": dataset, "algorithm": algorithm, "parameters": parameters, "clusters": clusters}
+    target = _cache_path(dataset, theme, config.CLUSTERING_META_FILENAME)
+    payload = {
+        "dataset": dataset,
+        "algorithm": algorithm,
+        "parameters": parameters,
+        "clusters": clusters,
+        "theme": theme,
+    }
     try:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -356,14 +476,19 @@ def _persist_clustering_meta(
         return
 
 
-def _load_cached_clustering(dataset: str) -> dict[str, object]:
+def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[str] | None = None) -> dict[str, object]:
     """
     @brief Reload clustering results from the CSV cache and recompute summaries.
     @param dataset Dataset name.
+    @param theme Theme identifier for the cached clustering.
     @return Clustering payload reconstructed from cached labels and fresh metrics.
     @throws HTTPException When cache or metrics are unavailable/invalid.
     """
-    cache_path = dataset_path(dataset) / config.CLUSTERING_CACHE_FILENAME
+    cache_path = _cache_path(dataset, theme, config.CLUSTERING_CACHE_FILENAME)
+    if not cache_path.exists() and theme:
+        legacy_cache = dataset_path(dataset) / config.CLUSTERING_CACHE_FILENAME
+        if legacy_cache.exists():
+            cache_path = legacy_cache
     if not cache_path.exists():
         raise HTTPException(status_code=404, detail=config.MESSAGES["CLUSTERING_NO_METRICS"])
 
@@ -407,7 +532,8 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
     if not files:
         raise HTTPException(status_code=404, detail=config.MESSAGES["CLUSTERING_NO_METRICS"])
 
-    normalized = normalize_dataset(files, METRIC_KEYS)
+    metric_keys = list(metric_keys or METRIC_KEYS)
+    normalized = normalize_dataset(files, metric_keys)
     if not normalized.entries:
         raise HTTPException(status_code=400, detail="Unable to normalize metrics for clustering.")
 
@@ -447,7 +573,11 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
         )
 
     clusters_payload = []
-    meta_path = dataset_path(dataset) / config.CLUSTERING_META_FILENAME
+    meta_path = _cache_path(dataset, theme, config.CLUSTERING_META_FILENAME)
+    if not meta_path.exists() and theme:
+        legacy_meta = dataset_path(dataset) / config.CLUSTERING_META_FILENAME
+        if legacy_meta.exists():
+            meta_path = legacy_meta
     meta_lookup: dict[int, dict[str, object]] = {}
     if meta_path.exists():
         try:
@@ -484,11 +614,13 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
 
     noise = sum(1 for label in labels if label == -1)
     axes = {"x": "Component 1", "y": "Component 2"}
-    parameters = {"mode": "cached", "source": "clustering.csv"}
+    parameters = {"mode": "cached", "source": cache_path.name, "theme": theme}
     # Persist meta in case labels/descriptions need to survive reloads.
-    _persist_clustering_meta(dataset, algorithm, parameters, clusters_payload)
+    _persist_clustering_meta(dataset, algorithm, parameters, clusters_payload, theme)
     return {
         "dataset": dataset,
+        "theme": theme,
+        "theme_label": (THEMES.get(theme, {}) if theme else {}).get("label") or theme,
         "algorithm": algorithm,
         "parameters": parameters,
         "metrics": metric_keys,
