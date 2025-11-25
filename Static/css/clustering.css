@@ -342,6 +342,40 @@
   min-height: 420px;
 }
 
+#clustering-membership {
+  min-height: 260px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.membership-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.membership-table th,
+.membership-table td {
+  padding: 0.35rem 0.45rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: right;
+}
+
+.membership-table th:first-child,
+.membership-table td:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: #fff;
+}
+
+.membership-table th {
+  background: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .clustering-metric-dataset {
   display: flex;
   flex-direction: column;
@@ -429,6 +463,22 @@
 
 .cluster-reasons li {
   margin-bottom: 0.2rem;
+}
+
+.cluster-color-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cluster-description {
+  margin: 0.2rem 0 0.5rem;
+  color: #334155;
+  font-size: 0.9rem;
 }
 
 .cluster-warning-note {

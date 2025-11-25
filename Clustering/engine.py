@@ -21,6 +21,7 @@ try:  # pragma: no cover - optional dependency
     import hdbscan as _hdbscan  # type: ignore
 except Exception:  # pragma: no cover - optional dependency
     _hdbscan = None
+    _HDBSCAN_IMPORT_ERROR = None
 from Clustering.utils import (
     average_vector,
     center_vectors,
@@ -79,6 +80,7 @@ class ClusteringResult:
     labels: list[int]
     clusters: list[ClusterInfo]
     noise: int = 0
+    probabilities: list[list[float]] | None = None
 
 
 def normalize_dataset(files: Sequence[dict[str, object]], metric_keys: Sequence[str] | None = None) -> NormalizedDataset:
@@ -283,8 +285,16 @@ def run_kmeans_clustering(dataset: NormalizedDataset, cluster_count: int, max_it
     labels = model.fit_predict(points).tolist()
     centroids = model.cluster_centers_.tolist() if hasattr(model, "cluster_centers_") else None
 
+    probabilities: list[list[float]] | None = None
+    try:
+        distances = model.transform(points)  # shape (n_samples, k)
+        probabilities = _fuzzy_memberships(distances)
+        labels = [int(max(range(len(probs)), key=lambda idx: probs[idx])) for probs in probabilities]
+    except Exception:
+        probabilities = None
+
     clusters = _build_cluster_summaries(labels, points, centroids_override=centroids)
-    return ClusteringResult(labels=labels, clusters=clusters, noise=0)
+    return ClusteringResult(labels=labels, clusters=clusters, noise=0, probabilities=probabilities)
 
 
 def auto_kmeans_with_silhouette(dataset: NormalizedDataset, cluster_counts: Sequence[int] | None = None) -> tuple[ClusteringResult, dict[str, object]]:
@@ -392,15 +402,23 @@ def run_hdbscan_clustering(
             labels = None
     if labels is None and _hdbscan is not None:
         # Fallback to CPU HDBSCAN if GPU path is unavailable
-        clusterer = _hdbscan.HDBSCAN(min_cluster_size=min_cluster_size, min_samples=min_samples)
+        clusterer = _hdbscan.HDBSCAN(min_cluster_size=min_cluster_size, min_samples=min_samples, prediction_data=True)
         labels = clusterer.fit_predict(points).tolist()
 
     if not labels or not any(label >= 0 for label in labels):
         raise RuntimeError("HDBSCAN did not produce any clusters.")
 
     clusters = _build_cluster_summaries(labels, points)
+    probabilities: list[list[float]] | None = None
+    try:
+        if _hdbscan is not None and "clusterer" in locals():
+            membership = _hdbscan.all_points_membership_vectors(clusterer)
+            probabilities = [[float(x) for x in row] for row in membership]
+    except Exception:
+        probabilities = None
+
     noise = sum(1 for label in labels if label == -1)
-    return ClusteringResult(labels=labels, clusters=clusters, noise=noise)
+    return ClusteringResult(labels=labels, clusters=clusters, noise=noise, probabilities=probabilities)
 
 
 def _compute_dbcv(points: list[list[float]], labels: list[int]) -> float | None:
@@ -573,3 +591,34 @@ def _build_cluster_summaries(
             centroid = average_vector(members)
         clusters.append(ClusterInfo(id=cluster_id, size=len(members), centroid=centroid))
     return clusters
+
+
+def _fuzzy_memberships(distances: Sequence[Sequence[float]], m: float = 2.0) -> list[list[float]]:
+    """
+    @brief Compute fuzzy c-means style memberships from distance matrix.
+    @param distances Matrix of distances (n_samples x k).
+    @param m Fuzziness parameter (m > 1).
+    @return Membership probabilities per sample.
+    """
+    memberships: list[list[float]] = []
+    for row in distances:
+        values = [float(d) for d in row]
+        if not values:
+            memberships.append([])
+            continue
+        # Handle zero distance with crisp assignment.
+        if any(d == 0 for d in values):
+            probs = [0.0 for _ in values]
+            for idx, d in enumerate(values):
+                if d == 0:
+                    probs[idx] = 1.0
+            memberships.append(probs)
+            continue
+        memberships_row: list[float] = []
+        for d_ik in values:
+            denom = sum(((d_ik / d_jk) ** (2 / (m - 1))) for d_jk in values if d_jk != 0)
+            denom = denom or 1.0
+            memberships_row.append(1.0 / denom)
+        total = sum(memberships_row) or 1.0
+        memberships.append([v / total for v in memberships_row])
+    return memberships

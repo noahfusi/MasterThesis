@@ -158,3 +158,53 @@ def generate_completion(
     if not isinstance(text, str):
         raise OllamaError("Response missing 'response' text.")
     return text
+
+
+def generate_completion_llmlingua(
+    prompt: str,
+    *,
+    model: str | None = None,
+    base_url: str | None = None,
+    timeout: float = config.DEFAULT_OLLAMA_TIMEOUT,
+) -> str:
+    """
+    @brief Send a prompt to Ollama's generate endpoint and return the full completion.
+    @param prompt Prompt text to send.
+    @param model Optional model override (defaults to config.FEEDBACK_MODEL).
+    @param base_url Ollama server base URL.
+    @param timeout HTTP timeout in seconds.
+    @return Generated completion text.
+    @throws OllamaError On HTTP or decoding failures.
+    """
+    target_model = model or config.FEEDBACK_MODEL
+    if not prompt.strip():
+        raise ValueError("prompt must be a non-empty string.")
+
+    payload = {
+        "model": target_model,
+        "prompt": prompt,
+        "stream": False,
+    }
+    url = _build_url(base_url or DEFAULT_OLLAMA_BASE_URL, "/api/generate")
+    data = json.dumps(payload).encode("utf-8")
+    req = request.Request(url, data=data, headers={"Content-Type": "application/json"}, method="POST")
+
+    try:
+        with request.urlopen(req, timeout=timeout) as resp:
+            response_data = resp.read()
+    except error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        message = f"Ollama returned HTTP {exc.code}: {detail or exc.reason}"
+        raise OllamaError(message) from exc
+    except error.URLError as exc:
+        raise OllamaError(f"Unable to reach Ollama at {url}: {exc.reason}") from exc
+
+    try:
+        decoded = json.loads(response_data.decode("utf-8"))
+    except json.JSONDecodeError as exc:
+        raise OllamaError("Invalid JSON response from Ollama.") from exc
+
+    text = decoded.get("response") or decoded.get("text") or ""
+    if not isinstance(text, str):
+        raise OllamaError("Response missing 'response' text.")
+    return text

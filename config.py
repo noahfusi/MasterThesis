@@ -23,6 +23,7 @@ METRICS_FILENAME = "metrics.csv"
 REFERENCE_METRICS_FILENAME = "reference_metrics.json"
 STUDENTS_OUTLIERS_FILENAME = "students_outliers.json"
 CLUSTERING_CACHE_FILENAME = "clustering.csv"
+CLUSTERING_META_FILENAME = "clustering_meta.json"
 REPORTS_SUBDIR = "reports"
 STUDENTS_REPORT_FILENAME = "students_outliers_report.md"
 
@@ -92,9 +93,29 @@ DEFAULT_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11
 DEFAULT_OLLAMA_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL", "bge-m3")
 DEFAULT_OLLAMA_TIMEOUT = 60.0
 FEEDBACK_MODEL = "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
+# "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
 FEEDBACK_PROMPT_WITH_REQUIREMENTS = (
-    "You are a code reviewer. Given the following programming assignment requirements and a student's code, "
-    "provide concise, actionable feedback (strengths, issues, and suggested fixes). "
+    "You are a code reviewer for an introductory programming course.  "
+    "Your goal is to evaluate a student's code based *only* on the given requirements."
+    "For each requirement :"
+    " 1. Restate the requirement in 1 sentence."
+    " 2. Evaluate whether the student's code satisfies it."
+    " 3. Provide concise, beginner-friendly comments explaining why (with references to the code)."
+    "After the requirement-by-requirement analysis, write:"
+    "- **Strengths:** What the student did well, focusing on clarity, structure, and correctness observable in the code."
+    "- **Weaknesses:** Concrete issues found in the code (without speculating about intent)."
+    "- **Improvements:** Actionable suggestions tailored for beginners (simpler logic, clearer structure, reducing duplication, using functions, reducing nesting, etc.)."
+    "Keep the tone constructive, short and educational."
+    "Do not mention grading or score"
+    "Format the feedback in markdown with clear sections : "
+    "Requirement Analysis :"
+    " <one section per requirement>"
+    "Strengths :"
+    " <bullet points>"
+    "Weaknesses :"
+    " <bullet points>"
+    "Improvements :"
+    " <bullet points with beginner friendly suggestions>"
     "Requirements:\\n{requirements}\\n\\nCode for {filename}:\\n{code}"
 )
 FEEDBACK_PROMPT_NO_REQUIREMENTS = (
@@ -102,6 +123,32 @@ FEEDBACK_PROMPT_NO_REQUIREMENTS = (
     "for the following code file: {filename}.\\n\\nCode:\\n{code}"
 )
 FEEDBACK_OUTPUT_DIRNAME = "feedbacks"
+CLUSTER_LABEL_PROMPT = (
+    "You are summarizing clusters of student code files."
+    "Your task is to compare : the cluster’s average metrics, the dataset-wide average metrics, the structure of the representative file."
+    "Use only this information, produce : "
+    "- a short label (max 10 words) that captures what distinguishes this cluster"
+    "- 2-3 sentences explaining what characterizes this cluster."
+    "Instructions :"
+    "Base your analysis strictly on the metrics provided (cluster vs dataset) and the representative file content/structure."
+    "Do not use any external standards or typical good/bad coding practices. Only compare values relatively (higher, lower, similar)."
+    "When analyzing the representative file, comment on observable structural aspects such as:"
+    "number and size of functions, depth of nesting, presence or absence of duplication, overall organization and readabilit"
+    "Do not speculate about unobservable aspects like code functionality, correctness, or intent."
+    "Be concise, factual and grounded only in the data provided."
+    "Format as: \\nLabel: <short label>\\nDescription: <sentences>.\\n"
+    "Cluster metrics: {cluster_metrics}\\nDataset averages: {dataset_metrics}\\nRepresentative file: {representative}"
+
+)
+CLUSTER_LABEL_PROMPT_OLD = (
+    "You are summarizing clusters of code files. Given the cluster's average metrics, "
+    "the dataset-wide average metrics, and the most representative file path, propose a short label "
+    "(max 10 words) and 2-3 sentences explaining what characterizes this cluster. "
+    "Only base your summary on the metrics and the representative file; do not speculate about other aspects. "
+    "When comparing the metrics only compare them to the provided metrics and not usual good/bad values. "
+    "Format as: \\nLabel: <short label>\\nDescription: <sentences>.\\n"
+    "Cluster metrics: {cluster_metrics}\\nDataset averages: {dataset_metrics}\\nRepresentative file: {representative}"
+)
 
 # Lizard analysis defaults
 DEFAULT_LIZARD_BIN = "lizard"

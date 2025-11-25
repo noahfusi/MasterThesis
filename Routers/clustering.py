@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Literal
+import re
 
 import csv
 import json
@@ -22,6 +23,7 @@ from Clustering import (
 )
 from Files.dataset_manager import dataset_path
 from Metrics.other_metrics import load_metrics_entries
+from LLM.ollama import generate_completion
 from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error
 
 router = APIRouter(prefix="/clustering", tags=["clustering"])
@@ -38,6 +40,31 @@ def _average_vector(vectors: list[list[float]]) -> list[float]:
     return [sum(values) / len(vectors) for values in zip(*vectors)]
 
 
+def _parse_llm_label(completion: str, fallback: str) -> tuple[str, str | None]:
+    """
+    @brief Extract label/description from LLM completion text.
+    """
+    label = fallback
+    description: str | None = None
+    if not completion or not isinstance(completion, str):
+        return label, description
+    text = completion.replace("\r", "\n")
+    match_label = re.search(r"label\s*:\s*(.+)", text, flags=re.IGNORECASE)
+    if match_label:
+        candidate = match_label.group(1).strip()
+        candidate = candidate.split("Description", 1)[0].strip()
+        if candidate:
+            label = candidate
+    match_desc = re.search(r"description\s*:\s*(.+)", text, flags=re.IGNORECASE | re.DOTALL)
+    if match_desc:
+        candidate = match_desc.group(1).strip()
+        if candidate:
+            description = candidate
+    if description is None:
+        lines = [line.strip() for line in text.splitlines() if line.strip()]
+        if len(lines) > 1:
+            description = " ".join(lines[1:])
+    return label, description
 def _load_structural_embeddings(dataset: str) -> dict[str, list[float]]:
     """
     @brief Load precomputed structural embeddings and collapse per-file averages.
@@ -176,11 +203,20 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     points_payload: list[dict[str, object]] = []
     cluster_metric_sums: dict[int, dict[str, float]] = {}
     cluster_counts: dict[int, int] = {}
+    # Precompute dataset-level averages for LLM label prompt.
+    dataset_metric_averages: dict[str, float] = {}
+    for key in response_metric_keys:
+        values = [entry.metrics.get(key) for entry in normalized.entries if isinstance(entry.metrics.get(key), (int, float, float))]
+        if values:
+            dataset_metric_averages[key] = sum(values) / len(values)
     metric_keys = list(response_metric_keys)
     # Walk normalized entries alongside labels to build response payloads and cluster aggregates.
-    for entry, label, coords in zip(normalized.entries, result.labels, projection):
+    for idx, (entry, label, coords) in enumerate(zip(normalized.entries, result.labels, projection)):
         metrics_snapshot_base = metrics_lookup.get(entry.path, {})
         metrics_snapshot = {key: metrics_snapshot_base.get(key) for key in metric_keys} if metric_keys else metrics_snapshot_base
+        probs = None
+        if result.probabilities and idx < len(result.probabilities):
+            probs = result.probabilities[idx]
         if label >= 0:
             cluster_counts[label] = cluster_counts.get(label, 0) + 1
             sums = cluster_metric_sums.setdefault(label, {})
@@ -195,6 +231,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
                 "x": x,
                 "y": y,
                 "metrics": metrics_snapshot,
+                "probabilities": probs,
             }
         )
 
@@ -210,15 +247,40 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
                 total = sums.get(key)
                 if total is not None:
                     averages[key] = total / count
+        label_text = f"Cluster {info.id + 1}"
+        description_text = None
+        try:
+            representative = next((p for p in points_payload if p.get("cluster") == info.id), None)
+            representative_content = None
+            if representative:
+                rep_path = dataset_path(dataset_name) / config.RAW_FOLDER_NAME / (representative.get("path") or "")
+                if rep_path.is_file():
+                    try:
+                        representative_content = rep_path.read_text(encoding="utf-8")
+                    except OSError:
+                        representative_content = None
+            prompt = config.CLUSTER_LABEL_PROMPT.format(
+                cluster_metrics=averages,
+                dataset_metrics=dataset_metric_averages,
+                representative=representative_content or (representative.get("path") if representative else "N/A"),
+            )
+            completion = generate_completion(prompt)
+            parsed_label, parsed_description = _parse_llm_label(completion, label_text)
+            label_text = parsed_label or label_text
+            description_text = parsed_description or description_text
+        except Exception:
+            label_text = label_text
         clusters_payload.append(
             {
                 "id": info.id,
-                "label": f"Cluster {info.id + 1}",
+                "label": f"Cluster {info.id + 1}: {label_text}",
                 "size": info.size,
                 "centroid": info.centroid,
                 "metrics": averages,
+                "description": description_text,
             }
         )
+    _persist_clustering_meta(dataset_name, payload.algorithm, parameters, clusters_payload)
 
     return {
         "dataset": dataset_name,
@@ -254,13 +316,17 @@ def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str,
     @throws HTTPException If the CSV cannot be written.
     """
     target = dataset_path(dataset) / config.CLUSTERING_CACHE_FILENAME
-    fieldnames = ["path", "cluster", "x", "y", "algorithm"]
+    fieldnames = ["path", "cluster", "x", "y", "algorithm", "probabilities"]
     try:
         target.parent.mkdir(parents=True, exist_ok=True)
         with target.open("w", encoding="utf-8", newline="") as handle:
             writer = csv.DictWriter(handle, fieldnames=fieldnames)
             writer.writeheader()
             for point in points:
+                probs = point.get("probabilities")
+                probs_str = ""
+                if isinstance(probs, list):
+                    probs_str = ";".join(f"{float(p):.6f}" for p in probs if isinstance(p, (int, float)))
                 writer.writerow(
                     {
                         "path": point.get("path"),
@@ -268,10 +334,26 @@ def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str,
                         "x": point.get("x"),
                         "y": point.get("y"),
                         "algorithm": algorithm,
+                        "probabilities": probs_str,
                     }
                 )
     except OSError as exc:
         raise HTTPException(status_code=500, detail=f"Impossible d'enregistrer le clustering: {exc}") from exc
+
+
+def _persist_clustering_meta(
+    dataset: str, algorithm: str, parameters: dict[str, object], clusters: list[dict[str, object]]
+) -> None:
+    """
+    @brief Persist clustering metadata (labels, descriptions, metrics) to JSON.
+    """
+    target = dataset_path(dataset) / config.CLUSTERING_META_FILENAME
+    payload = {"dataset": dataset, "algorithm": algorithm, "parameters": parameters, "clusters": clusters}
+    try:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError:
+        return
 
 
 def _load_cached_clustering(dataset: str) -> dict[str, object]:
@@ -312,7 +394,14 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
             y = float(row.get("y") or 0.0)
         except ValueError:
             x, y = 0.0, 0.0
-        point_lookup[path] = {"cluster": cluster, "coords": (x, y)}
+        probs_raw = (row.get("probabilities") or "").strip()
+        probs: list[float] | None = None
+        if probs_raw:
+            try:
+                probs = [float(val) for val in probs_raw.split(";") if val.strip() != ""]
+            except ValueError:
+                probs = None
+        point_lookup[path] = {"cluster": cluster, "coords": (x, y), "probabilities": probs}
 
     files = load_metrics_entries(dataset)
     if not files:
@@ -335,6 +424,7 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
         label = int(info["cluster"]) if info and "cluster" in info else -1
         labels.append(label)
         metrics_snapshot = {key: entry.metrics.get(key) for key in metric_keys}
+        probs = info.get("probabilities") if info else None
         if label >= 0:
             cluster_counts[label] = cluster_counts.get(label, 0) + 1
             sums = cluster_metric_sums.setdefault(label, {})
@@ -352,10 +442,23 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
                 "x": coords[0],
                 "y": coords[1],
                 "metrics": metrics_snapshot,
+                "probabilities": probs,
             }
         )
 
     clusters_payload = []
+    meta_path = dataset_path(dataset) / config.CLUSTERING_META_FILENAME
+    meta_lookup: dict[int, dict[str, object]] = {}
+    if meta_path.exists():
+        try:
+            meta_payload = json.loads(meta_path.read_text(encoding="utf-8"))
+            for entry in meta_payload.get("clusters", []) or []:
+                cid = entry.get("id")
+                if isinstance(cid, int):
+                    meta_lookup[cid] = entry
+        except (OSError, json.JSONDecodeError):
+            meta_lookup = {}
+
     for cluster_id, count in sorted(cluster_counts.items()):
         sums = cluster_metric_sums.get(cluster_id, {})
         averages: dict[str, float] = {}
@@ -364,19 +467,26 @@ def _load_cached_clustering(dataset: str) -> dict[str, object]:
             if total is not None:
                 averages[key] = total / count
         centroid = _average_vector(clusters_vectors.get(cluster_id, []))
-        clusters_payload.append(
-            {
-                "id": cluster_id,
-                "label": f"Cluster {cluster_id + 1}",
-                "size": count,
-                "centroid": centroid,
-                "metrics": averages,
-            }
-        )
+        entry = {
+            "id": cluster_id,
+            "label": f"Cluster {cluster_id + 1}",
+            "size": count,
+            "centroid": centroid,
+            "metrics": averages,
+        }
+        if cluster_id in meta_lookup:
+            meta_entry = meta_lookup[cluster_id]
+            if meta_entry.get("label"):
+                entry["label"] = meta_entry["label"]
+            if meta_entry.get("description"):
+                entry["description"] = meta_entry["description"]
+        clusters_payload.append(entry)
 
     noise = sum(1 for label in labels if label == -1)
     axes = {"x": "Component 1", "y": "Component 2"}
     parameters = {"mode": "cached", "source": "clustering.csv"}
+    # Persist meta in case labels/descriptions need to survive reloads.
+    _persist_clustering_meta(dataset, algorithm, parameters, clusters_payload)
     return {
         "dataset": dataset,
         "algorithm": algorithm,

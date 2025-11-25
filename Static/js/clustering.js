@@ -125,6 +125,12 @@
     if (duplicationHigh && (functionsLow || ncssHigh)) {
       reason.push("Heavy duplication with weak factoring");
     }
+    if (ncssHigh && duplicationHigh === false && complexityHigh === false) {
+      reason.push("Large but clean (low duplication)");
+    }
+    if (ncssHigh && duplicationHigh === false && functionsLow === false && complexityHigh === false) {
+      reason.push("Large file with unique content");
+    }
     if (complexityHigh && nestingHigh) {
       reason.push("Deeply nested and complex logic");
     }
@@ -472,7 +478,20 @@
     clusteringSummary.innerHTML = "<h2>Clusters</h2>";
     const body = document.createElement("div");
     body.className = "clustering-summary-body";
-    const clusters = data && Array.isArray(data.clusters) && data.clusters.length ? data.clusters : null;
+    const rawClusters = data && Array.isArray(data.clusters) && data.clusters.length ? data.clusters : null;
+    // Deduplicate clusters by id, preferring entries that have a description/LLM label.
+    let clusters = null;
+    if (rawClusters) {
+      const seen = new Map();
+      rawClusters.forEach((c) => {
+        const key = Number.isFinite(c.id) ? c.id : c.label || c.centroid?.toString();
+        const existing = seen.get(key);
+        if (!existing || (!existing.description && c.description)) {
+          seen.set(key, c);
+        }
+      });
+      clusters = Array.from(seen.values());
+    }
     const makeWarning = (text, severity = "danger") => {
       const note = document.createElement("p");
       note.className = "cluster-warning-note";
@@ -494,6 +513,9 @@
         const derived = deriveClusterLabel(cluster, metricStats);
         const card = document.createElement("article");
         card.className = "clustering-summary-card";
+        const colorSwatch = document.createElement("span");
+        colorSwatch.className = "cluster-color-swatch";
+        colorSwatch.style.background = getClusterColor(cluster.id);
         const centroidPreview = (cluster.centroid || [])
           .slice(0, 2)
           .map((value) => formatMetricValue(value))
@@ -502,7 +524,9 @@
         <h3>${cluster.label || `Cluster ${cluster.id + 1}`}</h3>
         <p>Size: ${cluster.size}</p>
         <p>Centroid (preview): ${centroidPreview || "-"}</p>
+        ${cluster.description ? `<p class="cluster-description">${cluster.description}</p>` : ""}
       `;
+        card.prepend(colorSwatch);
         if (derived.reasons && derived.reasons.length) {
           card.appendChild(makeWarning("Elevated metrics detected", "warning"));
           const reasons = document.createElement("ul");
@@ -559,6 +583,82 @@
       body.appendChild(noise);
     }
     clusteringSummary.appendChild(body);
+  }
+
+  function renderMembershipTable(data) {
+    const container = document.getElementById("clustering-membership");
+    if (!container) return;
+    container.innerHTML = "";
+    const points = Array.isArray(data?.points) ? data.points : [];
+    const rawClusters = Array.isArray(data?.clusters) ? data.clusters : [];
+    const clusters = (() => {
+      const seen = new Map();
+      rawClusters.forEach((c) => {
+        const key = Number.isFinite(c.id) ? c.id : c.label || c.centroid?.toString();
+        const existing = seen.get(key);
+        if (!existing || (!existing.description && c.description)) {
+          seen.set(key, c);
+        }
+      });
+      return Array.from(seen.values());
+    })();
+    if (!points.length || !clusters.length) {
+      container.textContent = "Run clustering to view soft memberships.";
+      return;
+    }
+    let hasProbs = points.some((p) => Array.isArray(p.probabilities) && p.probabilities.length);
+    let enrichedPoints = points;
+    if (!hasProbs) {
+      // Fallback: derive crisp probabilities from hard labels.
+      enrichedPoints = points.map((p) => {
+        if (typeof p.cluster !== "number" || p.cluster < 0) return p;
+        const probs = clusters.map((_, idx) => (idx === p.cluster ? 1.0 : 0.0));
+        return { ...p, probabilities: probs };
+      });
+      hasProbs = enrichedPoints.some((p) => Array.isArray(p.probabilities) && p.probabilities.length);
+      if (!hasProbs) {
+        container.textContent = "Soft memberships unavailable for this run.";
+        return;
+      }
+    }
+    const table = document.createElement("table");
+    table.className = "membership-table";
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    ["File", ...clusters.map((c) => c.label || `Cluster ${c.id + 1}`)].forEach((label) => {
+      const th = document.createElement("th");
+      th.textContent = label;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+    const tbody = document.createElement("tbody");
+    enrichedPoints
+      .map((p) => ({
+        path: p.path,
+        probs: Array.isArray(p.probabilities) ? p.probabilities : [],
+      }))
+      .sort((a, b) => {
+        const maxA = Math.max(...(a.probs || [0]));
+        const maxB = Math.max(...(b.probs || [0]));
+        return maxB - maxA;
+      })
+      .slice(0, 50)
+      .forEach((entry) => {
+        const tr = document.createElement("tr");
+        const name = document.createElement("td");
+        name.textContent = entry.path || "-";
+        tr.appendChild(name);
+        clusters.forEach((_, idx) => {
+          const td = document.createElement("td");
+          const prob = entry.probs && entry.probs[idx] !== undefined ? entry.probs[idx] : null;
+          td.textContent = prob !== null ? `${(prob * 100).toFixed(1)}%` : "-";
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    table.appendChild(tbody);
+    container.appendChild(table);
   }
 
   function deriveMetricKeysFromPoints(points = []) {
@@ -631,6 +731,13 @@
           color: data.points.map((point) => getClusterColor(point.cluster)),
           line: { width: 1, color: data.points.map((point) => getClusterColor(point.cluster)) },
         },
+        customdata: data.points.map((point) => {
+          const probs = Array.isArray(point.probabilities) ? point.probabilities : [];
+          return [probs.map((p) => (Number.isFinite(p) ? p : 0))];
+        }),
+        hovertemplate:
+          "<b>%{text}</b><br>" +
+          "Probabilities: %{customdata[0]}<extra></extra>",
       };
       const layout = {
         xaxis: { title: (data.axes && data.axes.x) || "Component 1" },
@@ -643,6 +750,7 @@
     }
 
     renderClusteringSummary(data);
+    renderMembershipTable(data);
   }
 
   async function runClusteringJob() {
