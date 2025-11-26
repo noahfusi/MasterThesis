@@ -23,7 +23,7 @@ from Clustering import (
 )
 from Files.dataset_manager import dataset_path
 from Metrics.other_metrics import load_metrics_entries
-from LLM.ollama import generate_completion
+from LLM import generate_completion
 from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error
 
 router = APIRouter(prefix="/clustering", tags=["clustering"])

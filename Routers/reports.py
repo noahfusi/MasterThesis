@@ -12,6 +12,7 @@ from pydantic import BaseModel, Field
 import config
 from Files.dataset_manager import dataset_path
 from Metrics.students import load_students_outliers
+from LLM import generate_completion
 from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error, resolve_relative_file
 
 router = APIRouter(prefix="/reports", tags=["reports"])
@@ -361,7 +362,17 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
                     lines.append(f"- {path} ({score:.2f})")
             lines.append("")
 
-    report_path.write_text("\n".join(lines).strip() + "\n", encoding="utf-8")
+    raw_report = "\n".join(lines).strip() + "\n"
+
+    # Summarize/refine via LLM
+    final_report = raw_report
+    try:
+        prompt = config.STUDENTS_REPORT_SUMMARY_PROMPT.format(report=raw_report)
+        final_report = generate_completion(prompt)
+    except Exception:
+        final_report = raw_report
+
+    report_path.write_text(final_report.strip() + "\n", encoding="utf-8")
     return report_path, highlighted_metrics, bool(combined_findings)
 class ReportRequest(BaseModel):
     """

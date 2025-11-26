@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 import config
 from Files.dataset_manager import dataset_path
-from LLM.ollama import OllamaError, generate_completion
+from LLM import LLMError, generate_completion
 from Routers.utils import resolve_dataset_or_http_error, resolve_relative_file
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
@@ -74,7 +74,7 @@ def _generate_file_feedback(dataset: str, raw_dir: Path, filename: str, output_r
     prompt = _format_prompt(relative, code, requirements)
     try:
         feedback = generate_completion(prompt)
-    except (OllamaError, ValueError):
+    except (LLMError, ValueError):
         return
 
     output_path = output_root / Path(relative).with_suffix(Path(relative).suffix + ".feedback.txt")

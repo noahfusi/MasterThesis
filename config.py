@@ -108,6 +108,11 @@ CLUSTERING_METRIC_KEYS: list[str] = sorted(
 DEFAULT_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
 DEFAULT_OLLAMA_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL", "bge-m3")
 DEFAULT_OLLAMA_TIMEOUT = 60.0
+LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "ollama").lower()
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+OPENAI_EMBED_MODEL = os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-3-small")
 FEEDBACK_MODEL = "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
 # "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
 FEEDBACK_PROMPT_WITH_REQUIREMENTS = (
@@ -137,6 +142,16 @@ FEEDBACK_PROMPT_WITH_REQUIREMENTS = (
 FEEDBACK_PROMPT_NO_REQUIREMENTS = (
     "You are a code reviewer. Provide concise, actionable feedback (strengths, issues, and suggested fixes) "
     "for the following code file: {filename}.\\n\\nCode:\\n{code}"
+)
+STUDENTS_REPORT_SUMMARY_PROMPT = (
+    "You are writing a concise, instructor-facing summary from an auto-generated markdown report about student code metrics.\\n"
+    "Rewrite the report below with clearer structure and brevity while keeping all concrete findings and numbers.\\n"
+    "Rules:\\n"
+    "- Keep headings and bullet points; reorder to highlight the most critical issues first.\\n"
+    "- Preserve all numeric values, cluster/context details, and file names.\\n"
+    "- Remove fluff or repetition; do not add new advice beyond what is implied.\\n"
+    "- Do NOT invent information.\\n"
+    "\\n[RAW REPORT]\\n{report}\\n"
 )
 FEEDBACK_OUTPUT_DIRNAME = "feedbacks"
 CLUSTER_LABEL_PROMPT = (

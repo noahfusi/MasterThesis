@@ -24,7 +24,7 @@ from Metrics.other_metrics import build_reference_metrics, generate_other_metric
 from Metrics.students import build_students_outliers
 from Lizard.run_analysis import LIZARD_FOLDER, analyze_dataset, _run_lizard
 from Tree_Sitter.structural_ast import build_rich_structural_representation
-from LLM.ollama import DEFAULT_EMBED_MODEL, OllamaError, request_embedding
+from LLM import request_embedding, LLMError
 from Routers.utils import (
     ensure_dataset_ready,
     read_utf8_or_error,
@@ -245,7 +245,7 @@ def _generate_structural_embeddings(dataset_name: str) -> str:
                 continue
             try:
                 embedding = request_embedding(text)
-            except (OllamaError, ValueError) as exc:
+            except (LLMError, ValueError) as exc:
                 logger.warning("Embedding generation skipped for %s (segment %s): %s", structural_file, index, exc)
                 skipped_segments += 1
                 continue
