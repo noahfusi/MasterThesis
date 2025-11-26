@@ -82,6 +82,7 @@
     featureMode: "metrics",
     embeddingDims: 16,
   };
+  const pendingRefresh = new Map();
 
   function computeClusterMetricStats(clusters = [], metricKeys = []) {
     const stats = {};
@@ -100,6 +101,11 @@
       stats[key] = { mean, stddev };
     });
     return stats;
+  }
+
+  function hasPendingDescriptions(data) {
+    const clusters = Array.isArray(data?.clusters) ? data.clusters : [];
+    return clusters.some((cluster) => cluster && cluster.llm_pending);
   }
 
   function parseStructuredDescription(text) {
@@ -169,6 +175,7 @@
       .join(", ");
     const parsed = parseStructuredDescription(cluster.description) || parseStructuredDescription(cluster.llm_output);
     const displayLabel = (parsed && parsed.label) || cluster.label || `Cluster ${cluster.id + 1}`;
+    const isPending = Boolean(cluster.llm_pending);
     const displayDescription =
       (parsed && parsed.description) ||
       (typeof cluster.description === "string" ? cluster.description : "") ||
@@ -177,11 +184,16 @@
       (parsed && parsed.comparison && parsed.comparison.length ? parsed.comparison : null) ||
       (Array.isArray(cluster.comparison) && cluster.comparison.length ? cluster.comparison : null);
     const comparisonSection = comparisons ? buildComparisonTable(comparisons) : "";
+    const descriptionBlock = displayDescription
+      ? `<p class="cluster-description">${displayDescription}</p>`
+      : isPending
+        ? `<p class="cluster-description is-pending">Description is being generated…</p>`
+        : "";
     return `
       <h3>${displayLabel}</h3>
       <p>Size: ${cluster.size}</p>
       <p>Centroid (preview): ${centroidPreview || "-"}</p>
-      ${displayDescription ? `<p class="cluster-description">${displayDescription}</p>` : ""}
+      ${descriptionBlock}
       ${comparisonSection}
     `;
   }
@@ -530,6 +542,37 @@
     progressBanner.hidden = !isRunning;
     if (progressText) {
       progressText.textContent = text || (isRunning ? "Running clustering…" : "");
+    }
+  }
+
+  function schedulePendingRefresh(themeId, attempt = 0) {
+    if (!themeId) return;
+    const existing = pendingRefresh.get(themeId);
+    const existingAttempt = existing?.attempt || 0;
+    const baseAttempt = Math.max(existingAttempt, attempt || 0);
+    if (baseAttempt >= 5) return;
+    if (existing?.timer) {
+      clearTimeout(existing.timer);
+    }
+    const nextAttempt = baseAttempt + 1;
+    const delay = Math.min(15000, 3000 * nextAttempt);
+    const timer = setTimeout(() => refreshThemeFromCache(themeId, nextAttempt), delay);
+    pendingRefresh.set(themeId, { attempt: nextAttempt, timer });
+  }
+
+  async function refreshThemeFromCache(themeId, attempt = 1) {
+    if (!themeId) return;
+    const existing = pendingRefresh.get(themeId);
+    if (existing?.timer) {
+      clearTimeout(existing.timer);
+    }
+    try {
+      const data = await requestJSON(getClusteringLastUrl(themeId));
+      renderClusteringResults(themeId, data);
+    } catch (error) {
+      if (attempt < 5) {
+        schedulePendingRefresh(themeId, attempt);
+      }
     }
   }
 
@@ -1044,6 +1087,15 @@
         : metrics[0] || null;
     clusteringState.metricKeyByTheme[themeId] = selectedMetric;
     clusteringState.results[themeId] = { ...data, metrics };
+    if (hasPendingDescriptions(data)) {
+      schedulePendingRefresh(themeId, pendingRefresh.get(themeId)?.attempt || 0);
+    } else if (pendingRefresh.has(themeId)) {
+      const existing = pendingRefresh.get(themeId);
+      if (existing?.timer) {
+        clearTimeout(existing.timer);
+      }
+      pendingRefresh.delete(themeId);
+    }
     if (!clusteringState.activeTheme) {
       clusteringState.activeTheme = themeId;
     }

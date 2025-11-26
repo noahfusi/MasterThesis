@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 import config
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, BackgroundTasks, HTTPException
 from pydantic import BaseModel, Field
 
 from Clustering import (
@@ -163,6 +163,81 @@ def _load_structural_embeddings(dataset: str) -> dict[str, list[float]]:
     return embeddings
 
 
+def _merge_cluster_into_meta(
+    dataset: str,
+    theme: str | None,
+    algorithm: str,
+    parameters: dict[str, object],
+    cluster: dict[str, object],
+) -> None:
+    """
+    @brief Update (or append) a cluster entry in the meta cache while keeping existing fields.
+    """
+    meta_path = _cache_path(dataset, theme, config.CLUSTERING_META_FILENAME)
+    existing_clusters: list[dict[str, object]] = []
+    stored_algorithm = algorithm
+    stored_parameters = dict(parameters)
+    if meta_path.exists():
+        try:
+            payload = json.loads(meta_path.read_text(encoding="utf-8"))
+            existing_clusters = list(payload.get("clusters") or [])
+            stored_algorithm = payload.get("algorithm") or stored_algorithm
+            stored_parameters = payload.get("parameters") or stored_parameters
+        except (OSError, json.JSONDecodeError):
+            existing_clusters = []
+    merged: list[dict[str, object]] = []
+    replaced = False
+    for entry in existing_clusters:
+        if entry.get("id") == cluster.get("id"):
+            merged.append({**entry, **cluster})
+            replaced = True
+        else:
+            merged.append(entry)
+    if not replaced:
+        merged.append(cluster)
+    _persist_clustering_meta(dataset, stored_algorithm, stored_parameters, merged, theme)
+
+
+def _generate_cluster_description(job: dict[str, object]) -> None:
+    """
+    @brief Background job to request an LLM description/label for a cluster and persist it.
+    """
+    dataset = job.get("dataset")
+    theme = job.get("theme")
+    algorithm = job.get("algorithm") or "hdbscan"
+    parameters = job.get("parameters") or {}
+    cluster = dict(job.get("cluster") or {})
+    cluster_id = cluster.get("id")
+    prompt = cluster.get("llm_prompt") or job.get("prompt")
+    base_label = job.get("label_prefix") or cluster.get("label")
+    if dataset is None or cluster_id is None or not prompt:
+        return
+    default_label = base_label or f"Cluster {cluster_id + 1}"
+    print(f"[clustering][llm] dataset={dataset} theme={theme} cluster={cluster_id} requesting description")
+    completion_text = None
+    comparison: list[dict[str, str]] = []
+    description_text = cluster.get("description")
+    label_text = default_label
+    try:
+        completion_text = generate_completion(prompt)
+        parsed_label, parsed_description = _parse_llm_label(completion_text, default_label)
+        label_text = parsed_label or default_label
+        description_text = parsed_description or description_text or completion_text
+        comparison = _extract_comparison(completion_text)
+    except Exception as exc:  # noqa: BLE001
+        description_text = description_text or f"LLM generation failed: {exc}"
+    updated_cluster = {
+        **cluster,
+        "label": f"{default_label}: {label_text}" if label_text and label_text != default_label else label_text,
+        "description": description_text,
+        "llm_output": completion_text,
+        "llm_prompt": prompt,
+        "llm_pending": False,
+        "comparison": comparison,
+    }
+    _merge_cluster_into_meta(dataset, theme, algorithm, parameters, updated_cluster)
+
+
 class ClusteringRequest(BaseModel):
     """
     @brief Request payload for triggering clustering.
@@ -197,7 +272,7 @@ class ThemeClusteringConfig(BaseModel):
 
 
 @router.post("/run")
-async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
+async def launch_clustering(payload: ClusteringRequest, background_tasks: BackgroundTasks) -> dict[str, object]:
     """
     @brief Run clustering on a dataset using k-means or hdbscan.
     @param payload Request body configuring dataset and algorithm parameters.
@@ -209,6 +284,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     base_files = load_metrics_entries(dataset_name)
     if not base_files:
         raise HTTPException(status_code=400, detail=config.MESSAGES["CLUSTERING_NO_DATA"])
+    background_jobs: list[dict[str, object]] = []
 
     def run_for_theme(
         *,
@@ -223,6 +299,10 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
         feature_mode: str,
         embedding_dims: int,
     ) -> dict[str, object]:
+        print(
+            f"[clustering] triggering theme={theme_key} dataset={dataset_name} "
+            f"algo={algorithm} feature_mode={feature_mode} dims={embedding_dims}"
+        )
         metric_keys_for_theme = list(theme_config.get("metrics") or METRIC_KEYS)
         embeddings = _load_structural_embeddings(dataset_name) if feature_mode in {"embeddings", "both"} else {}
         metrics_lookup: dict[str, dict[str, object]] = {
@@ -328,7 +408,7 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
 
         _persist_clustering_csv(dataset_name, algorithm, points_payload, theme_key)
 
-        clusters_payload = []
+        clusters_payload: list[dict[str, object]] = []
         for info in result.clusters:
             averages: dict[str, float] = {}
             count = cluster_counts.get(info.id, 0)
@@ -338,13 +418,12 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
                     total = sums.get(key)
                     if total is not None:
                         averages[key] = total / count
-            label_text = f"Cluster {info.id + 1}"
-            description_text = None
-            completion_text = None
+            base_label = f"Cluster {info.id + 1}"
             prompt_text = None
+            representative = None
+            representative_content = None
             try:
                 representative = next((p for p in points_payload if p.get("cluster") == info.id), None)
-                representative_content = None
                 if representative:
                     rep_path = dataset_path(dataset_name) / config.RAW_FOLDER_NAME / (representative.get("path") or "")
                     if rep_path.is_file():
@@ -357,25 +436,33 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
                     dataset_metrics=dataset_metric_averages,
                     representative=representative_content or (representative.get("path") if representative else "N/A"),
                 )
-                completion_text = generate_completion(prompt_text)
-                parsed_label, parsed_description = _parse_llm_label(completion_text, label_text)
-                label_text = parsed_label or label_text
-                description_text = parsed_description or description_text
             except Exception:
-                label_text = label_text
-            clusters_payload.append(
-                {
-                    "id": info.id,
-                    "label": f"Cluster {info.id + 1}: {label_text}",
-                    "size": info.size,
-                    "centroid": info.centroid,
-                    "metrics": averages,
-                    "description": description_text,
-                    "llm_output": completion_text,
-                    "llm_prompt": prompt_text,
-                    "comparison": _extract_comparison(completion_text),
-                }
-            )
+                prompt_text = None
+            # Defer LLM labeling/description to a background task.
+            cluster_entry = {
+                "id": info.id,
+                "label": base_label,
+                "size": info.size,
+                "centroid": info.centroid,
+                "metrics": averages,
+                "description": None,
+                "llm_output": None,
+                "llm_prompt": prompt_text,
+                "llm_pending": bool(prompt_text),
+                "comparison": [],
+            }
+            clusters_payload.append(cluster_entry)
+            if prompt_text:
+                background_jobs.append(
+                    {
+                        "dataset": dataset_name,
+                        "theme": theme_key,
+                        "algorithm": algorithm,
+                        "parameters": dict(parameters),
+                        "cluster": dict(cluster_entry),
+                        "label_prefix": base_label,
+                    }
+                )
         _persist_clustering_meta(dataset_name, algorithm, parameters, clusters_payload, theme_key)
 
         return {
@@ -431,6 +518,8 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
     for params in requests:
         result_payload = run_for_theme(**params)
         results[params["theme_key"]] = result_payload
+    for job in background_jobs:
+        background_tasks.add_task(_generate_cluster_description, job)
 
     if len(results) == 1:
         return next(iter(results.values()))
@@ -652,6 +741,9 @@ def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[s
                 entry["llm_prompt"] = meta_entry["llm_prompt"]
             if meta_entry.get("comparison"):
                 entry["comparison"] = meta_entry["comparison"]
+            if "llm_pending" in meta_entry:
+                entry["llm_pending"] = bool(meta_entry.get("llm_pending"))
+        entry.setdefault("llm_pending", False)
         clusters_payload.append(entry)
 
     noise = sum(1 for label in labels if label == -1)

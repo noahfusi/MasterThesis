@@ -35,7 +35,10 @@
     <p class="feedback" id="global-analysis-feedback">
       {% if not current_dataset %}Select a dataset to load the analysis.{% endif %}
     </p>
-    <div id="global-analysis-chart" class="global-analysis-chart" aria-label="Global metric distribution"></div>
+    <div class="global-analysis-charts">
+      <div id="global-analysis-chart" class="global-analysis-chart" aria-label="Global metric distribution"></div>
+      <div id="global-analysis-histogram" class="global-analysis-chart" aria-label="Global metric histogram"></div>
+    </div>
   </div>
 </section>
 {% endblock %}

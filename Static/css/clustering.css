@@ -729,6 +729,11 @@
   font-size: 0.9rem;
 }
 
+.cluster-description.is-pending {
+  color: #0ea5e9;
+  font-style: italic;
+}
+
 .cluster-warning-note {
   margin: 0.35rem 0 0;
   padding: 0.5rem 0.6rem;

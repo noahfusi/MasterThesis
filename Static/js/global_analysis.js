@@ -8,6 +8,7 @@
   const globalAnalysisPanel = document.getElementById("global-analysis");
   const globalAnalysisMetricSelect = document.getElementById("global-analysis-metric");
   const globalAnalysisChart = document.getElementById("global-analysis-chart");
+  const globalAnalysisHistogram = document.getElementById("global-analysis-histogram");
   const globalAnalysisFeedback = document.getElementById("global-analysis-feedback");
   const globalAnalysisDatasetLabel = document.getElementById("global-analysis-dataset");
   const globalAnalysisReferenceName = document.getElementById("global-analysis-reference-name");
@@ -21,6 +22,13 @@
     files: [],
     metricKey: null,
     reference: null,
+  };
+
+  const STATUS_TO_BUCKET = {
+    "Above Q3 + 1.5×IQR": "aboveFence",
+    "Above Q3": "aboveQ3",
+    "Below Q1 - 1.5×IQR": "belowFence",
+    "Below Q1": "belowQ1",
   };
 
   function updateGlobalAnalysisMetricOptions(metrics = []) {
@@ -74,29 +82,96 @@
     }
   }
 
-  function clearGlobalAnalysisChart() {
-    if (!globalAnalysisChart) return;
-    if (globalAnalysisChart.__plotlyClickHandler && typeof globalAnalysisChart.removeListener === "function") {
-      globalAnalysisChart.removeListener("plotly_click", globalAnalysisChart.__plotlyClickHandler);
-      globalAnalysisChart.__plotlyClickHandler = null;
+  function clearPlot(plotElement) {
+    if (!plotElement) return;
+    if (plotElement.__plotlyClickHandler && typeof plotElement.removeListener === "function") {
+      plotElement.removeListener("plotly_click", plotElement.__plotlyClickHandler);
+      plotElement.__plotlyClickHandler = null;
     }
     if (window.Plotly) {
-      Plotly.purge(globalAnalysisChart);
+      Plotly.purge(plotElement);
     } else {
-      globalAnalysisChart.innerHTML = "";
+      plotElement.innerHTML = "";
     }
   }
 
-  function renderGlobalAnalysisChart() {
-    if (!globalAnalysisChart || !globalAnalysisState.metricKey) {
-      clearGlobalAnalysisChart();
-      return;
+  function computeThresholds(values = [], metricKey) {
+    if (!values.length) {
+      return {
+        q1: null,
+        q3: null,
+        median: null,
+        lowerFence: null,
+        upperFence: null,
+        referenceValue: getReferenceMetricValue(metricKey),
+      };
     }
-    if (!window.Plotly) {
-      showMessage(globalAnalysisFeedback, "Plotly library failed to load.", true);
-      return;
+    const { q1, q3, median } = computeQuartiles(values);
+    const hasQ1 = Number.isFinite(q1);
+    const hasQ3 = Number.isFinite(q3);
+    const iqr = hasQ1 && hasQ3 ? q3 - q1 : null;
+    const hasIqr = Number.isFinite(iqr) && iqr > 0;
+    const lowerFence = hasIqr ? q1 - iqr * 1.5 : null;
+    const upperFence = hasIqr ? q3 + iqr * 1.5 : null;
+
+    return {
+      q1,
+      q3,
+      median,
+      lowerFence,
+      upperFence,
+      referenceValue: getReferenceMetricValue(metricKey),
+    };
+  }
+
+  function computeKDE(values = [], options = {}) {
+    if (!values.length) return { x: [], y: [] };
+    const sorted = [...values].sort((a, b) => a - b);
+    const n = sorted.length;
+    const mean = sorted.reduce((sum, value) => sum + value, 0) / n;
+    const variance = sorted.reduce((sum, value) => sum + (value - mean) ** 2, 0) / n;
+    const std = Math.sqrt(variance) || 1e-6;
+    const min = options.min ?? sorted[0];
+    const max = options.max ?? sorted[n - 1];
+    const range = max - min || Math.max(std, 1);
+    const bandwidth = options.bandwidth || 1.06 * std * n ** -0.2 || range / 20 || 1;
+    const steps = options.steps || 60;
+    const x = [];
+    const y = [];
+    for (let i = 0; i < steps; i += 1) {
+      const value = min + (range * i) / Math.max(steps - 1, 1);
+      let sum = 0;
+      for (const v of sorted) {
+        const u = (value - v) / bandwidth;
+        sum += Math.exp(-0.5 * u * u);
+      }
+      const density = sum / (n * bandwidth * Math.sqrt(2 * Math.PI));
+      x.push(value);
+      y.push(density);
     }
-    const metricKey = globalAnalysisState.metricKey;
+    return { x, y };
+  }
+
+  function getPointStatus(value, thresholds) {
+    const { q1, q3, lowerFence, upperFence } = thresholds || {};
+    const hasQ1 = Number.isFinite(q1);
+    const hasQ3 = Number.isFinite(q3);
+    if (Number.isFinite(upperFence) && value > upperFence) {
+      return "Above Q3 + 1.5×IQR";
+    }
+    if (hasQ3 && value > q3) {
+      return "Above Q3";
+    }
+    if (Number.isFinite(lowerFence) && value < lowerFence) {
+      return "Below Q1 - 1.5×IQR";
+    }
+    if (hasQ1 && value < q1) {
+      return "Below Q1";
+    }
+    return "Within IQR";
+  }
+
+  function prepareMetricDataset(metricKey) {
     const points = (globalAnalysisState.files || [])
       .map((file, index) => {
         const metrics = file.metrics || {};
@@ -111,51 +186,63 @@
         };
       })
       .filter(Boolean);
-    if (!points.length) {
-      clearGlobalAnalysisChart();
-      showMessage(globalAnalysisFeedback, `No values available for ${metricKey}.`, true);
-      return;
+    const values = points.map((point) => point.y);
+    const thresholds = computeThresholds(values, metricKey);
+    const pointStatuses = points.map((point) => getPointStatus(point.y, thresholds));
+    const statusComments = pointStatuses.map((status) => {
+      const bucketKey = STATUS_TO_BUCKET[status] || null;
+      if (!bucketKey) return "Within the dataset's interquartile range.";
+      return describeThreshold(metricKey, bucketKey);
+    });
+    return { metricKey, points, values, thresholds, pointStatuses, statusComments };
+  }
+
+  function buildThresholdShapes(thresholds, orientation = "horizontal") {
+    const shapes = [];
+    if (!thresholds) return shapes;
+
+    const isVertical = orientation === "vertical";
+    const baseCoords = (value) =>
+      isVertical
+        ? { xref: "x", yref: "paper", x0: value, x1: value, y0: 0, y1: 1 }
+        : { xref: "paper", yref: "y", x0: 0, x1: 1, y0: value, y1: value };
+
+    const addShape = (value, color, dash, width) => {
+      if (!Number.isFinite(value)) return;
+      shapes.push({
+        type: "line",
+        ...baseCoords(value),
+        line: {
+          color,
+          dash,
+          width,
+        },
+      });
+    };
+
+    addShape(thresholds.lowerFence, "#0f172a", "dot", 1.2);
+    addShape(thresholds.upperFence, "#7f1d1d", "dot", 1.2);
+    addShape(thresholds.q1, "#1d4ed8", "dash", 1.5);
+    if (!Number.isFinite(thresholds.q1) || thresholds.q1 !== thresholds.q3) {
+      addShape(thresholds.q3, "#dc2626", "dash", 1.5);
     }
+    addShape(thresholds.median, "#94a3b8", "dot", 1.5);
+    addShape(thresholds.referenceValue, "#7e22ce", "solid", 2);
+
+    return shapes;
+  }
+
+  function renderScatterPlot(dataset) {
+    if (!globalAnalysisChart || !dataset) return;
+
+    const { metricKey, points, pointStatuses, statusComments, thresholds } = dataset;
     const trace = {
       x: points.map((point) => point.x),
       y: points.map((point) => point.y),
       type: "scatter",
       mode: "markers",
     };
-    const values = points.map((point) => point.y);
-    const { q1, q3, median } = computeQuartiles(values);
-    const hasQ1 = Number.isFinite(q1);
-    const hasQ3 = Number.isFinite(q3);
-    const iqr = hasQ1 && hasQ3 ? q3 - q1 : null;
-    const hasIqr = Number.isFinite(iqr) && iqr > 0;
-    const lowerFence = hasIqr ? q1 - iqr * 1.5 : null;
-    const upperFence = hasIqr ? q3 + iqr * 1.5 : null;
-    const pointStatuses = points.map((point) => {
-      if (Number.isFinite(upperFence) && point.y > upperFence) {
-        return "Above Q3 + 1.5×IQR";
-      }
-      if (hasQ3 && point.y > q3) {
-        return "Above Q3";
-      }
-      if (Number.isFinite(lowerFence) && point.y < lowerFence) {
-        return "Below Q1 - 1.5×IQR";
-      }
-      if (hasQ1 && point.y < q1) {
-        return "Below Q1";
-      }
-      return "Within IQR";
-    });
-    const statusToBucketKey = {
-      "Above Q3 + 1.5×IQR": "aboveFence",
-      "Above Q3": "aboveQ3",
-      "Below Q1 - 1.5×IQR": "belowFence",
-      "Below Q1": "belowQ1",
-    };
-    const statusComments = pointStatuses.map((status) => {
-      const bucketKey = statusToBucketKey[status] || null;
-      if (!bucketKey) return "Within the dataset's interquartile range.";
-      return describeThreshold(metricKey, bucketKey);
-    });
+
     const colors = pointStatuses.map((status) => {
       if (status === "Above Q3 + 1.5×IQR") return "#b91c1c";
       if (status === "Above Q3") return "#dc2626";
@@ -181,100 +268,6 @@
     trace.customdata = points.map((point, index) => [point.filename, pointStatuses[index], statusComments[index]]);
     trace.hovertemplate = `<b>%{customdata[0]}</b><br>${metricKey}: %{y}<br>Status: %{customdata[1]}<br>%{customdata[2]}<extra></extra>`;
 
-    const shapes = [];
-    if (Number.isFinite(lowerFence)) {
-      shapes.push({
-        type: "line",
-        xref: "paper",
-        x0: 0,
-        x1: 1,
-        y0: lowerFence,
-        y1: lowerFence,
-        line: {
-          color: "#0f172a",
-          dash: "dot",
-          width: 1.2,
-        },
-      });
-    }
-    if (Number.isFinite(upperFence)) {
-      shapes.push({
-        type: "line",
-        xref: "paper",
-        x0: 0,
-        x1: 1,
-        y0: upperFence,
-        y1: upperFence,
-        line: {
-          color: "#7f1d1d",
-          dash: "dot",
-          width: 1.2,
-        },
-      });
-    }
-    if (hasQ1) {
-      shapes.push({
-        type: "line",
-        xref: "paper",
-        x0: 0,
-        x1: 1,
-        y0: q1,
-        y1: q1,
-        line: {
-          color: "#1d4ed8",
-          dash: "dash",
-          width: 1.5,
-        },
-      });
-    }
-    if (hasQ3 && (!hasQ1 || q3 !== q1)) {
-      shapes.push({
-        type: "line",
-        xref: "paper",
-        x0: 0,
-        x1: 1,
-        y0: q3,
-        y1: q3,
-        line: {
-          color: "#dc2626",
-          dash: "dash",
-          width: 1.5,
-        },
-      });
-    }
-    if (Number.isFinite(median)) {
-      shapes.push({
-        type: "line",
-        xref: "paper",
-        x0: 0,
-        x1: 1,
-        y0: median,
-        y1: median,
-        line: {
-          color: "#94a3b8",
-          dash: "dot",
-          width: 1.5,
-        },
-      });
-    }
-    const referenceValue = getReferenceMetricValue(metricKey);
-    updateReferenceDisplay(metricKey);
-    if (Number.isFinite(referenceValue)) {
-      shapes.push({
-        type: "line",
-        xref: "paper",
-        x0: 0,
-        x1: 1,
-        y0: referenceValue,
-        y1: referenceValue,
-        line: {
-          color: "#7e22ce",
-          width: 2,
-        },
-      });
-    } else if (!globalAnalysisState.reference) {
-      updateReferenceDisplay(metricKey);
-    }
     const layout = {
       margin: { l: 60, r: 20, t: 30, b: 40 },
       xaxis: {
@@ -288,8 +281,9 @@
       },
       hovermode: "closest",
       showlegend: false,
-      shapes,
+      shapes: buildThresholdShapes(thresholds, "horizontal"),
     };
+
     Plotly.react(globalAnalysisChart, [trace], layout, { responsive: true, displaylogo: false });
     if (globalAnalysisChart.__plotlyClickHandler && typeof globalAnalysisChart.removeListener === "function") {
       globalAnalysisChart.removeListener("plotly_click", globalAnalysisChart.__plotlyClickHandler);
@@ -308,6 +302,70 @@
     }
   }
 
+  function renderHistogramPlot(dataset) {
+    if (!globalAnalysisHistogram || !dataset) return;
+    const { metricKey, values, thresholds } = dataset;
+    const nbinsx = values.length ? Math.min(30, Math.max(5, Math.ceil(Math.sqrt(values.length)))) : null;
+    const density = computeKDE(values);
+    const histogramTrace = {
+      x: values,
+      type: "histogram",
+      nbinsx,
+      histnorm: "probability density",
+      marker: {
+        color: "#0ea5e9",
+        line: { color: "#0f172a", width: 1 },
+      },
+      opacity: 0.9,
+      hovertemplate: `${metricKey}: %{x}<br>Density: %{y:.3f}<extra></extra>`,
+    };
+    const kdeTrace = {
+      x: density.x,
+      y: density.y,
+      type: "scatter",
+      mode: "lines",
+      line: { color: "#6b21a8", width: 2 },
+      hovertemplate: `${metricKey}: %{x}<br>Density: %{y:.3f}<extra></extra>`,
+    };
+    const layout = {
+      margin: { l: 60, r: 20, t: 30, b: 40 },
+      bargap: 0.08,
+      xaxis: {
+        title: metricKey,
+        zeroline: false,
+      },
+      yaxis: {
+        title: "Density",
+        rangemode: "tozero",
+      },
+      showlegend: false,
+      shapes: buildThresholdShapes(thresholds, "vertical"),
+    };
+    Plotly.react(globalAnalysisHistogram, [histogramTrace, kdeTrace], layout, { responsive: true, displaylogo: false });
+  }
+
+  function renderGlobalAnalysisCharts() {
+    if (!globalAnalysisState.metricKey) {
+      clearPlot(globalAnalysisChart);
+      clearPlot(globalAnalysisHistogram);
+      return;
+    }
+    if (!window.Plotly) {
+      showMessage(globalAnalysisFeedback, "Plotly library failed to load.", true);
+      return;
+    }
+    const dataset = prepareMetricDataset(globalAnalysisState.metricKey);
+    if (!dataset || !dataset.points.length) {
+      clearPlot(globalAnalysisChart);
+      clearPlot(globalAnalysisHistogram);
+      showMessage(globalAnalysisFeedback, `No values available for ${globalAnalysisState.metricKey}.`, true);
+      return;
+    }
+    updateReferenceDisplay(dataset.metricKey);
+    renderScatterPlot(dataset);
+    renderHistogramPlot(dataset);
+  }
+
   async function refreshGlobalAnalysis() {
     const datasetName = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
     if (globalAnalysisDatasetLabel) {
@@ -320,7 +378,8 @@
       globalAnalysisState.metricKey = null;
       globalAnalysisState.reference = null;
       updateGlobalAnalysisMetricOptions([]);
-      clearGlobalAnalysisChart();
+      clearPlot(globalAnalysisChart);
+      clearPlot(globalAnalysisHistogram);
       updateReferenceDisplay(null);
       showMessage(globalAnalysisFeedback, "Select a dataset to load the analysis.");
       return;
@@ -336,7 +395,8 @@
       if (!globalAnalysisState.metrics.length || !globalAnalysisState.files.length) {
         globalAnalysisState.metricKey = null;
         updateGlobalAnalysisMetricOptions([]);
-        clearGlobalAnalysisChart();
+        clearPlot(globalAnalysisChart);
+        clearPlot(globalAnalysisHistogram);
         showMessage(globalAnalysisFeedback, "No file metrics available.", true);
         return;
       }
@@ -347,7 +407,7 @@
         globalAnalysisState.metricKey = globalAnalysisState.metrics[0].key;
       }
       updateGlobalAnalysisMetricOptions(globalAnalysisState.metrics);
-      renderGlobalAnalysisChart();
+      renderGlobalAnalysisCharts();
       showMessage(globalAnalysisFeedback, `Loaded ${globalAnalysisState.files.length} file(s).`);
     } catch (error) {
       globalAnalysisState.metrics = [];
@@ -355,7 +415,8 @@
       globalAnalysisState.reference = null;
       globalAnalysisState.metricKey = null;
       updateGlobalAnalysisMetricOptions([]);
-      clearGlobalAnalysisChart();
+      clearPlot(globalAnalysisChart);
+      clearPlot(globalAnalysisHistogram);
       updateReferenceDisplay(null);
       showMessage(globalAnalysisFeedback, error.message, true);
     }
@@ -365,7 +426,7 @@
     if (globalAnalysisMetricSelect) {
       globalAnalysisMetricSelect.addEventListener("change", (event) => {
         globalAnalysisState.metricKey = event.target.value || null;
-        renderGlobalAnalysisChart();
+        renderGlobalAnalysisCharts();
       });
     }
     refreshGlobalAnalysis();
