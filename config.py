@@ -140,6 +140,45 @@ FEEDBACK_PROMPT_NO_REQUIREMENTS = (
 )
 FEEDBACK_OUTPUT_DIRNAME = "feedbacks"
 CLUSTER_LABEL_PROMPT = (
+"You are summarizing clusters of student code files."
+"Your task is to compare:"
+"- the cluster’s average metrics"
+"- the dataset-wide average metrics"
+"- the structure of the representative file"
+
+"Your output must have two parts:"
+"1) A comparison table listing, for each metric:"
+   "<metric> | <cluster value> | <dataset value> | <relation (> , < , =)>" 
+"2) A short summary:"
+   "- A short label (max 10 words)"
+   "- 2–3 sentences explaining what characterizes this cluster"
+
+"STRICT RULES (mandatory):"
+"- Perform STRICT numerical comparisons. "
+"- Never say “higher/lower” unless numerically true."
+"- If a value is LOWER than the dataset average, you MUST say it is lower even if this contradicts usual expectations."
+"- Never invert numerical relationships."
+"- Never generalize beyond the provided values."
+"- Never speculate about structures not present in the representative file."
+"- When describing structure, ONLY refer to elements explicitly present in the representative snippet: "
+  "number/size of functions, actual nesting you can see, visible repetition, visible loops/ifs."
+"- Do NOT infer intent, functionality, or correctness."
+"- Do NOT use external coding norms. Only relative comparisons are allowed."
+"- Do NOT connect a metric to a structural explanation unless the representative file clearly shows it."
+
+"FORMAT EXACTLY as:"
+"Comparison:"
+"| Metric | Cluster | Dataset | Relation |"
+
+"Label: <label>"
+"Description: <sentences>"
+
+"Cluster metrics: {cluster_metrics}"
+"Dataset averages: {dataset_metrics}"
+"Representative file content: {representative}"
+
+)
+CLUSTER_LABEL_PROMPT_OLD_2 = (
     "You are summarizing clusters of student code files."
     "Your task is to compare : the cluster’s average metrics, the dataset-wide average metrics, the structure of the representative file."
     "Use only this information, produce : "
@@ -152,6 +191,10 @@ CLUSTER_LABEL_PROMPT = (
     "number and size of functions, depth of nesting, presence or absence of duplication, overall organization and readabilit"
     "Do not speculate about unobservable aspects like code functionality, correctness, or intent."
     "Be concise, factual and grounded only in the data provided."
+    "You must perform strict numerical comparisons"
+    "Never state higher/lower unless the value is strictly numerically higher/lower."
+    "If a value is lower than the dataset average, you must say it is lower, even if this contradicts typical expectations."
+    "Never infer structural explanations not directly justified by a metric.  "
     "Format as: \\nLabel: <short label>\\nDescription: <sentences>.\\n"
     "Cluster metrics: {cluster_metrics}\\nDataset averages: {dataset_metrics}\\nRepresentative file: {representative}"
 

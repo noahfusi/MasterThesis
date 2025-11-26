@@ -49,6 +49,37 @@ def _resolve_theme(theme: str | None) -> tuple[str, dict[str, object]]:
     return "default", {"label": "Default", "metrics": METRIC_KEYS}
 
 
+def _extract_comparison(completion: str | None) -> list[dict[str, str]]:
+    """
+    @brief Parse a comparison table from an LLM completion in the expected format.
+    """
+    if not completion or not isinstance(completion, str):
+        return []
+    lines = [line.strip().strip('"').strip("'") for line in completion.splitlines() if line.strip()]
+    start_idx = next((i for i, line in enumerate(lines) if line.lower().startswith("comparison")), None)
+    if start_idx is None:
+        return []
+    rows: list[dict[str, str]] = []
+    for line in lines[start_idx + 1 :]:
+        if not line.startswith("|"):
+            break
+        cells = [cell.strip() for cell in line.split("|") if cell.strip()]
+        if len(cells) < 4:
+            continue
+        if cells[0].lower() == "metric":
+            # Header row
+            continue
+        rows.append(
+            {
+                "metric": cells[0],
+                "cluster": cells[1],
+                "dataset": cells[2],
+                "relation": cells[3],
+            }
+        )
+    return rows
+
+
 def _cache_path(dataset: str, theme: str | None, filename: str) -> Path:
     """
     @brief Build a cache path that is namespaced per theme.
@@ -309,6 +340,8 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
                         averages[key] = total / count
             label_text = f"Cluster {info.id + 1}"
             description_text = None
+            completion_text = None
+            prompt_text = None
             try:
                 representative = next((p for p in points_payload if p.get("cluster") == info.id), None)
                 representative_content = None
@@ -319,13 +352,13 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
                             representative_content = rep_path.read_text(encoding="utf-8")
                         except OSError:
                             representative_content = None
-                prompt = config.CLUSTER_LABEL_PROMPT.format(
+                prompt_text = config.CLUSTER_LABEL_PROMPT.format(
                     cluster_metrics=averages,
                     dataset_metrics=dataset_metric_averages,
                     representative=representative_content or (representative.get("path") if representative else "N/A"),
                 )
-                completion = generate_completion(prompt)
-                parsed_label, parsed_description = _parse_llm_label(completion, label_text)
+                completion_text = generate_completion(prompt_text)
+                parsed_label, parsed_description = _parse_llm_label(completion_text, label_text)
                 label_text = parsed_label or label_text
                 description_text = parsed_description or description_text
             except Exception:
@@ -338,6 +371,9 @@ async def launch_clustering(payload: ClusteringRequest) -> dict[str, object]:
                     "centroid": info.centroid,
                     "metrics": averages,
                     "description": description_text,
+                    "llm_output": completion_text,
+                    "llm_prompt": prompt_text,
+                    "comparison": _extract_comparison(completion_text),
                 }
             )
         _persist_clustering_meta(dataset_name, algorithm, parameters, clusters_payload, theme_key)
@@ -610,6 +646,12 @@ def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[s
                 entry["label"] = meta_entry["label"]
             if meta_entry.get("description"):
                 entry["description"] = meta_entry["description"]
+            if meta_entry.get("llm_output"):
+                entry["llm_output"] = meta_entry["llm_output"]
+            if meta_entry.get("llm_prompt"):
+                entry["llm_prompt"] = meta_entry["llm_prompt"]
+            if meta_entry.get("comparison"):
+                entry["comparison"] = meta_entry["comparison"]
         clusters_payload.append(entry)
 
     noise = sum(1 for label in labels if label == -1)

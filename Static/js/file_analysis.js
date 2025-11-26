@@ -74,7 +74,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dataset: datasetName, filename }),
       });
-      showMessage(pageFeedback, getMessage("FEEDBACK_FILE_QUEUED", {}, "Feedback generation queued (not implemented)."));
+      showMessage(pageFeedback, getMessage("FEEDBACK_FILE_QUEUED", {}, "Feedback generation queued"));
       await refreshFeedbackState(datasetName); // reload availability after enqueue
     } catch (error) {
       showMessage(pageFeedback, error.message, true);
@@ -95,7 +95,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dataset: datasetName }),
       });
-      showMessage(pageFeedback, getMessage("FEEDBACK_DATASET_QUEUED", {}, "Dataset-wide feedback generation queued (not implemented)."));
+      showMessage(pageFeedback, getMessage("FEEDBACK_DATASET_QUEUED", {}, "Dataset-wide feedback generation queued."));
       await refreshFeedbackState(datasetName);
     } catch (error) {
       showMessage(pageFeedback, error.message, true);

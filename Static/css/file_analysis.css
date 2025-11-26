@@ -29,7 +29,7 @@
 }
 
 .file-list {
-  max-height: 460px;
+  max-height: 560px;
   overflow: auto;
   display: flex;
   flex-direction: column;

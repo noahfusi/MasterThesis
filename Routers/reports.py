@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import csv
+import json
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
@@ -24,6 +26,102 @@ def _students_report_path(dataset_name: str) -> Path:
     @return Filesystem path to the report.
     """
     return dataset_path(dataset_name) / REPORTS_SUBDIR / STUDENTS_REPORT_FILENAME
+
+
+def _latest_clustering_artifacts(dataset_name: str) -> tuple[Path | None, Path | None]:
+    """
+    @brief Locate the most recent clustering meta and csv cache (any theme).
+    """
+    root = dataset_path(dataset_name)
+    metas = sorted(root.glob(f"{config.CLUSTERING_META_FILENAME.replace('.json', '')}*.json"), key=lambda p: p.stat().st_mtime)
+    if not metas:
+        return None, None
+    meta_path = metas[-1]
+    suffix = meta_path.stem.replace(config.CLUSTERING_META_FILENAME.replace(".json", ""), "")
+    suffix = suffix if not suffix else suffix  # keep as-is (e.g., _theme)
+    csv_name = config.CLUSTERING_CACHE_FILENAME
+    if suffix:
+        csv_name = config.CLUSTERING_CACHE_FILENAME.replace(".csv", f"{suffix}.csv")
+    csv_path = root / csv_name
+    return meta_path, csv_path if csv_path.exists() else (meta_path, None)[1]
+
+
+def _load_clustering_snapshot(meta_path: Path | None, csv_path: Path | None) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
+    clusters: list[dict[str, object]] = []
+    points: list[dict[str, object]] = []
+    if meta_path and meta_path.exists():
+        try:
+            payload = json.loads(meta_path.read_text(encoding="utf-8"))
+            clusters = payload.get("clusters") or []
+        except Exception:
+            clusters = []
+    if csv_path and csv_path.exists():
+        try:
+            with csv_path.open("r", encoding="utf-8") as handle:
+                reader = csv.DictReader(handle)
+                for row in reader:
+                    try:
+                        cluster = int(row.get("cluster") or -1)
+                    except ValueError:
+                        cluster = -1
+                    probs_raw = (row.get("probabilities") or "").strip()
+                    probabilities = None
+                    if probs_raw:
+                        try:
+                            probabilities = [float(val) for val in probs_raw.split(";") if val.strip()]
+                        except ValueError:
+                            probabilities = None
+                    points.append(
+                        {
+                            "path": (row.get("path") or "").replace("\\", "/"),
+                            "cluster": cluster,
+                            "probabilities": probabilities,
+                        }
+                    )
+        except Exception:
+            points = []
+    return clusters, points
+
+
+def _build_membership_lookup(clusters: list[dict[str, object]], points: list[dict[str, object]]) -> dict[str, tuple[str, float]]:
+    """
+    @brief Build a mapping from file path to (cluster label, confidence).
+    """
+    label_lookup = {c.get("id"): c.get("label") for c in clusters if isinstance(c, dict) and c.get("id") is not None}
+    lookup: dict[str, tuple[str, float]] = {}
+    for point in points:
+        path = (point.get("path") or "").replace("\\", "/")
+        if not path:
+            continue
+        cluster_id = point.get("cluster")
+        if not isinstance(cluster_id, int) or cluster_id < 0:
+            continue
+        probs = point.get("probabilities")
+        confidence = 1.0
+        if isinstance(probs, list) and len(probs) > cluster_id:
+            try:
+                confidence = float(probs[cluster_id])
+            except (TypeError, ValueError):
+                confidence = 1.0
+        label = label_lookup.get(cluster_id) or f"Cluster {cluster_id + 1}"
+        lookup[path] = (label, confidence)
+    return lookup
+
+
+def _top_members(points: list[dict[str, object]], cluster_id: int, limit: int = 5) -> list[tuple[str, float]]:
+    relevant = [p for p in points if int(p.get("cluster") or -1) == cluster_id]
+    scored: list[tuple[str, float]] = []
+    for entry in relevant:
+        probs = entry.get("probabilities")
+        confidence = 1.0
+        if isinstance(probs, list) and len(probs) > cluster_id:
+            try:
+                confidence = float(probs[cluster_id])
+            except (TypeError, ValueError):
+                confidence = 1.0
+        scored.append((entry.get("path") or "-", confidence))
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return scored[:limit]
 
 
 def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tuple[Path, int, bool]:
@@ -52,6 +150,16 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
         if not isinstance(key, str):
             return None
         lowered = key.lower()
+        if "if/ncss" in lowered or ("if" in lowered and "ncss" in lowered):
+            return "High If/NCSS means many conditionals relative to file size—logic may be overly branched; simplify or merge predicates."
+        if "loops/ncss" in lowered or ("loop" in lowered and "ncss" in lowered):
+            return "High Loops/NCSS indicates many iterations per line of code—consider reducing loop count or extracting helpers."
+        if "vars/functions" in lowered:
+            return "Vars/Functions captures variable churn per function—high values hint at long functions or heavy state; split or reduce state."
+        if "vars/ncss" in lowered:
+            return "Vars/NCSS reflects variable density—high density can reduce readability; very low density may mean under-documented or terse code."
+        if "total variables" in lowered or lowered == "variables":
+            return "Total variables shows how much state the file manages; very high counts can signal complex or sprawling state handling."
         if "ncss" in lowered or "loc" in lowered or "lines" in lowered:
             return '''
             High NCSS/LOC suggests large files that may use decomposition into smaller units.
@@ -77,6 +185,17 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
         "(very high: above Q3 + 1.5×IQR, high: above Q3, low: below Q1, very low: below Q1 – 1.5×IQR)."
     )
     lines.append("")
+
+    meta_path, csv_path = _latest_clustering_artifacts(dataset_name)
+    clusters, points = _load_clustering_snapshot(meta_path, csv_path)
+    membership_lookup = _build_membership_lookup(clusters, points) if clusters and points else {}
+
+    def _format_cluster_tag(filename: str) -> str:
+        entry = membership_lookup.get(filename)
+        if not entry:
+            return ""
+        label, confidence = entry
+        return f" _(Aligned with {label}, confidence {confidence:.2f})_"
 
     highlighted_metrics = 0
     for bucket in buckets:
@@ -114,7 +233,7 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
             for entry in entries:
                 filename = entry.get("filename") or entry.get("path") or "Unknown file"
                 value = _fmt_value(entry.get("value"))
-                lines.append(f"- `{filename}` — {value}")
+                lines.append(f"- `{filename}` — {value}{_format_cluster_tag(filename)}")
             lines.append("")
 
         _write_group("Very high (above Q3 + 1.5×IQR)", above_fence, "Prioritize investigating these files.")
@@ -198,6 +317,49 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
 
     if highlighted_metrics == 0 and not combined_findings:
         lines.append("No outlier students detected for the current dataset.")
+
+    # Append clustering insights if available
+    meta_path, csv_path = _latest_clustering_artifacts(dataset_name)
+    clusters, points = _load_clustering_snapshot(meta_path, csv_path)
+    if clusters:
+        lines.append("")
+        lines.append("## Clustering insights")
+        lines.append("")
+        lines.append(
+            "Summaries below are generated from the latest clustering run (LLM-provided label/description) "
+            "alongside a few representative files per cluster."
+        )
+        for cluster in clusters:
+            cid = cluster.get("id") if isinstance(cluster, dict) else None
+            label = cluster.get("label") if isinstance(cluster, dict) else None
+            desc = cluster.get("description") if isinstance(cluster, dict) else None
+            comparison = cluster.get("comparison") if isinstance(cluster, dict) else None
+            size = cluster.get("size") if isinstance(cluster, dict) else None
+            lines.append(f"### {label or f'Cluster {cid}'}")
+            if size is not None:
+                lines.append(f"- Size: {size}")
+            if desc:
+                lines.append("")
+                lines.append(desc if isinstance(desc, str) else str(desc))
+            if isinstance(comparison, list) and comparison:
+                lines.append("")
+                lines.append("| Metric | Cluster | Dataset | Relation |")
+                lines.append("| --- | --- | --- | --- |")
+                for row in comparison:
+                    if not isinstance(row, dict):
+                        continue
+                    metric = row.get("metric") or "-"
+                    cl = row.get("cluster") or "-"
+                    ds = row.get("dataset") or "-"
+                    rel = row.get("relation") or "-"
+                    lines.append(f"| {metric} | {cl} | {ds} | {rel} |")
+            top_members = _top_members(points, cid, limit=5) if cid is not None else []
+            if top_members:
+                lines.append("")
+                lines.append("Top members (by confidence):")
+                for path, score in top_members:
+                    lines.append(f"- {path} ({score:.2f})")
+            lines.append("")
 
     report_path.write_text("\n".join(lines).strip() + "\n", encoding="utf-8")
     return report_path, highlighted_metrics, bool(combined_findings)

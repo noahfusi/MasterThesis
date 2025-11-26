@@ -353,6 +353,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  height: 100%;
 }
 
 .theme-config-header {
@@ -552,6 +553,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  height: auto;
 }
 
 .clustering-chart {
@@ -613,6 +615,15 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.clustering-summary {
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 .clustering-summary-grid {
@@ -669,6 +680,27 @@
   text-align: right;
   color: #111827;
   font-weight: 600;
+}
+
+.cluster-comparison {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.cluster-comparison-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  padding: 0.35rem 0.45rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.cluster-comparison-row.is-header {
+  background: #eef2ff;
+  font-weight: 700;
 }
 
 .cluster-reasons {

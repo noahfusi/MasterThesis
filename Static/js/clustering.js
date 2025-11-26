@@ -102,6 +102,90 @@
     return stats;
   }
 
+  function parseStructuredDescription(text) {
+    if (!text || typeof text !== "string") return null;
+    const cleanLine = (line) => (line || "").replace(/^["']+|["']+$/g, "").trim();
+    const lines = text
+      .split(/\r?\n/)
+      .map((line) => cleanLine(line))
+      .filter(Boolean);
+    const labelLine = lines.find((l) => /^label\s*:/i.test(l));
+    const descriptionLine = lines.find((l) => /^description\s*:/i.test(l));
+    const comparisonStart = lines.findIndex((l) => /^comparison\s*:/i.test(l));
+    const comparisonRows = [];
+    if (comparisonStart !== -1) {
+      for (let i = comparisonStart + 1; i < lines.length; i += 1) {
+        const row = lines[i];
+        if (!/^\|/.test(row)) break;
+        const cells = row
+          .split("|")
+          .map((c) => c.trim())
+          .filter((c) => c);
+        if (cells.length >= 4 && !/^metric$/i.test(cells[0])) {
+          comparisonRows.push({
+            metric: cells[0],
+            cluster: cells[1],
+            dataset: cells[2],
+            relation: cells[3],
+          });
+        }
+      }
+    }
+    return {
+      label: labelLine ? labelLine.replace(/^label\s*:/i, "").trim() : null,
+      description: descriptionLine ? descriptionLine.replace(/^description\s*:/i, "").trim() : null,
+      comparison: comparisonRows,
+    };
+  }
+
+  function buildComparisonTable(rows = []) {
+    if (!rows || !rows.length) return "";
+    const header = `
+      <div class="cluster-comparison">
+        <div class="cluster-comparison-row is-header">
+          <span>Metric</span><span>Cluster</span><span>Dataset</span><span>Relation</span>
+        </div>
+        ${rows
+          .map(
+            (row) => `
+          <div class="cluster-comparison-row">
+            <span>${row.metric || "-"}</span>
+            <span>${row.cluster || "-"}</span>
+            <span>${row.dataset || "-"}</span>
+            <span>${row.relation || "-"}</span>
+          </div>
+        `,
+          )
+          .join("")}
+      </div>
+    `;
+    return header;
+  }
+
+  function buildClusterHeader(cluster) {
+    const centroidPreview = (cluster.centroid || [])
+      .slice(0, 2)
+      .map((value) => formatMetricValue(value))
+      .join(", ");
+    const parsed = parseStructuredDescription(cluster.description) || parseStructuredDescription(cluster.llm_output);
+    const displayLabel = (parsed && parsed.label) || cluster.label || `Cluster ${cluster.id + 1}`;
+    const displayDescription =
+      (parsed && parsed.description) ||
+      (typeof cluster.description === "string" ? cluster.description : "") ||
+      (typeof cluster.llm_output === "string" ? cluster.llm_output : "");
+    const comparisons =
+      (parsed && parsed.comparison && parsed.comparison.length ? parsed.comparison : null) ||
+      (Array.isArray(cluster.comparison) && cluster.comparison.length ? cluster.comparison : null);
+    const comparisonSection = comparisons ? buildComparisonTable(comparisons) : "";
+    return `
+      <h3>${displayLabel}</h3>
+      <p>Size: ${cluster.size}</p>
+      <p>Centroid (preview): ${centroidPreview || "-"}</p>
+      ${displayDescription ? `<p class="cluster-description">${displayDescription}</p>` : ""}
+      ${comparisonSection}
+    `;
+  }
+
   function getThemeById(themeId) {
     if (!themeId) return null;
     return themeLookup.get(themeId) || null;
@@ -726,16 +810,7 @@
         const colorSwatch = document.createElement("span");
         colorSwatch.className = "cluster-color-swatch";
         colorSwatch.style.background = getClusterColor(cluster.id);
-        const centroidPreview = (cluster.centroid || [])
-          .slice(0, 2)
-          .map((value) => formatMetricValue(value))
-          .join(", ");
-        card.innerHTML = `
-        <h3>${cluster.label || `Cluster ${cluster.id + 1}`}</h3>
-        <p>Size: ${cluster.size}</p>
-        <p>Centroid (preview): ${centroidPreview || "-"}</p>
-        ${cluster.description ? `<p class="cluster-description">${cluster.description}</p>` : ""}
-      `;
+        card.innerHTML = buildClusterHeader(cluster);
         card.prepend(colorSwatch);
         if (derived.reasons && derived.reasons.length) {
           card.appendChild(makeWarning("Elevated metrics detected", "warning"));

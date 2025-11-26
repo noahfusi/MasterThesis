@@ -136,6 +136,14 @@ def _safe_ratio(numerator: float, denominator: float | None) -> float:
     return float(numerator) / denom if denom else 0.0
 
 
+def _round_float(value: float, digits: int = 3) -> float:
+    """Round a float to the desired precision."""
+    try:
+        return round(float(value), digits)
+    except (TypeError, ValueError):
+        return value
+
+
 def _compute_keyword_metrics(code: str | None, raw_ncss: float | None, functions_count: float | None) -> dict[str, float]:
     """
     @brief Compute lightweight metrics derived from keyword counts.
@@ -156,10 +164,10 @@ def _compute_keyword_metrics(code: str | None, raw_ncss: float | None, functions
     counts = _count_keyword_occurrences(code)
     variables_count = counts.get("vars", 0)
     metrics["Total variables"] = float(variables_count)
-    metrics["If/NCSS"] = _safe_ratio(counts.get("if", 0), raw_ncss)
-    metrics["Loops/NCSS"] = _safe_ratio(counts.get("loops", 0), raw_ncss)
-    metrics["Vars/NCSS"] = _safe_ratio(variables_count, raw_ncss)
-    metrics["Vars/Functions"] = _safe_ratio(variables_count, functions_count)
+    metrics["If/NCSS"] = _round_float(_safe_ratio(counts.get("if", 0), raw_ncss))
+    metrics["Loops/NCSS"] = _round_float(_safe_ratio(counts.get("loops", 0), raw_ncss))
+    metrics["Vars/NCSS"] = _round_float(_safe_ratio(variables_count, raw_ncss))
+    metrics["Vars/Functions"] = _round_float(_safe_ratio(variables_count, functions_count))
     return metrics
 
 
@@ -186,7 +194,7 @@ def merge_other_metrics(dataset: str, metric_definitions: list[dict[str, object]
             if value in (None, ""):
                 continue
             try:
-                averages[name].append(float(value))
+                averages[name].append(_round_float(float(value)))
             except ValueError:
                 continue
 
@@ -242,7 +250,8 @@ def load_metrics_entries(dataset: str) -> list[dict[str, object]]:
             if value in (None, ""):
                 continue
             try:
-                metrics[name] = float(value)
+                number = float(value)
+                metrics[name] = _round_float(number)
             except (TypeError, ValueError):
                 metrics[name] = value
         if metrics:
@@ -298,7 +307,7 @@ def generate_other_metrics(dataset: str) -> str:
                 continue
             column = key if isinstance(key, str) else str(key)
             if isinstance(value, (int, float)):
-                numeric_value = float(value)
+                numeric_value = _round_float(float(value))
                 row[column] = numeric_value
                 if column.lower() == "functions":
                     functions_count = numeric_value
@@ -315,10 +324,10 @@ def generate_other_metrics(dataset: str) -> str:
             row["Functions"] = functions_count
         if functions_count is not None:
             if raw_ccn is not None:
-                row["CCN/Functions"] = raw_ccn / functions_count if functions_count else raw_ccn
+                row["CCN/Functions"] = _round_float(raw_ccn / functions_count if functions_count else raw_ccn)
                 metric_names.add("CCN/Functions")
             if raw_ncss is not None:
-                row["NCSS/Functions"] = raw_ncss / functions_count if functions_count else raw_ncss
+                row["NCSS/Functions"] = _round_float(raw_ncss / functions_count if functions_count else raw_ncss)
                 metric_names.add("NCSS/Functions")
 
         default_keyword_metrics = {
@@ -344,11 +353,11 @@ def generate_other_metrics(dataset: str) -> str:
             if lizard_text:
                 base_metrics = _parse_lizard_file_metrics(lizard_text)
                 for key, value in base_metrics.items():
-                    row[key] = value
+                    row[key] = _round_float(value)
                     metric_names.add(key)
                 duplicate_rate = extract_duplicate_rate(lizard_text)
                 if duplicate_rate is not None:
-                    row["Duplication (%)"] = duplicate_rate
+                    row["Duplication (%)"] = _round_float(duplicate_rate)
                     metric_names.add("Duplication (%)")
         row.setdefault("Duplication (%)", row.get("Duplication (%)", 0.0))
         metric_names.add("Duplication (%)")
@@ -364,7 +373,7 @@ def generate_other_metrics(dataset: str) -> str:
             if code:
                 nesting = compute_max_nesting_depth(code)
                 if isinstance(nesting, (int, float)):
-                    row["Max nesting depth"] = nesting
+                    row["Max nesting depth"] = _round_float(nesting)
 
         rows.append(row)
 
@@ -379,7 +388,13 @@ def generate_other_metrics(dataset: str) -> str:
             writer = csv.DictWriter(handle, fieldnames=fieldnames)
             writer.writeheader()
             for row in rows:
-                writer.writerow({field: row.get(field, "") for field in fieldnames})
+                sanitized: dict[str, object] = {}
+                for field in fieldnames:
+                    value = row.get(field, "")
+                    if isinstance(value, float):
+                        value = _round_float(value)
+                    sanitized[field] = value
+                writer.writerow(sanitized)
     except OSError as exc:
         path.unlink(missing_ok=True)
         return f"Other metrics failed: {exc}"
