@@ -1,7 +1,15 @@
 """Centralized configuration defaults for the project."""
 
-from pathlib import Path
 import os
+from pathlib import Path
+
+try:
+    from dotenv import load_dotenv  # type: ignore
+except Exception:  # pragma: no cover - optional dependency
+    load_dotenv = None
+
+if load_dotenv:
+    load_dotenv()
 
 # Application wiring
 APP_TITLE = "FastAPI Placeholder Dashboard"
@@ -107,13 +115,15 @@ CLUSTERING_METRIC_KEYS: list[str] = sorted(
 # Ollama defaults
 DEFAULT_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
 DEFAULT_OLLAMA_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL", "bge-m3")
-DEFAULT_OLLAMA_TIMEOUT = 60.0
+DEFAULT_OLLAMA_TIMEOUT = 600.0
 LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "ollama").lower()
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
-OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-nano")
 OPENAI_EMBED_MODEL = os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-3-small")
-FEEDBACK_MODEL = "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
+FEEDBACK_MODEL = "MHKetbi/Unsloth_gemma3-4b-it:q4_K_M"
+#"MHKetbi/Unsloth_gemma3-4b-it:q4_K_M"
+#"gemma3:4b"
 # "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
 FEEDBACK_PROMPT_WITH_REQUIREMENTS = (
     "You are a code reviewer for an introductory programming course.  "

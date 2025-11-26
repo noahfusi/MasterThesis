@@ -4,6 +4,7 @@ import logging
 from typing import Iterable, List
 import json
 from urllib import error, parse, request
+import asyncio
 
 import config
 
@@ -85,7 +86,7 @@ def _ollama_embed(text: str, model: str | None, timeout: float) -> list[float]:
 # ---------- OpenAI backend ----------
 def _openai_client() -> object:
     if OpenAI is None:
-        raise LLMError("openai package is not installed.")
+        raise LLMError("openai package is not installed. Install with `pip install openai`.")
     if not config.OPENAI_API_KEY:
         raise LLMError("OPENAI_API_KEY is required for OpenAI provider.")
     return OpenAI(api_key=config.OPENAI_API_KEY, base_url=config.OPENAI_BASE_URL)
@@ -93,15 +94,17 @@ def _openai_client() -> object:
 
 def _openai_generate(prompt: str, model: str | None, timeout: float) -> str:
     client = _openai_client()
+    logger.debug("OpenAI generate prompt: %s", prompt)
     target_model = model or config.OPENAI_MODEL
-    try:
-        completion = client.chat.completions.create(
+    try: 
+        response = client.responses.create(
             model=target_model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0,
-            timeout=timeout,
+            input=[
+                {"role": "user", "content": prompt}
+            ],
         )
-        return completion.choices[0].message.content or ""
+        print(response.output_text)
+        return response.output_text
     except Exception as exc:  # noqa: BLE001
         raise LLMError(f"OpenAI completion failed: {exc}") from exc
 
@@ -117,11 +120,15 @@ def _openai_embed(text: str, model: str | None, timeout: float) -> list[float]:
         raise LLMError(f"OpenAI embedding failed: {exc}") from exc
 
 
+def _provider() -> str:
+    return (config.LLM_PROVIDER or "ollama").strip().lower()
+
+
 def generate_completion(prompt: str, *, model: str | None = None, timeout: float = config.DEFAULT_OLLAMA_TIMEOUT) -> str:
     if not prompt or not prompt.strip():
         raise ValueError("prompt must be a non-empty string.")
-    provider = config.LLM_PROVIDER.lower()
-    if provider == "openai":
+    provider = _provider()
+    if provider in {"openai", "openapi"}:
         return _openai_generate(prompt, model, timeout)
     return _ollama_generate(prompt, model, timeout)
 
@@ -129,7 +136,16 @@ def generate_completion(prompt: str, *, model: str | None = None, timeout: float
 def request_embedding(text: str, model: str | None = None, *, timeout: float = config.DEFAULT_OLLAMA_TIMEOUT) -> list[float]:
     if not text:
         raise ValueError("text must be a non-empty string.")
-    provider = config.LLM_PROVIDER.lower()
-    if provider == "openai":
+    provider = _provider()
+    if provider in {"openai", "openapi"}:
         return _openai_embed(text, model, timeout)
     return _ollama_embed(text, model, timeout)
+
+
+async def async_generate_completion(
+    prompt: str, *, model: str | None = None, timeout: float = config.DEFAULT_OLLAMA_TIMEOUT
+) -> str:
+    """
+    Async wrapper around generate_completion using a thread to avoid blocking the event loop.
+    """
+    return await asyncio.to_thread(generate_completion, prompt, model=model, timeout=timeout)

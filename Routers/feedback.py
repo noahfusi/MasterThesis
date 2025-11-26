@@ -1,16 +1,20 @@
 from __future__ import annotations
 
 from pathlib import Path
+import logging
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Query, status
 from pydantic import BaseModel, Field
 
 import config
 from Files.dataset_manager import dataset_path
-from LLM import LLMError, generate_completion
+import asyncio
+from LLM import LLMError, generate_completion, async_generate_completion
 from Routers.utils import resolve_dataset_or_http_error, resolve_relative_file
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
+logger = logging.getLogger("uvicorn.error")
+DATASET_INFLIGHT: set[str] = set()
 
 
 class FeedbackRequest(BaseModel):
@@ -60,13 +64,16 @@ def _generate_file_feedback(dataset: str, raw_dir: Path, filename: str, output_r
     """
     @brief Generate feedback for a single file and persist it under the dataset feedback folder.
     """
+    logger.info("[feedback] start file feedback dataset=%s file=%s", dataset, filename)
     try:
         target_path, relative = resolve_relative_file(raw_dir, filename)
     except HTTPException:
+        logger.warning("[feedback] file feedback skipped (resolve error) dataset=%s file=%s", dataset, filename)
         return
     try:
         code = target_path.read_text(encoding="utf-8")
     except OSError:
+        logger.warning("[feedback] file feedback skipped (read error) dataset=%s file=%s", dataset, filename)
         return
 
     dataset_root = dataset_path(dataset)
@@ -75,27 +82,73 @@ def _generate_file_feedback(dataset: str, raw_dir: Path, filename: str, output_r
     try:
         feedback = generate_completion(prompt)
     except (LLMError, ValueError):
+        logger.warning("[feedback] file feedback generation failed dataset=%s file=%s", dataset, filename)
         return
 
     output_path = output_root / Path(relative).with_suffix(Path(relative).suffix + ".feedback.txt")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     try:
         output_path.write_text(feedback, encoding="utf-8")
+        logger.info("[feedback] file feedback completed dataset=%s file=%s", dataset, filename)
     except OSError:
+        logger.warning("[feedback] file feedback write failed dataset=%s file=%s", dataset, filename)
         return
 
 
-def _generate_dataset_feedback(dataset: str, raw_dir: Path, output_root: Path) -> None:
+async def _generate_file_feedback_async(dataset: str, raw_dir: Path, filename: str, output_root: Path) -> None:
+    logger.info("[feedback] start file feedback (async) dataset=%s file=%s", dataset, filename)
+    try:
+        target_path, relative = resolve_relative_file(raw_dir, filename)
+    except HTTPException:
+        logger.warning("[feedback] file feedback skipped (resolve error) dataset=%s file=%s", dataset, filename)
+        return
+    try:
+        code = target_path.read_text(encoding="utf-8")
+    except OSError:
+        logger.warning("[feedback] file feedback skipped (read error) dataset=%s file=%s", dataset, filename)
+        return
+
+    dataset_root = dataset_path(dataset)
+    requirements = _read_requirements(dataset_root)
+    prompt = _format_prompt(relative, code, requirements)
+    try:
+        feedback = await async_generate_completion(prompt)
+    except (LLMError, ValueError):
+        logger.warning("[feedback] file feedback generation failed dataset=%s file=%s", dataset, filename)
+        return
+
+    output_path = output_root / Path(relative).with_suffix(Path(relative).suffix + ".feedback.txt")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        output_path.write_text(feedback, encoding="utf-8")
+        logger.info("[feedback] file feedback completed dataset=%s file=%s", dataset, filename)
+    except OSError:
+        logger.warning("[feedback] file feedback write failed dataset=%s file=%s", dataset, filename)
+        return
+
+
+async def _generate_dataset_feedback_async(dataset: str, raw_dir: Path, output_root: Path) -> None:
     """
-    @brief Generate feedback for all files in a dataset (best-effort).
+    @brief Generate feedback for all files in a dataset (best-effort) concurrently.
     """
     if not raw_dir.exists():
         return
+    logger.info("[feedback] dataset feedback start dataset=%s", dataset)
+    tasks = []
+    sem = asyncio.Semaphore(16)  # Limit concurrency to avoid overwhelming the LLM server
+
+    async def worker(rel: str) -> None:
+        async with sem:
+            await _generate_file_feedback_async(dataset, raw_dir, rel, output_root)
+
     for path in raw_dir.rglob("*"):
         if not path.is_file():
             continue
         relative = path.relative_to(raw_dir).as_posix()
-        _generate_file_feedback(dataset, raw_dir, relative, output_root)
+        tasks.append(asyncio.create_task(worker(relative)))
+    if tasks:
+        await asyncio.gather(*tasks)
+    logger.info("[feedback] dataset feedback completed dataset=%s", dataset)
 
 
 @router.post("/file", status_code=status.HTTP_202_ACCEPTED, name="feedback-file")
@@ -121,14 +174,29 @@ async def request_dataset_feedback(payload: DatasetFeedbackRequest, background_t
     """
     @brief Enqueue feedback generation for the entire dataset.
     """
+    logger.info("Received dataset feedback request: %s", payload.dataset)
     dataset, _ = resolve_dataset_or_http_error(payload.dataset, require_raw=False)
+    if dataset in DATASET_INFLIGHT:
+        logger.info("Dataset feedback already in flight: %s", dataset)
+        return {
+            "dataset": dataset,
+            "status": "accepted",
+            "message": config.MESSAGES["FEEDBACK_DATASET_QUEUED"],
+        }
     dataset_root = dataset_path(dataset)
     if not dataset_root.exists():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["DATASET_NOT_FOUND"])
     output_root = _feedback_dir(dataset)
     raw_dir = dataset_root / config.RAW_FOLDER_NAME
 
-    background_tasks.add_task(_generate_dataset_feedback, dataset, raw_dir, output_root)
+    async def _run() -> None:
+        try:
+            await _generate_dataset_feedback_async(dataset, raw_dir, output_root)
+        finally:
+            DATASET_INFLIGHT.discard(dataset)
+
+    DATASET_INFLIGHT.add(dataset)
+    background_tasks.add_task(asyncio.run, _run())
     return {
         "dataset": dataset,
         "status": "accepted",

@@ -26,6 +26,10 @@
   padding: 0.75rem;
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
 }
 
 .file-list {
@@ -34,6 +38,33 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.file-analysis-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.file-analysis-spinner-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(37, 99, 235, 0.35);
+  border-top-color: #2563eb;
+  animation: file-analysis-spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes file-analysis-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .file-analysis-row {
