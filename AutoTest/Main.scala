@@ -1,183 +1,252 @@
-import scala.io.StdIn.readLine
+import scala.io.StdIn._
 import scala.util.Random
 
 object Main {
-  val nbMachines: Int = 5
-  val machinePins: Array[String] = Array.fill(nbMachines)("434343")
-  val coffeeStocks: Array[Double] = Array.fill(nbMachines)(50.0)
-  val sugarStocks: Array[Double] = Array.fill(nbMachines)(30.0)
-  val milkStocks: Array[Double] = Array.fill(nbMachines)(500.0)
+  var stockCafe = 50.0
+  var stockSucre = 30.0
+  var stockLait = 500.0
 
   def main(args: Array[String]): Unit = {
-    mainMenu()
-  }
 
-  // Menu principal
-  def mainMenu(): Unit = {
-    var continue = true
-    while (continue) {
-      println("\nNospresso Café")
-      println("Veuillez sélectionner une machine (0 à 4) ou taper 5 pour quitter :")
-      print("> ")
+    var continuer = true
+    while (continuer) {
+      println("Bienvenue dans NosprossoCafé  ")
+      println("Veuillez sélectionner votre mode : ")
+      println("1- Client ")
+      println("2- Admin ")
+      println("3- Quitter ")
 
-      val machineId = readLine().toIntOption.getOrElse(-1)
-      if (machineId >= 0 && machineId < nbMachines) {
-        println("Modes disponibles :\n1) Client\n2) Administrateur")
-        print("> ")
-        readLine().toIntOption match {
-          case Some(1) => serveClient(machineId)
-          case Some(2) => if (validatePin(machineId)) adminMenu(machineId)
-          case _       => println("Option invalide.")
+      var Choix = 0
+      while (Choix != 1 && Choix != 2 && Choix != 3) {
+        Choix = scala.io.StdIn.readInt()
+        if (Choix != 1 && Choix != 2 && Choix != 3) {
+          println(" Veuillez entrer un choix Valide (1,2,3). ")
         }
-      } else if (machineId == 5) {
-        println("Merci d'avoir utilisé Nospresso. À bientôt !")
-        continue = false
-      } else {
-        println("Sélection invalide, veuillez réessayer.")
+      }
+      if (Choix == 1) {
+        println("Mode selectionné : Client ")
+        println("Veuillez sélectionner votre boisson :")
+        println(" 1-Expresso : 2.00 CHF ")
+        println(" 2-Cappucino : 2.50 CHF ")
+        println(" 3-Latte : \n-Petit: 2.70 CHF,\n-Moyen : 3.20 CHF,\n-Grand : 3.70 CHF ")
+
+        var ChoixBoisson = 0
+        var prixBoisson = 0.0
+        var besoinCafe = 0.0
+        var besoinLait = 0.0
+        while (ChoixBoisson != 1 && ChoixBoisson != 2 && ChoixBoisson != 3) {
+          ChoixBoisson = scala.io.StdIn.readInt()
+          if (ChoixBoisson != 1 && ChoixBoisson != 2 && ChoixBoisson != 3) {
+            println("Veuillez entrer votre choix valide (1,2,3).")
+          }
+        }
+
+        var Boisson = ""
+        if (ChoixBoisson == 1) {
+          Boisson = "Expresso"
+          prixBoisson = 2.00
+          besoinCafe = 8
+        } else if (ChoixBoisson == 2) {
+          Boisson = "Cappuccino"
+          prixBoisson = 2.50
+          besoinCafe = 6
+          besoinLait = 100
+        } else if (ChoixBoisson == 3) {
+          println("Sélectionnez la taille de votre Latte : 1-Petit, 2-Moyen, 3-Grand")
+          var taille = 0
+          while ((taille < 1) || (taille > 3)) {
+            taille = readInt()
+            if ((taille < 1) || (taille > 3)) {
+              println("Taille invalide. Veuillez entre 1,2 ou 3.")
+            }
+          }
+          if (taille == 1) {
+            Boisson = "Latte Petit."
+            prixBoisson = 2.70
+            besoinCafe = 6
+            besoinLait = 120
+          } else if (taille == 2) {
+            Boisson = "Latte Moyen"
+            prixBoisson = 3.20
+            besoinCafe = 8
+            besoinLait = 150
+          } else if (taille == 3) {
+            Boisson = "Latte Grand"
+            prixBoisson = 3.70
+            besoinCafe = 12
+            besoinLait = 200
+          }
+        }
+
+        println("Souhaitez vous ajouter du sucre ? ")
+        println(" 1- Sans sucre.")
+        println(" 2- Peu (5g) à 0.10 CHF.")
+        println(" 3- Moyen (10g) à 0.20 CHF.")
+        println(" 4- Beaucoup (15g) à 0.30 CHF.")
+
+        var ChoixSucre = 0
+        var prixSucre = 0.0
+        var besoinSucre = 0.0
+        while ((ChoixSucre < 1) || (ChoixSucre > 4)) {
+          ChoixSucre = readInt()
+          if ((ChoixSucre < 1) || (ChoixSucre > 4)) {
+            println("Veuillez entrer un choix valide (1,2,3 ou 4).")
+          }
+        }
+
+        if (ChoixSucre == 2) {
+          prixSucre = 0.10
+          besoinSucre = 5
+        } else if (ChoixSucre == 3) {
+          prixSucre = 0.20
+          besoinSucre = 10
+        } else if (ChoixSucre == 4) {
+          prixSucre = 0.30
+          besoinSucre = 15
+        }
+
+        var DoseLait = 0
+        var prixLait = 0.0
+        var ajouterLait = 2
+        if ((ChoixBoisson == 2) || (ChoixBoisson == 3)) {
+          println("Souhaitez-vous ajouter du lait supplément ? (1-Oui, 2-Non)")
+          ajouterLait = readInt()
+          while ((ajouterLait != 1 )&&(ajouterLait !=2) ) {
+            println ("Choix invalide, Entrez 1 pour Oui ou 2 pour Non.")
+            ajouterLait = readInt()
+          }
+          if (ajouterLait == 1) {
+            println("Combien de doses ? : Max 3 doses")
+            DoseLait = readInt()
+            while ((DoseLait < 0) || (DoseLait > 3)) {
+              println("Nombre de doses invalide.Veuillez entrer une valeur entre 0 et 3. ")
+              DoseLait = readInt()
+            }
+            prixLait = DoseLait * 0.05
+            besoinLait += DoseLait * 50
+          }
+        }
+
+        val prixTotal = prixBoisson + prixSucre + prixLait
+        if (besoinCafe > stockCafe) {
+          println("Erreur : Quantité de poudre café insuffisante. pour préparer la boisson sélectionnée.")
+          println("Veuillez vérifier les stocks en mode Admin.")
+        } else if (besoinSucre > stockSucre) {
+          println("Erreur : Quantité de sucre insuffisante. pour préparer la boisson sélectionnée.")
+          println("Veuillez vérifier les stocks en mode Admin.")
+        } else if (besoinLait > stockLait) {
+          println("Erreur : Quantité de lait insuffisante. pour préparer la boisson sélectionnée.")
+          if (ChoixBoisson == 3) {
+            println("Veuillez choisir une taille plus petite ou essayez un autre boisson.")
+          } else if ((ChoixBoisson == 1) || (ChoixBoisson == 2)) {
+            println("Veuillez essayer une autre boisson.")
+          }
+        }else {
+
+          stockCafe -= besoinCafe
+          stockSucre -= besoinSucre
+          stockLait -= besoinLait
+
+          println("Récapitulatif  de votre boisson")
+          println("Boisson : " + Boisson)
+          if (ChoixSucre == 1) {
+            println("Sans sucre ")
+          } else if (ChoixSucre == 2) {
+            println("Peu de sucre (5g).")
+          } else if (ChoixSucre == 3) {
+            println("Moyen de sucre (10g).")
+          } else {
+            println("Beaucoup de sucre (15g).")
+          }
+          if (DoseLait > 0) {
+            println("Lait en supplément : " + DoseLait + " dose(s)")
+          } else {
+            println("Pas de lait en supplément.")
+          }
+          if ((ChoixSucre == 1) && (ajouterLait == 2)) {
+            printf("Prix Total : CHF %.2f CHF\n", prixBoisson)
+          } else if (((ChoixSucre == 2) || (ChoixSucre == 3) || (ChoixSucre == 4)) && (ajouterLait == 2)) {
+            printf("Prix Total : CHF %.2f + CHF %.2f  = CHF %.2f\n", prixBoisson, prixSucre, prixTotal)
+          } else if ((ChoixSucre == 1) && (ajouterLait == 1)) {
+            printf("Prix Total : CHF %.2f + CHF %.2f = CHF %.2f\n", prixBoisson, prixLait, prixTotal)
+          } else if (((ChoixSucre == 2) || (ChoixSucre == 3) || (ChoixSucre == 4)) && (ajouterLait == 1)) {
+            printf("Prix Total : CHF %.2f + CHF %.2f + CHF %.2f = CHF %.2f\n", prixBoisson, prixSucre,prixLait, prixTotal)
+          }
+
+          println("Veuillez payer en utilisant Twint.")
+          val codeTwint = Random.alphanumeric.take(5).mkString
+          println("Votre code de paiment est :" + codeTwint)
+          println("(En attente de paiement...)")
+          //Thread.sleep(5000)
+          println("Paiement confirmé.")
+          println("Préparation de votre boisson...")
+          println("votre " + Boisson + " est pret ! Bonne dégustation !")
+        }
+      } else if (Choix == 2) {
+        println("Mode selectionné : Admin ")
+        println("Veuillez entrer le code PIN pour accéder au mode Admin")
+        val codePIN = 434343
+        var pinEntree = readInt()
+        // verification du code PIN
+        var essais = 3
+        while (pinEntree != codePIN && essais > 1) {
+          essais -= 1
+          println("code incorrect. il vous reste " + essais + "essais.")
+          pinEntree = readInt()
+        }
+        if (pinEntree == codePIN) {
+          println("Accès autorisé.")
+          println("Stocks actuels : ")
+          printf("Poudre de café : %.2f g\n ", stockCafe)
+          printf("Sucre : %.2f g\n", stockSucre)
+          printf("Lait : %.2f l\n", stockLait)
+          println("Réapprovisionnement des stocks...")
+          println("Entrez la quantité à ajouter pour chaque ingrédient :")
+
+          var ajoutCafe = -1.0
+          var ajoutSucre = -1.0
+          var ajoutLait = -1.0
+
+          while (ajoutCafe < 0) {
+            println("Poudre de café (en g) :")
+            ajoutCafe = readDouble()
+            if (ajoutCafe < 0) {
+              println("Erreur : la quantité doit etre positive.Veuillez Réessayer ! ")
+            }
+          }
+          while (ajoutSucre < 0) {
+            println("Sucre (en g) :")
+            ajoutSucre = readDouble()
+            if (ajoutSucre < 0) {
+              println("Erreur : la quantité doit etre positive.Veuillez réessayer ! ")
+            }
+          }
+
+          while (ajoutLait < 0) {
+            println("Lait (en L) :")
+            ajoutLait = readDouble()
+            if (ajoutLait < 0) {
+              println("Erreur : la quantité doit etre positive.Veuillez réessayer ")
+            }
+          }
+
+          stockCafe += ajoutCafe
+          stockSucre += ajoutSucre
+          stockLait += ajoutLait
+
+          println("Ajout : ")
+          printf("Poudre de café : %.2f g\n", ajoutCafe)
+          printf("Sucre : %.2f g\n", ajoutSucre)
+          printf("Lait : %.2f l\n", ajoutLait)
+          println("Niveau de stocks mis à jour.")
+          println("Retour au menu principal...")
+        } else {
+          println("Accès refusé.")
+        }
+      } else if (Choix == 3) {
+        println("Programme Terminé. Au revoir ! ")
+        continuer = false
       }
     }
-  }
-
-  // Validation du code PIN
-  def validatePin(machineId: Int): Boolean = {
-    var attempts = 3
-    while (attempts > 0) {
-      println(s"Entrez le code PIN pour la Machine $machineId : ")
-      val pin = readLine()
-      if (pin == machinePins(machineId)) {
-        println("Accès autorisé.")
-        return true
-      } else {
-        attempts -= 1
-        println(s"Code PIN incorrect. $attempts tentative(s) restante(s).")
-      }
-    }
-    println("Trop de tentatives échouées. Fin du programme.")
-    System.exit(0)
-    false
-  }
-
-  // Menu Administrateur
-  def adminMenu(machineId: Int): Unit = {
-    println(s"Menu Administrateur - Machine $machineId")
-    println("1) Réapprovisionner les stocks\n2) Mettre à jour le code PIN\n3) Retour")
-    print("> ")
-
-    readLine().toIntOption match {
-      case Some(1) => restockMachine(machineId)
-      case Some(2) => updatePin(machineId)
-      case Some(3) => println("Retour au menu principal.")
-      case _       => println("Option invalide.")
-    }
-  }
-
-  // Mise à jour du code PIN
-  def updatePin(machineId: Int): Unit = {
-    println("Entrez un nouveau code PIN à 6 chiffres : ")
-    var newPin = ""
-    while (newPin.length != 6 || !newPin.forall(_.isDigit)) {
-      newPin = readLine()
-      if (newPin.length != 6 || !newPin.forall(_.isDigit)) {
-        println("Code PIN invalide. Entrez un code à 6 chiffres :")
-      }
-    }
-    machinePins(machineId) = newPin
-    println(s"Le code PIN pour la Machine $machineId a été mis à jour.")
-  }
-
-  // Service client
-  def serveClient(machineId: Int): Unit = {
-    println(s"Service Client - Machine $machineId")
-    println("1) Expresso (CHF 2.00)\n2) Cappuccino (CHF 2.50)\n3) Latte (CHF 2.70 - CHF 3.70)")
-    print("> ")
-
-    val choix = readLine().toIntOption.getOrElse(-1)
-    val prix = choix match {
-      case 1 if verifierStock(machineId, 8, 0, 0)   => 2.0
-      case 2 if verifierStock(machineId, 6, 0, 100) => 2.5
-      case 3                                       => choisirTailleLatte(machineId)
-      case _ =>
-        println("Boisson invalide ou stock insuffisant.")
-        return
-    }
-    val prixFinal = prix + choisirSucre(machineId) + (if (choix == 2 || choix == 3) choisirLaitSupplementaire(machineId) else 0.0)
-    println(f"Prix total : CHF $prixFinal%.2f")
-    println(s"Code de paiement : ${CodePaiement()}")
-    println("Préparation de la boisson...\nVotre boisson est prête. Bonne dégustation !")
-  }
-
-  // Choisir la taille du Latte
-  def choisirTailleLatte(machineId: Int): Double = {
-    println("1) Petit (CHF 2.70)\n2) Moyen (CHF 3.20)\n3) Grand (CHF 3.70)")
-    print("> ")
-    readLine().toIntOption match {
-      case Some(1) if verifierStock(machineId, 6, 0, 120) => 2.7
-      case Some(2) if verifierStock(machineId, 8, 0, 150) => 3.2
-      case Some(3) if verifierStock(machineId, 12, 0, 200) => 3.7
-      case _ =>
-        println("Taille invalide ou stock insuffisant.")
-        0.0
-    }
-  }
-
-  // Réapprovisionnement
-  def restockMachine(machineId: Int): Unit = {
-    println(s"Réapprovisionnement - Machine $machineId")
-    println("Entrez la quantité de café à ajouter (g) : ")
-    coffeeStocks(machineId) += readLine().toDoubleOption.getOrElse(0.0)
-    println("Entrez la quantité de sucre à ajouter (g) : ")
-    sugarStocks(machineId) += readLine().toDoubleOption.getOrElse(0.0)
-    println("Entrez la quantité de lait à ajouter (ml) : ")
-    milkStocks(machineId) += readLine().toDoubleOption.getOrElse(0.0)
-    println("Réapprovisionnement effectué avec succès.")
-  }
-
-  // Vérification des stocks
-  def verifierStock(machineId: Int, cafe: Double, sucre: Double, lait: Double): Boolean = {
-    if (coffeeStocks(machineId) >= cafe && sugarStocks(machineId) >= sucre && milkStocks(machineId) >= lait) {
-      coffeeStocks(machineId) -= cafe
-      sugarStocks(machineId) -= sucre
-      milkStocks(machineId) -= lait
-      true
-    } else {
-      println("Stock insuffisant pour cette boisson.")
-      false
-    }
-  }
-
-  // Code de paiement
-  def CodePaiement(): String = {
-    val chars = ('A' to 'Z') ++ ('0' to '9')
-    (1 to 5).map(_ => chars(Random.nextInt(chars.length))).mkString
-  }
-
-  // Options de sucre
-  def choisirSucre(machineId: Int): Double = {
-    println("Ajouter du sucre ? 1) Non 2) Peu (CHF 0.10) 3) Moyen (CHF 0.20) 4) Beaucoup (CHF 0.30)")
-    print("> ")
-    readLine().toIntOption match {
-      case Some(2) if sugarStocks(machineId) >= 5  => sugarStocks(machineId) -= 5; 0.1
-      case Some(3) if sugarStocks(machineId) >= 10 => sugarStocks(machineId) -= 10; 0.2
-      case Some(4) if sugarStocks(machineId) >= 15 => sugarStocks(machineId) -= 15; 0.3
-      case _                                       => 0.0
-    }
-  }
-
-  // Lait supplémentaire
-  def choisirLaitSupplementaire(machineId: Int): Double = {
-    println("Ajouter du lait supplémentaire (CHF 0.05 par dose, max 3 doses) ? 1) Oui 2) Non")
-    print("> ")
-    if (readLine().toIntOption.contains(1)) {
-      println("Combien de doses ? (max 3)")
-      val doses = readLine().toIntOption.getOrElse(0).min(3)
-      val quantiteLait = doses * 50
-      if (milkStocks(machineId) >= quantiteLait) {
-        milkStocks(machineId) -= quantiteLait
-        doses * 0.05
-      } else {
-        println("Stock de lait insuffisant.")
-        0.0
-      }
-    } else 0.0
   }
 }

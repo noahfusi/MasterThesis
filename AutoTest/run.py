@@ -1,206 +1,97 @@
-import os
 import subprocess
-import json
-import re
-import shutil
-import sys
 import time
+import yaml
 from pathlib import Path
+import json
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
-if str(ROOT_DIR) not in sys.path:
-    sys.path.insert(0, str(ROOT_DIR))
+# -----------------------
+# CONFIGURATION
+# -----------------------
 
-import config
+SCALA_DIR = Path("AutoTest/")
+# Command to run your Scala program
+SCALA_COMPILE_CMD = ["scalac", "Main.scala"]
+SCALA_CMD = ["scala", "Main"]
+# Alternative:
+# SCALA_CMD = ["java", "-cp", "student.jar", "Main"]
 
-# -------------------------------------------------
-# CONFIG
-# -------------------------------------------------
-
-BASE_DIR = config.AUTOTEST_BASE_DIR
-STUDENT_FILE = config.AUTOTEST_STUDENT_FILE  # fichier scala du student
-TEST_FILE = config.AUTOTEST_TEST_FILE  # fichier JSON avec scénarios
-OUTPUT_DIR = config.AUTOTEST_OUTPUT_DIR  # dossier de compilation
-SCALA_BIN = config.AUTOTEST_SCALA_BIN
-SCALAC_BIN = config.AUTOTEST_SCALAC_BIN
-
-DEFAULT_COMMAND_DELAY = config.AUTOTEST_DEFAULT_COMMAND_DELAY  # délai par défaut entre les inputs
-DEFAULT_SCENARIO_TIMEOUT = config.AUTOTEST_DEFAULT_SCENARIO_TIMEOUT
-
-# -------------------------------------------------
-# UTILS
-# -------------------------------------------------
-
-def compile_scala(source_file, output_dir):
-    """
-    Compile un fichier Scala avec scalac
-    """
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    compile_cmd = [SCALAC_BIN, source_file, "-d", output_dir]
-
-    proc = subprocess.run(
-        compile_cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
-
-    success = proc.returncode == 0
-    return success, proc.stdout, proc.stderr
+TEST_FILE = "Autotest/tests.yaml"
+RESULT_FILE = "results_ex1.json"
 
 
-def _sanitize_float(value, default):
+compile = subprocess.run(
+        SCALA_COMPILE_CMD,
+        cwd=SCALA_DIR,
+        text=True,
+        capture_output=True
+)
+# -----------------------
+# LOAD YAML TESTS
+# -----------------------
+
+with open(TEST_FILE, "r", encoding="utf-8") as f:
+    tests_yaml = yaml.safe_load(f)
+
+tests = tests_yaml["tests"]
+print("INPUTS LUS PAR YAML:", tests)
+results = []
+
+# -----------------------
+# RUN TESTS
+# -----------------------
+
+for test in tests:
+    print(f"→ Running test {test['id']}...")
+
+    input_str = "\n".join(test["inputs"]) + "\n"
+
+    start_time = time.time()
     try:
-        parsed = float(value)
-        if parsed < 0:
-            return 0.0
-        return parsed
-    except (TypeError, ValueError):
-        return default
-
-
-def run_scenario(main_class, scenario, classpath):
-    """Exécute une classe Scala en envoyant les commandes d'un scénario."""
-    cmd = [SCALA_BIN, "-classpath", classpath, main_class]
-    commands = scenario.get("commands", [])
-    default_delay = _sanitize_float(
-        scenario.get("command_delay_seconds", DEFAULT_COMMAND_DELAY),
-        DEFAULT_COMMAND_DELAY,
-    )
-    timeout_seconds = _sanitize_float(
-        scenario.get("timeout_seconds", DEFAULT_SCENARIO_TIMEOUT),
-        DEFAULT_SCENARIO_TIMEOUT,
-    )
-
-    stdin_stream = None
-    try:
-        proc = subprocess.Popen(
-            cmd,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
+        proc = subprocess.run(
+            SCALA_CMD,
+            cwd=SCALA_DIR,
+            input=input_str,
+            text=True,
+            capture_output=True,
+            timeout=10  # seconds
         )
-        stdin_stream = proc.stdin
-    except FileNotFoundError:
-        return -1, "", f"Impossible de lancer {SCALA_BIN}."
-
-    try:
-        for command in commands:
-            if proc.poll() is not None:
-                break
-
-            if stdin_stream is None or stdin_stream.closed:
-                break
-
-            raw_value = str(command.get("input", ""))
-            if not raw_value.endswith("\n"):
-                raw_value += "\n"
-
-            try:
-                stdin_stream.write(raw_value)
-                stdin_stream.flush()
-            except (BrokenPipeError, ValueError):
-                break
-
-            delay_value = _sanitize_float(
-                command.get("delay_seconds", default_delay),
-                default_delay,
-            )
-            if delay_value > 0:
-                time.sleep(delay_value)
-
-        if stdin_stream and not stdin_stream.closed:
-            try:
-                stdin_stream.close()
-            except ValueError:
-                pass
-        proc.stdin = None
-
-        stdout, stderr = proc.communicate(timeout=timeout_seconds)
-        return proc.returncode, stdout, stderr
-
+        duration = (time.time() - start_time) * 1000
     except subprocess.TimeoutExpired:
-        proc.kill()
-        return -1, "", "Timeout"
+        results.append({
+            "id": test["id"],
+            "status": "timeout",
+            "duration_ms": None,
+            "stdout": "",
+            "stderr": "",
+            "errors": ["Execution timed out"]
+        })
+        continue
 
+    stdout = proc.stdout
+    stderr = proc.stderr
 
-def evaluate_test(test, output):
-    """
-    Compare la sortie réelle avec les règles du test JSON
-    """
-    # Vérifications obligatoires
-    for req in test.get("require", []):
-        if req["type"] == "regex":
-            if not re.search(req["value"], output, re.DOTALL):
-                return False, f"Missing required pattern: {req['value']}"
-        elif req["type"] == "plain":
-            if req["value"] not in output:
-                return False, f"Missing required text: {req['value']}"
+    # Evaluate expected outputs
+    errors = []
+    for expected in test.get("expected_contains", []):
+        if expected.lower() not in stdout.lower():
+            errors.append(f"Missing expected text: {expected}")
 
-    # Vérifications interdites
-    for forb in test.get("forbid", []):
-        if re.search(forb["value"], output, re.DOTALL):
-            return False, f"Forbidden pattern matched: {forb['value']}"
+    results.append({
+        "id": test["id"],
+        "description": test["description"],
+        "status": "ok" if len(errors) == 0 else "failed",
+        "duration_ms": duration,
+        "stdout": stdout,
+        "stderr": stderr,
+        "exit_code": proc.returncode,
+        "errors": errors
+    })
 
-    return True, "OK"
+# -----------------------
+# SAVE REPORT
+# -----------------------
 
+with open(RESULT_FILE, "w", encoding="utf-8") as f:
+    json.dump(results, f, indent=4, ensure_ascii=False)
 
-# -------------------------------------------------
-# MAIN
-# -------------------------------------------------
-
-def main():
-    print("=== AUTOGRADER SCALA I/O ===")
-
-    # Charger les scénarios
-    with open(TEST_FILE, encoding="utf-8") as fh:
-        data = json.load(fh)
-    scenarios = data.get("scenarios", [])
-
-    # Préparer compilation
-    shutil.rmtree(OUTPUT_DIR, ignore_errors=True)
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-    # Compiler le code étudiant
-    print("Compiling student code...")
-    success, out, err = compile_scala(STUDENT_FILE, OUTPUT_DIR)
-
-    if not success:
-        print("Compilation failed!\n")
-        print(err)
-        return
-
-    print("Compilation OK.\n")
-
-    # Lancer les scénarios un par un
-    for scenario in scenarios:
-        scenario_name = scenario.get("name", "Unnamed scenario")
-        print(f"--- Scénario: {scenario_name} ---")
-
-        ret, stdout, stderr = run_scenario("Main", scenario, OUTPUT_DIR)
-
-        print("PROGRAM OUTPUT:")
-        print(stdout)
-
-        if stderr:
-            print("PROGRAM STDERR:")
-            print(stderr)
-
-        ok, msg = evaluate_test(scenario, stdout)
-        score = scenario.get("score", 0)
-
-        if ok:
-            print(f"RESULT: OK  (+{score} points)")
-        else:
-            print(f"RESULT: FAIL ({msg})")
-
-        print()
-
-    print("=== END ===")
-
-
-if __name__ == "__main__":
-    main()
+print(f"\n✔ Tests finished. Results saved to {RESULT_FILE}")

@@ -11,6 +11,7 @@ from Files.dataset_manager import dataset_path
 import asyncio
 from LLM import LLMError, generate_completion, async_generate_completion
 from Routers.utils import resolve_dataset_or_http_error, resolve_relative_file
+from Routers.tasks import notify_tasks_sync
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
 logger = logging.getLogger("uvicorn.error")
@@ -90,6 +91,9 @@ def _generate_file_feedback(dataset: str, raw_dir: Path, filename: str, output_r
     try:
         output_path.write_text(feedback, encoding="utf-8")
         logger.info("[feedback] file feedback completed dataset=%s file=%s", dataset, filename)
+        notify_tasks_sync(
+            {"type": "feedback-file-completed", "dataset": dataset, "filename": str(Path(relative).as_posix())}
+        )
     except OSError:
         logger.warning("[feedback] file feedback write failed dataset=%s file=%s", dataset, filename)
         return
@@ -122,6 +126,9 @@ async def _generate_file_feedback_async(dataset: str, raw_dir: Path, filename: s
     try:
         output_path.write_text(feedback, encoding="utf-8")
         logger.info("[feedback] file feedback completed dataset=%s file=%s", dataset, filename)
+        notify_tasks_sync(
+            {"type": "feedback-file-completed", "dataset": dataset, "filename": str(Path(relative).as_posix())}
+        )
     except OSError:
         logger.warning("[feedback] file feedback write failed dataset=%s file=%s", dataset, filename)
         return
@@ -146,9 +153,26 @@ async def _generate_dataset_feedback_async(dataset: str, raw_dir: Path, output_r
             continue
         relative = path.relative_to(raw_dir).as_posix()
         tasks.append(asyncio.create_task(worker(relative)))
-    if tasks:
-        await asyncio.gather(*tasks)
-    logger.info("[feedback] dataset feedback completed dataset=%s", dataset)
+    try:
+        if tasks:
+            await asyncio.gather(*tasks)
+        status = "completed"
+        error = None
+    except Exception as exc:  # pragma: no cover - defensive
+        status = "failed"
+        error = str(exc)
+        logger.warning("[feedback] dataset feedback failed dataset=%s error=%s", dataset, exc)
+    else:
+        logger.info("[feedback] dataset feedback completed dataset=%s", dataset)
+    finally:
+        notify_tasks_sync(
+            {
+                "type": "feedback-dataset-completed",
+                "dataset": dataset,
+                "status": status,
+                "error": error,
+            }
+        )
 
 
 @router.post("/file", status_code=status.HTTP_202_ACCEPTED, name="feedback-file")

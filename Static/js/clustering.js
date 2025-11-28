@@ -1,6 +1,7 @@
 (function () {
   const app = window.App || {};
-  const { API_ROUTES, utils = {}, onReady = (fn) => fn() } = app;
+  const { API_ROUTES, utils = {}, onReady = (fn) => fn(), taskSocket = {} } = app;
+  const subscribeToTaskEvents = taskSocket.subscribe || (() => () => {});
   const {
     requestJSON,
     showMessage,
@@ -82,7 +83,8 @@
     featureMode: "metrics",
     embeddingDims: 16,
   };
-  const pendingRefresh = new Map();
+  const refreshInFlight = new Set();
+  let unsubscribeTaskEvents = null;
 
   function computeClusterMetricStats(clusters = [], metricKeys = []) {
     const stats = {};
@@ -545,35 +547,29 @@
     }
   }
 
-  function schedulePendingRefresh(themeId, attempt = 0) {
-    if (!themeId) return;
-    const existing = pendingRefresh.get(themeId);
-    const existingAttempt = existing?.attempt || 0;
-    const baseAttempt = Math.max(existingAttempt, attempt || 0);
-    if (baseAttempt >= 5) return;
-    if (existing?.timer) {
-      clearTimeout(existing.timer);
-    }
-    const nextAttempt = baseAttempt + 1;
-    const delay = Math.min(15000, 3000 * nextAttempt);
-    const timer = setTimeout(() => refreshThemeFromCache(themeId, nextAttempt), delay);
-    pendingRefresh.set(themeId, { attempt: nextAttempt, timer });
-  }
-
-  async function refreshThemeFromCache(themeId, attempt = 1) {
-    if (!themeId) return;
-    const existing = pendingRefresh.get(themeId);
-    if (existing?.timer) {
-      clearTimeout(existing.timer);
-    }
+  async function refreshThemeFromCache(themeId) {
+    if (!themeId || refreshInFlight.has(themeId)) return;
+    refreshInFlight.add(themeId);
     try {
       const data = await requestJSON(getClusteringLastUrl(themeId));
       renderClusteringResults(themeId, data);
     } catch (error) {
-      if (attempt < 5) {
-        schedulePendingRefresh(themeId, attempt);
-      }
+      console.warn("Failed to refresh clustering results", error);
     }
+    refreshInFlight.delete(themeId);
+  }
+
+  function bindTaskEvents() {
+    if (unsubscribeTaskEvents) return;
+    unsubscribeTaskEvents = subscribeToTaskEvents((event) => {
+      if (!event || event.type !== "clustering-description-completed") return;
+      const targetDataset = event.dataset;
+      if (targetDataset && clusteringState.dataset && targetDataset !== clusteringState.dataset) return;
+      const themeId = event.theme || clusteringState.activeTheme;
+      if (themeId) {
+        void refreshThemeFromCache(themeId);
+      }
+    });
   }
 
   function updateClusteringMetricOptions(metrics = [], themeId = clusteringState.activeTheme) {
@@ -1088,13 +1084,9 @@
     clusteringState.metricKeyByTheme[themeId] = selectedMetric;
     clusteringState.results[themeId] = { ...data, metrics };
     if (hasPendingDescriptions(data)) {
-      schedulePendingRefresh(themeId, pendingRefresh.get(themeId)?.attempt || 0);
-    } else if (pendingRefresh.has(themeId)) {
-      const existing = pendingRefresh.get(themeId);
-      if (existing?.timer) {
-        clearTimeout(existing.timer);
-      }
-      pendingRefresh.delete(themeId);
+      setProgress(true, "Generating cluster descriptions…");
+    } else {
+      setProgress(false);
     }
     if (!clusteringState.activeTheme) {
       clusteringState.activeTheme = themeId;
@@ -1230,6 +1222,7 @@
   }
 
   function initClusteringUI() {
+    bindTaskEvents();
     renderThemeCards();
     if (clusteringState.activeTheme) {
       updateActiveThemeUI(clusteringState.activeTheme);
@@ -1263,7 +1256,6 @@
       setActiveTheme(clusteringState.activeTheme);
     }
     void loadCachedClustering();
-    setProgress(false);
   }
 
   onReady(initClusteringUI);

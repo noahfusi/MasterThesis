@@ -1,8 +1,9 @@
 (function () {
   const app = window.App || {};
-  const { API_ROUTES, utils = {}, dataset = {}, onReady = (fn) => fn() } = app;
+  const { API_ROUTES, utils = {}, dataset = {}, taskSocket = {}, onReady = (fn) => fn() } = app;
   const { requestJSON, showMessage, getMessage } = utils;
-  const { refreshDatasets, setCurrentDataset, getDatasetStatus, pollDatasetStatus } = dataset;
+  const { refreshDatasets, setCurrentDataset, getDatasetStatus } = dataset;
+  const subscribeToTaskEvents = taskSocket.subscribe || (() => () => {});
 
   const datasetListElement = document.getElementById("dataset-list");
   const datasetFeedbackElement = document.getElementById("dataset-feedback");
@@ -18,7 +19,7 @@
 
   if (!datasetListElement && !uploadForm) return;
 
-  let stopStatusPolling = null;
+  let unsubscribeStatusEvents = null;
   let watchingDataset = null;
 
   function updateCurrentDatasetDisplay(currentDataset) {
@@ -256,10 +257,10 @@
   }
 
   function stopWatching() {
-    if (stopStatusPolling) {
-      stopStatusPolling();
+    if (unsubscribeStatusEvents) {
+      unsubscribeStatusEvents();
     }
-    stopStatusPolling = null;
+    unsubscribeStatusEvents = null;
     watchingDataset = null;
   }
 
@@ -283,21 +284,22 @@
       }
     }
 
-    stopStatusPolling = pollDatasetStatus(name, {
-      onUpdate: renderStatus,
-      onReady: (status) => {
-        renderStatus(status);
+    unsubscribeStatusEvents = subscribeToTaskEvents((event) => {
+      if (!event || event.type !== "dataset-status") return;
+      const targetDataset = event.dataset || (event.status && event.status.dataset);
+      if (targetDataset !== name) return;
+      const status = event.status || event;
+      renderStatus(status);
+      const state = status && status.state;
+      if (state === "ready") {
         showMessage(datasetStatusFeedback, `Dataset "${name}" ready.`, false);
         stopWatching();
         void loadDatasets();
-      },
-      onFailed: (status, error) => {
-        const message =
-          (status && (status.error || status.message)) || (error && error.message) || "Dataset processing failed.";
-        renderStatus(status || null);
+      } else if (state === "failed") {
+        const message = status.error || status.message || "Dataset processing failed.";
         showMessage(datasetStatusFeedback, message, true);
         stopWatching();
-      },
+      }
     });
   }
 

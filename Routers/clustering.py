@@ -24,6 +24,7 @@ from Clustering import (
 from Files.dataset_manager import dataset_path
 from Metrics.other_metrics import load_metrics_entries
 from LLM import generate_completion
+from Routers.tasks import notify_tasks_sync
 from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error
 
 router = APIRouter(prefix="/clustering", tags=["clustering"])
@@ -236,6 +237,14 @@ def _generate_cluster_description(job: dict[str, object]) -> None:
         "comparison": comparison,
     }
     _merge_cluster_into_meta(dataset, theme, algorithm, parameters, updated_cluster)
+    notify_tasks_sync(
+        {
+            "type": "clustering-description-completed",
+            "dataset": dataset,
+            "theme": theme,
+            "cluster_id": cluster_id,
+        }
+    )
 
 
 class ClusteringRequest(BaseModel):

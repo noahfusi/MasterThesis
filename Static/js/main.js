@@ -182,6 +182,104 @@ function getMessage(key, params = undefined, fallback = "") {
 void getThresholdDescriptions();
 void loadMessages();
 
+const TASK_SOCKET_SOURCE = "task-socket";
+const taskSocketSubscribers = new Set();
+let taskSocketInitialized = false;
+let fallbackTaskSocket = null;
+
+function emitTaskEvent(event) {
+  taskSocketSubscribers.forEach((subscriber) => {
+    try {
+      subscriber(event);
+    } catch (err) {
+      console.warn("Task event subscriber failed", err);
+    }
+  });
+}
+
+function handleTaskSocketMessage(raw) {
+  let payload = raw;
+  if (raw && typeof raw.data !== "undefined") {
+    payload = raw.data;
+  }
+  if (typeof payload === "string") {
+    try {
+      payload = JSON.parse(payload);
+    } catch (_) {
+      /* keep raw string */
+    }
+  }
+  emitTaskEvent(payload);
+}
+
+function ensureFallbackTaskSocket() {
+  if (fallbackTaskSocket) return;
+  try {
+    fallbackTaskSocket = new WebSocket(`${window.location.origin.replace(/^http/, "ws")}/tasks/ws`);
+  } catch (error) {
+    console.warn("Fallback websocket failed to start", error);
+    return;
+  }
+  fallbackTaskSocket.addEventListener("open", () => emitTaskEvent({ type: "connected" }));
+  fallbackTaskSocket.addEventListener("message", handleTaskSocketMessage);
+  fallbackTaskSocket.addEventListener("close", () => {
+    fallbackTaskSocket = null;
+    setTimeout(ensureFallbackTaskSocket, 2000);
+  });
+  fallbackTaskSocket.addEventListener("error", () => {
+    if (fallbackTaskSocket) {
+      fallbackTaskSocket.close();
+    }
+  });
+}
+
+function requestServiceWorkerSubscription(registration) {
+  const controller = navigator.serviceWorker.controller || registration.active || registration.waiting;
+  if (controller) {
+    controller.postMessage({ type: "task-socket-subscribe" });
+  }
+}
+
+function handleServiceWorkerMessage(event) {
+  const data = event.data || {};
+  if (data.source !== TASK_SOCKET_SOURCE) return;
+  const payload = data.event || data.payload || data;
+  emitTaskEvent(payload);
+}
+
+function initTaskSocketBridge() {
+  if (taskSocketInitialized) return;
+  taskSocketInitialized = true;
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.addEventListener("message", handleServiceWorkerMessage);
+    navigator.serviceWorker
+      .register("/task-sw.js", { scope: "/" })
+      .then((registration) => {
+        requestServiceWorkerSubscription(registration);
+        navigator.serviceWorker.addEventListener("controllerchange", () => requestServiceWorkerSubscription(registration));
+      })
+      .catch(() => {
+        ensureFallbackTaskSocket();
+      });
+    navigator.serviceWorker.ready
+      .then((registration) => {
+        requestServiceWorkerSubscription(registration);
+      })
+      .catch(() => {
+        ensureFallbackTaskSocket();
+      });
+  } else {
+    ensureFallbackTaskSocket();
+  }
+}
+
+function subscribeToTaskEvents(handler) {
+  if (typeof handler !== "function") return () => {};
+  taskSocketSubscribers.add(handler);
+  initTaskSocketBridge();
+  return () => taskSocketSubscribers.delete(handler);
+}
+
 function getClusterColor(cluster) {
   if (!Number.isFinite(cluster) || cluster < 0) {
     return "#94a3b8";
@@ -440,39 +538,6 @@ async function getDatasetStatus(datasetName) {
   return requestJSON(url);
 }
 
-function pollDatasetStatus(
-  datasetName,
-  { intervalMs = 1500, onUpdate = () => {}, onReady = () => {}, onFailed = () => {} } = {},
-) {
-  let stopped = false;
-
-  async function tick() {
-    if (stopped) return;
-    try {
-      const status = await getDatasetStatus(datasetName);
-      onUpdate(status);
-      const state = status && status.state;
-      if (state === "ready") {
-        onReady(status);
-        return;
-      }
-      if (state === "failed") {
-        onFailed(status);
-        return;
-      }
-    } catch (error) {
-      onFailed(null, error);
-      return;
-    }
-    setTimeout(tick, intervalMs);
-  }
-
-  tick();
-  return () => {
-    stopped = true;
-  };
-}
-
 function handleDatasetSelectChange(event) {
   const value = event && event.target ? event.target.value : null;
   setCurrentDataset(value || null).finally(() => {
@@ -538,11 +603,15 @@ App.dataset = {
   refreshDatasets,
   setCurrentDataset,
   getDatasetStatus,
-  pollDatasetStatus,
   getThresholdDescriptions,
+};
+
+App.taskSocket = {
+  subscribe: subscribeToTaskEvents,
 };
 
 App.onReady = onReady;
 window.App = App;
 
+onReady(initTaskSocketBridge);
 onReady(initCommonDatasetSelector);

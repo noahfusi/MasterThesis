@@ -1,0 +1,147 @@
+tests:
+
+  # ---------------------------------------------------------------------------
+  # SCÉNARIO 1 : Cappuccino, sucre moyen, stock suffisant
+  # ---------------------------------------------------------------------------
+  - id: scenario_1_cappuccino_sucre_moyen
+    description: "Commande réussie : Cappuccino sucre moyen"
+    inputs:
+      - "1"     # Mode Client
+      - "2"     # Cappuccino
+      - "3"     # Moyen (10g)
+      - "2"     # Lait supplémentaire ? Non
+      - "3"     # Quitter le programme
+    expected_contains:
+      - "Cappuccino"
+      - "Moyen"
+      - "Paiement confirmé"
+
+  # ---------------------------------------------------------------------------
+  # SCÉNARIO 2 : Latte Grand avec lait insuffisant (avec préparation du stock)
+  # ---------------------------------------------------------------------------
+  - id: scenario_2_latte_grand_lait_insuffisant
+    description: "Latte Grand : lait insuffisant après consommation préalable"
+    inputs:
+      # --- Réduction du stock de lait : 4 Cappuccinos (0.4 L consommés) ---
+
+      # Cappuccino 1
+      - "1"
+      - "2"
+      - "1"
+      - "2"
+
+      # Cappuccino 2
+      - "1"
+      - "2"
+      - "1"
+      - "2"
+
+      # Cappuccino 3
+      - "1"
+      - "2"
+      - "1"
+      - "2"
+
+      # Cappuccino 4
+      - "1"
+      - "2"
+      - "1"
+      - "2"
+
+      # --- Test Latte Grand maintenant que lait = 0.1L ---
+
+      - "1"   # Mode Client
+      - "3"   # Latte
+      - "3"   # Grand
+      - "1"   # Sans sucre
+      - "2"   # Lait en supplément ? Non
+
+      - "3"   # Quitter
+    expected_contains:
+      - "Latte"
+      - "Grand"
+      - "insuffisant"
+      - "Erreur"
+
+  # ---------------------------------------------------------------------------
+  # SCÉNARIO 3 : Expresso café insuffisant (avec réduction préalable)
+  # ---------------------------------------------------------------------------
+  - id: scenario_3_expresso_cafe_insuffisant
+    description: "Expresso : café insuffisant après plusieurs commandes"
+    inputs:
+      # 6 expressos → 48g consommés → reste 2g (< 8, insuffisant)
+
+      # Expresso 1
+      - "1"
+      - "1"
+      - "1"
+
+      # Expresso 2
+      - "1"
+      - "1"
+      - "1"
+
+      # Expresso 3
+      - "1"
+      - "1"
+      - "1"
+
+      # Expresso 4
+      - "1"
+      - "1"
+      - "1"
+
+      # Expresso 5
+      - "1"
+      - "1"
+      - "1"
+
+      # Expresso 6
+      - "1"
+      - "1"
+      - "1"
+
+      # Expresso 7 → devrait déclencher insuffisance café
+      - "1"
+      - "1"
+      - "1"
+
+      - "3"   # Quitter
+
+    expected_contains:
+      - "Expresso"
+      - "insuffisante"
+
+  # ---------------------------------------------------------------------------
+  # SCÉNARIO 4 : Admin, PIN correct, réapprovisionnement
+  # ---------------------------------------------------------------------------
+  - id: scenario_4_admin_reapprovisionnement
+    description: "Mode Admin : ajout de café/lait/sucre"
+    inputs:
+      - "2"       # Admin
+      - "434343"  # PIN
+      - "50"      # Ajout café
+      - "1.0"     # Ajout lait
+      - "10"      # Ajout sucre
+      - "3"       # Quitter après retour au menu
+    expected_contains:
+      - "Accès autorisé"
+      - "Stocks"
+      - "mis à jour"
+
+  # ---------------------------------------------------------------------------
+  # SCÉNARIO 5 : Latte Petit avec Peu de sucre
+  # ---------------------------------------------------------------------------
+  - id: scenario_5_latte_petit_peu_sucre
+    description: "Latte Petit avec Peu de sucre"
+    inputs:
+      - "1"
+      - "3"   # Latte
+      - "1"   # Petit
+      - "2"   # Peu de sucre
+      - "2"   # Pas de lait supplémentaire
+      - "3"   # Quitter
+    expected_contains:
+      - "Latte (Petit)"
+      - "Peu"
+      - "Paiement confirmé"

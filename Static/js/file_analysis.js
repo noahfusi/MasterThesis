@@ -1,8 +1,9 @@
 (function () {
   const app = window.App || {};
-  const { API_ROUTES, utils = {}, dataset = {}, onReady = (fn) => fn() } = app;
+  const { API_ROUTES, utils = {}, dataset = {}, taskSocket = {}, onReady = (fn) => fn() } = app;
   const { requestJSON, showMessage, getMessage } = utils;
   const { getSelectedDataset } = dataset;
+  const subscribeToTaskEvents = taskSocket.subscribe || (() => () => {});
 
   const filesContainer = document.getElementById("file-analysis-list");
   const pageFeedback = document.getElementById("file-analysis-feedback");
@@ -20,6 +21,48 @@
   let refreshInFlight = false;
   let currentDataset = null;
   let filesInFlight = false;
+  const pendingFileFeedback = new Set();
+  let datasetFeedbackPending = false;
+  let unsubscribeTaskEvents = null;
+  function updateSpinnerVisibility() {
+    if (!spinner) return;
+    const shouldShow = refreshInFlight || datasetFeedbackPending || pendingFileFeedback.size > 0;
+    spinner.hidden = !shouldShow;
+  }
+  const normalizePath = (value) => (value || "").replace(/\\/g, "/").toLowerCase();
+
+  function bindTaskEvents() {
+    if (unsubscribeTaskEvents) return;
+    unsubscribeTaskEvents = subscribeToTaskEvents((event) => {
+      if (!event) return;
+      const activeDataset = (getSelectedDataset && getSelectedDataset()) || currentDataset;
+      if (!activeDataset || event.dataset !== activeDataset) return;
+      if (event.type === "feedback-file-completed") {
+        const normalized = normalizePath(event.filename);
+        const wasPending = pendingFileFeedback.delete(normalized);
+        if (wasPending) {
+          showMessage(pageFeedback, getMessage("FEEDBACK_COMPLETED", {}, "Feedback available."));
+        }
+        updateSpinnerVisibility();
+        void refreshFeedbackState(activeDataset);
+      } else if (event.type === "feedback-dataset-completed") {
+        datasetFeedbackPending = false;
+        updateSpinnerVisibility();
+        const isError = event.status === "failed";
+        const message = isError
+          ? event.error || "Dataset-wide feedback failed."
+          : getMessage("FEEDBACK_DATASET_COMPLETED", {}, "Dataset feedback completed.");
+        showMessage(pageFeedback, message, isError);
+        void refreshFeedbackState(activeDataset);
+      }
+    });
+  }
+
+  document.addEventListener("app:dataset-changed", () => {
+    pendingFileFeedback.clear();
+    datasetFeedbackPending = false;
+    updateSpinnerVisibility();
+  });
 
   if (!filesContainer) return;
 
@@ -132,41 +175,14 @@
         body: JSON.stringify({ dataset: datasetName, filename }),
       });
       showMessage(pageFeedback, getMessage("FEEDBACK_FILE_QUEUED", {}, "Feedback generation queued"));
-      // Poll for availability
-      const feedbackPath = `${filename}.feedback.txt`.toLowerCase();
-      let attempts = 0;
-      const poll = async () => {
-        attempts += 1;
-        try {
-          const params = new URLSearchParams({ dataset: datasetName });
-          const feedbackList = await requestJSON(`${API_ROUTES.feedbackList}?${params.toString()}`);
-          const feedbackFiles = new Set((feedbackList.files || []).map((f) => f.toLowerCase()));
-          if (feedbackFiles.has(feedbackPath)) {
-            await refreshFeedbackState(datasetName);
-            spinner.hidden = true;
-            showMessage(pageFeedback, getMessage("FEEDBACK_COMPLETED", {}, "Feedback available."));
-            return;
-          }
-        } catch (err) {
-          // ignore and keep polling
-        }
-        if (attempts < 20) {
-          setTimeout(poll, 2000);
-        } else {
-          spinner.hidden = true;
-          showMessage(
-            pageFeedback,
-            "Feedback generation is taking longer than expected. Please check again later or refresh the page.",
-            true,
-          );
-        }
-      };
-      setTimeout(poll, 2000);
+      const normalized = normalizePath(filename);
+      pendingFileFeedback.add(normalized);
+      updateSpinnerVisibility();
     } catch (error) {
       showMessage(pageFeedback, error.message, true);
-      spinner.hidden = true;
     } finally {
       if (button) button.disabled = false;
+      updateSpinnerVisibility();
     }
   }
 
@@ -186,12 +202,14 @@
         body: JSON.stringify({ dataset: datasetName }),
       });
       showMessage(pageFeedback, getMessage("FEEDBACK_DATASET_QUEUED", {}, "Dataset-wide feedback generation queued."));
-      await refreshFeedbackState(datasetName);
+      datasetFeedbackPending = true;
+      updateSpinnerVisibility();
     } catch (error) {
       showMessage(pageFeedback, error.message, true);
     } finally {
       if (datasetButton) datasetButton.disabled = false;
       datasetRequestInFlight = false;
+      updateSpinnerVisibility();
     }
   }
 
@@ -222,24 +240,25 @@
     if (!datasetName) return;
     if (refreshInFlight) return;
     refreshInFlight = true;
-    if (spinner) spinner.hidden = false;
+    updateSpinnerVisibility();
     try {
       const params = new URLSearchParams({ dataset: datasetName });
       const feedbackList = await requestJSON(`${API_ROUTES.feedbackList}?${params.toString()}`);
       const feedbackFiles = new Set((feedbackList.files || []).map((f) => f.toLowerCase()));
       renderFiles(filesCache, datasetName, feedbackFiles);
-      if (spinner) spinner.hidden = true;
     } catch (error) {
       showMessage(pageFeedback, error.message, true);
-      if (spinner) spinner.hidden = true;
     }
     refreshInFlight = false;
+    updateSpinnerVisibility();
   }
 
   onReady(() => {
     if (initialized) return;
     initialized = true;
     const datasetName = getSelectedDataset ? getSelectedDataset() : null;
+    bindTaskEvents();
+    updateSpinnerVisibility();
     if (datasetButton) {
       datasetButton.addEventListener(
         "click",
