@@ -4,6 +4,27 @@ const WS_URL = `${self.location.origin.replace(/^http/, "ws")}/tasks/ws`;
 let socket = null;
 let reconnectDelay = 2000;
 let connecting = false;
+let heartbeatTimer = null;
+
+function clearHeartbeat() {
+  if (heartbeatTimer) {
+    clearInterval(heartbeatTimer);
+    heartbeatTimer = null;
+  }
+}
+
+function startHeartbeat() {
+  clearHeartbeat();
+  heartbeatTimer = setInterval(() => {
+    try {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send("ping");
+      }
+    } catch (_) {
+      /* ignore heartbeat send errors */
+    }
+  }, 30000);
+}
 
 function backoffReconnect() {
   reconnectDelay = Math.min(reconnectDelay * 1.5, 15000);
@@ -43,15 +64,18 @@ function connectSocket() {
   socket.addEventListener("open", () => {
     connecting = false;
     reconnectDelay = 2000;
+    startHeartbeat();
     void broadcast({ type: "connected" });
   });
   socket.addEventListener("message", handleSocketMessage);
   socket.addEventListener("close", () => {
+    clearHeartbeat();
     socket = null;
     connecting = false;
     backoffReconnect();
   });
   socket.addEventListener("error", () => {
+    clearHeartbeat();
     if (socket) {
       socket.close();
     }

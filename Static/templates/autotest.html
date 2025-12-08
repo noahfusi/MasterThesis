@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<script defer src="{{ url_for('static', path='js/autotest.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="placeholder autotest-hero">
+  <div class="autotest-header">
+    <div>
+      <h1>AutoTest</h1>
+      <p>Run automated tests across the active dataset or target a single file.</p>
+    </div>
+    <button id="autotest-run-dataset" class="primary">Run dataset AutoTest</button>
+  </div>
+</section>
+
+<section class="dataset-section">
+  <div class="section-heading">
+    <h2>Files</h2>
+    <p>Select a dataset above to list files and trigger individual tests.</p>
+  </div>
+  <p class="feedback" id="autotest-feedback"></p>
+  <ul id="autotest-file-list" class="dataset-list autotest-list">
+    <li>Loading files…</li>
+  </ul>
+</section>
+{% endblock %}

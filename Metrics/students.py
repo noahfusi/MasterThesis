@@ -96,6 +96,9 @@ def _flag_file_thresholds(
     extra_high: bool,
     below_q1: bool,
     below_fence: bool,
+    median: float | None,
+    q1: float | None,
+    q3: float | None,
     zero: bool = False,
 ) -> None:
     """
@@ -120,6 +123,9 @@ def _flag_file_thresholds(
             "below_q1": False,
             "below_fence": False,
             "zero": False,
+            "normal_low": False,
+            "normal_high": False,
+            "signal": None,
         },
     )
     metric_record["value"] = value
@@ -128,12 +134,43 @@ def _flag_file_thresholds(
     metric_record["below_q1"] = bool(metric_record.get("below_q1")) or below_q1 or below_fence
     metric_record["below_fence"] = bool(metric_record.get("below_fence")) or below_fence
     metric_record["zero"] = bool(metric_record.get("zero")) or zero
+    # Normal ranges relative to quartiles.
+    if median is not None and q1 is not None and value < median and value >= q1:
+        metric_record["normal_low"] = True
+    if median is not None and q3 is not None and value > median and value <= q3:
+        metric_record["normal_high"] = True
+    # Derive a single signal tag.
+    signal = None
+    if below_fence:
+        signal = "really_low"
+    elif below_q1:
+        signal = "low"
+    elif median is not None and q1 is not None and value < median and value >= q1:
+        signal = "normal_low"
+    elif median is not None and q3 is not None and value > median and value <= q3:
+        signal = "normal_high"
+    elif extra_high:
+        signal = "really_high"
+    elif high:
+        signal = "high"
+    metric_record["signal"] = signal or metric_record.get("signal")
 
     flags = record.setdefault("flags", {})
     flags[f"{metric_key} high"] = bool(flags.get(f"{metric_key} high")) or high or extra_high
     flags[f"{metric_key} extra high"] = bool(flags.get(f"{metric_key} extra high")) or extra_high
+    flags[f"{metric_key} low"] = bool(flags.get(f"{metric_key} low")) or below_q1 or below_fence
+    flags[f"{metric_key} extra low"] = bool(flags.get(f"{metric_key} extra low")) or below_fence
+    if metric_record.get("normal_low"):
+        flags[f"{metric_key} normal low"] = True
+    if metric_record.get("normal_high"):
+        flags[f"{metric_key} normal high"] = True
     if zero:
         flags[f"{metric_key} zero"] = True
+
+    # Track a per-metric signal summary for the file.
+    signals_map = record.setdefault("signals", {})
+    if signal:
+        signals_map[metric_key] = signal
 
 
 def _build_metric_bucket(
@@ -204,6 +241,9 @@ def _build_metric_bucket(
             extra_high=extra_high,
             below_q1=below_q1,
             below_fence=extra_low,
+            median=median,
+            q1=q1,
+            q3=q3,
             zero=zero_flag,
         )
 
@@ -264,10 +304,12 @@ def build_students_outliers(dataset: str) -> dict[str, object]:
     for filename, record in sorted(file_flags.items(), key=lambda item: item[0]):
         metrics_payload = record.get("metrics") or {}
         flags_payload = {key: bool(value) for key, value in (record.get("flags") or {}).items()}
+        signals_payload = record.get("signals") or {}
         file_entry = {
             "filename": filename,
             "metrics": metrics_payload,
             "flags": flags_payload,
+            "signals": signals_payload,
         }
         for flag_key, flag_value in flags_payload.items():
             file_entry[flag_key] = flag_value

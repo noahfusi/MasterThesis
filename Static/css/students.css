@@ -57,6 +57,13 @@
   min-width: 220px;
 }
 
+.students-report-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
 .students-hero-actions button {
   width: 100%;
 }

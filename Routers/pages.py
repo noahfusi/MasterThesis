@@ -86,3 +86,11 @@ async def students_page(request: Request):
     @return Jinja2 response for the students page.
     """
     return templates.TemplateResponse("students.html", _context(request, "Students", "students"))
+
+
+@router.get("/autotest", name="autotest-page")
+async def autotest_page(request: Request):
+    """
+    Render the AutoTest dashboard page.
+    """
+    return templates.TemplateResponse("autotest.html", _context(request, "AutoTest", "autotest"))

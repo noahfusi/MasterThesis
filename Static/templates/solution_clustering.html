@@ -102,6 +102,7 @@
                 Clustering algorithm
                 <select class="theme-algorithm" name="algorithm-{{ slug }}" {{ clustering_disabled }}>
                   <option value="kmeans" selected>k-means</option>
+                  <option value="gmm">GMM</option>
                   <option value="hdbscan">HDBSCAN</option>
                 </select>
               </label>
@@ -124,6 +125,38 @@
                     Auto k-means
                   </button>
                   <small>Automatically choose k via silhouette score.</small>
+                </div>
+              </div>
+              <div class="clustering-fieldset theme-gmm-params" hidden>
+                <span>GMM parameters</span>
+                <div class="clustering-slider">
+                  <label>Component count</label>
+                  <input
+                    type="range"
+                    class="theme-gmm-components"
+                    min="2"
+                    max="20"
+                    value="8"
+                    {{ clustering_disabled }}
+                  />
+                  <output class="theme-gmm-components-value">8 components</output>
+                </div>
+                <div class="clustering-inline-inputs">
+                  <label>
+                    Covariance type
+                    <select class="theme-gmm-covariance" {{ clustering_disabled }}>
+                      <option value="full" selected>Full</option>
+                      <option value="tied">Tied</option>
+                      <option value="diag">Diagonal</option>
+                      <option value="spherical">Spherical</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="clustering-auto-row">
+                  <button type="button" class="clustering-secondary theme-gmm-auto" {{ clustering_disabled }}>
+                    Auto GMM
+                  </button>
+                  <small>Automatically choose components via BIC.</small>
                 </div>
               </div>
               <div class="clustering-fieldset theme-hdbscan-params" hidden>
@@ -242,8 +275,25 @@
             <h2>Cluster memberships</h2>
             <p>Soft assignment probabilities per file (sorted by most confident).</p>
           </div>
+          <div class="clustering-filter">
+            <label for="clustering-membership-filter">Cluster</label>
+            <select id="clustering-membership-filter" disabled>
+              <option value="">All clusters</option>
+            </select>
+          </div>
         </div>
         <div id="clustering-membership" class="clustering-chart" aria-label="Cluster memberships"></div>
+      </div>
+      <div class="clustering-chart-card clustering-meta-card" id="clustering-metadata-card">
+        <div class="clustering-results-header">
+          <div>
+            <p class="clustering-eyebrow">Run metadata</p>
+            <h3>Clustering details</h3>
+          </div>
+        </div>
+        <div id="clustering-metadata" class="clustering-metadata">
+          <p class="clustering-hint">Launch clustering to see the run details.</p>
+        </div>
       </div>
     </div>
     <div class="clustering-summary" id="clustering-summary">

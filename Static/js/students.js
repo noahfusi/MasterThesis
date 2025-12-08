@@ -10,6 +10,7 @@
   const studentsDatasetLabel = document.getElementById("students-dataset");
   const studentsMetricSelect = document.getElementById("students-metric-select");
   const reportButton = document.getElementById("students-generate-report");
+  const downloadButton = document.getElementById("students-download-report");
   const reportFeedback = document.getElementById("students-report-feedback");
   const bucketTemplate = document.getElementById("students-bucket-template");
 
@@ -21,6 +22,7 @@
     buckets: [],
     metricKey: null,
     cards: [],
+    reportAvailable: false,
   };
 
   function dedupeMetricOptions(metrics = [], buckets = []) {
@@ -154,6 +156,9 @@
   }
 
   async function downloadReport(datasetName) {
+    if (!datasetName) {
+      throw new Error(getMessage("STUDENTS_SELECT_DATASET", {}, "Select a dataset to download a report."));
+    }
     const downloadUrl =
       typeof API_ROUTES.downloadReport === "function"
         ? API_ROUTES.downloadReport(datasetName)
@@ -186,7 +191,47 @@
     URL.revokeObjectURL(url);
   }
 
-  async function generateAndDownloadReport() {
+  async function fetchLatestReport(datasetName) {
+    if (!datasetName) {
+      if (downloadButton) {
+        downloadButton.hidden = true;
+        downloadButton.disabled = true;
+      }
+      studentsState.reportAvailable = false;
+      return;
+    }
+    try {
+      const payload = await requestJSON(
+        typeof API_ROUTES.latestReport === "function"
+          ? API_ROUTES.latestReport(datasetName)
+          : `${API_ROUTES.latestReport}?dataset=${encodeURIComponent(datasetName)}`,
+      );
+      const available = Boolean(payload.available);
+      studentsState.reportAvailable = available;
+      if (downloadButton) {
+        downloadButton.hidden = !available;
+        downloadButton.disabled = !available;
+      }
+      if (available && payload.generated_at) {
+        showMessage(
+          reportFeedback,
+          getMessage(
+            "REPORT_AVAILABLE",
+            { timestamp: payload.generated_at },
+            `Latest report generated at ${payload.generated_at}.`,
+          ),
+        );
+      }
+    } catch (error) {
+      studentsState.reportAvailable = false;
+      if (downloadButton) {
+        downloadButton.hidden = true;
+        downloadButton.disabled = true;
+      }
+    }
+  }
+
+  async function generateReportOnly() {
     const datasetName = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
     if (!datasetName) {
       showMessage(reportFeedback, getMessage("STUDENTS_SELECT_DATASET", {}, "Select a dataset to generate a report."), true);
@@ -202,8 +247,8 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dataset: datasetName }),
       });
-      await downloadReport(datasetName);
-      showMessage(reportFeedback, getMessage("REPORT_READY", {}, "Report generated and downloaded."));
+      showMessage(reportFeedback, getMessage("REPORT_READY", {}, "Report generated. You can now download it."));
+      await fetchLatestReport(datasetName);
     } catch (error) {
       showMessage(reportFeedback, error.message, true);
     } finally {
@@ -217,6 +262,10 @@
     const datasetName = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
     if (studentsDatasetLabel) {
       studentsDatasetLabel.textContent = datasetName || "None";
+    }
+    if (downloadButton) {
+      downloadButton.hidden = true;
+      downloadButton.disabled = true;
     }
     if (!datasetName) {
       studentsState.dataset = null;
@@ -263,6 +312,7 @@
       renderStudentsBuckets([]);
       showMessage(studentsFeedback, error.message, true);
     }
+    await fetchLatestReport(datasetName);
   }
 
   onReady(() => {
@@ -289,7 +339,22 @@
       });
     }
     if (reportButton) {
-      reportButton.addEventListener("click", generateAndDownloadReport);
+      reportButton.addEventListener("click", generateReportOnly);
+    }
+    if (downloadButton) {
+      downloadButton.addEventListener("click", async () => {
+        const datasetName = datasetSelect && datasetSelect.value ? datasetSelect.value : null;
+        if (!datasetName) {
+          showMessage(reportFeedback, getMessage("STUDENTS_SELECT_DATASET", {}, "Select a dataset to download a report."), true);
+          return;
+        }
+        try {
+          await downloadReport(datasetName);
+          showMessage(reportFeedback, getMessage("REPORT_DOWNLOADED", {}, "Report download started."));
+        } catch (error) {
+          showMessage(reportFeedback, error.message, true);
+        }
+      });
     }
     refreshStudentsOutliers();
   });

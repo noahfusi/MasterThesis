@@ -90,6 +90,27 @@
     }
   }
 
+  async function uploadAutotestFile(datasetName, file) {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    showMessage(datasetFeedbackElement, `Uploading autotest for ${datasetName}...`);
+    try {
+      const response = await fetch(`/datasets/${encodeURIComponent(datasetName)}/autotest`, {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.detail || payload.message || response.statusText);
+      }
+      const data = await response.json();
+      showMessage(datasetFeedbackElement, `Autotest file "${data.filename}" saved for ${datasetName}.`);
+    } catch (error) {
+      showMessage(datasetFeedbackElement, error.message, true);
+    }
+  }
+
   async function deleteDataset(name) {
     if (!window.confirm(getMessage("CONFIRM_DELETE_DATASET", { dataset: name }, `Delete dataset "${name}"?`))) {
       return;
@@ -188,6 +209,27 @@
       requirementsWrapper.appendChild(requirementsBtn);
       requirementsWrapper.appendChild(requirementsInput);
       actions.appendChild(requirementsWrapper);
+
+      const autotestBtn = document.createElement("button");
+      autotestBtn.type = "button";
+      autotestBtn.textContent = "Autotest";
+      const autotestInput = document.createElement("input");
+      autotestInput.type = "file";
+      autotestInput.accept = ".yml,.yaml";
+      autotestInput.style.display = "none";
+      autotestBtn.addEventListener("click", () => autotestInput.click());
+      autotestInput.addEventListener("change", (event) => {
+        const file = event.target.files && event.target.files[0];
+        if (file) {
+          uploadAutotestFile(name, file);
+        }
+        event.target.value = "";
+      });
+      const autotestWrapper = document.createElement("div");
+      autotestWrapper.className = "reference-upload-wrapper";
+      autotestWrapper.appendChild(autotestBtn);
+      autotestWrapper.appendChild(autotestInput);
+      actions.appendChild(autotestWrapper);
 
       const deleteBtn = document.createElement("button");
       deleteBtn.type = "button";

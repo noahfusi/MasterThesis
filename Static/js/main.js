@@ -13,12 +13,24 @@ App.API_ROUTES = {
   clustering: "/clustering/run",
   clusteringLast: "/clustering/last",
   generateReport: "/reports/generate-report",
+  latestReport: (dataset) => `/reports/latest-report${dataset ? `?dataset=${encodeURIComponent(dataset)}` : ""}`,
   downloadReport: (dataset) => `/reports/download-report${dataset ? `?dataset=${encodeURIComponent(dataset)}` : ""}`,
   datasetStatus: (name) => `/datasets/${encodeURIComponent(name)}/status`,
   feedbackFile: "/feedback/file",
   feedbackDataset: "/feedback/dataset",
   feedbackList: "/feedback/files",
   feedbackRead: "/feedback/file",
+  autotestFiles: "/autotest/files",
+  autotestFileResults: (filenames, dataset) => {
+    const list = Array.isArray(filenames) ? filenames : filenames ? [filenames] : [];
+    const params = new URLSearchParams();
+    if (dataset) params.set("dataset", dataset);
+    list.forEach((name) => params.append("filenames", name));
+    const suffix = params.toString() ? `?${params.toString()}` : "";
+    return `/autotest/files/results${suffix}`;
+  },
+  autotestRun: "/autotest/run",
+  autotestUpload: (dataset) => `/datasets/${encodeURIComponent(dataset)}/autotest`,
 };
 
 const DEFAULT_LIZARD_SUMMARY = "lizard_dataset.xml";
@@ -186,6 +198,7 @@ const TASK_SOCKET_SOURCE = "task-socket";
 const taskSocketSubscribers = new Set();
 let taskSocketInitialized = false;
 let fallbackTaskSocket = null;
+let fallbackHeartbeatTimer = null;
 
 function emitTaskEvent(event) {
   taskSocketSubscribers.forEach((subscriber) => {
@@ -214,19 +227,39 @@ function handleTaskSocketMessage(raw) {
 
 function ensureFallbackTaskSocket() {
   if (fallbackTaskSocket) return;
+  const clearHeartbeat = () => {
+    if (fallbackHeartbeatTimer) {
+      clearInterval(fallbackHeartbeatTimer);
+      fallbackHeartbeatTimer = null;
+    }
+  };
   try {
     fallbackTaskSocket = new WebSocket(`${window.location.origin.replace(/^http/, "ws")}/tasks/ws`);
   } catch (error) {
     console.warn("Fallback websocket failed to start", error);
     return;
   }
-  fallbackTaskSocket.addEventListener("open", () => emitTaskEvent({ type: "connected" }));
+  fallbackTaskSocket.addEventListener("open", () => {
+    emitTaskEvent({ type: "connected" });
+    clearHeartbeat();
+    fallbackHeartbeatTimer = setInterval(() => {
+      try {
+        if (fallbackTaskSocket && fallbackTaskSocket.readyState === WebSocket.OPEN) {
+          fallbackTaskSocket.send("ping");
+        }
+      } catch (_) {
+        /* ignore heartbeat send failures */
+      }
+    }, 30000);
+  });
   fallbackTaskSocket.addEventListener("message", handleTaskSocketMessage);
   fallbackTaskSocket.addEventListener("close", () => {
+    clearHeartbeat();
     fallbackTaskSocket = null;
     setTimeout(ensureFallbackTaskSocket, 2000);
   });
   fallbackTaskSocket.addEventListener("error", () => {
+    clearHeartbeat();
     if (fallbackTaskSocket) {
       fallbackTaskSocket.close();
     }

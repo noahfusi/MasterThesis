@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import json
+import logging
 import shutil
 import zipfile
 from io import BytesIO
 from pathlib import Path
 
 from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Query, UploadFile, status
-import logging
 
 import config
 from Files.dataset_manager import (
@@ -23,7 +23,6 @@ from Metrics import SUMMARY_FILENAME, dataset_summary_path
 from Metrics.other_metrics import build_reference_metrics, generate_other_metrics
 from Metrics.students import build_students_outliers
 from Lizard.run_analysis import LIZARD_FOLDER, analyze_dataset, _run_lizard
-from Tree_Sitter.structural_ast import build_rich_structural_representation
 from LLM import request_embedding, LLMError
 from Routers.tasks import notify_tasks_sync
 from Routers.utils import (
@@ -61,9 +60,44 @@ RAW_FOLDER = config.RAW_FOLDER_NAME
 PROCESSING_PHASES = config.PROCESSING_PHASES
 
 
+def _chunk_for_embedding(text: str, max_tokens: int) -> list[str]:
+    """
+    Split text into token-sized chunks based on a simple whitespace token approximation.
+    """
+    if max_tokens <= 0:
+        return [text]
+
+    chunks: list[str] = []
+    current_lines: list[str] = []
+    current_tokens = 0
+
+    def _count_tokens(line: str) -> int:
+        return len(line.split())
+
+    for line in text.splitlines(keepends=True):
+        line_tokens = _count_tokens(line)
+        if current_tokens and current_tokens + line_tokens > max_tokens:
+            chunks.append("".join(current_lines))
+            current_lines = []
+            current_tokens = 0
+        if line_tokens > max_tokens:
+            # Fallback: chunk very long single lines by characters to avoid losing content.
+            max_chars = max_tokens * 4  # rough char-per-token heuristic
+            for start in range(0, len(line), max_chars):
+                chunks.append(line[start : start + max_chars])
+            continue
+        current_lines.append(line)
+        current_tokens += line_tokens
+
+    if current_lines:
+        chunks.append("".join(current_lines))
+
+    return chunks or [text]
+
+
 def _process_dataset_pipeline(dataset_name: str) -> None:
     """
-    @brief Orchestrate the full dataset processing pipeline (lizard, metrics, outliers, structure, embeddings).
+    @brief Orchestrate the full dataset processing pipeline (lizard, metrics, outliers, code embeddings).
     @param dataset_name Dataset name to process.
     @note Guarded by a per-dataset lock to avoid concurrent runs.
     """
@@ -97,18 +131,10 @@ def _process_dataset_pipeline(dataset_name: str) -> None:
             update_status(
                 dataset_name,
                 state="running",
-                phase="building_structural",
-                message=PROCESSING_PHASES["building_structural"],
-            )
-            _generate_structural_views(dataset_name, raw_dir)
-
-            update_status(
-                dataset_name,
-                state="running",
                 phase="building_embeddings",
-                message=PROCESSING_PHASES["building_embeddings"],
+                message="Generating code embeddings.",
             )
-            _generate_structural_embeddings(dataset_name)
+            _generate_code_embeddings(dataset_name, raw_dir)
 
             status_payload = update_status(
                 dataset_name, state="ready", phase="ready", message=PROCESSING_PHASES["ready"]
@@ -120,174 +146,96 @@ def _process_dataset_pipeline(dataset_name: str) -> None:
             logger.exception("Dataset processing failed for %s: %s", dataset_name, exc)
 
 
-def _generate_structural_views(dataset_name: str, raw_dir: Path) -> str:
+def _generate_code_embeddings(dataset_name: str, raw_dir: Path | None = None) -> str:
     """
-    @brief Generate structural AST representations for supported source files.
-    @param dataset_name Name of the dataset being processed.
-    @param raw_dir Path to the dataset raw files directory.
-    @return Status message indicating generation outcome.
+    @brief Build code embeddings directly from raw source files.
+    @param dataset_name Name of the dataset to process.
+    @param raw_dir Optional pre-resolved raw directory path.
+    @return Status message indicating embedding generation outcome.
     """
-    structural_root = dataset_path(dataset_name) / config.STRUCTURAL_FOLDER_NAME
-    structural_root.mkdir(parents=True, exist_ok=True)
-    generated = 0
-    skipped = 0
-    failures = 0
+    raw_dir = raw_dir or (dataset_path(dataset_name) / RAW_FOLDER)
+    if not raw_dir.exists():
+        return "Code embeddings skipped: no raw files."
+
+    embeddings_root = dataset_path(dataset_name) / config.STRUCTURAL_EMBEDDINGS_FOLDER_NAME
+    embeddings_root.mkdir(parents=True, exist_ok=True)
+
+    generated_files = 0
+    generated_segments = 0
+    skipped_files = 0
+    skipped_segments = 0
+    candidate_files = 0
+    max_tokens = max(0, int(getattr(config, "EMBEDDING_MAX_TOKENS", 0)))
 
     for file_path in raw_dir.rglob("*"):
         if not file_path.is_file():
             continue
         if file_path.suffix.lower() not in STRUCTURAL_SOURCE_EXTENSIONS:
-            skipped += 1
             continue
+
+        candidate_files += 1
         try:
-            relative = file_path.relative_to(raw_dir)
-            output_path = structural_root / relative
-            output_path = output_path.with_suffix(output_path.suffix + ".structural.txt")
             code = file_path.read_text(encoding="utf-8")
-            representation = build_rich_structural_representation(code)
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            output_path.write_text(representation, encoding="utf-8")
-            generated += 1
         except UnicodeDecodeError as exc:
-            failures += 1
-            logger.warning("Structural view skipped (decode error) for %s: %s", file_path, exc)
-        except Exception as exc:  # pragma: no cover - unexpected parse errors
-            failures += 1
-            logger.exception("Structural view failed for %s: %s", file_path, exc)
-
-    if generated:
-        return f"Structural AST generated for {generated} file(s)."
-    if failures:
-        return f"Structural AST failed for {failures} file(s); see logs."
-    if skipped:
-        return "Structural AST skipped: unsupported file types."
-    return "No files available for structural AST."
-
-
-def _load_structural_segments(structural_file: Path) -> list[dict[str, object]]:
-    """
-    @brief Load structural segments from a structural representation file.
-    @param structural_file Path to a structural file (text or JSON).
-    @return List of segment dictionaries or a single entry with raw text.
-    """
-    try:
-        content = structural_file.read_text(encoding="utf-8")
-    except OSError:
-        return []
-
-    content = content.strip()
-    if not content:
-        return []
-
-    suffix = structural_file.suffix.lower()
-    if suffix.endswith(".json") or content.startswith("{") or content.startswith("["):
-        try:
-            parsed = json.loads(content)
-        except json.JSONDecodeError:
-            parsed = None
-        if parsed is not None:
-            segments: list[dict[str, object]] = []
-
-            def visit(node: dict[str, object]) -> None:
-                if not isinstance(node, dict):
-                    return
-                text = node.get("text")
-                if isinstance(text, str) and text.strip():
-                    segments.append(
-                        {
-                            "text": text,
-                            "type": node.get("type"),
-                            "start_line": node.get("start_line"),
-                            "end_line": node.get("end_line"),
-                        }
-                    )
-                for child in node.get("children", []) or []:
-                    if isinstance(child, dict):
-                        visit(child)
-
-            if isinstance(parsed, list):
-                for item in parsed:
-                    if isinstance(item, dict):
-                        visit(item)
-            elif isinstance(parsed, dict):
-                visit(parsed)
-
-            if segments:
-                return segments
-
-    return [{"text": content}]
-
-
-def _generate_structural_embeddings(dataset_name: str) -> str:
-    """
-    @brief Build embeddings for structural segments of a dataset.
-    @param dataset_name Name of the dataset to process.
-    @return Status message indicating embedding generation outcome.
-    """
-    structural_root = dataset_path(dataset_name) / config.STRUCTURAL_FOLDER_NAME
-    if not structural_root.exists():
-        return "Structural embeddings skipped: no structural files."
-
-    embeddings_root = dataset_path(dataset_name) / config.STRUCTURAL_EMBEDDINGS_FOLDER_NAME
-    embeddings_root.mkdir(parents=True, exist_ok=True)
-
-    generated_segments = 0
-    skipped_segments = 0
-    for structural_file in structural_root.rglob("*"):
-        if not structural_file.is_file():
-            continue
-        segments = _load_structural_segments(structural_file)
-        if not segments:
-            skipped_segments += 1
+            skipped_files += 1
+            logger.warning("Code embedding skipped (decode error) for %s: %s", file_path, exc)
             continue
 
-        relative = structural_file.relative_to(structural_root)
+        if not code.strip():
+            skipped_files += 1
+            continue
+
+        relative = file_path.relative_to(raw_dir)
         output_path = embeddings_root / relative
         output_path = output_path.with_suffix(output_path.suffix + STRUCTURAL_EMBEDDING_SUFFIX)
-        embedding_records: list[dict[str, object]] = []
+        segment_texts = _chunk_for_embedding(code, max_tokens)
+        embeddings: list[list[float]] = []
 
-        for index, segment in enumerate(segments):
-            text = segment.get("text")
-            if not isinstance(text, str) or not text.strip():
+        for index, segment_text in enumerate(segment_texts):
+            if not segment_text.strip():
                 skipped_segments += 1
                 continue
             try:
-                embedding = request_embedding(text)
+                embedding = request_embedding(segment_text)
             except (LLMError, ValueError) as exc:
-                logger.warning("Embedding generation skipped for %s (segment %s): %s", structural_file, index, exc)
+                logger.warning("Code embedding skipped for %s (chunk %s): %s", file_path, index, exc)
                 skipped_segments += 1
                 continue
 
-            record = {
-                "index": index,
-                "text": text,
-                "embedding": embedding,
-                "type": segment.get("type"),
-                "start_line": segment.get("start_line"),
-                "end_line": segment.get("end_line"),
-            }
-            embedding_records.append(record)
+            embeddings.append(embedding)
             generated_segments += 1
 
-        if not embedding_records:
-            continue
-
         try:
+            if not embeddings:
+                skipped_files += 1
+                continue
+            dim = len(embeddings[0])
+            if dim == 0:
+                skipped_files += 1
+                continue
+            filtered = [vec for vec in embeddings if len(vec) == dim]
+            if not filtered:
+                skipped_files += 1
+                continue
+            averaged_embedding = [sum(values) / len(filtered) for values in zip(*filtered)]
             output_path.parent.mkdir(parents=True, exist_ok=True)
             payload = {
                 "source": str(relative).replace("\\", "/"),
-                "model": DEFAULT_EMBED_MODEL,
-                "segments": embedding_records,
+                "model": config.DEFAULT_OLLAMA_EMBED_MODEL,
+                "embedding": averaged_embedding,
+                "chunk_count": len(filtered),
             }
             output_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-        except OSError:
-            skipped_segments += len(embedding_records)
+            generated_files += 1
+        except OSError as exc:
+            logger.warning("Failed to persist embedding for %s: %s", file_path, exc)
+            skipped_files += 1
 
-    if generated_segments:
-        return f"Structural embeddings generated for {generated_segments} segment(s)."
-    if skipped_segments:
-        return "Structural embeddings skipped: unable to process segments."
-    return "No structural segments available for embeddings."
+    if generated_files:
+        return f"Code embeddings generated for {generated_files} file(s) across {generated_segments} chunk(s)."
+    if skipped_files or candidate_files:
+        return "Code embeddings skipped: unable to process files."
+    return "No source files available for embeddings."
 
 
 def _dataset_response(
@@ -616,3 +564,31 @@ async def upload_requirements_file(dataset_name: str, file: UploadFile = File(..
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
 
     return {"dataset": sanitized, "filename": requirements_name, "path": target_path.as_posix()}
+
+
+@router.post("/{dataset_name}/autotest", name="upload-autotest-file")
+async def upload_autotest_file(dataset_name: str, file: UploadFile = File(...)) -> dict[str, object]:
+    """
+    Upload an autotest definition file and persist it as autotest.yaml at the dataset root.
+    """
+    try:
+        sanitized = normalize_dataset_name(dataset_name)
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    dataset_dir = dataset_path(sanitized)
+    if not dataset_dir.exists():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["DATASET_NOT_FOUND"])
+    if not file.filename:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
+    if not file.filename.lower().endswith((".yml", ".yaml")):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Autotest file must be YAML.")
+
+    target_path = dataset_dir / "autotest.yaml"
+    try:
+        contents = await file.read()
+        target_path.write_bytes(contents)
+    except OSError as exc:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
+
+    return {"dataset": sanitized, "filename": target_path.name, "path": target_path.as_posix()}

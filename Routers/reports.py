@@ -1,15 +1,16 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
 import csv
 import json
 from pathlib import Path
+from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 import config
+from Routers.clustering import THEMES
 from Files.dataset_manager import dataset_path
 from Metrics.students import load_students_outliers
 from LLM import generate_completion
@@ -20,43 +21,49 @@ REPORTS_SUBDIR = config.REPORTS_SUBDIR
 STUDENTS_REPORT_FILENAME = config.STUDENTS_REPORT_FILENAME
 
 
-def _students_report_path(dataset_name: str) -> Path:
+def _students_report_path(dataset_name: str, generated_at: str | None = None) -> Path:
     """
     @brief Compute the path to the students outliers report for a dataset.
     @param dataset_name Dataset name.
+    @param generated_at Optional timestamp token (safe for filenames).
     @return Filesystem path to the report.
     """
-    return dataset_path(dataset_name) / REPORTS_SUBDIR / STUDENTS_REPORT_FILENAME
+    token = generated_at or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%SZ")
+    return dataset_path(dataset_name) / REPORTS_SUBDIR / f"{token}_{STUDENTS_REPORT_FILENAME}"
 
 
-def _latest_clustering_artifacts(dataset_name: str) -> tuple[Path | None, Path | None]:
+def _latest_report_path(dataset_name: str) -> tuple[Path | None, str | None]:
     """
-    @brief Locate the most recent clustering meta and csv cache (any theme).
+    @brief Locate the most recent students report (timestamped).
+    @return Tuple of (path, generated_at_token) or (None, None).
+    """
+    root = dataset_path(dataset_name) / REPORTS_SUBDIR
+    if not root.exists():
+        return None, None
+    candidates = sorted(root.glob(f"*_{STUDENTS_REPORT_FILENAME}"), key=lambda p: p.stat().st_mtime)
+    if not candidates:
+        legacy = root / STUDENTS_REPORT_FILENAME
+        if legacy.exists():
+            return legacy, None
+        return None, None
+    latest = candidates[-1]
+    # Extract timestamp token from filename prefix
+    token = latest.stem.replace(f"_{STUDENTS_REPORT_FILENAME.replace('.md','')}", "")
+    return latest, token if token else None
+
+
+def _collect_clustering_runs(dataset_name: str) -> list[dict[str, object]]:
+    """
+    @brief Load all clustering runs (per theme) with clusters and points.
     """
     root = dataset_path(dataset_name)
-    metas = sorted(root.glob(f"{config.CLUSTERING_META_FILENAME.replace('.json', '')}*.json"), key=lambda p: p.stat().st_mtime)
-    if not metas:
-        return None, None
-    meta_path = metas[-1]
-    suffix = meta_path.stem.replace(config.CLUSTERING_META_FILENAME.replace(".json", ""), "")
-    suffix = suffix if not suffix else suffix  # keep as-is (e.g., _theme)
-    csv_name = config.CLUSTERING_CACHE_FILENAME
-    if suffix:
-        csv_name = config.CLUSTERING_CACHE_FILENAME.replace(".csv", f"{suffix}.csv")
-    csv_path = root / csv_name
-    return meta_path, csv_path if csv_path.exists() else (meta_path, None)[1]
+    metas = sorted(root.glob(f"{config.CLUSTERING_META_FILENAME.replace('.json', '')}*.json"))
+    runs: list[dict[str, object]] = []
 
-
-def _load_clustering_snapshot(meta_path: Path | None, csv_path: Path | None) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
-    clusters: list[dict[str, object]] = []
-    points: list[dict[str, object]] = []
-    if meta_path and meta_path.exists():
-        try:
-            payload = json.loads(meta_path.read_text(encoding="utf-8"))
-            clusters = payload.get("clusters") or []
-        except Exception:
-            clusters = []
-    if csv_path and csv_path.exists():
+    def _load_points(csv_path: Path) -> list[dict[str, object]]:
+        pts: list[dict[str, object]] = []
+        if not csv_path.exists():
+            return pts
         try:
             with csv_path.open("r", encoding="utf-8") as handle:
                 reader = csv.DictReader(handle)
@@ -72,7 +79,7 @@ def _load_clustering_snapshot(meta_path: Path | None, csv_path: Path | None) -> 
                             probabilities = [float(val) for val in probs_raw.split(";") if val.strip()]
                         except ValueError:
                             probabilities = None
-                    points.append(
+                    pts.append(
                         {
                             "path": (row.get("path") or "").replace("\\", "/"),
                             "cluster": cluster,
@@ -80,32 +87,73 @@ def _load_clustering_snapshot(meta_path: Path | None, csv_path: Path | None) -> 
                         }
                     )
         except Exception:
-            points = []
-    return clusters, points
+            return []
+        return pts
+
+    for meta_path in metas:
+        csv_name = config.CLUSTERING_CACHE_FILENAME
+        suffix = meta_path.stem.replace(config.CLUSTERING_META_FILENAME.replace(".json", ""), "")
+        if suffix:
+            csv_name = config.CLUSTERING_CACHE_FILENAME.replace(".csv", f"{suffix}.csv")
+        csv_path = root / csv_name
+
+        clusters: list[dict[str, object]] = []
+        metadata: dict[str, object] = {}
+        try:
+            payload = json.loads(meta_path.read_text(encoding="utf-8"))
+            clusters = payload.get("clusters") or []
+            if isinstance(payload.get("metadata"), dict):
+                metadata = payload["metadata"]
+        except Exception:
+            clusters = []
+
+        theme = (metadata.get("theme") if isinstance(metadata, dict) else None) or None
+        theme_label = (
+            (metadata.get("theme_label") if isinstance(metadata, dict) else None)
+            or (THEMES.get(theme, {}) if theme else {}).get("label")
+            or theme
+        )
+        runs.append(
+            {
+                "theme": theme,
+                "theme_label": theme_label,
+                "clusters": clusters,
+                "points": _load_points(csv_path),
+            }
+        )
+
+    return runs
 
 
-def _build_membership_lookup(clusters: list[dict[str, object]], points: list[dict[str, object]]) -> dict[str, tuple[str, float]]:
+def _build_membership_lookup(runs: list[dict[str, object]]) -> dict[str, list[tuple[str, float]]]:
     """
-    @brief Build a mapping from file path to (cluster label, confidence).
+    @brief Build a mapping from file path to list of (theme/cluster label, confidence).
     """
-    label_lookup = {c.get("id"): c.get("label") for c in clusters if isinstance(c, dict) and c.get("id") is not None}
-    lookup: dict[str, tuple[str, float]] = {}
-    for point in points:
-        path = (point.get("path") or "").replace("\\", "/")
-        if not path:
-            continue
-        cluster_id = point.get("cluster")
-        if not isinstance(cluster_id, int) or cluster_id < 0:
-            continue
-        probs = point.get("probabilities")
-        confidence = 1.0
-        if isinstance(probs, list) and len(probs) > cluster_id:
-            try:
-                confidence = float(probs[cluster_id])
-            except (TypeError, ValueError):
-                confidence = 1.0
-        label = label_lookup.get(cluster_id) or f"Cluster {cluster_id + 1}"
-        lookup[path] = (label, confidence)
+    lookup: dict[str, list[tuple[str, float]]] = {}
+    for run in runs:
+        clusters = run.get("clusters") or []
+        points = run.get("points") or []
+        theme_label = run.get("theme_label") or run.get("theme")
+        label_lookup = {
+            c.get("id"): c.get("label") for c in clusters if isinstance(c, dict) and c.get("id") is not None
+        }
+        for point in points:
+            path = (point.get("path") or "").replace("\\", "/")
+            if not path:
+                continue
+            cluster_id = point.get("cluster")
+            if not isinstance(cluster_id, int) or cluster_id < 0:
+                continue
+            probs = point.get("probabilities")
+            confidence = 1.0
+            if isinstance(probs, list) and len(probs) > cluster_id:
+                try:
+                    confidence = float(probs[cluster_id])
+                except (TypeError, ValueError):
+                    confidence = 1.0
+            label = label_lookup.get(cluster_id) or f"Cluster {cluster_id + 1}"
+            full_label = f"{theme_label or 'Theme'}: {label}"
+            lookup.setdefault(path, []).append((full_label, confidence))
     return lookup
 
 
@@ -125,18 +173,19 @@ def _top_members(points: list[dict[str, object]], cluster_id: int, limit: int = 
     return scored[:limit]
 
 
-def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tuple[Path, int, bool]:
+def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tuple[Path, int, bool, str]:
     """
     @brief Render the students outliers markdown report to disk.
     @param dataset_name Dataset name.
     @param outliers Outliers payload previously computed.
-    @return Tuple of (report_path, highlighted_metrics_count, has_combined_findings).
+    @return Tuple of (report_path, highlighted_metrics_count, has_combined_findings, generated_at_token).
     """
     buckets = outliers.get("buckets") or []
     if not isinstance(buckets, list):
         buckets = []
 
-    report_path = _students_report_path(dataset_name)
+    generated_token = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%SZ")
+    report_path = _students_report_path(dataset_name, generated_token)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
@@ -151,29 +200,9 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
         if not isinstance(key, str):
             return None
         lowered = key.lower()
-        if "if/ncss" in lowered or ("if" in lowered and "ncss" in lowered):
-            return "High If/NCSS means many conditionals relative to file size—logic may be overly branched; simplify or merge predicates."
-        if "loops/ncss" in lowered or ("loop" in lowered and "ncss" in lowered):
-            return "High Loops/NCSS indicates many iterations per line of code—consider reducing loop count or extracting helpers."
-        if "vars/functions" in lowered:
-            return "Vars/Functions captures variable churn per function—high values hint at long functions or heavy state; split or reduce state."
-        if "vars/ncss" in lowered:
-            return "Vars/NCSS reflects variable density—high density can reduce readability; very low density may mean under-documented or terse code."
-        if "total variables" in lowered or lowered == "variables":
-            return "Total variables shows how much state the file manages; very high counts can signal complex or sprawling state handling."
-        if "ncss" in lowered or "loc" in lowered or "lines" in lowered:
-            return '''
-            High NCSS/LOC suggests large files that may use decomposition into smaller units.
-            Low NCSS/LOC could indicate better modularization; very low values might signal incomplete files.
-            '''
-        if "duplication" in lowered:
-            return "High duplication indicates copy/paste which lead to redundant code and maintenance issues. Consider extracting shared functions instead of copy/pasting or review the logic"
-        if "ccn" in lowered or "complex" in lowered:
-            return "High cyclomatic complexity indicates complex logical sturcture, usually with lots of branches. Simplify logic and split the code into smaller reusable portions or functions"
-        if "nest" in lowered:
-            return "Deep nesting often signals hard-to-read code with lots of imbricated logic. Consider trying to flatten the structure by returning early or splitting logic."
-        if "function" in lowered:
-            return "High number of functions may indicate good modularization, while very high values could suggest over-fragmentation. Low function counts usually indicate monolithic code that would benefit from decomposition."
+        for pattern, text in config.STUDENTS_METRIC_EXPLANATIONS:
+            if pattern in lowered:
+                return text
         return None
 
     lines: list[str] = []
@@ -187,16 +216,16 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
     )
     lines.append("")
 
-    meta_path, csv_path = _latest_clustering_artifacts(dataset_name)
-    clusters, points = _load_clustering_snapshot(meta_path, csv_path)
-    membership_lookup = _build_membership_lookup(clusters, points) if clusters and points else {}
+    clustering_runs = _collect_clustering_runs(dataset_name)
+    membership_lookup = _build_membership_lookup(clustering_runs) if clustering_runs else {}
 
     def _format_cluster_tag(filename: str) -> str:
-        entry = membership_lookup.get(filename)
-        if not entry:
+        entries = membership_lookup.get(filename) or []
+        if not entries:
             return ""
-        label, confidence = entry
-        return f" _(Aligned with {label}, confidence {confidence:.2f})_"
+        sorted_entries = sorted(entries, key=lambda x: x[1], reverse=True)
+        parts = [f"{label} ({confidence:.2f})" for label, confidence in sorted_entries[:3]]
+        return f" _(Aligned with {', '.join(parts)})_"
 
     highlighted_metrics = 0
     for bucket in buckets:
@@ -245,69 +274,152 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
     files_payload = outliers.get("files") or []
     combined_findings: list[str] = []
 
-    def _is_high_metric(entry: dict[str, object]) -> bool:
-        return bool(entry.get("high") or entry.get("extra_high"))
+    SIGNAL_SCORES = {
+        "really_low": -3,
+        "low": -2,
+        "normal_low": -1,
+        "normal_high": 1,
+        "high": 2,
+        "really_high": 3,
+    }
 
-    def _is_low_metric(entry: dict[str, object]) -> bool:
-        return bool(entry.get("below_q1") or entry.get("below_fence"))
+    def _score_signal(entry: dict[str, object]) -> int:
+        signal = entry.get("signal")
+        if isinstance(signal, str) and signal in SIGNAL_SCORES:
+            return SIGNAL_SCORES[signal]
+        # Fallback to legacy flags
+        if entry.get("below_fence"):
+            return SIGNAL_SCORES["really_low"]
+        if entry.get("below_q1"):
+            return SIGNAL_SCORES["low"]
+        if entry.get("extra_high"):
+            return SIGNAL_SCORES["really_high"]
+        if entry.get("high"):
+            return SIGNAL_SCORES["high"]
+        return 0
 
     for file_entry in files_payload:
         metrics_data = file_entry.get("metrics") or {}
         if not isinstance(metrics_data, dict):
             continue
         # Aggregate repeated signals so the report can highlight stronger patterns.
-        duplication_high = any(
-            _is_high_metric(entry)
-            for key, entry in metrics_data.items()
-            if isinstance(entry, dict) and "duplication" in str(key).lower()
-        )
-        ncss_high = any(
-            _is_high_metric(entry)
-            for key, entry in metrics_data.items()
-            if isinstance(entry, dict) and any(token in str(key).lower() for token in ("ncss", "loc", "lines"))
-        )
-        functions_low = any(
-            _is_low_metric(entry)
-            for key, entry in metrics_data.items()
-            if isinstance(entry, dict) and "function" in str(key).lower()
-        )
-        complexity_high = any(
-            _is_high_metric(entry)
-            for key, entry in metrics_data.items()
-            if isinstance(entry, dict) and ("ccn" in str(key).lower() or "complex" in str(key).lower())
-        )
-        nesting_high = any(
-            _is_high_metric(entry)
-            for key, entry in metrics_data.items()
-            if isinstance(entry, dict) and "nest" in str(key).lower()
-        )
+        def _max_score(predicate_tokens: tuple[str, ...]) -> int:
+            scores = []
+            for key, entry in metrics_data.items():
+                if not isinstance(entry, dict):
+                    continue
+                lowered = str(key).lower()
+                if any(token in lowered for token in predicate_tokens):
+                    scores.append(_score_signal(entry))
+            return max(scores) if scores else 0
+
+        duplication_score = _max_score(("duplication",))
+        ncss_score = _max_score(("ncss", "loc", "lines"))
+        functions_score = _max_score(("function",))
+        complexity_score = _max_score(("ccn", "complex"))
+        nesting_score = _max_score(("nest",))
 
         filename = file_entry.get("filename") or file_entry.get("path") or "Unknown file"
 
-        if duplication_high and ncss_high:
+        if duplication_score >= 2 and ncss_score >= 2:
             combined_findings.append(
                 f"- Heavy duplication in a large file: `{filename}` — high NCSS with duplicated blocks suggests weak structure."
             )
 
-        if duplication_high and (functions_low or ncss_high):
+        if duplication_score >= 2 and (functions_score <= -2 or ncss_score >= 2):
             reasons = []
-            if duplication_high:
+            if duplication_score >= 2:
                 reasons.append("high duplication")
-            if ncss_high:
+            if ncss_score >= 2:
                 reasons.append("high NCSS/LOC")
-            if functions_low:
+            if functions_score <= -2:
                 reasons.append("low function count")
             joined = ", ".join(reasons) if reasons else "multiple signals"
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "duplication_ncss", "Refactor to extract shared helpers and reduce copy/paste."
+            )
+            combined_findings.append(f"- Poor factoring: `{filename}` — {joined}. {trailing}")
+
+        if complexity_score >= 2 and nesting_score >= 2:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "complexity_nesting", "Simplify branching and split logic into smaller units."
+            )
             combined_findings.append(
-                f"- Poor factoring: `{filename}` — {joined}. "
-                "Refactor to extract shared helpers and reduce copy/paste."
+                f"- Complex logic: `{filename}` — high cyclomatic complexity with deep nesting. {trailing}"
             )
 
-        if complexity_high and nesting_high:
-            combined_findings.append(
-                f"- Complex logic: `{filename}` — high cyclomatic complexity with deep nesting. "
-                "Simplify branching and split logic into smaller units."
+        if ncss_score >= 1 and functions_score <= -2:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "ncss_high_functions_low", "Large monolithic structure — break into smaller functions."
             )
+            combined_findings.append(f"- Large monolithic structure: `{filename}` — {trailing}")
+
+        if complexity_score >= 2 and functions_score <= -2:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "complexity_high_functions_low", "Under-factored logic — extract helpers to tame complexity."
+            )
+            combined_findings.append(f"- Under-factored logic: `{filename}` — {trailing}")
+
+        if nesting_score >= 2 and duplication_score >= 2:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "nesting_high_duplication_high", "Nested duplication blocks — de-duplicate and flatten."
+            )
+            combined_findings.append(f"- Nested duplication blocks: `{filename}` — {trailing}")
+
+        if ncss_score <= -2 and complexity_score >= 2:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "ncss_low_complexity_high", "Hard to read code — small size but complex; clarify and simplify."
+            )
+            combined_findings.append(f"- Hard to read code: `{filename}` — {trailing}")
+
+        if duplication_score <= -1 and nesting_score >= 2 and complexity_score >= 2:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "duplication_low_nesting_high_complexity_high", "Huge decision tree — flatten branches and clarify flow."
+            )
+            combined_findings.append(f"- Huge decision tree: `{filename}` — {trailing}")
+
+        if ncss_score <= -2 and functions_score >= 2:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "ncss_low_functions_high", "Overfactoring — too many functions for the file size."
+            )
+            combined_findings.append(f"- Overfactoring: `{filename}` — {trailing}")
+
+        if complexity_score >= 2 and duplication_score >= 2 and nesting_score >= 2 and ncss_score >= 2:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "priority_all_high", "Priority code to review — multiple red flags across complexity, duplication, nesting, and size."
+            )
+            combined_findings.append(f"- Priority code to review: `{filename}` — {trailing}")
+
+        # Positive patterns
+        if complexity_score < 0 and nesting_score < 0:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "positive_simple", "Simple code that reads easily."
+            )
+            combined_findings.append(f"- Simple and readable: `{filename}` — {trailing}")
+
+        if duplication_score < 0 and functions_score >= 1:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "positive_factored", "No duplication with healthy function decomposition."
+            )
+            combined_findings.append(f"- Well factored: `{filename}` — {trailing}")
+
+        if ncss_score <= -1 and complexity_score < 0:
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "positive_concise", "Concise and easy to read solution."
+            )
+            combined_findings.append(f"- Concise solution: `{filename}` — {trailing}")
+
+        if (
+            ncss_score <= 1
+            and functions_score >= -1
+            and complexity_score <= 1
+            and duplication_score <= 1
+            and nesting_score <= 1
+        ):
+            trailing = config.STUDENTS_COMBINED_FINDINGS.get(
+                "positive_balanced", "Well-balanced solution with no concerning signals."
+            )
+            combined_findings.append(f"- Balanced solution: `{filename}` — {trailing}")
 
     if combined_findings:
         lines.append("## Combined patterns")
@@ -319,61 +431,83 @@ def _write_students_report(dataset_name: str, outliers: dict[str, object]) -> tu
     if highlighted_metrics == 0 and not combined_findings:
         lines.append("No outlier students detected for the current dataset.")
 
-    # Append clustering insights if available
-    meta_path, csv_path = _latest_clustering_artifacts(dataset_name)
-    clusters, points = _load_clustering_snapshot(meta_path, csv_path)
-    if clusters:
+    # Append clustering insights if available (all themes)
+    clustering_runs = _collect_clustering_runs(dataset_name)
+    if clustering_runs:
         lines.append("")
         lines.append("## Clustering insights")
         lines.append("")
         lines.append(
-            "Summaries below are generated from the latest clustering run (LLM-provided label/description) "
-            "alongside a few representative files per cluster."
+            "Summaries below are generated from the latest clustering runs across themes "
+            "(LLM-provided label/description) with representative files."
         )
-        for cluster in clusters:
-            cid = cluster.get("id") if isinstance(cluster, dict) else None
-            label = cluster.get("label") if isinstance(cluster, dict) else None
-            desc = cluster.get("description") if isinstance(cluster, dict) else None
-            comparison = cluster.get("comparison") if isinstance(cluster, dict) else None
-            size = cluster.get("size") if isinstance(cluster, dict) else None
-            lines.append(f"### {label or f'Cluster {cid}'}")
-            if size is not None:
-                lines.append(f"- Size: {size}")
-            if desc:
-                lines.append("")
-                lines.append(desc if isinstance(desc, str) else str(desc))
-            if isinstance(comparison, list) and comparison:
-                lines.append("")
-                lines.append("| Metric | Cluster | Dataset | Relation |")
-                lines.append("| --- | --- | --- | --- |")
-                for row in comparison:
-                    if not isinstance(row, dict):
-                        continue
-                    metric = row.get("metric") or "-"
-                    cl = row.get("cluster") or "-"
-                    ds = row.get("dataset") or "-"
-                    rel = row.get("relation") or "-"
-                    lines.append(f"| {metric} | {cl} | {ds} | {rel} |")
-            top_members = _top_members(points, cid, limit=5) if cid is not None else []
-            if top_members:
-                lines.append("")
-                lines.append("Top members (by confidence):")
-                for path, score in top_members:
-                    lines.append(f"- {path} ({score:.2f})")
+        for run in clustering_runs:
+            clusters = run.get("clusters") or []
+            points = run.get("points") or []
+            theme_label = run.get("theme_label") or run.get("theme") or "Theme"
+            if not clusters:
+                continue
+            lines.append(f"### Theme: {theme_label}")
             lines.append("")
+            for cluster in clusters:
+                cid = cluster.get("id") if isinstance(cluster, dict) else None
+                label = cluster.get("label") if isinstance(cluster, dict) else None
+                desc = cluster.get("description") if isinstance(cluster, dict) else None
+                comparison = cluster.get("comparison") if isinstance(cluster, dict) else None
+                size = cluster.get("size") if isinstance(cluster, dict) else None
+                good = cluster.get("good") if isinstance(cluster, dict) else None
+                bad = cluster.get("bad") if isinstance(cluster, dict) else None
+                lines.append(f"#### {label or f'Cluster {cid}'}")
+                if size is not None:
+                    lines.append(f"- Size: {size}")
+                if desc:
+                    lines.append("")
+                    lines.append(desc if isinstance(desc, str) else str(desc))
+                if isinstance(good, list) and good:
+                    lines.append("")
+                    lines.append("Good:")
+                    for item in good:
+                        lines.append(f"- {item}")
+                if isinstance(bad, list) and bad:
+                    lines.append("")
+                    lines.append("Bad:")
+                    for item in bad:
+                        lines.append(f"- {item}")
+                if isinstance(comparison, list) and comparison:
+                    lines.append("")
+                    lines.append("| Metric | Cluster | Dataset | Relation |")
+                    lines.append("| --- | --- | --- | --- |")
+                    for row in comparison:
+                        if not isinstance(row, dict):
+                            continue
+                        metric = row.get("metric") or "-"
+                        cl = row.get("cluster") or "-"
+                        ds = row.get("dataset") or "-"
+                        rel = row.get("relation") or "-"
+                        lines.append(f"| {metric} | {cl} | {ds} | {rel} |")
+                top_members = _top_members(points, cid, limit=5) if cid is not None else []
+                if top_members:
+                    lines.append("")
+                    lines.append("Top members (by confidence):")
+                    for path, score in top_members:
+                        lines.append(f"- {path} ({score:.2f})")
+                lines.append("")
 
     raw_report = "\n".join(lines).strip() + "\n"
 
     # Summarize/refine via LLM
     final_report = raw_report
+    '''
+
     try:
         prompt = config.STUDENTS_REPORT_SUMMARY_PROMPT.format(report=raw_report)
         final_report = generate_completion(prompt)
     except Exception:
         final_report = raw_report
+    '''
 
     report_path.write_text(final_report.strip() + "\n", encoding="utf-8")
-    return report_path, highlighted_metrics, bool(combined_findings)
+    return report_path, highlighted_metrics, bool(combined_findings), generated_token
 class ReportRequest(BaseModel):
     """
     @brief Request body for dataset-level report generation.
@@ -404,7 +538,7 @@ async def generate_report(payload: ReportRequest) -> dict[str, object]:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
 
     try:
-        report_path, highlighted_metrics, combined = _write_students_report(dataset_name, outliers)
+        report_path, highlighted_metrics, combined, generated_token = _write_students_report(dataset_name, outliers)
     except OSError as exc:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Unable to write report: {exc}"
@@ -413,6 +547,8 @@ async def generate_report(payload: ReportRequest) -> dict[str, object]:
     return {
         "dataset": dataset_name,
         "report_path": report_path.as_posix(),
+        "report_filename": report_path.name,
+        "generated_at": generated_token,
         "highlighted_metrics": highlighted_metrics,
         "has_combined_findings": combined,
         "status": "generated",
@@ -446,21 +582,28 @@ async def download_report(dataset: str | None = None):
     dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=True)
     ensure_dataset_ready(dataset_name)
 
-    # Always regenerate to keep descriptions and findings fresh before download.
-    try:
-        outliers = load_students_outliers(dataset_name)
-    except RuntimeError as exc:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
-
-    try:
-        report_path, _, _ = _write_students_report(dataset_name, outliers)
-    except OSError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Unable to write report: {exc}"
-        ) from exc
-
-    if not report_path.exists():
+    report_path, token = _latest_report_path(dataset_name)
+    if not report_path or not report_path.exists():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Report not found.")
 
-    filename = f"{dataset_name}_students_report.md"
+    filename = report_path.name
     return FileResponse(report_path, media_type="text/markdown", filename=filename)
+
+
+@router.get("/latest-report", name="latest-report")
+async def latest_report(dataset: str | None = None) -> dict[str, object]:
+    """
+    @brief Return metadata about the most recent students report (if any).
+    """
+    dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=True)
+    ensure_dataset_ready(dataset_name)
+    path, token = _latest_report_path(dataset_name)
+    if not path or not path.exists():
+        return {"dataset": dataset_name, "available": False}
+    return {
+        "dataset": dataset_name,
+        "available": True,
+        "report_path": path.as_posix(),
+        "report_filename": path.name,
+        "generated_at": token,
+    }

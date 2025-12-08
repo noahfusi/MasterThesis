@@ -150,6 +150,17 @@ body {
   border-bottom: 1px solid #e5e7eb;
 }
 
+.autotest-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.autotest-list .dataset-row-actions {
+  align-items: center;
+}
+
 .file-entry-name {
   display: inline-flex;
   align-items: center;
@@ -160,6 +171,12 @@ body {
 .dataset-row-actions {
   display: flex;
   gap: 0.5rem;
+}
+
+.compile-error {
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 /* Buttons */

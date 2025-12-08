@@ -35,6 +35,42 @@
     <p class="feedback" id="global-analysis-feedback">
       {% if not current_dataset %}Select a dataset to load the analysis.{% endif %}
     </p>
+    <div class="global-analysis-thresholds" id="global-analysis-thresholds" aria-live="polite">
+      <div class="global-analysis-thresholds-header">
+        <h3>Metric thresholds</h3>
+        <span class="global-analysis-thresholds-metric" id="global-analysis-thresholds-metric">No metric selected</span>
+      </div>
+      <div class="global-analysis-thresholds-grid">
+        <div class="global-analysis-threshold-card" data-threshold="mean">
+          <span class="threshold-label">Mean</span>
+          <span class="threshold-value" id="global-analysis-threshold-mean">-</span>
+        </div>
+        <div class="global-analysis-threshold-card" data-threshold="q1">
+          <span class="threshold-label">Q1</span>
+          <span class="threshold-value" id="global-analysis-threshold-q1">-</span>
+        </div>
+        <div class="global-analysis-threshold-card" data-threshold="median">
+          <span class="threshold-label">Median</span>
+          <span class="threshold-value" id="global-analysis-threshold-median">-</span>
+        </div>
+        <div class="global-analysis-threshold-card" data-threshold="q3">
+          <span class="threshold-label">Q3</span>
+          <span class="threshold-value" id="global-analysis-threshold-q3">-</span>
+        </div>
+        <div class="global-analysis-threshold-card" data-threshold="lowerFence">
+          <span class="threshold-label">Lower fence</span>
+          <span class="threshold-value" id="global-analysis-threshold-lower-fence">-</span>
+        </div>
+        <div class="global-analysis-threshold-card" data-threshold="upperFence">
+          <span class="threshold-label">Upper fence</span>
+          <span class="threshold-value" id="global-analysis-threshold-upper-fence">-</span>
+        </div>
+        <div class="global-analysis-threshold-card" data-threshold="reference">
+          <span class="threshold-label">Reference</span>
+          <span class="threshold-value" id="global-analysis-threshold-reference">-</span>
+        </div>
+      </div>
+    </div>
     <div class="global-analysis-charts">
       <div id="global-analysis-chart" class="global-analysis-chart" aria-label="Global metric distribution"></div>
       <div id="global-analysis-histogram" class="global-analysis-chart" aria-label="Global metric histogram"></div>

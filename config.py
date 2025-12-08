@@ -25,6 +25,7 @@ STRUCTURAL_FOLDER_NAME = "structural"
 STRUCTURAL_EMBEDDINGS_FOLDER_NAME = "structural_embeddings"
 STRUCTURAL_SOURCE_EXTENSIONS = {".scala"}
 STRUCTURAL_EMBEDDING_SUFFIX = ".embedding.json"
+EMBEDDING_MAX_TOKENS = int(os.environ.get("EMBEDDING_MAX_TOKENS", "4096"))
 STATUS_FILENAME = "status.json"
 SUMMARY_FILENAME = "lizard_dataset.xml"
 METRICS_FILENAME = "metrics.csv"
@@ -85,6 +86,36 @@ THRESHOLD_DESCRIPTIONS: dict[str, dict[str, str]] = {
     },
 }
 
+# Students report hints
+STUDENTS_METRIC_EXPLANATIONS = [
+    ("if/ncss", "High If/NCSS means many conditionals relative to file size—logic may be overly branched; simplify or merge predicates."),
+    ("loops/ncss", "High Loops/NCSS indicates many iterations per line of code—consider reducing loop count or extracting helpers."),
+    ("vars/functions", "Vars/Functions captures variable churn per function—high values hint at long functions or heavy state; split or reduce state."),
+    ("vars/ncss", "Vars/NCSS reflects variable density—high density can reduce readability; very low density may mean under-documented or terse code."),
+    ("total variables", "Total variables shows how much state the file manages; very high counts can signal complex or sprawling state handling."),
+    ("ncss", "High NCSS/LOC suggests large files that may need decomposition into smaller units; very low values might signal incomplete files."),
+    ("duplication", "High duplication indicates copy/paste and maintenance issues. Extract shared helpers instead of duplicating logic."),
+    ("ccn", "High cyclomatic complexity indicates complex logical structure with many branches. Simplify logic and split into smaller reusable functions."),
+    ("nest", "Deep nesting often signals hard-to-read code with imbricated logic. Flatten by returning early or splitting logic."),
+    ("function", "High function counts may indicate over-fragmentation; low counts suggest monolithic code that benefits from decomposition."),
+]
+
+STUDENTS_COMBINED_FINDINGS = {
+    "duplication_ncss": "Refactor to extract shared helpers and reduce copy/paste.",
+    "complexity_nesting": "Simplify branching and split logic into smaller units.",
+    "ncss_high_functions_low": "Large monolithic structure — break into smaller functions.",
+    "complexity_high_functions_low": "Under-factored logic — extract helpers to tame complexity.",
+    "nesting_high_duplication_high": "Nested duplication blocks — de-duplicate and flatten.",
+    "ncss_low_complexity_high": "Hard to read code — small size but complex; clarify and simplify.",
+    "duplication_low_nesting_high_complexity_high": "Huge decision tree — flatten branches and clarify flow.",
+    "ncss_low_functions_high": "Overfactoring — too many functions for the file size.",
+    "priority_all_high": "Priority code to review — multiple red flags across complexity, duplication, nesting, and size.",
+    "positive_simple": "Simple code that reads easily.",
+    "positive_factored": "No duplication with healthy function decomposition.",
+    "positive_concise": "Concise and easy to read solution.",
+    "positive_balanced": "Well-balanced solution with no concerning signals.",
+}
+
 # Clustering defaults
 CLUSTERING_THEMES: dict[str, dict[str, object]] = {
     "complexity": {
@@ -114,7 +145,7 @@ CLUSTERING_METRIC_KEYS: list[str] = sorted(
 
 # Ollama defaults
 DEFAULT_OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-DEFAULT_OLLAMA_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL", "bge-m3")
+DEFAULT_OLLAMA_EMBED_MODEL = os.environ.get("OLLAMA_EMBED_MODEL", "unclemusclez/jina-embeddings-v2-base-code")
 DEFAULT_OLLAMA_TIMEOUT = 600.0
 LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "ollama").lower()
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -122,6 +153,7 @@ OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-nano")
 OPENAI_EMBED_MODEL = os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-3-small")
 FEEDBACK_MODEL = "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
+#"ministral-3:8b"
 #"MHKetbi/Unsloth_gemma3-4b-it:q4_K_M"
 #"gemma3:4b"
 # "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
@@ -165,43 +197,45 @@ STUDENTS_REPORT_SUMMARY_PROMPT = (
 )
 FEEDBACK_OUTPUT_DIRNAME = "feedbacks"
 CLUSTER_LABEL_PROMPT = (
-"You are summarizing clusters of student code files."
-"Your task is to compare:"
-"- the cluster’s average metrics"
-"- the dataset-wide average metrics"
-"- the structure of the representative file"
+    "You are summarizing clusters of student code files."
+    "Your task is to compare:"
+    "- the cluster’s average metrics"
+    "- the dataset-wide average metrics"
+    "- the structure of up to three representative files"
 
-"Your output must have two parts:"
-"1) A comparison table listing, for each metric:"
-   "<metric> | <cluster value> | <dataset value> | <relation (> , < , =)>" 
-"2) A short summary:"
-   "- A short label (max 10 words)"
-   "- 2–3 sentences explaining what characterizes this cluster"
+    "Your output must have two parts:"
+    "1) A comparison table listing, for each metric:"
+       "<metric> | <cluster value> | <dataset value> | <relation (> , < , =)>"
+    "2) A short summary:"
+       "- A short label (max 20 words)"
+       "- 5-6 sentences explaining what characterizes this cluster, referencing the representative files when possible"
+    "3) A list of the good and bad aspects based on the metrics and the representative file structure."
 
-"STRICT RULES (mandatory):"
-"- Perform STRICT numerical comparisons. "
-"- Never say “higher/lower” unless numerically true."
-"- If a value is LOWER than the dataset average, you MUST say it is lower even if this contradicts usual expectations."
-"- Never invert numerical relationships."
-"- Never generalize beyond the provided values."
-"- Never speculate about structures not present in the representative file."
-"- When describing structure, ONLY refer to elements explicitly present in the representative snippet: "
-  "number/size of functions, actual nesting you can see, visible repetition, visible loops/ifs."
-"- Do NOT infer intent, functionality, or correctness."
-"- Do NOT use external coding norms. Only relative comparisons are allowed."
-"- Do NOT connect a metric to a structural explanation unless the representative file clearly shows it."
+    "STRICT RULES (mandatory):"
+    "- Perform STRICT numerical comparisons. "
+    "- Never say “higher/lower” unless numerically true."
+    "- If a value is LOWER than the dataset average, you MUST say it is lower even if this contradicts usual expectations."
+    "- Never invert numerical relationships."
+    "- Never generalize beyond the provided values."
+    "- Never speculate about structures not present in the representative files."
+    "- When describing structure, ONLY refer to elements explicitly present in the representative snippets: "
+      "number/size of functions, actual nesting you can see, visible repetition, visible loops/ifs."
+    "- Do NOT infer intent, functionality, or correctness."
+    "- Do NOT use external coding norms. Only relative comparisons are allowed."
+    "- Do NOT connect a metric to a structural explanation unless the representative files clearly show it."
 
-"FORMAT EXACTLY as:"
-"Comparison:"
-"| Metric | Cluster | Dataset | Relation |"
+    "FORMAT EXACTLY as:"
+    "Comparison:"
+    "| Metric | Cluster | Dataset | Relation |"
 
-"Label: <label>"
-"Description: <sentences>"
+    "Label: <label>"
+    "Description: <sentences>"
+    "Good: <bullet points>"
+    "Bad: <bullet points>"
 
-"Cluster metrics: {cluster_metrics}"
-"Dataset averages: {dataset_metrics}"
-"Representative file content: {representative}"
-
+    "Cluster metrics: {cluster_metrics}"
+    "Dataset averages: {dataset_metrics}"
+    "Representative files:\n{representatives}"
 )
 CLUSTER_LABEL_PROMPT_OLD_2 = (
     "You are summarizing clusters of student code files."
@@ -270,6 +304,7 @@ MESSAGES: dict[str, str] = {
     # Clustering
     "CLUSTERING_NO_DATA": "No usable data for this feature mode. Check metrics and embeddings.",
     "CLUSTERING_KMEANS_COUNT_REQUIRED": "Cluster count is required to run k-means.",
+    "CLUSTERING_GMM_COUNT_REQUIRED": "Component count is required to run Gaussian Mixture Models.",
     "CLUSTERING_HDBSCAN_PARAMS_REQUIRED": "HDBSCAN parameters are required.",
     "CLUSTERING_INVALID_HDBSCAN_VALUES": "Invalid HDBSCAN values.",
     "CLUSTERING_AUTO_HDBSCAN": "Auto-searching HDBSCAN parameters...",
@@ -308,6 +343,6 @@ MESSAGES: dict[str, str] = {
     "CONFIRM_DELETE_DATASET": 'Delete dataset "{dataset}"?',
     # Generic
     "ACTION_FAILED": "Operation failed.",
-    "FEEDBACK_DATASET_QUEUED": "Dataset-wide feedback generation queued (not implemented).",
-    "FEEDBACK_FILE_QUEUED": "Feedback generation queued (not implemented).",
+    "FEEDBACK_DATASET_QUEUED": "Dataset-wide feedback generation queued.",
+    "FEEDBACK_FILE_QUEUED": "Feedback generation queued.",
 }

@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 import config
+from Routers.autotest import router as autotest_router
 from Routers.clustering import router as clustering_router
 from Routers.current_dataset import router as current_dataset_router
 from Routers.feedback import router as feedback_router
@@ -27,6 +28,7 @@ app.include_router(meta_router)
 app.include_router(pages_router)
 app.include_router(feedback_router)
 app.include_router(tasks_router)
+app.include_router(autotest_router)
 
 
 @app.get("/task-sw.js", include_in_schema=False)

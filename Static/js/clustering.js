@@ -26,6 +26,9 @@
   const clusteringMetricChart = document.getElementById("clustering-metric-chart");
   const clusteringMetricFeedback = document.getElementById("clustering-metric-feedback");
   const clusteringMetricDatasetLabel = document.getElementById("clustering-metric-dataset");
+  const clusteringMetadataCard = document.getElementById("clustering-metadata-card");
+  const clusteringMetadata = document.getElementById("clustering-metadata");
+  const clusteringMembershipFilter = document.getElementById("clustering-membership-filter");
   const themeTabsContainer = document.getElementById("clustering-theme-tabs");
   const themeMetricsContainer = document.getElementById("clustering-theme-metrics");
   const activeThemeLabel = document.getElementById("clustering-active-theme");
@@ -78,6 +81,7 @@
     results: {},
     metricKeyByTheme: {},
     metricKey: null,
+    membershipFilterByTheme: {},
     activeTheme: CLUSTERING_THEMES[0] ? CLUSTERING_THEMES[0].id : null,
     themeParams: {},
     featureMode: "metrics",
@@ -105,9 +109,152 @@
     return stats;
   }
 
+  function normalizeClusters(rawClusters = []) {
+    const seen = new Map();
+    (rawClusters || []).forEach((cluster) => {
+      if (!cluster) return;
+      const key = Number.isFinite(cluster.id) ? cluster.id : cluster.label || cluster.centroid?.toString();
+      const existing = seen.get(key);
+      if (!existing || (!existing.description && cluster.description)) {
+        seen.set(key, cluster);
+      }
+    });
+    return Array.from(seen.values());
+  }
+
+  function deriveClustersFromPoints(points = []) {
+    const counts = new Map();
+    (points || []).forEach((p) => {
+      const cid = Number(p?.cluster);
+      if (!Number.isFinite(cid) || cid < 0) return;
+      counts.set(cid, (counts.get(cid) || 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([cid, size]) => ({ id: cid, label: getClusterLabel(cid), size }));
+  }
+
+  function formatClusterLabel(cluster) {
+    if (!cluster) return "Cluster";
+    if (cluster.label) return cluster.label;
+    if (Number.isFinite(cluster.id)) return `Cluster ${cluster.id + 1}`;
+    return "Cluster";
+  }
+
+  function getClusterKey(cluster, fallbackIndex = 0) {
+    if (!cluster) return String(fallbackIndex);
+    if (Number.isFinite(cluster.id)) return String(cluster.id);
+    if (cluster.label) return cluster.label;
+    if (Array.isArray(cluster.centroid)) return cluster.centroid.join(",");
+    return String(fallbackIndex);
+  }
+
   function hasPendingDescriptions(data) {
     const clusters = Array.isArray(data?.clusters) ? data.clusters : [];
     return clusters.some((cluster) => cluster && cluster.llm_pending);
+  }
+
+  function normalizeMetadata(data) {
+    const meta = data && typeof data === "object" && typeof data.metadata === "object" ? { ...data.metadata } : {};
+    const parameters =
+      (meta.parameters && typeof meta.parameters === "object" && meta.parameters) ||
+      (data && typeof data.parameters === "object" ? data.parameters : null) ||
+      {};
+    const axes =
+      (meta.axes && typeof meta.axes === "object" && meta.axes) ||
+      (data && typeof data.axes === "object" && data.axes) ||
+      {};
+    const metrics = Array.isArray(meta.metrics) && meta.metrics.length
+      ? meta.metrics
+      : Array.isArray(data?.metrics) && data.metrics.length
+        ? data.metrics
+        : [];
+
+    if (!meta.dataset && data?.dataset) meta.dataset = data.dataset;
+    if (!meta.theme && data?.theme) meta.theme = data.theme;
+    if (!meta.theme_label && data?.theme_label) meta.theme_label = data.theme_label;
+    if (!meta.algorithm && data?.algorithm) meta.algorithm = data.algorithm;
+    if (!meta.feature_mode && parameters.feature_mode) meta.feature_mode = parameters.feature_mode;
+    if (typeof meta.embedding_dims === "undefined" && typeof parameters.embedding_dims !== "undefined") {
+      meta.embedding_dims = parameters.embedding_dims;
+    }
+    meta.axes = axes;
+    meta.metrics = metrics;
+    meta.parameters = parameters;
+    meta.point_count = meta.point_count ?? (Array.isArray(data?.points) ? data.points.length : undefined);
+    meta.cluster_count = meta.cluster_count ?? (Array.isArray(data?.clusters) ? data.clusters.length : undefined);
+    return meta;
+  }
+
+  function renderMetadata(data) {
+    if (!clusteringMetadata) return;
+    const meta = data ? normalizeMetadata(data) : null;
+    clusteringMetadata.innerHTML = "";
+    if (clusteringMetadataCard) {
+      clusteringMetadataCard.hidden = false;
+    }
+    if (!meta || !Object.keys(meta).length) {
+      clusteringMetadata.innerHTML = "<p class=\"clustering-hint\">Run clustering to see the configuration details.</p>";
+      return;
+    }
+
+    const entries = [
+      ["Dataset", meta.dataset],
+      ["Theme", meta.theme_label || meta.theme],
+      ["Algorithm", meta.algorithm],
+      ["Parameters", formatClusteringParameters(meta.algorithm, meta.parameters)],
+      ["Feature mode", meta.feature_mode],
+      ["Embedding dims", meta.embedding_dims],
+      ["Metrics", Array.isArray(meta.metrics) && meta.metrics.length ? meta.metrics.join(", ") : null],
+      [
+        "Axes",
+        meta.axes && (meta.axes.x || meta.axes.y) ? `${meta.axes.x || "Component 1"} / ${meta.axes.y || "Component 2"}` : null,
+      ],
+      ["Points", meta.point_count],
+      ["Clusters", meta.cluster_count],
+      ["Generated", meta.timestamp ? new Date(meta.timestamp).toLocaleString() : null],
+    ].filter(([, value]) => value !== null && value !== undefined && value !== "");
+
+    if (!entries.length) {
+      clusteringMetadata.innerHTML = "<p class=\"clustering-hint\">No metadata available for this run.</p>";
+      return;
+    }
+
+    const list = document.createElement("dl");
+    list.className = "clustering-metadata-grid";
+    entries.forEach(([label, value]) => {
+      const dt = document.createElement("dt");
+      dt.textContent = label;
+      const dd = document.createElement("dd");
+      dd.textContent = Array.isArray(value) ? value.join(", ") : String(value);
+      list.appendChild(dt);
+      list.appendChild(dd);
+    });
+    clusteringMetadata.appendChild(list);
+
+    const themeSummaries = Object.entries(clusteringState.results || {}).map(([themeId, payload]) => {
+      const normalized = normalizeMetadata(payload);
+      const label = normalized.theme_label || themeId;
+      const algo = normalized.algorithm || "n/a";
+      const paramsText = formatClusteringParameters(algo, normalized.parameters);
+      return `${label}: ${algo}${paramsText ? ` ${paramsText}` : ""}`;
+    });
+    if (themeSummaries.length > 1) {
+      const themeSection = document.createElement("div");
+      themeSection.className = "clustering-theme-parameters";
+      const heading = document.createElement("p");
+      heading.className = "clustering-eyebrow";
+      heading.textContent = "Per-theme parameters";
+      themeSection.appendChild(heading);
+      const listEl = document.createElement("ul");
+      themeSummaries.forEach((text) => {
+        const item = document.createElement("li");
+        item.textContent = text;
+        listEl.appendChild(item);
+      });
+      themeSection.appendChild(listEl);
+      clusteringMetadata.appendChild(themeSection);
+    }
   }
 
   function parseStructuredDescription(text) {
@@ -121,6 +268,23 @@
     const descriptionLine = lines.find((l) => /^description\s*:/i.test(l));
     const comparisonStart = lines.findIndex((l) => /^comparison\s*:/i.test(l));
     const comparisonRows = [];
+    const collectBullets = (startIndex) => {
+      if (startIndex === -1) return [];
+      const bullets = [];
+      const inline = lines[startIndex].replace(/^[A-Za-z]+\s*:/, "").trim();
+      if (inline) bullets.push(inline);
+      for (let i = startIndex + 1; i < lines.length; i += 1) {
+        const row = lines[i];
+        if (/^[A-Za-z]+\s*:/i.test(row) || /^\|/.test(row)) break;
+        const bullet = row.replace(/^[-*]\s*/, "").trim();
+        if (bullet) bullets.push(bullet);
+      }
+      return bullets;
+    };
+    const goodStart = lines.findIndex((l) => /^good\s*:/i.test(l));
+    const badStart = lines.findIndex((l) => /^bad\s*:/i.test(l));
+    const goodBullets = collectBullets(goodStart);
+    const badBullets = collectBullets(badStart);
     if (comparisonStart !== -1) {
       for (let i = comparisonStart + 1; i < lines.length; i += 1) {
         const row = lines[i];
@@ -143,6 +307,8 @@
       label: labelLine ? labelLine.replace(/^label\s*:/i, "").trim() : null,
       description: descriptionLine ? descriptionLine.replace(/^description\s*:/i, "").trim() : null,
       comparison: comparisonRows,
+      good: goodBullets,
+      bad: badBullets,
     };
   }
 
@@ -186,6 +352,39 @@
       (parsed && parsed.comparison && parsed.comparison.length ? parsed.comparison : null) ||
       (Array.isArray(cluster.comparison) && cluster.comparison.length ? cluster.comparison : null);
     const comparisonSection = comparisons ? buildComparisonTable(comparisons) : "";
+    const goodPoints =
+      (parsed && Array.isArray(parsed.good) && parsed.good.length ? parsed.good : null) ??
+      (Array.isArray(cluster.good) ? cluster.good : []);
+    const badPoints =
+      (parsed && Array.isArray(parsed.bad) && parsed.bad.length ? parsed.bad : null) ??
+      (Array.isArray(cluster.bad) ? cluster.bad : []);
+    const reps = Array.isArray(cluster.representative_paths) ? cluster.representative_paths : [];
+    const goodList =
+      goodPoints.length > 0
+        ? `<div class="cluster-goodbad-column"><h4>Good</h4><ul class="cluster-good-list">${goodPoints
+            .map((item) => `<li>${item}</li>`)
+            .join("")}</ul></div>`
+        : "";
+    const badList =
+      badPoints.length > 0
+        ? `<div class="cluster-goodbad-column"><h4>Bad</h4><ul class="cluster-bad-list">${badPoints
+            .map((item) => `<li>${item}</li>`)
+            .join("")}</ul></div>`
+        : "";
+    const goodBadWrapper =
+      goodList || badList
+        ? `<div class="cluster-goodbad-grid">${goodList}${badList}</div>`
+        : "";
+    const repsBlock =
+      reps.length > 0
+        ? `<div class="cluster-representatives"><h4>Representative files</h4><ul>${reps
+            .map((r) => {
+              const path = typeof r === "string" ? r : r?.path;
+              const conf = typeof r === "object" && r && typeof r.confidence === "number" ? r.confidence : null;
+              return `<li>${path || "Unknown"}${conf !== null ? ` (conf ${conf.toFixed(2)})` : ""}</li>`;
+            })
+            .join("")}</ul></div>`
+        : "";
     const descriptionBlock = displayDescription
       ? `<p class="cluster-description">${displayDescription}</p>`
       : isPending
@@ -196,6 +395,8 @@
       <p>Size: ${cluster.size}</p>
       <p>Centroid (preview): ${centroidPreview || "-"}</p>
       ${descriptionBlock}
+      ${repsBlock}
+      ${goodBadWrapper}
       ${comparisonSection}
     `;
   }
@@ -383,6 +584,23 @@
     }
   }
 
+  function setThemeGmmAutoMode(themeId, enabled) {
+    const controls = themeControls[themeId];
+    const state = clusteringState.themeParams[themeId] || {};
+    state.autoGmm = Boolean(enabled);
+    clusteringState.themeParams[themeId] = state;
+    if (controls?.gmmAuto) {
+      controls.gmmAuto.classList.toggle("active", state.autoGmm);
+      controls.gmmAuto.textContent = state.autoGmm ? "Auto GMM enabled" : "Auto GMM (BIC)";
+    }
+    if (controls?.gmmComponents) {
+      controls.gmmComponents.disabled = state.autoGmm;
+    }
+    if (controls?.gmmCovariance) {
+      controls.gmmCovariance.disabled = state.autoGmm;
+    }
+  }
+
   function setThemeHdbscanAutoMode(themeId, enabled) {
     const controls = themeControls[themeId];
     const state = clusteringState.themeParams[themeId] || {};
@@ -422,8 +640,12 @@
 
   function updateThemeClusterLabel(themeId) {
     const controls = themeControls[themeId];
-    if (!controls?.clusterSlider || !controls?.clusterValue) return;
-    controls.clusterValue.textContent = `${controls.clusterSlider.value || 0} clusters`;
+    if (controls?.clusterSlider && controls?.clusterValue) {
+      controls.clusterValue.textContent = `${controls.clusterSlider.value || 0} clusters`;
+    }
+    if (controls?.gmmComponents && controls?.gmmComponentsValue) {
+      controls.gmmComponentsValue.textContent = `${controls.gmmComponents.value || 0} components`;
+    }
   }
 
   function updateThemeAlgorithmState(themeId) {
@@ -431,18 +653,27 @@
     if (!controls || !controls.algorithm) return;
     const state = clusteringState.themeParams[themeId] || {};
     const isKMeans = (controls.algorithm.value || "kmeans") === "kmeans";
+    const isHdbscan = (controls.algorithm.value || "kmeans") === "hdbscan";
+    const isGmm = (controls.algorithm.value || "kmeans") === "gmm";
     toggleFieldsetVisibility(controls.kmeansParams, isKMeans);
-    toggleFieldsetVisibility(controls.hdbscanParams, !isKMeans);
+    toggleFieldsetVisibility(controls.hdbscanParams, isHdbscan);
+    toggleFieldsetVisibility(controls.gmmParams, isGmm);
     if (controls.kmeansAuto) {
       controls.kmeansAuto.disabled = !isKMeans;
     }
+    if (controls.gmmAuto) {
+      controls.gmmAuto.disabled = !isGmm;
+    }
     if (controls.hdbscanAuto) {
-      controls.hdbscanAuto.disabled = isKMeans;
+      controls.hdbscanAuto.disabled = !isHdbscan;
     }
     if (!isKMeans && state.autoKMeans) {
       setThemeKMeansAutoMode(themeId, false);
     }
-    if (isKMeans && state.autoHdbscan) {
+    if (!isGmm && state.autoGmm) {
+      setThemeGmmAutoMode(themeId, false);
+    }
+    if (!isHdbscan && state.autoHdbscan) {
       setThemeHdbscanAutoMode(themeId, false);
     }
   }
@@ -474,8 +705,13 @@
       const clusterValue = card.querySelector(".theme-cluster-value");
       const kmeansParams = card.querySelector(".theme-kmeans-params");
       const hdbscanParams = card.querySelector(".theme-hdbscan-params");
+      const gmmParams = card.querySelector(".theme-gmm-params");
       const kmeansAuto = card.querySelector(".theme-kmeans-auto");
+      const gmmAuto = card.querySelector(".theme-gmm-auto");
       const hdbscanAuto = card.querySelector(".theme-hdbscan-auto");
+      const gmmComponents = card.querySelector(".theme-gmm-components");
+      const gmmComponentsValue = card.querySelector(".theme-gmm-components-value");
+      const gmmCovariance = card.querySelector(".theme-gmm-covariance");
       const minClusterSize = card.querySelector(".theme-hdbscan-min-size");
       const minSamples = card.querySelector(".theme-hdbscan-min-samples");
       themeControls[themeId] = {
@@ -483,14 +719,20 @@
         clusterSlider,
         clusterValue,
         kmeansParams,
+        gmmParams,
         hdbscanParams,
         kmeansAuto,
+        gmmAuto,
         hdbscanAuto,
+        gmmComponents,
+        gmmComponentsValue,
+        gmmCovariance,
         minClusterSize,
         minSamples,
       };
       clusteringState.themeParams[themeId] = clusteringState.themeParams[themeId] || {
         autoKMeans: false,
+        autoGmm: false,
         autoHdbscan: false,
       };
       updateThemeClusterLabel(themeId);
@@ -502,15 +744,27 @@
       if (clusterSlider) {
         clusterSlider.addEventListener("input", () => updateThemeClusterLabel(themeId));
       }
+      if (gmmComponents) {
+        gmmComponents.addEventListener("input", () => updateThemeClusterLabel(themeId));
+      }
       if (kmeansAuto) {
         kmeansAuto.addEventListener("click", () => {
           setThemeHdbscanAutoMode(themeId, false);
+          setThemeGmmAutoMode(themeId, false);
           setThemeKMeansAutoMode(themeId, !clusteringState.themeParams[themeId].autoKMeans);
+        });
+      }
+      if (gmmAuto) {
+        gmmAuto.addEventListener("click", () => {
+          setThemeKMeansAutoMode(themeId, false);
+          setThemeHdbscanAutoMode(themeId, false);
+          setThemeGmmAutoMode(themeId, !clusteringState.themeParams[themeId].autoGmm);
         });
       }
       if (hdbscanAuto) {
         hdbscanAuto.addEventListener("click", () => {
           setThemeKMeansAutoMode(themeId, false);
+          setThemeGmmAutoMode(themeId, false);
           setThemeHdbscanAutoMode(themeId, !clusteringState.themeParams[themeId].autoHdbscan);
         });
       }
@@ -631,6 +885,15 @@
       }
       if (Number.isFinite(minSamples)) {
         parts.push(`min_samples=${minSamples}`);
+      }
+    } else if (algorithm === "gmm") {
+      const components = Number(parameters.cluster_count);
+      const covType = parameters.covariance_type || parameters.covariance;
+      if (Number.isFinite(components)) {
+        parts.push(`components=${components}`);
+      }
+      if (covType) {
+        parts.push(`cov=${covType}`);
       }
     }
     const silhouette = Number(parameters.silhouette);
@@ -909,25 +1172,48 @@
     clusteringSummary.appendChild(body);
   }
 
+  function updateMembershipFilterOptions(clusters = [], themeId = clusteringState.activeTheme, points = []) {
+    if (!clusteringMembershipFilter) return;
+    const normalized = normalizeClusters(clusters);
+    const derivedFromPoints = deriveClustersFromPoints(points);
+    const clustersForSelect = normalized.length ? normalized : derivedFromPoints;
+    clusteringMembershipFilter.innerHTML = "";
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "All clusters";
+    clusteringMembershipFilter.appendChild(defaultOption);
+    clustersForSelect.forEach((cluster, index) => {
+      const option = document.createElement("option");
+      const optionValue = getClusterKey(cluster, index);
+      option.value = optionValue;
+      const label = formatClusterLabel(cluster);
+      const size = Number.isFinite(cluster.size) ? cluster.size : null;
+      option.textContent = size !== null ? `${label} (${size})` : label;
+      clusteringMembershipFilter.appendChild(option);
+    });
+    clusteringMembershipFilter.disabled = clustersForSelect.length === 0;
+    const savedValue = themeId ? clusteringState.membershipFilterByTheme[themeId] : "";
+    const validValues = Array.from(clusteringMembershipFilter.options).map((opt) => opt.value);
+    const nextValue = validValues.includes(savedValue) ? savedValue : "";
+    clusteringMembershipFilter.value = nextValue;
+    if (themeId) {
+      clusteringState.membershipFilterByTheme[themeId] = nextValue;
+    }
+  }
+
   function renderMembershipTable(data) {
     const container = document.getElementById("clustering-membership");
     if (!container) return;
     container.innerHTML = "";
     const points = Array.isArray(data?.points) ? data.points : [];
     const rawClusters = Array.isArray(data?.clusters) ? data.clusters : [];
-    const clusters = (() => {
-      const seen = new Map();
-      rawClusters.forEach((c) => {
-        const key = Number.isFinite(c.id) ? c.id : c.label || c.centroid?.toString();
-        const existing = seen.get(key);
-        if (!existing || (!existing.description && c.description)) {
-          seen.set(key, c);
-        }
-      });
-      return Array.from(seen.values());
-    })();
-    if (!points.length || !clusters.length) {
-      container.textContent = "Run clustering to view soft memberships.";
+    const clusters = normalizeClusters(rawClusters);
+    const clustersForDisplay = clusters.length ? clusters : deriveClustersFromPoints(points);
+    updateMembershipFilterOptions(clusters, clusteringState.activeTheme, points);
+    if (!points.length || !clustersForDisplay.length) {
+      container.textContent = points.length
+        ? "Clusters are not available yet for this run."
+        : "Run clustering to view soft memberships.";
       return;
     }
     let hasProbs = points.some((p) => Array.isArray(p.probabilities) && p.probabilities.length);
@@ -945,11 +1231,41 @@
         return;
       }
     }
+    const clusterKeys = clustersForDisplay.map((cluster, index) => getClusterKey(cluster, index));
+    const themeId = clusteringState.activeTheme;
+    const selectedFilter = themeId ? clusteringState.membershipFilterByTheme[themeId] : "";
+    const hasFilter = selectedFilter !== null && selectedFilter !== undefined && selectedFilter !== "";
+    const processed = enrichedPoints
+      .map((p) => {
+        const probs = Array.isArray(p.probabilities) ? p.probabilities : [];
+        const assignedKey = Number.isFinite(p.cluster) ? String(p.cluster) : null;
+        const maxProb = probs.length ? Math.max(...probs) : 0;
+        const dominantIndex = probs.length ? probs.indexOf(maxProb) : null;
+        const dominantKey = dominantIndex !== null && dominantIndex >= 0 ? clusterKeys[dominantIndex] : null;
+        return {
+          path: p.path,
+          probs,
+          clusterKey: assignedKey !== null ? assignedKey : dominantKey,
+          dominantKey,
+          maxProb,
+        };
+      })
+      .filter((entry) => {
+        if (!hasFilter || !selectedFilter) return true;
+        return entry.clusterKey === selectedFilter || entry.dominantKey === selectedFilter;
+      })
+      .sort((a, b) => b.maxProb - a.maxProb)
+      .slice(0, 50);
+
+    if (!processed.length) {
+      container.textContent = "No files match this cluster yet.";
+      return;
+    }
     const table = document.createElement("table");
     table.className = "membership-table";
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
-    ["File", ...clusters.map((c) => c.label || `Cluster ${c.id + 1}`)].forEach((label) => {
+    ["File", ...clustersForDisplay.map((c) => formatClusterLabel(c))].forEach((label) => {
       const th = document.createElement("th");
       th.textContent = label;
       headerRow.appendChild(th);
@@ -957,30 +1273,19 @@
     thead.appendChild(headerRow);
     table.appendChild(thead);
     const tbody = document.createElement("tbody");
-    enrichedPoints
-      .map((p) => ({
-        path: p.path,
-        probs: Array.isArray(p.probabilities) ? p.probabilities : [],
-      }))
-      .sort((a, b) => {
-        const maxA = Math.max(...(a.probs || [0]));
-        const maxB = Math.max(...(b.probs || [0]));
-        return maxB - maxA;
-      })
-      .slice(0, 50)
-      .forEach((entry) => {
-        const tr = document.createElement("tr");
-        const name = document.createElement("td");
-        name.textContent = entry.path || "-";
-        tr.appendChild(name);
-        clusters.forEach((_, idx) => {
-          const td = document.createElement("td");
-          const prob = entry.probs && entry.probs[idx] !== undefined ? entry.probs[idx] : null;
-          td.textContent = prob !== null ? `${(prob * 100).toFixed(1)}%` : "-";
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
+    processed.forEach((entry) => {
+      const tr = document.createElement("tr");
+      const name = document.createElement("td");
+      name.textContent = entry.path || "-";
+      tr.appendChild(name);
+      clusters.forEach((_, idx) => {
+        const td = document.createElement("td");
+        const prob = entry.probs && entry.probs[idx] !== undefined ? entry.probs[idx] : null;
+        td.textContent = prob !== null ? `${(prob * 100).toFixed(1)}%` : "-";
+        tr.appendChild(td);
       });
+      tbody.appendChild(tr);
+    });
     table.appendChild(tbody);
     container.appendChild(table);
   }
@@ -1015,6 +1320,7 @@
       );
     }
     renderClusteringMetricChart(data);
+    renderMetadata(data);
 
     if (!data || !Array.isArray(data.points)) {
       if (clusteringChart) {
@@ -1075,6 +1381,7 @@
     const incomingMetrics = Array.isArray(data.metrics) ? data.metrics : [];
     const derivedMetrics = deriveMetricKeysFromPoints(data.points || []);
     const metrics = incomingMetrics.length ? incomingMetrics : derivedMetrics;
+    const metadata = normalizeMetadata(data);
     clusteringState.dataset = datasetName || clusteringState.dataset;
     clusteringState.algorithm = data.algorithm || clusteringState.algorithm;
     const selectedMetric =
@@ -1082,7 +1389,7 @@
         ? clusteringState.metricKeyByTheme[themeId]
         : metrics[0] || null;
     clusteringState.metricKeyByTheme[themeId] = selectedMetric;
-    clusteringState.results[themeId] = { ...data, metrics };
+    clusteringState.results[themeId] = { ...data, metrics, metadata };
     if (hasPendingDescriptions(data)) {
       setProgress(true, "Generating cluster descriptions…");
     } else {
@@ -1125,6 +1432,15 @@
           sanitizeThemeHdbscanInputs(theme.id);
           payload.min_cluster_size = Number(controls.minClusterSize ? controls.minClusterSize.value : 5);
           payload.min_samples = Number(controls.minSamples ? controls.minSamples.value : 5);
+        }
+      } else if (algorithm === "gmm") {
+        if (params.autoGmm) {
+          payload.auto_gmm = true;
+        } else {
+          payload.cluster_count = Number(controls.gmmComponents ? controls.gmmComponents.value : 2);
+        }
+        if (controls.gmmCovariance) {
+          payload.gmm_covariance_type = controls.gmmCovariance.value || "full";
         }
       }
       return payload;
@@ -1247,6 +1563,15 @@
           clusteringState.metricKeyByTheme[clusteringState.activeTheme] = key;
         }
         renderClusteringMetricChart();
+      });
+    }
+    if (clusteringMembershipFilter) {
+      clusteringMembershipFilter.addEventListener("change", (event) => {
+        const value = event.target.value || "";
+        if (clusteringState.activeTheme) {
+          clusteringState.membershipFilterByTheme[clusteringState.activeTheme] = value;
+        }
+        renderMembershipTable(getActiveResult());
       });
     }
     if (clusteringLaunchButton) {

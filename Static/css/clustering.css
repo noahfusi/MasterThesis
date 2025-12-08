@@ -548,6 +548,56 @@
   gap: 1.5rem;
 }
 
+.clustering-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.clustering-results-header h2 {
+  margin: 0;
+}
+
+.clustering-results-header p:not([class]) {
+  margin: 0.15rem 0 0;
+}
+
+.clustering-results-header .clustering-theme-chip {
+  margin-top: 0.35rem;
+}
+
+.clustering-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-start;
+  min-width: 180px;
+}
+
+.clustering-filter label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.clustering-filter select {
+  font-size: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.65rem;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #0f172a;
+  color-scheme: light;
+}
+
+.clustering-filter option {
+  color: #0f172a;
+  background: #fff;
+  color-scheme: light;
+}
+
 .clustering-chart-card,
 .clustering-metric-card,
 .clustering-summary {
@@ -563,6 +613,31 @@
 
 .clustering-chart {
   min-height: 420px;
+}
+
+.clustering-meta-card {
+  padding-top: 1rem;
+}
+
+.clustering-metadata {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.clustering-metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.5rem 1rem;
+}
+
+.clustering-metadata-grid dt {
+  font-weight: 600;
+  color: #111827;
+}
+
+.clustering-metadata-grid dd {
+  margin: 0;
+  color: #4b5563;
 }
 
 #clustering-membership {
@@ -739,6 +814,50 @@
   font-style: italic;
 }
 
+.cluster-goodbad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem 1rem;
+  margin-top: 0.25rem;
+}
+
+.cluster-goodbad-column h4 {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.cluster-good-list,
+.cluster-bad-list {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.cluster-good-list li {
+  color: #065f46;
+}
+
+.cluster-bad-list li {
+  color: #991b1b;
+}
+
+.cluster-representatives {
+  margin: 0.35rem 0 0.75rem;
+}
+
+.cluster-representatives h4 {
+  margin: 0 0 0.3rem 0;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.cluster-representatives ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #1f2937;
+}
+
 .cluster-warning-note {
   margin: 0.35rem 0 0;
   padding: 0.5rem 0.6rem;
@@ -781,5 +900,17 @@
 
   .clustering-results {
     grid-template-columns: 1fr;
+  }
+
+  .clustering-results-header {
+    flex-direction: column;
+  }
+
+  .clustering-filter {
+    width: 100%;
+  }
+
+  .clustering-filter select {
+    width: 100%;
   }
 }

@@ -13,6 +13,17 @@
   const globalAnalysisDatasetLabel = document.getElementById("global-analysis-dataset");
   const globalAnalysisReferenceName = document.getElementById("global-analysis-reference-name");
   const globalAnalysisReferenceInfo = document.getElementById("global-analysis-reference-info");
+  const globalAnalysisThresholds = document.getElementById("global-analysis-thresholds");
+  const globalAnalysisThresholdsMetric = document.getElementById("global-analysis-thresholds-metric");
+  const globalAnalysisThresholdValues = {
+    mean: document.getElementById("global-analysis-threshold-mean"),
+    q1: document.getElementById("global-analysis-threshold-q1"),
+    median: document.getElementById("global-analysis-threshold-median"),
+    q3: document.getElementById("global-analysis-threshold-q3"),
+    lowerFence: document.getElementById("global-analysis-threshold-lower-fence"),
+    upperFence: document.getElementById("global-analysis-threshold-upper-fence"),
+    reference: document.getElementById("global-analysis-threshold-reference"),
+  };
 
   if (!globalAnalysisPanel) return;
 
@@ -82,6 +93,30 @@
     }
   }
 
+  function updateThresholdDisplay(dataset) {
+    if (!globalAnalysisThresholds) return;
+    const metricDefinition = dataset?.metricKey ? getMetricDefinition(dataset.metricKey) : null;
+    const metricLabel = dataset?.metricKey ? metricDefinition?.label || dataset.metricKey : "No metric selected";
+    if (globalAnalysisThresholdsMetric) {
+      globalAnalysisThresholdsMetric.textContent = metricLabel;
+    }
+    const thresholds = dataset?.thresholds || {};
+    const valueMap = {
+      mean: thresholds.mean,
+      q1: thresholds.q1,
+      median: thresholds.median,
+      q3: thresholds.q3,
+      lowerFence: thresholds.lowerFence,
+      upperFence: thresholds.upperFence,
+      reference: thresholds.referenceValue,
+    };
+    Object.entries(globalAnalysisThresholdValues).forEach(([key, element]) => {
+      if (!element) return;
+      const value = valueMap[key];
+      element.textContent = Number.isFinite(value) ? formatMetricValue(value) : "-";
+    });
+  }
+
   function clearPlot(plotElement) {
     if (!plotElement) return;
     if (plotElement.__plotlyClickHandler && typeof plotElement.removeListener === "function") {
@@ -98,6 +133,7 @@
   function computeThresholds(values = [], metricKey) {
     if (!values.length) {
       return {
+        mean: null,
         q1: null,
         q3: null,
         median: null,
@@ -106,6 +142,7 @@
         referenceValue: getReferenceMetricValue(metricKey),
       };
     }
+    const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
     const { q1, q3, median } = computeQuartiles(values);
     const hasQ1 = Number.isFinite(q1);
     const hasQ3 = Number.isFinite(q3);
@@ -115,6 +152,7 @@
     const upperFence = hasIqr ? q3 + iqr * 1.5 : null;
 
     return {
+      mean,
       q1,
       q3,
       median,
@@ -348,20 +386,22 @@
     if (!globalAnalysisState.metricKey) {
       clearPlot(globalAnalysisChart);
       clearPlot(globalAnalysisHistogram);
+      updateThresholdDisplay(null);
       return;
     }
+    const dataset = prepareMetricDataset(globalAnalysisState.metricKey);
+    updateThresholdDisplay(dataset);
+    updateReferenceDisplay(dataset ? dataset.metricKey : null);
     if (!window.Plotly) {
       showMessage(globalAnalysisFeedback, "Plotly library failed to load.", true);
       return;
     }
-    const dataset = prepareMetricDataset(globalAnalysisState.metricKey);
     if (!dataset || !dataset.points.length) {
       clearPlot(globalAnalysisChart);
       clearPlot(globalAnalysisHistogram);
       showMessage(globalAnalysisFeedback, `No values available for ${globalAnalysisState.metricKey}.`, true);
       return;
     }
-    updateReferenceDisplay(dataset.metricKey);
     renderScatterPlot(dataset);
     renderHistogramPlot(dataset);
   }
@@ -381,6 +421,7 @@
       clearPlot(globalAnalysisChart);
       clearPlot(globalAnalysisHistogram);
       updateReferenceDisplay(null);
+      updateThresholdDisplay(null);
       showMessage(globalAnalysisFeedback, "Select a dataset to load the analysis.");
       return;
     }
@@ -397,6 +438,8 @@
         updateGlobalAnalysisMetricOptions([]);
         clearPlot(globalAnalysisChart);
         clearPlot(globalAnalysisHistogram);
+        updateReferenceDisplay(null);
+        updateThresholdDisplay(null);
         showMessage(globalAnalysisFeedback, "No file metrics available.", true);
         return;
       }
@@ -418,6 +461,7 @@
       clearPlot(globalAnalysisChart);
       clearPlot(globalAnalysisHistogram);
       updateReferenceDisplay(null);
+      updateThresholdDisplay(null);
       showMessage(globalAnalysisFeedback, error.message, true);
     }
   }
