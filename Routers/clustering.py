@@ -19,12 +19,15 @@ from Clustering import (
     run_hdbscan_clustering,
     run_kmeans_clustering,
     run_gmm_clustering,
+    run_optics_clustering,
     auto_gmm_with_bic,
     auto_kmeans_with_silhouette,
     auto_hdbscan_with_dbcv,
+    auto_optics_with_silhouette,
     build_feature_dataset,
 )
 from Files.dataset_manager import dataset_path
+from Files.excluded_files import load_excluded_files, normalize_excluded_path
 from Metrics.other_metrics import load_metrics_entries
 from LLM import generate_completion
 from Routers.tasks import notify_tasks_sync
@@ -55,6 +58,18 @@ def _resolve_theme(theme: str | None) -> tuple[str, dict[str, object]]:
         default_key = next(iter(THEMES))
         return default_key, THEMES[default_key]
     return "default", {"label": "Default", "metrics": METRIC_KEYS}
+
+
+def _normalize_path_key(value: str | None) -> str:
+    normalized = normalize_excluded_path(value)
+    if normalized:
+        return normalized
+    return str(value).replace("\\", "/").strip() if value else ""
+
+
+def _is_excluded_path(path: str | None, excluded: set[str]) -> bool:
+    key = _normalize_path_key(path)
+    return bool(key and key in excluded)
 
 
 def _extract_comparison(completion: str | None) -> list[dict[str, str]]:
@@ -300,16 +315,20 @@ class ClusteringRequest(BaseModel):
     dataset: str | None = None
     theme: str | None = None
     themes: list[ThemeClusteringConfig] | None = None
-    algorithm: Literal["kmeans", "hdbscan", "gmm"] = "kmeans"
+    algorithm: Literal["kmeans", "hdbscan", "gmm", "optics"] = "kmeans"
     cluster_count: int | None = Field(default=None, ge=2, le=200)
     min_cluster_size: int | None = Field(default=None, ge=2, le=500)
     min_samples: int | None = Field(default=None, ge=1, le=500)
+    optics_xi: float | None = Field(default=None, ge=0, le=1)
+    optics_max_eps: float | None = Field(default=None, ge=0)
     auto_hdbscan: bool = False
     auto_kmeans: bool = False
     auto_gmm: bool = False
+    auto_optics: bool = False
     gmm_covariance_type: str | None = None
     feature_mode: Literal["metrics", "embeddings", "both"] = "metrics"
     embedding_dims: int = Field(default=16, ge=2, le=128)
+    generate_descriptions: bool = True
 
 
 class ThemeClusteringConfig(BaseModel):
@@ -318,16 +337,20 @@ class ThemeClusteringConfig(BaseModel):
     """
     dataset: str | None = None
     theme: str | None = None
-    algorithm: Literal["kmeans", "hdbscan", "gmm"] = "kmeans"
+    algorithm: Literal["kmeans", "hdbscan", "gmm", "optics"] = "kmeans"
     cluster_count: int | None = Field(default=None, ge=2, le=200)
     min_cluster_size: int | None = Field(default=None, ge=2, le=500)
     min_samples: int | None = Field(default=None, ge=1, le=500)
+    optics_xi: float | None = Field(default=None, ge=0, le=1)
+    optics_max_eps: float | None = Field(default=None, ge=0)
     auto_hdbscan: bool = False
     auto_kmeans: bool = False
     auto_gmm: bool = False
+    auto_optics: bool = False
     gmm_covariance_type: str | None = None
     feature_mode: Literal["metrics", "embeddings", "both"] | None = None
     embedding_dims: int | None = Field(default=None, ge=2, le=128)
+    generate_descriptions: bool | None = None
 
 
 @router.post("/run")
@@ -343,6 +366,17 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
     base_files = load_metrics_entries(dataset_name)
     if not base_files:
         raise HTTPException(status_code=400, detail=config.MESSAGES["CLUSTERING_NO_DATA"])
+    excluded_files = load_excluded_files(dataset_name)
+    excluded_lookup = {_normalize_path_key(path) for path in excluded_files}
+    if excluded_lookup:
+        base_files = [
+            entry
+            for entry in base_files
+            if not _is_excluded_path(entry.get("path") or entry.get("raw_path"), excluded_lookup)
+        ]
+    if not base_files:
+        detail = config.MESSAGES.get("CLUSTERING_ALL_EXCLUDED") or "No files available for clustering after exclusions."
+        raise HTTPException(status_code=400, detail=detail)
     background_jobs: list[dict[str, object]] = []
 
     def run_for_theme(
@@ -356,9 +390,13 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
         auto_hdbscan: bool,
         auto_kmeans: bool,
         auto_gmm: bool,
+        auto_optics: bool,
+        optics_xi: float | None,
+        optics_max_eps: float | None,
         gmm_covariance_type: str | None,
         feature_mode: str,
         embedding_dims: int,
+        generate_descriptions: bool,
     ) -> dict[str, object]:
         print(
             f"[clustering] triggering theme={theme_key} dataset={dataset_name} "
@@ -366,6 +404,8 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
         )
         metric_keys_for_theme = list(theme_config.get("metrics") or METRIC_KEYS)
         embeddings = _load_structural_embeddings(dataset_name) if feature_mode in {"embeddings", "both"} else {}
+        if excluded_lookup and embeddings:
+            embeddings = {path: vector for path, vector in embeddings.items() if not _is_excluded_path(path, excluded_lookup)}
         metrics_lookup: dict[str, dict[str, object]] = {
             entry.get("path", "").replace("\\", "/"): entry.get("metrics") or {} for entry in base_files
         }
@@ -418,6 +458,43 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                     status_code=400,
                     detail="GMM did not produce multiple clusters. Adjust components or enable auto mode.",
                 ) from exc
+        elif algorithm == "optics":
+            try:
+                if auto_optics:
+                    result, chosen = auto_optics_with_silhouette(
+                        normalized,
+                        min_samples_values=[min_samples] if min_samples else None,
+                        xi_values=[optics_xi] if optics_xi is not None else None,
+                        max_eps_values=[optics_max_eps] if optics_max_eps is not None else None,
+                    )
+                    parameters.update({"mode": "auto", **chosen})
+                    min_samples = chosen.get("min_samples") if isinstance(chosen, dict) else min_samples
+                    optics_xi = chosen.get("xi") if isinstance(chosen, dict) else optics_xi
+                    optics_max_eps = chosen.get("max_eps") if isinstance(chosen, dict) else optics_max_eps
+                else:
+                    heuristic = max(2, min(len(normalized.entries) // 8 or 2, 25))
+                    selected_min_samples = max(2, min_samples or heuristic)
+                    xi_value = optics_xi if optics_xi is not None else 0.05
+                    eps_value = optics_max_eps if optics_max_eps not in (None, 0, 0.0) else None
+                    result = run_optics_clustering(
+                        normalized,
+                        min_samples=selected_min_samples,
+                        xi=xi_value,
+                        max_eps=eps_value,
+                    )
+                    min_samples = selected_min_samples
+                    parameters.update(
+                        {
+                            "min_samples": selected_min_samples,
+                            "xi": xi_value,
+                            "max_eps": eps_value,
+                        }
+                    )
+            except RuntimeError as exc:
+                raise HTTPException(
+                    status_code=400,
+                    detail="OPTICS did not produce any clusters. Adjust parameters or enable auto mode.",
+                ) from exc
         elif algorithm == "hdbscan":
             try:
                 if auto_hdbscan:
@@ -440,11 +517,13 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                     status_code=400,
                     detail="HDBSCAN did not produce any clusters. Adjust min_cluster_size/min_samples or use auto mode.",
                 ) from exc
-            parameters["min_samples"] = min_samples if min_samples is not None else parameters.get("min_samples")
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported clustering algorithm '{algorithm}'.")
+        if algorithm in {"hdbscan", "optics"}:
+            parameters["min_samples"] = min_samples if min_samples is not None else parameters.get("min_samples")
         parameters["feature_mode"] = feature_mode
         parameters["embedding_dims"] = embedding_dims
+        parameters["generate_descriptions"] = generate_descriptions
         print(
             f"[clustering] dataset={dataset_name} theme={theme_key} algo={algorithm} mode={feature_mode} "
             f"dims={embedding_dims} params={parameters}"
@@ -513,41 +592,42 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
             prompt_text = None
             representatives_for_prompt: list[str] = []
             representative_paths: list[dict[str, object]] = []
-            try:
-                candidates = rep_candidates.get(info.id, [])
-                # Sort by confidence desc when available, otherwise keep order.
-                candidates_sorted = sorted(
-                    candidates,
-                    key=lambda item: (item[1] is not None, item[1] if item[1] is not None else 0.0),
-                    reverse=True,
-                )
-                selected = candidates_sorted[:3] if candidates_sorted else []
-                for path, conf in selected:
-                    representative_paths.append(
-                        {"path": path, "confidence": float(conf) if conf is not None else None}
+            if generate_descriptions:
+                try:
+                    candidates = rep_candidates.get(info.id, [])
+                    # Sort by confidence desc when available, otherwise keep order.
+                    candidates_sorted = sorted(
+                        candidates,
+                        key=lambda item: (item[1] is not None, item[1] if item[1] is not None else 0.0),
+                        reverse=True,
                     )
-                    rep_path = dataset_path(dataset_name) / config.RAW_FOLDER_NAME / path
-                    content = None
-                    if rep_path.is_file():
-                        try:
-                            content = rep_path.read_text(encoding="utf-8")
-                        except OSError:
-                            content = None
-                    snippet = (content or "").strip()
-                    max_chars = 2000
-                    if len(snippet) > max_chars:
-                        snippet = snippet[:max_chars] + "\n...[truncated]..."
-                    representatives_for_prompt.append(
-                        f"File: {path} (confidence {conf:.2f} if available)\n{snippet or 'Content unavailable.'}"
+                    selected = candidates_sorted[:3] if candidates_sorted else []
+                    for path, conf in selected:
+                        representative_paths.append(
+                            {"path": path, "confidence": float(conf) if conf is not None else None}
+                        )
+                        rep_path = dataset_path(dataset_name) / config.RAW_FOLDER_NAME / path
+                        content = None
+                        if rep_path.is_file():
+                            try:
+                                content = rep_path.read_text(encoding="utf-8")
+                            except OSError:
+                                content = None
+                        snippet = (content or "").strip()
+                        max_chars = 2000
+                        if len(snippet) > max_chars:
+                            snippet = snippet[:max_chars] + "\n...[truncated]..."
+                        representatives_for_prompt.append(
+                            f"File: {path} (confidence {conf:.2f} if available)\n{snippet or 'Content unavailable.'}"
+                        )
+                    reps_text = "\n\n".join(representatives_for_prompt) if representatives_for_prompt else "N/A"
+                    prompt_text = config.CLUSTER_LABEL_PROMPT.format(
+                        cluster_metrics=averages,
+                        dataset_metrics=dataset_metric_averages,
+                        representatives=reps_text,
                     )
-                reps_text = "\n\n".join(representatives_for_prompt) if representatives_for_prompt else "N/A"
-                prompt_text = config.CLUSTER_LABEL_PROMPT.format(
-                    cluster_metrics=averages,
-                    dataset_metrics=dataset_metric_averages,
-                    representatives=reps_text,
-                )
-            except Exception:
-                prompt_text = None
+                except Exception:
+                    prompt_text = None
             # Defer LLM labeling/description to a background task.
             cluster_entry = {
                 "id": info.id,
@@ -565,7 +645,7 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                 "representative_paths": representative_paths,
             }
             clusters_payload.append(cluster_entry)
-            if prompt_text:
+            if prompt_text and generate_descriptions:
                 background_jobs.append(
                     {
                         "dataset": dataset_name,
@@ -589,6 +669,9 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
             "timestamp": _now_iso(),
             "point_count": len(points_payload),
             "cluster_count": len(clusters_payload),
+            "excluded_count": len(excluded_lookup),
+            "excluded_files": sorted(excluded_lookup),
+            "generate_descriptions": generate_descriptions,
         }
 
         _persist_clustering_meta(dataset_name, algorithm, parameters, clusters_payload, theme_key, metadata)
@@ -623,9 +706,17 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                     "auto_hdbscan": bool(theme_cfg.auto_hdbscan or False),
                     "auto_kmeans": bool(theme_cfg.auto_kmeans or False),
                     "auto_gmm": bool(theme_cfg.auto_gmm or False),
+                    "auto_optics": bool(theme_cfg.auto_optics or False),
+                    "optics_xi": theme_cfg.optics_xi or payload.optics_xi,
+                    "optics_max_eps": theme_cfg.optics_max_eps or payload.optics_max_eps,
                     "gmm_covariance_type": theme_cfg.gmm_covariance_type or payload.gmm_covariance_type,
                     "feature_mode": theme_cfg.feature_mode or payload.feature_mode or "metrics",
                     "embedding_dims": theme_cfg.embedding_dims or payload.embedding_dims or 16,
+                    "generate_descriptions": (
+                        theme_cfg.generate_descriptions
+                        if theme_cfg.generate_descriptions is not None
+                        else payload.generate_descriptions
+                    ),
                 }
             )
     else:
@@ -638,14 +729,18 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                 "cluster_count": payload.cluster_count,
                 "min_cluster_size": payload.min_cluster_size,
                 "min_samples": payload.min_samples,
-                "auto_hdbscan": payload.auto_hdbscan,
-                "auto_kmeans": payload.auto_kmeans,
-                "auto_gmm": payload.auto_gmm,
-                "gmm_covariance_type": payload.gmm_covariance_type,
-                "feature_mode": payload.feature_mode or "metrics",
-                "embedding_dims": payload.embedding_dims or 16,
-            }
-        )
+                    "auto_hdbscan": payload.auto_hdbscan,
+                    "auto_kmeans": payload.auto_kmeans,
+                    "auto_gmm": payload.auto_gmm,
+                    "auto_optics": payload.auto_optics,
+                    "optics_xi": payload.optics_xi,
+                    "optics_max_eps": payload.optics_max_eps,
+                    "gmm_covariance_type": payload.gmm_covariance_type,
+                    "feature_mode": payload.feature_mode or "metrics",
+                    "embedding_dims": payload.embedding_dims or 16,
+                    "generate_descriptions": payload.generate_descriptions,
+                }
+            )
 
     results: dict[str, object] = {}
     for params in requests:
@@ -763,6 +858,7 @@ def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[s
     if not cache_path.exists():
         raise HTTPException(status_code=404, detail=config.MESSAGES["CLUSTERING_NO_METRICS"])
 
+    excluded_set = {_normalize_path_key(path) for path in load_excluded_files(dataset)}
     try:
         with cache_path.open("r", encoding="utf-8") as handle:
             reader = csv.DictReader(handle)
@@ -780,6 +876,8 @@ def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[s
         if not raw_path:
             continue
         path = raw_path.replace("\\", "/")
+        if excluded_set and _is_excluded_path(path, excluded_set):
+            continue
         cluster = -1
         try:
             cluster = int(row.get("cluster") or -1)
@@ -797,11 +895,20 @@ def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[s
                 probs = [float(val) for val in probs_raw.split(";") if val.strip() != ""]
             except ValueError:
                 probs = None
-        point_lookup[path] = {"cluster": cluster, "coords": (x, y), "probabilities": probs}
+        point_entry = {"cluster": cluster, "coords": (x, y), "probabilities": probs}
+        point_lookup[path] = point_entry
+        normalized_key = _normalize_path_key(path)
+        if normalized_key and normalized_key != path:
+            point_lookup[normalized_key] = point_entry
 
-    files = load_metrics_entries(dataset)
+    files = [
+        entry
+        for entry in load_metrics_entries(dataset)
+        if not _is_excluded_path(entry.get("path") or entry.get("raw_path"), excluded_set)
+    ]
     if not files:
-        raise HTTPException(status_code=404, detail=config.MESSAGES["CLUSTERING_NO_METRICS"])
+        detail = config.MESSAGES.get("CLUSTERING_ALL_EXCLUDED") or config.MESSAGES["CLUSTERING_NO_METRICS"]
+        raise HTTPException(status_code=404, detail=detail)
 
     metric_keys = list(metric_keys or METRIC_KEYS)
     normalized = normalize_dataset(files, metric_keys)
@@ -898,7 +1005,17 @@ def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[s
             if meta_entry.get("bad") is not None:
                 entry["bad"] = meta_entry.get("bad")
             if meta_entry.get("representative_paths") is not None:
-                entry["representative_paths"] = meta_entry.get("representative_paths")
+                reps = meta_entry.get("representative_paths")
+                if isinstance(reps, list):
+                    filtered_reps = []
+                    for rep in reps:
+                        path_value = rep.get("path") if isinstance(rep, dict) else rep
+                        if _is_excluded_path(path_value, excluded_set):
+                            continue
+                        filtered_reps.append(rep)
+                    entry["representative_paths"] = filtered_reps
+                else:
+                    entry["representative_paths"] = reps
             if "llm_pending" in meta_entry:
                 entry["llm_pending"] = bool(meta_entry.get("llm_pending"))
         entry.setdefault("llm_pending", False)
@@ -927,6 +1044,9 @@ def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[s
     run_metadata.setdefault("metrics", metric_keys)
     run_metadata.setdefault("parameters", parameters)
     run_metadata.setdefault("timestamp", _now_iso())
+    run_metadata["excluded_count"] = len(excluded_set)
+    run_metadata["excluded_files"] = sorted(excluded_set)
+    run_metadata.setdefault("generate_descriptions", True)
     run_metadata["point_count"] = len(points_payload)
     run_metadata["cluster_count"] = len(clusters_payload)
     # Persist meta in case labels/descriptions need to survive reloads.

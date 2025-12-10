@@ -54,6 +54,29 @@
   gap: 0.75rem;
 }
 
+.clustering-llm-toggle {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.clustering-llm-toggle label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.clustering-llm-toggle small {
+  color: #475569;
+  margin: 0;
+}
+
 .clustering-dataset {
   display: flex;
   flex-direction: column;

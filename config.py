@@ -33,6 +33,7 @@ REFERENCE_METRICS_FILENAME = "reference_metrics.json"
 STUDENTS_OUTLIERS_FILENAME = "students_outliers.json"
 CLUSTERING_CACHE_FILENAME = "clustering.csv"
 CLUSTERING_META_FILENAME = "clustering_meta.json"
+CLUSTERING_EXCLUDED_FILENAME = "clustering_excluded_files.json"
 REPORTS_SUBDIR = "reports"
 STUDENTS_REPORT_FILENAME = "students_outliers_report.md"
 
@@ -303,6 +304,7 @@ MESSAGES: dict[str, str] = {
     "LIZARD_NOT_FOUND": "Lizard analysis not found.",
     # Clustering
     "CLUSTERING_NO_DATA": "No usable data for this feature mode. Check metrics and embeddings.",
+    "CLUSTERING_ALL_EXCLUDED": "No files available for clustering after exclusions.",
     "CLUSTERING_KMEANS_COUNT_REQUIRED": "Cluster count is required to run k-means.",
     "CLUSTERING_GMM_COUNT_REQUIRED": "Component count is required to run Gaussian Mixture Models.",
     "CLUSTERING_HDBSCAN_PARAMS_REQUIRED": "HDBSCAN parameters are required.",

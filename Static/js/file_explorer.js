@@ -31,6 +31,8 @@
     lastSummaryDataset: null,
     metricsByFile: new Map(),
     metricsDataset: null,
+    excludedFiles: new Set(),
+    excludedDataset: null,
   };
 
   function resetFileExplorerState() {
@@ -42,6 +44,32 @@
     if (fileDatasetLabel && !fileDatasetLabel.textContent) {
       fileDatasetLabel.textContent = "";
     }
+  }
+
+  function normalizeFilename(filename) {
+    const normalized = normalizeRelativePath(filename);
+    if (!normalized) return "";
+    let cleaned = normalized.startsWith("./") ? normalized.slice(2) : normalized;
+    while (cleaned.startsWith("/")) {
+      cleaned = cleaned.slice(1);
+    }
+    return cleaned;
+  }
+
+  function setExcludedState(list = [], datasetName = null) {
+    const normalizedList = Array.isArray(list)
+      ? list
+          .map((name) => normalizeFilename(name))
+          .filter(Boolean)
+      : [];
+    fileListState.excludedFiles = new Set(normalizedList);
+    fileListState.excludedDataset = datasetName || null;
+  }
+
+  function isFileExcluded(filename) {
+    const normalized = normalizeFilename(filename);
+    if (!normalized) return false;
+    return fileListState.excludedFiles.has(normalized);
   }
 
   function getFileMetadata(filename) {
@@ -130,10 +158,25 @@
     }
   }
 
+  async function loadExcludedFiles(datasetName) {
+    setExcludedState([], datasetName);
+    if (!datasetName) return;
+    try {
+      const params = new URLSearchParams({ dataset: datasetName });
+      const payload = await requestJSON(`${API_ROUTES.excludedFiles}?${params.toString()}`);
+      const excluded = Array.isArray(payload.excluded_files) ? payload.excluded_files : [];
+      const targetDataset = payload.dataset || datasetName;
+      setExcludedState(excluded, targetDataset);
+    } catch (error) {
+      console.warn("Unable to load excluded files for dataset", datasetName, error);
+      setExcludedState([], datasetName);
+    }
+  }
+
   async function updateFileDuplicateBadges(datasetName) {
     if (!fileListElement) return;
     fileListElement
-      .querySelectorAll(".file-duplicate-badge:not(.file-no-functions)")
+      .querySelectorAll(".file-duplicate-badge:not(.file-no-functions):not(.file-excluded-badge)")
       .forEach((badge) => badge.remove());
     fileListElement.querySelectorAll(".dataset-row").forEach((row) => row.classList.remove("has-duplicate-code"));
     fileListState.lastSummary = null;
@@ -185,6 +228,30 @@
     });
   }
 
+  async function toggleFileExclusion(filename, excluded) {
+    const datasetName = fileListState.dataset || getSelectedDataset();
+    if (!datasetName) {
+      showMessage(fileListFeedback, "No dataset selected.", true);
+      return;
+    }
+    try {
+      const payload = await requestJSON(API_ROUTES.excludedFiles, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename, excluded, dataset: datasetName }),
+      });
+      const excludedList = Array.isArray(payload.excluded_files) ? payload.excluded_files : [];
+      const targetDataset = payload.dataset || datasetName;
+      setExcludedState(excludedList, targetDataset);
+      renderFileList(fileListState.files, fileListState.dataset);
+      const actionVerb = excluded ? "Excluded" : "Included";
+      showMessage(fileListFeedback, `${actionVerb} ${filename} ${excluded ? "from" : "in"} clustering.`);
+    } catch (error) {
+      showMessage(fileListFeedback, error.message, true);
+      throw error;
+    }
+  }
+
   function renderFileList(files = [], datasetName = null) {
     if (!fileListElement) return;
 
@@ -227,6 +294,16 @@
       badgeContainer.className = "file-badge-container";
       label.appendChild(badgeContainer);
 
+      const excluded = isFileExcluded(filename);
+      if (excluded) {
+        item.classList.add("file-excluded");
+        const excludedBadge = document.createElement("span");
+        excludedBadge.className = "file-duplicate-badge file-excluded-badge";
+        excludedBadge.textContent = "Excluded from clustering";
+        excludedBadge.title = "This file will be ignored by clustering runs.";
+        badgeContainer.appendChild(excludedBadge);
+      }
+
       const metrics = getFileMetrics(filename);
       if (metrics) {
         const functionsMetric = (() => {
@@ -253,6 +330,29 @@
 
       const actions = document.createElement("div");
       actions.className = "dataset-row-actions";
+
+      const exclusionToggle = document.createElement("label");
+      exclusionToggle.className = "file-exclude-toggle";
+      const exclusionCheckbox = document.createElement("input");
+      exclusionCheckbox.type = "checkbox";
+      exclusionCheckbox.checked = excluded;
+      const exclusionLabel = document.createElement("span");
+      exclusionLabel.textContent = excluded ? "Excluded" : "Use in clustering";
+      exclusionCheckbox.addEventListener("change", async () => {
+        const target = exclusionCheckbox.checked;
+        exclusionCheckbox.disabled = true;
+        try {
+          await toggleFileExclusion(filename, target);
+        } catch (error) {
+          exclusionCheckbox.checked = !target;
+        } finally {
+          exclusionCheckbox.disabled = false;
+          exclusionLabel.textContent = exclusionCheckbox.checked ? "Excluded" : "Use in clustering";
+        }
+      });
+      exclusionToggle.appendChild(exclusionCheckbox);
+      exclusionToggle.appendChild(exclusionLabel);
+      actions.appendChild(exclusionToggle);
 
       const displayBtn = document.createElement("button");
       displayBtn.type = "button";
@@ -284,9 +384,10 @@
     try {
       const data = await requestJSON(API_ROUTES.listFiles);
       const datasetName = data.dataset || null;
-      await loadMetricsForDataset(datasetName);
-      renderFileList(data.files || [], datasetName);
-      showMessage(fileListFeedback, `Loaded ${data.files.length} file(s).`);
+      const files = Array.isArray(data.files) ? data.files : [];
+      await Promise.all([loadMetricsForDataset(datasetName), loadExcludedFiles(datasetName)]);
+      renderFileList(files, datasetName);
+      showMessage(fileListFeedback, `Loaded ${files.length} file(s).`);
     } catch (error) {
       showMessage(fileListFeedback, error.message, true);
       if (fileListElement) {

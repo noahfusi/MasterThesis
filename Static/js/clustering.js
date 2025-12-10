@@ -36,6 +36,7 @@
   const progressBanner = document.getElementById("clustering-progress-banner");
   const progressText = document.getElementById("clustering-progress-text");
   const themeConfigCards = document.querySelectorAll(".theme-config-card");
+  const clusteringDescriptionToggle = document.getElementById("clustering-llm-toggle");
 
   const CLUSTERING_THEMES = Object.entries(app.clusteringThemes || {}).map(([id, payload]) => ({
     id,
@@ -86,6 +87,7 @@
     themeParams: {},
     featureMode: "metrics",
     embeddingDims: 16,
+    generateDescriptions: true,
   };
   const refreshInFlight = new Set();
   let unsubscribeTaskEvents = null;
@@ -178,6 +180,9 @@
     if (typeof meta.embedding_dims === "undefined" && typeof parameters.embedding_dims !== "undefined") {
       meta.embedding_dims = parameters.embedding_dims;
     }
+    if (typeof meta.generate_descriptions === "undefined" && typeof parameters.generate_descriptions !== "undefined") {
+      meta.generate_descriptions = parameters.generate_descriptions;
+    }
     meta.axes = axes;
     meta.metrics = metrics;
     meta.parameters = parameters;
@@ -205,10 +210,19 @@
       ["Parameters", formatClusteringParameters(meta.algorithm, meta.parameters)],
       ["Feature mode", meta.feature_mode],
       ["Embedding dims", meta.embedding_dims],
+      ["LLM descriptions", meta.generate_descriptions === false ? "Off" : "On"],
       ["Metrics", Array.isArray(meta.metrics) && meta.metrics.length ? meta.metrics.join(", ") : null],
       [
         "Axes",
         meta.axes && (meta.axes.x || meta.axes.y) ? `${meta.axes.x || "Component 1"} / ${meta.axes.y || "Component 2"}` : null,
+      ],
+      [
+        "Excluded files",
+        Number.isFinite(meta.excluded_count)
+          ? meta.excluded_count
+          : Array.isArray(meta.excluded_files)
+            ? meta.excluded_files.length
+            : null,
       ],
       ["Points", meta.point_count],
       ["Clusters", meta.cluster_count],
@@ -618,6 +632,26 @@
     }
   }
 
+  function setThemeOpticsAutoMode(themeId, enabled) {
+    const controls = themeControls[themeId];
+    const state = clusteringState.themeParams[themeId] || {};
+    state.autoOptics = Boolean(enabled);
+    clusteringState.themeParams[themeId] = state;
+    if (controls?.opticsAuto) {
+      controls.opticsAuto.classList.toggle("active", state.autoOptics);
+      controls.opticsAuto.textContent = state.autoOptics ? "Auto OPTICS enabled" : "Auto OPTICS (silhouette)";
+    }
+    if (controls?.opticsMinSamples) {
+      controls.opticsMinSamples.disabled = state.autoOptics;
+    }
+    if (controls?.opticsXi) {
+      controls.opticsXi.disabled = state.autoOptics;
+    }
+    if (controls?.opticsMaxEps) {
+      controls.opticsMaxEps.disabled = state.autoOptics;
+    }
+  }
+
   function sanitizeThemeHdbscanInputs(themeId) {
     const controls = themeControls[themeId];
     if (controls?.minClusterSize) {
@@ -638,6 +672,29 @@
     }
   }
 
+  function sanitizeThemeOpticsInputs(themeId) {
+    const controls = themeControls[themeId];
+    if (controls?.opticsMinSamples) {
+      const min = Number(controls.opticsMinSamples.min) || 2;
+      const max = Number(controls.opticsMinSamples.max) || 200;
+      let value = Number(controls.opticsMinSamples.value);
+      if (!Number.isFinite(value) || value < min) value = min;
+      if (value > max) value = max;
+      controls.opticsMinSamples.value = String(Math.round(value));
+    }
+    if (controls?.opticsXi) {
+      let value = Number(controls.opticsXi.value);
+      if (!Number.isFinite(value) || value < 0.001) value = 0.001;
+      if (value > 0.99) value = 0.99;
+      controls.opticsXi.value = String(value);
+    }
+    if (controls?.opticsMaxEps) {
+      let value = Number(controls.opticsMaxEps.value);
+      if (!Number.isFinite(value) || value < 0) value = 0;
+      controls.opticsMaxEps.value = String(value);
+    }
+  }
+
   function updateThemeClusterLabel(themeId) {
     const controls = themeControls[themeId];
     if (controls?.clusterSlider && controls?.clusterValue) {
@@ -655,9 +712,11 @@
     const isKMeans = (controls.algorithm.value || "kmeans") === "kmeans";
     const isHdbscan = (controls.algorithm.value || "kmeans") === "hdbscan";
     const isGmm = (controls.algorithm.value || "kmeans") === "gmm";
+    const isOptics = (controls.algorithm.value || "kmeans") === "optics";
     toggleFieldsetVisibility(controls.kmeansParams, isKMeans);
     toggleFieldsetVisibility(controls.hdbscanParams, isHdbscan);
     toggleFieldsetVisibility(controls.gmmParams, isGmm);
+    toggleFieldsetVisibility(controls.opticsParams, isOptics);
     if (controls.kmeansAuto) {
       controls.kmeansAuto.disabled = !isKMeans;
     }
@@ -667,6 +726,9 @@
     if (controls.hdbscanAuto) {
       controls.hdbscanAuto.disabled = !isHdbscan;
     }
+    if (controls.opticsAuto) {
+      controls.opticsAuto.disabled = !isOptics;
+    }
     if (!isKMeans && state.autoKMeans) {
       setThemeKMeansAutoMode(themeId, false);
     }
@@ -675,6 +737,9 @@
     }
     if (!isHdbscan && state.autoHdbscan) {
       setThemeHdbscanAutoMode(themeId, false);
+    }
+    if (!isOptics && state.autoOptics) {
+      setThemeOpticsAutoMode(themeId, false);
     }
   }
 
@@ -696,6 +761,10 @@
     updateEmbeddingDimsLabel();
   }
 
+  function updateDescriptionPreference() {
+    clusteringState.generateDescriptions = clusteringDescriptionToggle ? clusteringDescriptionToggle.checked : true;
+  }
+
   function initThemeControls() {
     themeConfigCards.forEach((card) => {
       const themeId = card.dataset.themeId;
@@ -706,14 +775,19 @@
       const kmeansParams = card.querySelector(".theme-kmeans-params");
       const hdbscanParams = card.querySelector(".theme-hdbscan-params");
       const gmmParams = card.querySelector(".theme-gmm-params");
+      const opticsParams = card.querySelector(".theme-optics-params");
       const kmeansAuto = card.querySelector(".theme-kmeans-auto");
       const gmmAuto = card.querySelector(".theme-gmm-auto");
       const hdbscanAuto = card.querySelector(".theme-hdbscan-auto");
+      const opticsAuto = card.querySelector(".theme-optics-auto");
       const gmmComponents = card.querySelector(".theme-gmm-components");
       const gmmComponentsValue = card.querySelector(".theme-gmm-components-value");
       const gmmCovariance = card.querySelector(".theme-gmm-covariance");
       const minClusterSize = card.querySelector(".theme-hdbscan-min-size");
       const minSamples = card.querySelector(".theme-hdbscan-min-samples");
+      const opticsMinSamples = card.querySelector(".theme-optics-min-samples");
+      const opticsXi = card.querySelector(".theme-optics-xi");
+      const opticsMaxEps = card.querySelector(".theme-optics-max-eps");
       themeControls[themeId] = {
         algorithm,
         clusterSlider,
@@ -721,23 +795,30 @@
         kmeansParams,
         gmmParams,
         hdbscanParams,
+        opticsParams,
         kmeansAuto,
         gmmAuto,
         hdbscanAuto,
+        opticsAuto,
         gmmComponents,
         gmmComponentsValue,
         gmmCovariance,
         minClusterSize,
         minSamples,
+        opticsMinSamples,
+        opticsXi,
+        opticsMaxEps,
       };
       clusteringState.themeParams[themeId] = clusteringState.themeParams[themeId] || {
         autoKMeans: false,
         autoGmm: false,
         autoHdbscan: false,
+        autoOptics: false,
       };
       updateThemeClusterLabel(themeId);
       updateThemeAlgorithmState(themeId);
       sanitizeThemeHdbscanInputs(themeId);
+      sanitizeThemeOpticsInputs(themeId);
       if (algorithm) {
         algorithm.addEventListener("change", () => updateThemeAlgorithmState(themeId));
       }
@@ -758,6 +839,7 @@
         gmmAuto.addEventListener("click", () => {
           setThemeKMeansAutoMode(themeId, false);
           setThemeHdbscanAutoMode(themeId, false);
+          setThemeOpticsAutoMode(themeId, false);
           setThemeGmmAutoMode(themeId, !clusteringState.themeParams[themeId].autoGmm);
         });
       }
@@ -765,7 +847,16 @@
         hdbscanAuto.addEventListener("click", () => {
           setThemeKMeansAutoMode(themeId, false);
           setThemeGmmAutoMode(themeId, false);
+          setThemeOpticsAutoMode(themeId, false);
           setThemeHdbscanAutoMode(themeId, !clusteringState.themeParams[themeId].autoHdbscan);
+        });
+      }
+      if (opticsAuto) {
+        opticsAuto.addEventListener("click", () => {
+          setThemeKMeansAutoMode(themeId, false);
+          setThemeGmmAutoMode(themeId, false);
+          setThemeHdbscanAutoMode(themeId, false);
+          setThemeOpticsAutoMode(themeId, !clusteringState.themeParams[themeId].autoOptics);
         });
       }
       if (minClusterSize) {
@@ -773,6 +864,13 @@
       }
       if (minSamples) {
         minSamples.addEventListener("change", () => sanitizeThemeHdbscanInputs(themeId));
+      }
+      if (opticsMinSamples || opticsXi || opticsMaxEps) {
+        [opticsMinSamples, opticsXi, opticsMaxEps].forEach((input) => {
+          if (input) {
+            input.addEventListener("change", () => sanitizeThemeOpticsInputs(themeId));
+          }
+        });
       }
     });
   }
@@ -894,6 +992,22 @@
       }
       if (covType) {
         parts.push(`cov=${covType}`);
+      }
+    } else if (algorithm === "optics") {
+      const minSamples = Number(parameters.min_samples);
+      const xi = Number(parameters.xi);
+      const maxEps = parameters.max_eps;
+      if (Number.isFinite(minSamples)) {
+        parts.push(`min_samples=${minSamples}`);
+      }
+      if (Number.isFinite(xi)) {
+        parts.push(`xi=${xi}`);
+      }
+      if (maxEps !== null && maxEps !== undefined) {
+        const value = Number(maxEps);
+        if (Number.isFinite(value) && value > 0) {
+          parts.push(`max_eps=${value}`);
+        }
       }
     }
     const silhouette = Number(parameters.silhouette);
@@ -1411,6 +1525,7 @@
     if (!clusteringLaunchButton) return;
     updateFeatureConfigState();
     updateEmbeddingDimsLabel();
+    updateDescriptionPreference();
     const themesPayload = CLUSTERING_THEMES.map((theme) => {
       const controls = themeControls[theme.id] || {};
       const params = clusteringState.themeParams[theme.id] || {};
@@ -1424,6 +1539,15 @@
           payload.auto_kmeans = true;
         } else if (controls.clusterSlider) {
           payload.cluster_count = Number(controls.clusterSlider.value);
+        }
+      } else if (algorithm === "optics") {
+        if (params.autoOptics) {
+          payload.auto_optics = true;
+        } else {
+          sanitizeThemeOpticsInputs(theme.id);
+          payload.min_samples = Number(controls.opticsMinSamples ? controls.opticsMinSamples.value : 5);
+          payload.optics_xi = Number(controls.opticsXi ? controls.opticsXi.value : 0.05);
+          payload.optics_max_eps = Number(controls.opticsMaxEps ? controls.opticsMaxEps.value : 0);
         }
       } else if (algorithm === "hdbscan") {
         if (params.autoHdbscan) {
@@ -1450,6 +1574,7 @@
       feature_mode: clusteringState.featureMode || "metrics",
       embedding_dims: Number(clusteringState.embeddingDims) || 16,
       themes: themesPayload,
+      generate_descriptions: clusteringState.generateDescriptions !== false,
     };
 
     showMessage(
@@ -1553,6 +1678,10 @@
     if (embeddingDimsSlider) {
       embeddingDimsSlider.addEventListener("input", updateEmbeddingDimsLabel);
       updateEmbeddingDimsLabel();
+    }
+    if (clusteringDescriptionToggle) {
+      clusteringDescriptionToggle.addEventListener("change", updateDescriptionPreference);
+      updateDescriptionPreference();
     }
     initThemeControls();
     if (clusteringMetricSelect) {

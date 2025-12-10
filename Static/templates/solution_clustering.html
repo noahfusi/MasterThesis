@@ -25,7 +25,7 @@
         <h1>Solution clustering</h1>
       <p>
         Group similar solutions in the current dataset, surface approach families, and spot candidates needing
-        a review. Choose k-means or HDBSCAN, tune the parameters, then launch the clustering.
+        a review. Choose k-means, GMM, OPTICS, or HDBSCAN, tune the parameters, then launch the clustering.
       </p>
     </div>
       <div class="clustering-hero-status">
@@ -38,6 +38,13 @@
           <button type="button" class="clustering-primary" id="launch-clustering" {{ clustering_disabled }}>
             Launch clustering
           </button>
+        </div>
+        <div class="clustering-llm-toggle">
+          <label for="clustering-llm-toggle">
+            <input type="checkbox" id="clustering-llm-toggle" checked {{ clustering_disabled }} />
+            Generate cluster descriptions (LLM)
+          </label>
+          <small>Turn off to skip LLM labeling for this run.</small>
         </div>
         <small>Pick an algorithm and launch the clustering run.</small>
       </div>
@@ -103,6 +110,7 @@
                 <select class="theme-algorithm" name="algorithm-{{ slug }}" {{ clustering_disabled }}>
                   <option value="kmeans" selected>k-means</option>
                   <option value="gmm">GMM</option>
+                  <option value="optics">OPTICS</option>
                   <option value="hdbscan">HDBSCAN</option>
                 </select>
               </label>
@@ -157,6 +165,53 @@
                     Auto GMM
                   </button>
                   <small>Automatically choose components via BIC.</small>
+                </div>
+              </div>
+              <div class="clustering-fieldset theme-optics-params" hidden>
+                <span>OPTICS parameters</span>
+                <div class="clustering-inline-inputs">
+                  <label>
+                    Min samples
+                    <input
+                      type="number"
+                      class="theme-optics-min-samples"
+                      min="2"
+                      max="200"
+                      value="5"
+                      {{ clustering_disabled }}
+                    />
+                  </label>
+                  <label>
+                    Xi (0-1)
+                    <input
+                      type="number"
+                      class="theme-optics-xi"
+                      step="0.01"
+                      min="0.01"
+                      max="0.99"
+                      value="0.05"
+                      {{ clustering_disabled }}
+                    />
+                  </label>
+                </div>
+                <div class="clustering-inline-inputs">
+                  <label>
+                    Max eps (0 = auto)
+                    <input
+                      type="number"
+                      class="theme-optics-max-eps"
+                      step="0.1"
+                      min="0"
+                      value="0"
+                      {{ clustering_disabled }}
+                    />
+                  </label>
+                </div>
+                <div class="clustering-auto-row">
+                  <button type="button" class="clustering-secondary theme-optics-auto" {{ clustering_disabled }}>
+                    Auto OPTICS
+                  </button>
+                  <small>Auto-tune min_samples/xi via silhouette score.</small>
                 </div>
               </div>
               <div class="clustering-fieldset theme-hdbscan-params" hidden>

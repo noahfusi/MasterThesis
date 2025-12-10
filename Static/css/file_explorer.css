@@ -154,6 +154,14 @@
   color: #f97316;
 }
 
+.dataset-row.file-excluded {
+  background: #f8fafc;
+}
+
+.dataset-row.file-excluded .file-entry-name {
+  color: #6b7280;
+}
+
 .file-duplicate-badge {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -186,6 +194,12 @@
   align-items: center;
 }
 
+.file-excluded-badge {
+  border-color: rgba(248, 180, 0, 0.5);
+  background: rgba(248, 180, 0, 0.18);
+  color: #92400e;
+}
+
 .file-no-functions {
   border-color: rgba(59, 130, 246, 0.5);
   background: rgba(59, 130, 246, 0.14);
@@ -196,4 +210,20 @@
   display: inline-flex;
   gap: 0.35rem;
   margin-left: 0.5rem;
+}
+
+.file-exclude-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.65rem;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.file-exclude-toggle input {
+  margin: 0;
 }

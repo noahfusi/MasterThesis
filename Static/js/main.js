@@ -4,6 +4,7 @@ App.API_ROUTES = {
   datasets: "/datasets",
   currentDataset: "/current-dataset",
   listFiles: "/datasets/files",
+  excludedFiles: "/datasets/excluded-files",
   fileContent: "/datasets/file",
   fileAnalysis: "/datasets/file/lizard",
   globalMetrics: "/metrics/global",

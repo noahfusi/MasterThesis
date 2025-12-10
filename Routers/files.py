@@ -8,6 +8,7 @@ from io import BytesIO
 from pathlib import Path
 
 from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Query, UploadFile, status
+from pydantic import BaseModel
 
 import config
 from Files.dataset_manager import (
@@ -19,6 +20,7 @@ from Files.dataset_manager import (
     set_current_dataset,
 )
 from Files.dataset_status import dataset_lock, is_ready, load_status, mark_failed, update_status
+from Files.excluded_files import load_excluded_files, prune_missing_exclusions, update_excluded_file
 from Metrics import SUMMARY_FILENAME, dataset_summary_path
 from Metrics.other_metrics import build_reference_metrics, generate_other_metrics
 from Metrics.students import build_students_outliers
@@ -238,6 +240,12 @@ def _generate_code_embeddings(dataset_name: str, raw_dir: Path | None = None) ->
     return "No source files available for embeddings."
 
 
+class ExcludedFileToggle(BaseModel):
+    filename: str
+    excluded: bool = True
+    dataset: str | None = None
+
+
 def _dataset_response(
     message: str | None = None, dataset: str | None = None, extra: dict[str, object] | None = None
 ) -> dict[str, object]:
@@ -399,6 +407,36 @@ async def list_files(dataset: str | None = None) -> dict[str, object]:
     dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
     files = sorted(str(path.relative_to(raw_dir)).replace("\\", "/") for path in raw_dir.rglob("*") if path.is_file())
     return {"dataset": dataset_name, "files": files}
+
+
+@router.get("/excluded-files", name="list-excluded-files")
+async def list_excluded_files(dataset: str | None = None) -> dict[str, object]:
+    """
+    @brief List files excluded from clustering for a dataset.
+    @param dataset Optional dataset name to override the current selection.
+    @return Mapping with dataset name and excluded file paths.
+    """
+    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
+    excluded = prune_missing_exclusions(dataset_name, raw_dir)
+    return {"dataset": dataset_name, "excluded_files": excluded}
+
+
+@router.post("/excluded-files", name="update-excluded-file")
+async def set_excluded_file(payload: ExcludedFileToggle) -> dict[str, object]:
+    """
+    @brief Toggle inclusion of a file in clustering for a dataset.
+    @param payload Body containing filename, exclusion flag, and optional dataset override.
+    @return Updated exclusion list for the dataset.
+    """
+    dataset_name, raw_dir = resolve_dataset_or_http_error(payload.dataset, require_raw=True)
+    _, relative_name = resolve_relative_file(raw_dir, payload.filename)
+    excluded_files = update_excluded_file(dataset_name, relative_name, excluded=payload.excluded)
+    return {
+        "dataset": dataset_name,
+        "filename": relative_name,
+        "excluded": payload.excluded,
+        "excluded_files": excluded_files,
+    }
 
 
 @router.get("/file", name="file")
