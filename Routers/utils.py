@@ -70,8 +70,14 @@ def resolve_relative_file(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
 
     resolved = (raw_dir / relative_path).resolve()
-    if not str(resolved).startswith(str(raw_dir.resolve())):
+    raw_dir_resolved = raw_dir.resolve()
+
+    # Use is_relative_to for robust path traversal protection (Python 3.9+)
+    try:
+        resolved.relative_to(raw_dir_resolved)
+    except ValueError:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid file path.")
+
     if not resolved.is_file():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=not_found_detail)
     return resolved, relative_path.as_posix()
@@ -89,3 +95,23 @@ def read_utf8_or_error(path: Path, *, detail: str) -> str:
         return path.read_text(encoding="utf-8")
     except OSError as exc:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=detail) from exc
+
+
+def sanitize_for_llm_prompt(text: str, max_length: int = 10000) -> str:
+    """
+    @brief Sanitize user-provided text before including in LLM prompts.
+    @param text Text to sanitize.
+    @param max_length Maximum allowed length (default 10000 characters).
+    @return Sanitized text safe for LLM prompts.
+    """
+    if not text:
+        return ""
+
+    # Remove null bytes and control characters except newlines and tabs
+    sanitized = "".join(char for char in text if char == "\n" or char == "\t" or (ord(char) >= 32 and ord(char) != 127))
+
+    # Truncate to max length
+    if len(sanitized) > max_length:
+        sanitized = sanitized[:max_length] + "\n...[truncated for safety]..."
+
+    return sanitized

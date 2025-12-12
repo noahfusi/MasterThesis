@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Literal
 from datetime import datetime, timezone
+import logging
 import re
 
 import csv
@@ -31,9 +32,10 @@ from Files.excluded_files import load_excluded_files, normalize_excluded_path
 from Metrics.other_metrics import load_metrics_entries
 from LLM import generate_completion
 from Routers.tasks import notify_tasks_sync
-from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error
+from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error, sanitize_for_llm_prompt
 
 router = APIRouter(prefix="/clustering", tags=["clustering"])
+logger = logging.getLogger("uvicorn.error")
 THEMES = config.CLUSTERING_THEMES
 
 
@@ -271,7 +273,7 @@ def _generate_cluster_description(job: dict[str, object]) -> None:
     if dataset is None or cluster_id is None or not prompt:
         return
     default_label = base_label or f"Cluster {cluster_id + 1}"
-    print(f"[clustering][llm] dataset={dataset} theme={theme} cluster={cluster_id} requesting description")
+    logger.info("[clustering][llm] dataset=%s theme=%s cluster=%s requesting description", dataset, theme, cluster_id)
     completion_text = None
     comparison: list[dict[str, str]] = []
     description_text = cluster.get("description")
@@ -398,9 +400,9 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
         embedding_dims: int,
         generate_descriptions: bool,
     ) -> dict[str, object]:
-        print(
-            f"[clustering] triggering theme={theme_key} dataset={dataset_name} "
-            f"algo={algorithm} feature_mode={feature_mode} dims={embedding_dims}"
+        logger.info(
+            "[clustering] triggering theme=%s dataset=%s algo=%s feature_mode=%s dims=%s",
+            theme_key, dataset_name, algorithm, feature_mode, embedding_dims
         )
         metric_keys_for_theme = list(theme_config.get("metrics") or METRIC_KEYS)
         embeddings = _load_structural_embeddings(dataset_name) if feature_mode in {"embeddings", "both"} else {}
@@ -524,9 +526,9 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
         parameters["feature_mode"] = feature_mode
         parameters["embedding_dims"] = embedding_dims
         parameters["generate_descriptions"] = generate_descriptions
-        print(
-            f"[clustering] dataset={dataset_name} theme={theme_key} algo={algorithm} mode={feature_mode} "
-            f"dims={embedding_dims} params={parameters}"
+        logger.info(
+            "[clustering] dataset=%s theme=%s algo=%s mode=%s dims=%s params=%s",
+            dataset_name, theme_key, algorithm, feature_mode, embedding_dims, parameters
         )
 
         projection, axes = project_to_components(normalized, components=2)
@@ -614,11 +616,11 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                             except OSError:
                                 content = None
                         snippet = (content or "").strip()
-                        max_chars = 2000
-                        if len(snippet) > max_chars:
-                            snippet = snippet[:max_chars] + "\n...[truncated]..."
+                        # Sanitize code snippet before including in LLM prompt
+                        sanitized_snippet = sanitize_for_llm_prompt(snippet, max_length=2000)
+                        sanitized_path = sanitize_for_llm_prompt(path, max_length=500)
                         representatives_for_prompt.append(
-                            f"File: {path} (confidence {conf:.2f} if available)\n{snippet or 'Content unavailable.'}"
+                            f"File: {sanitized_path} (confidence {conf:.2f} if available)\n{sanitized_snippet or 'Content unavailable.'}"
                         )
                     reps_text = "\n\n".join(representatives_for_prompt) if representatives_for_prompt else "N/A"
                     prompt_text = config.CLUSTER_LABEL_PROMPT.format(
@@ -761,7 +763,7 @@ async def read_last_clustering(dataset: str | None = None, theme: str | None = N
     @param dataset Dataset name (optional, uses current selection).
     @param theme Theme identifier (optional, defaults to first theme).
     @return Cached clustering result.
-    @throws HTTPException Si aucun clustering n'est disponible ou sur erreur d'E/S.
+    @throws HTTPException If no clustering is available or on I/O error.
     """
     dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=True)
     ensure_dataset_ready(dataset_name)
@@ -801,7 +803,7 @@ def _persist_clustering_csv(dataset: str, algorithm: str, points: list[dict[str,
                     }
                 )
     except OSError as exc:
-        raise HTTPException(status_code=500, detail=f"Impossible d'enregistrer le clustering: {exc}") from exc
+        raise HTTPException(status_code=500, detail=f"Unable to save clustering: {exc}") from exc
 
 
 def _persist_clustering_meta(
@@ -859,10 +861,21 @@ def _load_cached_clustering(dataset: str, theme: str | None, metric_keys: list[s
         raise HTTPException(status_code=404, detail=config.MESSAGES["CLUSTERING_NO_METRICS"])
 
     excluded_set = {_normalize_path_key(path) for path in load_excluded_files(dataset)}
+
+    # Check file size before loading
+    if cache_path.stat().st_size > config.MAX_CSV_FILE_SIZE:
+        raise HTTPException(status_code=413, detail="Clustering cache file too large to load.")
+
     try:
         with cache_path.open("r", encoding="utf-8") as handle:
             reader = csv.DictReader(handle)
-            records = list(reader)
+            # Limit number of rows to prevent memory exhaustion
+            records = []
+            for i, row in enumerate(reader):
+                if i >= config.MAX_CSV_ROWS:
+                    logger.warning("[clustering] CSV row limit reached: %s rows, truncating", config.MAX_CSV_ROWS)
+                    break
+                records.append(row)
     except OSError as exc:
         raise HTTPException(status_code=500, detail=f"Unable to read clustering: {exc}") from exc
 

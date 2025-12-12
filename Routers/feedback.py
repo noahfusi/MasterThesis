@@ -10,12 +10,13 @@ import config
 from Files.dataset_manager import dataset_path
 import asyncio
 from LLM import LLMError, generate_completion, async_generate_completion
-from Routers.utils import resolve_dataset_or_http_error, resolve_relative_file
+from Routers.utils import resolve_dataset_or_http_error, resolve_relative_file, sanitize_for_llm_prompt
 from Routers.tasks import notify_tasks_sync
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
 logger = logging.getLogger("uvicorn.error")
 DATASET_INFLIGHT: set[str] = set()
+_inflight_lock = asyncio.Lock()
 
 
 class FeedbackRequest(BaseModel):
@@ -54,11 +55,16 @@ def _format_prompt(filename: str, code: str, requirements: str | None) -> str:
     """
     @brief Build the feedback prompt based on presence of requirements.
     """
+    # Sanitize user-provided content before inserting into LLM prompts
+    sanitized_code = sanitize_for_llm_prompt(code, max_length=8000)
+    sanitized_filename = sanitize_for_llm_prompt(filename, max_length=500)
+
     if requirements:
+        sanitized_requirements = sanitize_for_llm_prompt(requirements, max_length=5000)
         return config.FEEDBACK_PROMPT_WITH_REQUIREMENTS.format(
-            requirements=requirements.strip(), code=code, filename=filename
+            requirements=sanitized_requirements.strip(), code=sanitized_code, filename=sanitized_filename
         )
-    return config.FEEDBACK_PROMPT_NO_REQUIREMENTS.format(code=code, filename=filename)
+    return config.FEEDBACK_PROMPT_NO_REQUIREMENTS.format(code=sanitized_code, filename=sanitized_filename)
 
 
 def _generate_file_feedback(dataset: str, raw_dir: Path, filename: str, output_root: Path) -> None:
@@ -200,15 +206,22 @@ async def request_dataset_feedback(payload: DatasetFeedbackRequest, background_t
     """
     logger.info("Received dataset feedback request: %s", payload.dataset)
     dataset, _ = resolve_dataset_or_http_error(payload.dataset, require_raw=False)
-    if dataset in DATASET_INFLIGHT:
-        logger.info("Dataset feedback already in flight: %s", dataset)
-        return {
-            "dataset": dataset,
-            "status": "accepted",
-            "message": config.MESSAGES["FEEDBACK_DATASET_QUEUED"],
-        }
+
+    # Atomic check-and-set to prevent race conditions
+    async with _inflight_lock:
+        if dataset in DATASET_INFLIGHT:
+            logger.info("Dataset feedback already in flight: %s", dataset)
+            return {
+                "dataset": dataset,
+                "status": "accepted",
+                "message": config.MESSAGES["FEEDBACK_DATASET_QUEUED"],
+            }
+        DATASET_INFLIGHT.add(dataset)
+
     dataset_root = dataset_path(dataset)
     if not dataset_root.exists():
+        async with _inflight_lock:
+            DATASET_INFLIGHT.discard(dataset)
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["DATASET_NOT_FOUND"])
     output_root = _feedback_dir(dataset)
     raw_dir = dataset_root / config.RAW_FOLDER_NAME
@@ -217,10 +230,11 @@ async def request_dataset_feedback(payload: DatasetFeedbackRequest, background_t
         try:
             await _generate_dataset_feedback_async(dataset, raw_dir, output_root)
         finally:
-            DATASET_INFLIGHT.discard(dataset)
+            async with _inflight_lock:
+                DATASET_INFLIGHT.discard(dataset)
 
-    DATASET_INFLIGHT.add(dataset)
-    background_tasks.add_task(asyncio.run, _run())
+    # Use add_task directly with the async function, not asyncio.run
+    background_tasks.add_task(_run)
     return {
         "dataset": dataset,
         "status": "accepted",

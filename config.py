@@ -284,6 +284,16 @@ AUTOTEST_SCALAC_BIN = "scalac"
 AUTOTEST_DEFAULT_COMMAND_DELAY = 0.5
 AUTOTEST_DEFAULT_SCENARIO_TIMEOUT = 15
 
+# Upload limits (in bytes)
+MAX_DATASET_ZIP_SIZE = int(os.environ.get("MAX_DATASET_ZIP_SIZE", str(500 * 1024 * 1024)))  # 500 MB default
+MAX_REFERENCE_FILE_SIZE = int(os.environ.get("MAX_REFERENCE_FILE_SIZE", str(10 * 1024 * 1024)))  # 10 MB default
+MAX_REQUIREMENTS_FILE_SIZE = int(os.environ.get("MAX_REQUIREMENTS_FILE_SIZE", str(5 * 1024 * 1024)))  # 5 MB default
+MAX_AUTOTEST_FILE_SIZE = int(os.environ.get("MAX_AUTOTEST_FILE_SIZE", str(5 * 1024 * 1024)))  # 5 MB default
+
+# Data loading limits
+MAX_CSV_ROWS = int(os.environ.get("MAX_CSV_ROWS", "100000"))  # Maximum rows to load from CSV files
+MAX_CSV_FILE_SIZE = int(os.environ.get("MAX_CSV_FILE_SIZE", str(50 * 1024 * 1024)))  # 50 MB default
+
 # User-facing messages (shared between backend and frontend)
 MESSAGES: dict[str, str] = {
     # Datasets
@@ -297,6 +307,7 @@ MESSAGES: dict[str, str] = {
     "DATASET_READY": 'Dataset "{dataset}" ready.',
     "INVALID_ZIP": "File must be a .zip archive.",
     "INVALID_FILE_PATH": "Invalid file path.",
+    "FILE_TOO_LARGE": "File size exceeds the maximum allowed limit.",
     # Files
     "FILE_NOT_FOUND": "File not found.",
     "RAW_FOLDER_MISSING": "Raw folder not found.",

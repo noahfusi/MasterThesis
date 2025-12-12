@@ -90,6 +90,14 @@
     return files.filter((filename) => {
       const meta = getFileMetadata(filename);
       const metrics = getFileMetrics(filename);
+      const excluded = isFileExcluded(filename);
+
+      if (filterValue === "excluded") {
+        return excluded;
+      }
+      if (filterValue === "not-excluded") {
+        return !excluded;
+      }
       if (filterValue === "no-functions") {
         if (!metrics) return false;
         const fnValue = Number(metrics["Functions"] ?? metrics["functions"]);

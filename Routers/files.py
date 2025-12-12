@@ -51,7 +51,11 @@ def _safe_extract(archive: zipfile.ZipFile, destination: Path) -> None:
         if member_path.is_absolute() or ".." in member_path.parts:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid archive.")
         target_path = (destination / member_path).resolve()
-        if not str(target_path).startswith(str(destination)):
+
+        # Use relative_to for robust path traversal protection
+        try:
+            target_path.relative_to(destination)
+        except ValueError:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid archive.")
     archive.extractall(destination)
 
@@ -319,6 +323,10 @@ async def create_dataset(
     if not file.filename or not file.filename.lower().endswith(".zip"):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=config.MESSAGES["INVALID_ZIP"])
 
+    # Check file size limit
+    if file.size and file.size > config.MAX_DATASET_ZIP_SIZE:
+        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=config.MESSAGES["FILE_TOO_LARGE"])
+
     dataset_dir = dataset_path(sanitized_name)
     raw_dir = dataset_dir / RAW_FOLDER
 
@@ -336,6 +344,10 @@ async def create_dataset(
     )
 
     file_bytes = await file.read()
+    # Validate actual size after reading
+    if len(file_bytes) > config.MAX_DATASET_ZIP_SIZE:
+        shutil.rmtree(dataset_dir, ignore_errors=True)
+        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=config.MESSAGES["FILE_TOO_LARGE"])
     try:
         with zipfile.ZipFile(BytesIO(file_bytes)) as archive:
             _safe_extract(archive, raw_dir)
@@ -547,12 +559,18 @@ async def upload_reference_file(dataset_name: str, file: UploadFile = File(...))
     if not file.filename:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
 
+    # Check file size limit
+    if file.size and file.size > config.MAX_REFERENCE_FILE_SIZE:
+        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=config.MESSAGES["FILE_TOO_LARGE"])
+
     reference_dir = dataset_dir / "reference"
     reference_dir.mkdir(parents=True, exist_ok=True)
     reference_name = Path(file.filename).name
     target_path = reference_dir / reference_name
     try:
         contents = await file.read()
+        if len(contents) > config.MAX_REFERENCE_FILE_SIZE:
+            raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=config.MESSAGES["FILE_TOO_LARGE"])
         target_path.write_bytes(contents)
     except OSError as exc:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
@@ -591,12 +609,18 @@ async def upload_requirements_file(dataset_name: str, file: UploadFile = File(..
     if not file.filename:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
 
+    # Check file size limit
+    if file.size and file.size > config.MAX_REQUIREMENTS_FILE_SIZE:
+        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=config.MESSAGES["FILE_TOO_LARGE"])
+
     requirements_dir = dataset_dir / "requirements"
     requirements_dir.mkdir(parents=True, exist_ok=True)
     requirements_name = Path(file.filename).name
     target_path = requirements_dir / requirements_name
     try:
         contents = await file.read()
+        if len(contents) > config.MAX_REQUIREMENTS_FILE_SIZE:
+            raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=config.MESSAGES["FILE_TOO_LARGE"])
         target_path.write_bytes(contents)
     except OSError as exc:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
@@ -622,9 +646,15 @@ async def upload_autotest_file(dataset_name: str, file: UploadFile = File(...)) 
     if not file.filename.lower().endswith((".yml", ".yaml")):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Autotest file must be YAML.")
 
+    # Check file size limit
+    if file.size and file.size > config.MAX_AUTOTEST_FILE_SIZE:
+        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=config.MESSAGES["FILE_TOO_LARGE"])
+
     target_path = dataset_dir / "autotest.yaml"
     try:
         contents = await file.read()
+        if len(contents) > config.MAX_AUTOTEST_FILE_SIZE:
+            raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail=config.MESSAGES["FILE_TOO_LARGE"])
         target_path.write_bytes(contents)
     except OSError as exc:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc

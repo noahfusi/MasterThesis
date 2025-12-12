@@ -146,7 +146,8 @@ async def run_autotest_endpoint(payload: AutoTestRunRequest, background_tasks: B
                 }
             )
 
-    background_tasks.add_task(asyncio.run, _run())
+    # Use add_task directly with the async function, not asyncio.run
+    background_tasks.add_task(_run)
     return {"dataset": dataset_name, "filename": payload.filename, "status": "accepted"}
 
 
