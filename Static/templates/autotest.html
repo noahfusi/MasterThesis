@@ -17,8 +17,19 @@
 
 <section class="dataset-section">
   <div class="section-heading">
-    <h2>Files</h2>
-    <p>Select a dataset above to list files and trigger individual tests.</p>
+    <div>
+      <h2>Files</h2>
+      <p>Select a dataset above to list files and trigger individual tests.</p>
+    </div>
+    <label class="autotest-filter" for="autotest-filter">
+      Filter
+      <select id="autotest-filter">
+        <option value="all">All</option>
+        <option value="compile-error">Compilation errors</option>
+        <option value="all-passed">All tests passed</option>
+        <option value="not-all-passed">Tests failed</option>
+      </select>
+    </label>
   </div>
   <p class="feedback" id="autotest-feedback"></p>
   <ul id="autotest-file-list" class="dataset-list autotest-list">

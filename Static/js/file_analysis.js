@@ -1,5 +1,10 @@
 (function () {
   const app = window.App || {};
+  app.__initialized = app.__initialized || {};
+  if (app.__initialized.fileAnalysis) return;
+  app.__initialized.fileAnalysis = true;
+  window.App = app;
+
   const { API_ROUTES, utils = {}, dataset = {}, taskSocket = {}, onReady = (fn) => fn() } = app;
   const { requestJSON, showMessage, getMessage } = utils;
   const { getSelectedDataset } = dataset;

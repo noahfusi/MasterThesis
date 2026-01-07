@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import asyncio
 import logging
 from typing import Any
@@ -15,6 +16,9 @@ _active_sockets: set[WebSocket] = set()
 _connections_lock = asyncio.Lock()
 _server_loop: asyncio.AbstractEventLoop | None = None
 
+_KEEPALIVE_INTERVAL = 15.0
+_KEEPALIVE_PAYLOAD = {"type": "keepalive"}
+
 
 async def _register(websocket: WebSocket) -> None:
     global _server_loop
@@ -29,6 +33,17 @@ async def _register(websocket: WebSocket) -> None:
 async def _unregister(websocket: WebSocket) -> None:
     async with _connections_lock:
         _active_sockets.discard(websocket)
+
+
+async def _keepalive(websocket: WebSocket) -> None:
+    try:
+        while True:
+            await asyncio.sleep(_KEEPALIVE_INTERVAL)
+            await websocket.send_json(_KEEPALIVE_PAYLOAD)
+    except asyncio.CancelledError:
+        raise
+    except Exception as exc:  # pragma: no cover - best-effort keepalive
+        logger.debug("Task websocket keepalive stopped: %s", exc)
 
 
 async def notify_tasks(payload: dict[str, Any]) -> None:
@@ -77,13 +92,19 @@ async def task_notifications(websocket: WebSocket) -> None:
     """
     await websocket.accept()
     await _register(websocket)
+    keepalive_task = asyncio.create_task(_keepalive(websocket))
     try:
         await websocket.send_json({"type": "connected"})
         while True:
-            await websocket.receive_text()
+            message = await websocket.receive_text()
+            if message == "ping":
+                await websocket.send_text("pong")
     except WebSocketDisconnect:
         pass
     except Exception as exc:  # pragma: no cover - defensive close handling
         logger.debug("Task websocket closed unexpectedly: %s", exc)
     finally:
+        keepalive_task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await keepalive_task
         await _unregister(websocket)

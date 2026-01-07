@@ -1,98 +1,105 @@
-const TASK_SOCKET_SOURCE = "task-socket";
-const WS_URL = `${self.location.origin.replace(/^http/, "ws")}/tasks/ws`;
+(function () {
+  self.__initialized = self.__initialized || {};
+  if (self.__initialized.taskSw) return;
+  self.__initialized.taskSw = true;
 
-let socket = null;
-let reconnectDelay = 2000;
-let connecting = false;
-let heartbeatTimer = null;
+  const TASK_SOCKET_SOURCE = "task-socket";
+  const WS_URL = `${self.location.origin.replace(/^http/, "ws")}/tasks/ws`;
+  const TASK_SOCKET_HEARTBEAT_MS = 15000;
 
-function clearHeartbeat() {
-  if (heartbeatTimer) {
-    clearInterval(heartbeatTimer);
-    heartbeatTimer = null;
+  let socket = null;
+  let reconnectDelay = 2000;
+  let connecting = false;
+  let heartbeatTimer = null;
+
+  function clearHeartbeat() {
+    if (heartbeatTimer) {
+      clearInterval(heartbeatTimer);
+      heartbeatTimer = null;
+    }
   }
-}
 
-function startHeartbeat() {
-  clearHeartbeat();
-  heartbeatTimer = setInterval(() => {
-    try {
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send("ping");
+  function startHeartbeat() {
+    clearHeartbeat();
+    heartbeatTimer = setInterval(() => {
+      try {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          socket.send("ping");
+        }
+      } catch (_) {
+        /* ignore heartbeat send errors */
       }
-    } catch (_) {
-      /* ignore heartbeat send errors */
+    }, TASK_SOCKET_HEARTBEAT_MS);
+  }
+
+  function backoffReconnect() {
+    reconnectDelay = Math.min(reconnectDelay * 1.5, 15000);
+    setTimeout(connectSocket, reconnectDelay);
+  }
+
+  async function broadcast(event) {
+    const clients = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    clients.forEach((client) => {
+      client.postMessage({ source: TASK_SOCKET_SOURCE, event });
+    });
+  }
+
+  function handleSocketMessage(event) {
+    const raw = event.data;
+    let parsed = raw;
+    if (typeof raw === "string") {
+      try {
+        parsed = JSON.parse(raw);
+      } catch (_) {
+        /* ignore parse errors, forward raw */
+      }
     }
-  }, 30000);
-}
+    void broadcast(parsed);
+  }
 
-function backoffReconnect() {
-  reconnectDelay = Math.min(reconnectDelay * 1.5, 15000);
-  setTimeout(connectSocket, reconnectDelay);
-}
-
-async function broadcast(event) {
-  const clients = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-  clients.forEach((client) => {
-    client.postMessage({ source: TASK_SOCKET_SOURCE, event });
-  });
-}
-
-function handleSocketMessage(event) {
-  const raw = event.data;
-  let parsed = raw;
-  if (typeof raw === "string") {
+  function connectSocket() {
+    if (socket || connecting) return;
+    connecting = true;
     try {
-      parsed = JSON.parse(raw);
-    } catch (_) {
-      /* ignore parse errors, forward raw */
+      socket = new WebSocket(WS_URL);
+    } catch (err) {
+      connecting = false;
+      backoffReconnect();
+      return;
     }
+    socket.addEventListener("open", () => {
+      connecting = false;
+      reconnectDelay = 2000;
+      startHeartbeat();
+      void broadcast({ type: "connected" });
+    });
+    socket.addEventListener("message", handleSocketMessage);
+    socket.addEventListener("close", () => {
+      clearHeartbeat();
+      socket = null;
+      connecting = false;
+      backoffReconnect();
+    });
+    socket.addEventListener("error", () => {
+      clearHeartbeat();
+      if (socket) {
+        socket.close();
+      }
+    });
   }
-  void broadcast(parsed);
-}
 
-function connectSocket() {
-  if (socket || connecting) return;
-  connecting = true;
-  try {
-    socket = new WebSocket(WS_URL);
-  } catch (err) {
-    connecting = false;
-    backoffReconnect();
-    return;
-  }
-  socket.addEventListener("open", () => {
-    connecting = false;
-    reconnectDelay = 2000;
-    startHeartbeat();
-    void broadcast({ type: "connected" });
-  });
-  socket.addEventListener("message", handleSocketMessage);
-  socket.addEventListener("close", () => {
-    clearHeartbeat();
-    socket = null;
-    connecting = false;
-    backoffReconnect();
-  });
-  socket.addEventListener("error", () => {
-    clearHeartbeat();
-    if (socket) {
-      socket.close();
+  self.addEventListener("message", (event) => {
+    const data = event.data || {};
+    if (data.type === "task-socket-subscribe") {
+      connectSocket();
     }
   });
-}
 
-self.addEventListener("message", (event) => {
-  const data = event.data || {};
-  if (data.type === "task-socket-subscribe") {
-    connectSocket();
-  }
-});
+  self.addEventListener("install", (event) => {
+    event.waitUntil(self.skipWaiting());
+  });
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(self.skipWaiting());
-});
-
-self.addEventListener("activate", (event) => {
-  event.waitUntil(self.clients.claim());
-});
+  self.addEventListener("activate", (event) => {
+    event.waitUntil(self.clients.claim());
+  });
+})();

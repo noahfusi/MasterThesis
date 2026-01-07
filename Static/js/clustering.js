@@ -1,5 +1,10 @@
 (function () {
   const app = window.App || {};
+  app.__initialized = app.__initialized || {};
+  if (app.__initialized.clustering) return;
+  app.__initialized.clustering = true;
+  window.App = app;
+
   const { API_ROUTES, utils = {}, onReady = (fn) => fn(), taskSocket = {} } = app;
   const subscribeToTaskEvents = taskSocket.subscribe || (() => () => {});
   const {

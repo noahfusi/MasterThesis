@@ -1,5 +1,10 @@
 (function () {
   const app = window.App || {};
+  app.__initialized = app.__initialized || {};
+  if (app.__initialized.globalAnalysis) return;
+  app.__initialized.globalAnalysis = true;
+  window.App = app;
+
   const { API_ROUTES, utils = {}, onReady = (fn) => fn() } = app;
   const { requestJSON, showMessage, computeQuartiles, describeThreshold, formatMetricValue, openFileInExplorer } =
     utils;
