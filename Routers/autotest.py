@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from pathlib import Path
 import logging
 
 import config
@@ -10,7 +9,7 @@ from pydantic import BaseModel, Field
 
 from AutoTest.run import load_results, run_autotest
 from Routers.tasks import notify_tasks_sync
-from Routers.utils import ensure_dataset_ready, resolve_dataset_or_http_error
+from Routers.utils import ensure_dataset_ready, resolve_relative_file, resolve_repository_or_http_error
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -34,29 +33,22 @@ def _collect_autotest_results(dataset: str | None, filenames: list[str]) -> dict
     """
     Build a batch of AutoTest results for the given filenames without failing the entire request.
     """
-    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
+    dataset_name, repository = resolve_repository_or_http_error(dataset, require_raw=True)
     ensure_dataset_ready(dataset_name)
 
     if not filenames:
         return {"dataset": dataset_name, "files": []}
 
-    root = raw_dir.resolve()
     unique_filenames = list(dict.fromkeys(filenames))
     entries: list[dict[str, object]] = []
 
     for name in unique_filenames:
-        normalized = Path(name)
-        relative = normalized.as_posix()
-        entry: dict[str, object] = {"filename": relative, "results": {"passed": 0, "total": 0}}
-
-        if normalized.is_absolute() or ".." in normalized.parts:
-            entry.update({"status": "invalid", "error": "Invalid filename."})
-            entries.append(entry)
-            continue
-
-        target = (root / normalized).resolve()
-        if not str(target).startswith(str(root)) or not target.is_file():
-            entry.update({"status": "not_found", "error": "File not found."})
+        entry: dict[str, object] = {"filename": name, "results": {"passed": 0, "total": 0}}
+        try:
+            _, relative = resolve_relative_file(repository.raw_dir, name)
+        except HTTPException as exc:
+            status_detail = "invalid" if exc.status_code == status.HTTP_400_BAD_REQUEST else "not_found"
+            entry.update({"status": status_detail, "error": exc.detail})
             entries.append(entry)
             continue
 
@@ -84,10 +76,10 @@ async def list_autotest_files(dataset: str | None = Query(default=None)) -> dict
     """
     Return the list of dataset files eligible for AutoTest.
     """
-    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
+    dataset_name, repository = resolve_repository_or_http_error(dataset, require_raw=True)
     ensure_dataset_ready(dataset_name)
     logger.info("[autotest] list files dataset=%s", dataset_name)
-    files = [str(path.relative_to(raw_dir).as_posix()) for path in raw_dir.rglob("*") if path.is_file()]
+    files = repository.list_raw_files()
     return {"dataset": dataset_name, "files": sorted(files)}
 
 
@@ -101,29 +93,29 @@ async def run_autotest_endpoint(payload: AutoTestRunRequest, background_tasks: B
     """
     Trigger autotests for a dataset (optionally scoped to a single file) in the background.
     """
-    dataset_name, raw_dir = resolve_dataset_or_http_error(payload.dataset, require_raw=True)
+    dataset_name, repository = resolve_repository_or_http_error(payload.dataset, require_raw=True)
     ensure_dataset_ready(dataset_name)
+    target_filename = payload.filename
 
     # Validate file path when provided.
     if payload.filename:
-        normalized = Path(payload.filename)
-        if normalized.is_absolute() or ".." in normalized.parts:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid filename.")
-        target = (raw_dir / normalized).resolve()
-        if not str(target).startswith(str(raw_dir.resolve())) or not target.is_file():
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found.")
+        try:
+            _, normalized = resolve_relative_file(repository.raw_dir, payload.filename)
+            target_filename = normalized
+        except HTTPException:
+            raise
 
     autotest_file = (config.DATASETS_DIR / dataset_name / "autotest.yaml").resolve()
     if not autotest_file.exists():
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="autotest.yaml not found in dataset root.")
 
     logger.info(
-        "[autotest] run accepted dataset=%s target=%s", dataset_name, payload.filename or "<dataset-wide>"
+        "[autotest] run accepted dataset=%s target=%s", dataset_name, target_filename or "<dataset-wide>"
     )
     # Run asynchronously in background and push websocket notifications on completion.
     async def _run() -> None:
         try:
-            results = await run_autotest(dataset_name, payload.filename)
+            results = await run_autotest(dataset_name, target_filename)
             for entry in results:
                 notify_tasks_sync(
                     {
@@ -159,6 +151,24 @@ async def get_autotest_results(
     Return stored AutoTest results for multiple files. Accepts repeated `filenames` query parameters.
     """
     return _collect_autotest_results(dataset, filenames)
+
+
+@router.get("/test-report", name="autotest-test-report")
+async def get_autotest_report(
+    dataset: str | None = Query(default=None), filename: str | None = Query(default=None)
+) -> dict[str, object]:
+    """
+    Return the stored test report for a dataset file.
+    """
+    dataset_name, repository = resolve_repository_or_http_error(dataset, require_raw=True)
+    ensure_dataset_ready(dataset_name)
+    if not filename:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
+    _, relative_name = resolve_relative_file(repository.raw_dir, filename)
+    stored = load_results(dataset_name, relative_name)
+    if not stored:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Test report not found.")
+    return {"dataset": dataset_name, "filename": relative_name, "report": stored}
 
 
 @router.get("/files/{filename:path}/results", include_in_schema=False)

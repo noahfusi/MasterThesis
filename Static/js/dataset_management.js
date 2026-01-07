@@ -1,5 +1,10 @@
 (function () {
   const app = window.App || {};
+  app.__initialized = app.__initialized || {};
+  if (app.__initialized.datasetManagement) return;
+  app.__initialized.datasetManagement = true;
+  window.App = app;
+
   const { API_ROUTES, utils = {}, dataset = {}, taskSocket = {}, onReady = (fn) => fn() } = app;
   const { requestJSON, showMessage, getMessage } = utils;
   const { refreshDatasets, setCurrentDataset, getDatasetStatus } = dataset;
@@ -24,7 +29,10 @@
 
   function updateCurrentDatasetDisplay(currentDataset) {
     if (currentDatasetDisplay) {
-      currentDatasetDisplay.textContent = currentDataset || "None";
+      const displayName =
+        (currentDataset && (currentDataset.name || currentDataset.dataset)) ||
+        (typeof currentDataset === "string" ? currentDataset : null);
+      currentDatasetDisplay.textContent = displayName || "None";
     }
   }
 
@@ -151,7 +159,10 @@
       return;
     }
 
-    datasets.forEach((name) => {
+    datasets.forEach((entry) => {
+      const name =
+        (entry && (entry.name || entry.dataset)) || (typeof entry === "string" ? entry : null);
+      if (!name) return;
       const item = document.createElement("li");
       item.className = "dataset-row";
 
@@ -249,7 +260,7 @@
       renderDatasetList(data.datasets || []);
       updateCurrentDatasetDisplay(data.current_dataset || null);
       showMessage(datasetFeedbackElement, "");
-      void trackCurrentDatasetStatus(data.current_dataset || null);
+      void trackCurrentDatasetStatus((data.current_dataset && data.current_dataset.name) || null);
     } catch (error) {
       showMessage(datasetFeedbackElement, error.message, true);
     }
@@ -271,13 +282,13 @@
         uploadStatusElement,
         getMessage(
           "DATASET_CREATED_PROCESSING",
-          { dataset: data.dataset },
-          `Dataset "${data.dataset}" created. Processing in progress...`,
+          { dataset: data.dataset?.name || data.dataset },
+          `Dataset "${data.dataset?.name || data.dataset}" created. Processing in progress...`,
         ),
       );
       uploadForm.reset();
       if (data && data.dataset) {
-        watchDatasetStatus(data.dataset, data.status);
+        watchDatasetStatus(data.dataset.name || data.dataset, data.status);
       }
       await loadDatasets();
     } catch (error) {
@@ -352,7 +363,8 @@
       return;
     }
     try {
-      const status = await getDatasetStatus(name);
+      const summary = await getDatasetStatus(name);
+      const status = summary && summary.status ? { dataset: name, ...summary.status } : null;
       if (status && status.state && status.state !== "ready") {
         watchDatasetStatus(name, status);
       } else {

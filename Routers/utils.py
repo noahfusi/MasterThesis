@@ -6,6 +6,7 @@ from fastapi import HTTPException, status
 
 from Files.dataset_manager import dataset_path, get_current_dataset, normalize_dataset_name
 from Files.dataset_status import is_ready, load_status
+from Pipeline import ArtifactRepository, Dataset
 
 
 def resolve_dataset_or_http_error(dataset: str | None, *, require_raw: bool = True) -> tuple[str, Path]:
@@ -36,14 +37,17 @@ def resolve_dataset_or_http_error(dataset: str | None, *, require_raw: bool = Tr
     return sanitized, base_dir
 
 
-def ensure_dataset_ready(dataset: str) -> dict[str, object]:
+def ensure_dataset_ready(dataset: str | Dataset) -> dict[str, object]:
     """
     @brief Ensure dataset processing is complete before serving dependent requests.
-    @param dataset Name of the dataset to validate.
+    @param dataset Name of the dataset to validate or a Dataset instance.
     @return Loaded status payload when ready.
     @throws HTTPException If the dataset processing is incomplete or failed.
     """
-    status_payload = load_status(dataset)
+    if isinstance(dataset, Dataset):
+        status_payload = dataset.artifact.metadata.get("status", {})
+    else:
+        status_payload = load_status(dataset)
     if is_ready(status_payload):
         return status_payload
     detail = status_payload.get("message") or "Dataset processing is not finished."
@@ -81,6 +85,25 @@ def resolve_relative_file(
     if not resolved.is_file():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=not_found_detail)
     return resolved, relative_path.as_posix()
+
+
+def resolve_repository_or_http_error(dataset: str | None, *, require_raw: bool = True) -> tuple[str, ArtifactRepository]:
+    """
+    Resolve an ArtifactRepository for a dataset, performing the same validation as resolve_dataset_or_http_error.
+    """
+    dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=require_raw)
+    return dataset_name, ArtifactRepository(dataset_name)
+
+
+def resolve_dataset_objects(dataset: str | None, *, require_raw: bool = True) -> tuple[str, Dataset, ArtifactRepository]:
+    """
+    Resolve Dataset and ArtifactRepository instances for a dataset with validation.
+    """
+    from Files.dataset_repository import DATASET_REPOSITORY
+
+    dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=require_raw)
+    dataset_obj = DATASET_REPOSITORY.load_dataset(dataset_name)
+    return dataset_name, dataset_obj, DATASET_REPOSITORY.artifact_repository(dataset_name)
 
 
 def read_utf8_or_error(path: Path, *, detail: str) -> str:

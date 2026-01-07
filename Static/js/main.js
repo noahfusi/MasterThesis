@@ -1,4 +1,6 @@
 const App = window.App || {};
+App.__initialized = App.__initialized || {};
+const mainAlreadyInitialized = Boolean(App.__initialized.main);
 
 App.API_ROUTES = {
   datasets: "/datasets",
@@ -30,6 +32,7 @@ App.API_ROUTES = {
     const suffix = params.toString() ? `?${params.toString()}` : "";
     return `/autotest/files/results${suffix}`;
   },
+  autotestTestReport: "/autotest/test-report",
   autotestRun: "/autotest/run",
   autotestUpload: (dataset) => `/datasets/${encodeURIComponent(dataset)}/autotest`,
 };
@@ -192,10 +195,13 @@ function getMessage(key, params = undefined, fallback = "") {
   return Object.keys(params).reduce((text, paramKey) => text.replace(new RegExp(`{${paramKey}}`, "g"), params[paramKey]), template);
 }
 
-void getThresholdDescriptions();
-void loadMessages();
+if (!mainAlreadyInitialized) {
+  void getThresholdDescriptions();
+  void loadMessages();
+}
 
 const TASK_SOCKET_SOURCE = "task-socket";
+const TASK_SOCKET_HEARTBEAT_MS = 15000;
 const taskSocketSubscribers = new Set();
 let taskSocketInitialized = false;
 let fallbackTaskSocket = null;
@@ -251,7 +257,7 @@ function ensureFallbackTaskSocket() {
       } catch (_) {
         /* ignore heartbeat send failures */
       }
-    }, 30000);
+    }, TASK_SOCKET_HEARTBEAT_MS);
   });
   fallbackTaskSocket.addEventListener("message", handleTaskSocketMessage);
   fallbackTaskSocket.addEventListener("close", () => {
@@ -511,7 +517,9 @@ async function getDuplicateRangesForFile(dataset, filename, summaryFilename = DE
 
 function updateDatasetSelect(datasets = [], currentDataset = null) {
   if (!datasetSelect) return;
-  const valueToSet = currentDataset ?? "";
+  const valueToSet =
+    (currentDataset && (currentDataset.name || currentDataset.dataset)) ||
+    (typeof currentDataset === "string" ? currentDataset : "");
   datasetSelect.innerHTML = "";
 
   const placeholder = document.createElement("option");
@@ -519,10 +527,13 @@ function updateDatasetSelect(datasets = [], currentDataset = null) {
   placeholder.textContent = "No dataset";
   datasetSelect.appendChild(placeholder);
 
-  datasets.forEach((name) => {
+  datasets.forEach((entry) => {
+    const name =
+      typeof entry === "string" ? entry : entry && (entry.name || entry.dataset) ? entry.name || entry.dataset : null;
+    if (!name) return;
     const option = document.createElement("option");
-    option.value = name;
-    option.textContent = name;
+    option.value = String(name);
+    option.textContent = String(name);
     datasetSelect.appendChild(option);
   });
 
@@ -551,7 +562,7 @@ async function setCurrentDataset(name) {
     body: JSON.stringify({ dataset_name: name || null }),
   });
   if (datasetSelect) {
-    datasetSelect.value = data.current_dataset || "";
+    datasetSelect.value = (data.current_dataset && data.current_dataset.name) || "";
   }
   document.dispatchEvent(
     new CustomEvent("app:dataset-changed", {
@@ -606,46 +617,51 @@ function initCommonDatasetSelector() {
   });
 }
 
-App.utils = {
-  requestJSON,
-  showMessage,
-  mergeLineRanges,
-  formatMetricValue,
-  computeStandardDeviation,
-  computeQuartiles,
-  describeThreshold,
-  getMessage,
-  loadMessages,
-  getClusterColor,
-  getClusterLabel,
-  openFileInExplorer,
-};
+if (!mainAlreadyInitialized) {
+  App.utils = {
+    requestJSON,
+    showMessage,
+    mergeLineRanges,
+    formatMetricValue,
+    computeStandardDeviation,
+    computeQuartiles,
+    describeThreshold,
+    getMessage,
+    loadMessages,
+    getClusterColor,
+    getClusterLabel,
+    openFileInExplorer,
+  };
 
-App.duplicates = {
-  DEFAULT_LIZARD_SUMMARY,
-  parseDuplicateBlocks,
-  extractRelativePath,
-  normalizeRelativePath,
-  getDuplicateSummary,
-  getDuplicateRangesFromSummary,
-  getDuplicateRangesForFile,
-};
+  App.duplicates = {
+    DEFAULT_LIZARD_SUMMARY,
+    parseDuplicateBlocks,
+    extractRelativePath,
+    normalizeRelativePath,
+    getDuplicateSummary,
+    getDuplicateRangesFromSummary,
+    getDuplicateRangesForFile,
+  };
 
-App.dataset = {
-  updateDatasetSelect,
-  getSelectedDataset,
-  refreshDatasets,
-  setCurrentDataset,
-  getDatasetStatus,
-  getThresholdDescriptions,
-};
+  App.dataset = {
+    updateDatasetSelect,
+    getSelectedDataset,
+    refreshDatasets,
+    setCurrentDataset,
+    getDatasetStatus,
+    getThresholdDescriptions,
+  };
 
-App.taskSocket = {
-  subscribe: subscribeToTaskEvents,
-};
+  App.taskSocket = {
+    subscribe: subscribeToTaskEvents,
+  };
 
-App.onReady = onReady;
-window.App = App;
+  App.onReady = onReady;
+  window.App = App;
 
-onReady(initTaskSocketBridge);
-onReady(initCommonDatasetSelector);
+  onReady(initTaskSocketBridge);
+  onReady(initCommonDatasetSelector);
+  App.__initialized.main = true;
+} else {
+  window.App = App;
+}

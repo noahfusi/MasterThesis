@@ -1,5 +1,10 @@
 (function () {
   const app = window.App || {};
+  app.__initialized = app.__initialized || {};
+  if (app.__initialized.students) return;
+  app.__initialized.students = true;
+  window.App = app;
+
   const { API_ROUTES, utils = {}, onReady = (fn) => fn() } = app;
   const { requestJSON, showMessage, formatMetricValue, getMessage } = utils;
 
@@ -23,6 +28,7 @@
     metricKey: null,
     cards: [],
     reportAvailable: false,
+    students: [],
   };
 
   function dedupeMetricOptions(metrics = [], buckets = []) {
@@ -41,118 +47,160 @@
     return options;
   }
 
-  function updateStudentsMetricSelect(metrics = [], activeKey = null) {
+  function updateStudentsMetricSelect() {
     if (!studentsMetricSelect) return;
     studentsMetricSelect.innerHTML = "";
-    if (!metrics.length) {
-      const placeholder = document.createElement("option");
-      placeholder.value = "";
-      placeholder.textContent = getMessage("STUDENTS_NO_METRICS", {}, "No metrics");
-      studentsMetricSelect.appendChild(placeholder);
-      studentsMetricSelect.disabled = true;
-      return;
-    }
-    metrics.forEach((metric) => {
-      const option = document.createElement("option");
-      option.value = metric.key;
-      option.textContent = metric.label || metric.key;
-      studentsMetricSelect.appendChild(option);
-    });
-    studentsMetricSelect.disabled = false;
-    const chosen = activeKey && metrics.some((m) => m.key === activeKey) ? activeKey : metrics[0].key;
-    studentsMetricSelect.value = chosen;
-    studentsState.metricKey = chosen;
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = getMessage("STUDENTS_NO_METRICS", {}, "Classification view");
+    studentsMetricSelect.appendChild(placeholder);
+    studentsMetricSelect.disabled = true;
   }
 
-  function buildBucketCard(bucket) {
-    if (!bucketTemplate || !studentsGrid) return null;
-    const clone = bucketTemplate.content.cloneNode(true);
-    const card = clone.querySelector(".students-metric-card");
-    if (!card) return null;
-    card.dataset.metric = bucket.key;
+  function classifyStudentMetrics(entry) {
+    const metrics = entry.metrics || {};
 
-    const title = card.querySelector(".students-metric-title");
-    const meta = card.querySelector(".students-metric-meta");
-    if (title) title.textContent = bucket.label || bucket.key;
-    if (meta) {
-      const medianPart = Number.isFinite(bucket.median) ? ` • ${getMessage("LABEL_MEDIAN", {}, "Median")}: ${formatMetricValue(bucket.median)}` : "";
-      const fencesPart =
-        Number.isFinite(bucket.lowerFence) && Number.isFinite(bucket.upperFence)
-          ? ` • ${getMessage("LABEL_FENCES", {}, "Fences")}: ${formatMetricValue(bucket.lowerFence)} / ${formatMetricValue(bucket.upperFence)}`
-          : "";
-      meta.textContent = `Q1: ${formatMetricValue(bucket.q1)} • Q3: ${formatMetricValue(bucket.q3)}${medianPart}${fencesPart}`;
-    }
+    const score = (key, level) => {
+      const val = metrics[key];
+      if (!val || typeof val !== "object") return false;
+      return val.signal === level || val[level] === true;
+    };
 
-    const groupKeys = ["aboveFence", "aboveQ3", "belowQ1", "belowFence"];
-    groupKeys.forEach((groupKey) => {
-      const column = card.querySelector(`.students-bucket[data-group='${groupKey}']`);
-      if (!column) return;
-      const comment = column.querySelector(".students-threshold-comment");
-      if (comment) {
-        const comments = bucket.comments || {};
-        comment.textContent = comments[groupKey] || comment.textContent || "";
-      }
-      const list = column.querySelector(".students-bucket-list");
-      if (!list) return;
-      list.innerHTML = "";
-      const items = (bucket.groups && bucket.groups[groupKey]) || [];
-      if (!items.length) {
-        const empty = document.createElement("li");
-        empty.textContent = getMessage("STUDENTS_NO_FILES", {}, "No files");
-        list.appendChild(empty);
-        return;
-      }
-      items.forEach((item) => {
-        const li = document.createElement("li");
-        const name = document.createElement("span");
-        name.textContent = item.filename;
-        const valueEl = document.createElement("span");
-        valueEl.className = "metric-value";
-        valueEl.textContent = formatMetricValue(item.value);
-        li.appendChild(name);
-        li.appendChild(valueEl);
-        list.appendChild(li);
+    const countHigh = (keys) => keys.reduce((acc, key) => acc + (score(key, "high") ? 1 : 0), 0);
+
+    const highDifficulty =
+      score("CCN", "extra_high") ||
+      score("NCSS", "extra_high") ||
+      score("Duplication (%)", "extra_high") ||
+      score("Max nesting depth", "extra_high") ||
+      (score("CCN", "high") &&
+        (score("NCSS", "high") || score("Duplication (%)", "high") || score("Max nesting depth", "high"))) ||
+      (score("NCSS/Functions", "high") && score("Functions", "low"));
+
+    const moderateDifficulty =
+      !highDifficulty &&
+      countHigh(["CCN", "NCSS", "Duplication (%)", "If/NCSS", "Vars/NCSS"]) >= 2;
+
+    const notGoodNotBad =
+      !highDifficulty &&
+      !moderateDifficulty &&
+      (score("NCSS", "low") || score("NCSS", "normal")) &&
+      (score("CCN", "low") || score("CCN", "normal")) &&
+      (score("Duplication (%)", "low") || score("Duplication (%)", "normal"));
+
+    const advanced =
+      !highDifficulty &&
+      !moderateDifficulty &&
+      !score("CCN", "high") &&
+      !score("CCN", "extra_high") &&
+      !score("NCSS", "high") &&
+      !score("NCSS", "extra_high") &&
+      !score("Duplication (%)", "high") &&
+      !score("Duplication (%)", "extra_high") &&
+      score("NCSS", "low") &&
+      score("CCN", "low") &&
+      score("Max nesting depth", "low") &&
+      (score("Functions", "low") || score("Functions", "normal")) &&
+      score("Vars/Functions", "normal_low");
+
+    if (highDifficulty) return "high";
+    if (moderateDifficulty) return "moderate";
+    if (advanced) return "advanced";
+    if (notGoodNotBad) return "neutral";
+    return "neutral";
+  }
+
+  function buildStudentFlags(entry) {
+    const flags = [];
+    const reportFlags = (studentsState.report && studentsState.report.combined_flags) || {};
+    const filename = normalizeRelativePath(entry.filename || entry.path || entry.id || "");
+    const mapped = reportFlags[filename] || reportFlags[entry.filename] || [];
+    if (Array.isArray(mapped) && mapped.length) {
+      mapped.forEach((flag) => {
+        if (flag && flag.label) {
+          flags.push({ label: flag.label, tone: flag.tone || "neutral" });
+        }
       });
-    });
-
-    return card;
+    }
+    if (!flags.length) {
+      flags.push({ label: "Neutral", tone: "neutral" });
+    }
+    return flags;
   }
 
-  function renderStudentsBuckets(metricBuckets = []) {
+  function renderStudentsBuckets(metricBuckets = [], students = []) {
     if (!studentsGrid) return;
     studentsGrid.innerHTML = "";
-    studentsGrid.classList.toggle("single-bucket", metricBuckets.length === 1);
-    if (!metricBuckets.length) {
+
+    if (!students.length) {
       const empty = document.createElement("p");
       empty.className = "students-empty";
-      empty.textContent = getMessage("STUDENTS_NO_OUTLIERS", {}, "No files outside the Q1-Q3 range.");
+      empty.textContent = getMessage("STUDENTS_NO_OUTLIERS", {}, "No students classified.");
       studentsGrid.appendChild(empty);
+      studentsState.cards = [];
       return;
     }
 
-    const cards = [];
-    metricBuckets.forEach((bucket) => {
-      const card = buildBucketCard(bucket);
-      if (card) {
-        card.id = `metric-${bucket.key}`;
-        studentsGrid.appendChild(card);
-        cards.push({ metricKey: bucket.key, element: card });
+    const groups = {
+      high: [],
+      moderate: [],
+      neutral: [],
+      advanced: [],
+    };
+
+    students.forEach((student) => {
+      const bucket = classifyStudentMetrics(student);
+      groups[bucket].push(student);
+    });
+
+    const order = [
+      ["high", "High difficulties"],
+      ["moderate", "Moderate difficulties"],
+      ["neutral", "In the mean"],
+      ["advanced", "Advanced"],
+    ];
+
+    order.forEach(([key, title]) => {
+      const list = groups[key];
+      const card = document.createElement("div");
+      card.className = "students-metric-card";
+      const heading = document.createElement("h3");
+      heading.className = "students-metric-title";
+      heading.textContent = title;
+      card.appendChild(heading);
+
+      const listEl = document.createElement("ul");
+      listEl.className = "students-bucket-list";
+      if (!list.length) {
+        const li = document.createElement("li");
+        li.textContent = getMessage("STUDENTS_NO_FILES", {}, "No students");
+        listEl.appendChild(li);
+      } else {
+        list.forEach((entry) => {
+          const li = document.createElement("li");
+          const name = document.createElement("span");
+          name.textContent = entry.filename || entry.path || entry.id || "Unknown";
+          const flags = buildStudentFlags(entry);
+          const flagContainer = document.createElement("span");
+          flagContainer.className = "student-flags";
+          flags.forEach((flag) => {
+            const badge = document.createElement("span");
+            badge.className = `student-flag student-flag-${flag.tone}`;
+            badge.textContent = flag.label;
+            flagContainer.appendChild(badge);
+          });
+          li.appendChild(name);
+          if (flags.length) {
+            li.appendChild(flagContainer);
+          }
+          listEl.appendChild(li);
+        });
       }
+      card.appendChild(listEl);
+      studentsGrid.appendChild(card);
     });
 
-    studentsState.cards = cards;
-  }
-
-  function filterVisibleCards(metricKey) {
-    if (!studentsState.cards || !studentsState.cards.length) return;
-    const activeKey = metricKey || null;
-    studentsState.cards.forEach((card) => {
-      const show = !activeKey || card.metricKey === activeKey;
-      card.element.classList.toggle("is-hidden", !show);
-    });
-    const visibleCount = studentsState.cards.filter((card) => !card.element.classList.contains("is-hidden")).length;
-    studentsGrid.classList.toggle("single-bucket", visibleCount === 1);
-    return visibleCount;
+    studentsState.cards = [];
   }
 
   async function downloadReport(datasetName) {
@@ -163,24 +211,10 @@
       typeof API_ROUTES.downloadReport === "function"
         ? API_ROUTES.downloadReport(datasetName)
         : `${API_ROUTES.downloadReport}?dataset=${encodeURIComponent(datasetName)}`;
-    const response = await fetch(downloadUrl);
-    if (!response.ok) {
-      let detail = response.statusText;
-      try {
-        const payload = await response.json();
-        detail = payload.detail || payload.message || detail;
-      } catch (err) {
-        // ignore JSON parse errors
-      }
-      throw new Error(detail);
-    }
-    const blob = await response.blob();
-    const disposition = response.headers.get("content-disposition") || "";
-    let filename = `${datasetName || "report"}_students_report.md`;
-    const match = disposition.match(/filename=\"?([^\";]+)\"?/i);
-    if (match && match[1]) {
-      filename = match[1];
-    }
+    const payload = await requestJSON(downloadUrl);
+    const reportData = payload.report || payload;
+    const filename = `${datasetName || "report"}_students_report.json`;
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
@@ -287,57 +321,31 @@
       studentsState.dataset = data.dataset || datasetName;
       studentsState.metrics = metricOptions;
       studentsState.buckets = buckets;
+      studentsState.students = data.files || [];
+      studentsState.report = data.report || null;
       studentsState.cards = [];
 
       updateStudentsMetricSelect(metricOptions, studentsState.metricKey);
-      renderStudentsBuckets(buckets);
-      const visibleCount = filterVisibleCards(studentsState.metricKey);
-      const targetCount = visibleCount ?? studentsState.cards.length;
+      renderStudentsBuckets(buckets, studentsState.students);
       showMessage(
         studentsFeedback,
-        targetCount
-          ? getMessage(
-              "STUDENTS_OUTLIERS_COUNT",
-              { count: targetCount, plural: targetCount > 1 ? "s" : "" },
-              `Showing outliers for ${targetCount} card${targetCount > 1 ? "s" : ""}.`,
-            )
-          : getMessage("STUDENTS_NO_OUTLIERS", {}, "No files outside the Q1-Q3 range."),
-        targetCount === 0,
+        getMessage("STUDENTS_OUTLIERS_COUNT", { count: studentsState.students.length }, `Classified ${studentsState.students.length} students.`),
+        studentsState.students.length === 0,
       );
     } catch (error) {
       studentsState.dataset = datasetName;
       studentsState.metrics = [];
       studentsState.buckets = [];
+      studentsState.students = [];
       studentsState.cards = [];
-      renderStudentsBuckets([]);
+      renderStudentsBuckets([], []);
       showMessage(studentsFeedback, error.message, true);
     }
     await fetchLatestReport(datasetName);
   }
 
   onReady(() => {
-    if (studentsMetricSelect) {
-      studentsMetricSelect.addEventListener("change", (event) => {
-        const value = event && event.target ? event.target.value : null;
-        studentsState.metricKey = value || null;
-        const visibleCount = filterVisibleCards(studentsState.metricKey);
-        const target = studentsState.cards?.find((card) => card.metricKey === studentsState.metricKey);
-        if (target && target.element && typeof target.element.scrollIntoView === "function") {
-          target.element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-        showMessage(
-          studentsFeedback,
-          visibleCount
-            ? getMessage(
-                "STUDENTS_OUTLIERS_COUNT",
-                { count: visibleCount, plural: visibleCount > 1 ? "s" : "" },
-                `Showing outliers for ${visibleCount} card${visibleCount > 1 ? "s" : ""}.`,
-              )
-            : getMessage("STUDENTS_NO_CARDS", {}, "No cards for this metric."),
-          !visibleCount,
-        );
-      });
-    }
+    // Metric select is disabled in classification view
     if (reportButton) {
       reportButton.addEventListener("click", generateReportOnly);
     }

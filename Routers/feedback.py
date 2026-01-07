@@ -7,10 +7,10 @@ from fastapi import APIRouter, BackgroundTasks, HTTPException, Query, status
 from pydantic import BaseModel, Field
 
 import config
-from Files.dataset_manager import dataset_path
 import asyncio
 from LLM import LLMError, generate_completion, async_generate_completion
-from Routers.utils import resolve_dataset_or_http_error, resolve_relative_file, sanitize_for_llm_prompt
+from Pipeline import ArtifactRepository
+from Routers.utils import resolve_relative_file, resolve_repository_or_http_error, sanitize_for_llm_prompt
 from Routers.tasks import notify_tasks_sync
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
@@ -26,29 +26,6 @@ class FeedbackRequest(BaseModel):
 
 class DatasetFeedbackRequest(BaseModel):
     dataset: str = Field(..., description="Dataset name.")
-
-
-def _feedback_dir(dataset: str) -> Path:
-    """
-    @brief Return the feedback output directory for a dataset.
-    """
-    return dataset_path(dataset) / config.FEEDBACK_OUTPUT_DIRNAME
-
-
-def _read_requirements(dataset_root: Path) -> str | None:
-    """
-    @brief Read the first available requirements file, if any.
-    """
-    req_dir = dataset_root / "requirements"
-    if not req_dir.exists():
-        return None
-    for candidate in sorted(req_dir.iterdir()):
-        if candidate.is_file():
-            try:
-                return candidate.read_text(encoding="utf-8")
-            except OSError:
-                continue
-    return None
 
 
 def _format_prompt(filename: str, code: str, requirements: str | None) -> str:
@@ -67,24 +44,19 @@ def _format_prompt(filename: str, code: str, requirements: str | None) -> str:
     return config.FEEDBACK_PROMPT_NO_REQUIREMENTS.format(code=sanitized_code, filename=sanitized_filename)
 
 
-def _generate_file_feedback(dataset: str, raw_dir: Path, filename: str, output_root: Path) -> None:
+def _generate_file_feedback(dataset: str, repository: ArtifactRepository, filename: str) -> None:
     """
     @brief Generate feedback for a single file and persist it under the dataset feedback folder.
     """
     logger.info("[feedback] start file feedback dataset=%s file=%s", dataset, filename)
     try:
-        target_path, relative = resolve_relative_file(raw_dir, filename)
-    except HTTPException:
-        logger.warning("[feedback] file feedback skipped (resolve error) dataset=%s file=%s", dataset, filename)
-        return
-    try:
-        code = target_path.read_text(encoding="utf-8")
-    except OSError:
-        logger.warning("[feedback] file feedback skipped (read error) dataset=%s file=%s", dataset, filename)
+        _, relative = resolve_relative_file(repository.raw_dir, filename)
+        code, _ = repository.read_raw_file(relative)
+    except (HTTPException, ValueError, FileNotFoundError):
+        logger.warning("[feedback] file feedback skipped (resolve/read error) dataset=%s file=%s", dataset, filename)
         return
 
-    dataset_root = dataset_path(dataset)
-    requirements = _read_requirements(dataset_root)
+    requirements = repository.read_first_requirement()
     prompt = _format_prompt(relative, code, requirements)
     try:
         feedback = generate_completion(prompt)
@@ -92,10 +64,8 @@ def _generate_file_feedback(dataset: str, raw_dir: Path, filename: str, output_r
         logger.warning("[feedback] file feedback generation failed dataset=%s file=%s", dataset, filename)
         return
 
-    output_path = output_root / Path(relative).with_suffix(Path(relative).suffix + ".feedback.txt")
-    output_path.parent.mkdir(parents=True, exist_ok=True)
     try:
-        output_path.write_text(feedback, encoding="utf-8")
+        output_path = repository.write_feedback(relative, feedback)
         logger.info("[feedback] file feedback completed dataset=%s file=%s", dataset, filename)
         notify_tasks_sync(
             {"type": "feedback-file-completed", "dataset": dataset, "filename": str(Path(relative).as_posix())}
@@ -105,21 +75,16 @@ def _generate_file_feedback(dataset: str, raw_dir: Path, filename: str, output_r
         return
 
 
-async def _generate_file_feedback_async(dataset: str, raw_dir: Path, filename: str, output_root: Path) -> None:
+async def _generate_file_feedback_async(dataset: str, repository: ArtifactRepository, filename: str) -> None:
     logger.info("[feedback] start file feedback (async) dataset=%s file=%s", dataset, filename)
     try:
-        target_path, relative = resolve_relative_file(raw_dir, filename)
-    except HTTPException:
-        logger.warning("[feedback] file feedback skipped (resolve error) dataset=%s file=%s", dataset, filename)
-        return
-    try:
-        code = target_path.read_text(encoding="utf-8")
-    except OSError:
-        logger.warning("[feedback] file feedback skipped (read error) dataset=%s file=%s", dataset, filename)
+        _, relative = resolve_relative_file(repository.raw_dir, filename)
+        code, _ = repository.read_raw_file(relative)
+    except (HTTPException, ValueError, FileNotFoundError):
+        logger.warning("[feedback] file feedback skipped (resolve/read error) dataset=%s file=%s", dataset, filename)
         return
 
-    dataset_root = dataset_path(dataset)
-    requirements = _read_requirements(dataset_root)
+    requirements = repository.read_first_requirement()
     prompt = _format_prompt(relative, code, requirements)
     try:
         feedback = await async_generate_completion(prompt)
@@ -127,10 +92,8 @@ async def _generate_file_feedback_async(dataset: str, raw_dir: Path, filename: s
         logger.warning("[feedback] file feedback generation failed dataset=%s file=%s", dataset, filename)
         return
 
-    output_path = output_root / Path(relative).with_suffix(Path(relative).suffix + ".feedback.txt")
-    output_path.parent.mkdir(parents=True, exist_ok=True)
     try:
-        output_path.write_text(feedback, encoding="utf-8")
+        output_path = repository.write_feedback(relative, feedback)
         logger.info("[feedback] file feedback completed dataset=%s file=%s", dataset, filename)
         notify_tasks_sync(
             {"type": "feedback-file-completed", "dataset": dataset, "filename": str(Path(relative).as_posix())}
@@ -140,11 +103,11 @@ async def _generate_file_feedback_async(dataset: str, raw_dir: Path, filename: s
         return
 
 
-async def _generate_dataset_feedback_async(dataset: str, raw_dir: Path, output_root: Path) -> None:
+async def _generate_dataset_feedback_async(dataset: str, repository: ArtifactRepository) -> None:
     """
     @brief Generate feedback for all files in a dataset (best-effort) concurrently.
     """
-    if not raw_dir.exists():
+    if not repository.raw_dir.exists():
         return
     logger.info("[feedback] dataset feedback start dataset=%s", dataset)
     tasks = []
@@ -152,12 +115,9 @@ async def _generate_dataset_feedback_async(dataset: str, raw_dir: Path, output_r
 
     async def worker(rel: str) -> None:
         async with sem:
-            await _generate_file_feedback_async(dataset, raw_dir, rel, output_root)
+            await _generate_file_feedback_async(dataset, repository, rel)
 
-    for path in raw_dir.rglob("*"):
-        if not path.is_file():
-            continue
-        relative = path.relative_to(raw_dir).as_posix()
+    for relative in repository.list_raw_files():
         tasks.append(asyncio.create_task(worker(relative)))
     try:
         if tasks:
@@ -186,11 +146,10 @@ async def request_file_feedback(payload: FeedbackRequest, background_tasks: Back
     """
     @brief Enqueue feedback generation for a specific file.
     """
-    dataset, raw_dir = resolve_dataset_or_http_error(payload.dataset, require_raw=True)
-    _, relative = resolve_relative_file(raw_dir, payload.filename)
-    output_root = _feedback_dir(dataset)
+    dataset, repository = resolve_repository_or_http_error(payload.dataset, require_raw=True)
+    _, relative = resolve_relative_file(repository.raw_dir, payload.filename)
 
-    background_tasks.add_task(_generate_file_feedback, dataset, raw_dir, relative, output_root)
+    background_tasks.add_task(_generate_file_feedback, dataset, repository, relative)
     return {
         "dataset": dataset,
         "filename": relative,
@@ -205,7 +164,7 @@ async def request_dataset_feedback(payload: DatasetFeedbackRequest, background_t
     @brief Enqueue feedback generation for the entire dataset.
     """
     logger.info("Received dataset feedback request: %s", payload.dataset)
-    dataset, _ = resolve_dataset_or_http_error(payload.dataset, require_raw=False)
+    dataset, repository = resolve_repository_or_http_error(payload.dataset, require_raw=True)
 
     # Atomic check-and-set to prevent race conditions
     async with _inflight_lock:
@@ -218,17 +177,9 @@ async def request_dataset_feedback(payload: DatasetFeedbackRequest, background_t
             }
         DATASET_INFLIGHT.add(dataset)
 
-    dataset_root = dataset_path(dataset)
-    if not dataset_root.exists():
-        async with _inflight_lock:
-            DATASET_INFLIGHT.discard(dataset)
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["DATASET_NOT_FOUND"])
-    output_root = _feedback_dir(dataset)
-    raw_dir = dataset_root / config.RAW_FOLDER_NAME
-
     async def _run() -> None:
         try:
-            await _generate_dataset_feedback_async(dataset, raw_dir, output_root)
+            await _generate_dataset_feedback_async(dataset, repository)
         finally:
             async with _inflight_lock:
                 DATASET_INFLIGHT.discard(dataset)
@@ -247,8 +198,8 @@ async def list_feedback_files(dataset: str = Query(...)) -> dict[str, object]:
     """
     @brief List available feedback files for a dataset.
     """
-    dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=False)
-    root = _feedback_dir(dataset_name)
+    dataset_name, repository = resolve_repository_or_http_error(dataset, require_raw=False)
+    root = repository.feedback_dir()
     if not root.exists():
         return {"dataset": dataset_name, "files": []}
     files = [str(path.relative_to(root)).replace("\\", "/") for path in root.rglob("*.feedback.txt") if path.is_file()]
@@ -260,8 +211,8 @@ async def read_feedback_file(dataset: str = Query(...), filename: str = Query(..
     """
     @brief Read a stored feedback file content.
     """
-    dataset_name, _ = resolve_dataset_or_http_error(dataset, require_raw=False)
-    root = _feedback_dir(dataset_name)
+    dataset_name, repository = resolve_repository_or_http_error(dataset, require_raw=False)
+    root = repository.feedback_dir()
     target = (root / filename).resolve()
     if not str(target).startswith(str(root.resolve())) or not target.is_file():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["FILE_NOT_FOUND"])

@@ -162,20 +162,51 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.5rem;
 }
 
 .students-bucket li {
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
-  align-items: baseline;
+  align-items: center;
 }
 
 .students-bucket .metric-value {
   color: #111827;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+
+.student-flags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.student-flag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.student-flag-bad {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.student-flag-good {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.student-flag-neutral {
+  background: #e5e7eb;
+  color: #374151;
 }
 
 .students-empty {

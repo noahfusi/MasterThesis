@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import logging
 import shutil
 import zipfile
@@ -19,20 +18,35 @@ from Files.dataset_manager import (
     normalize_dataset_name,
     set_current_dataset,
 )
+from Files.dataset_repository import DATASET_REPOSITORY
 from Files.dataset_status import dataset_lock, is_ready, load_status, mark_failed, update_status
 from Files.excluded_files import load_excluded_files, prune_missing_exclusions, update_excluded_file
+from Lizard.run_analysis import LIZARD_FOLDER, _run_lizard
 from Metrics import SUMMARY_FILENAME, dataset_summary_path
-from Metrics.other_metrics import build_reference_metrics, generate_other_metrics
-from Metrics.students import build_students_outliers
-from Lizard.run_analysis import LIZARD_FOLDER, analyze_dataset, _run_lizard
-from LLM import request_embedding, LLMError
+from Metrics.other_metrics import build_reference_metrics
+from Pipeline import (
+    ArtifactRepository,
+    EmbeddingsStep,
+    EmbeddingsStepConfig,
+    LizardMetricsStep,
+    LizardMetricsStepConfig,
+    MetricsStep,
+    MetricsStepConfig,
+    Pipeline,
+    PipelineStep,
+    StudentsOutliersStep,
+    StudentsOutliersStepConfig,
+)
 from Routers.tasks import notify_tasks_sync
 from Routers.utils import (
     ensure_dataset_ready,
     read_utf8_or_error,
     resolve_dataset_or_http_error,
+    resolve_repository_or_http_error,
     resolve_relative_file,
+    resolve_dataset_objects,
 )
+from Services import dataset_service
 
 router = APIRouter(prefix="/datasets", tags=["datasets"])
 logger = logging.getLogger("uvicorn.error")
@@ -60,45 +74,8 @@ def _safe_extract(archive: zipfile.ZipFile, destination: Path) -> None:
     archive.extractall(destination)
 
 
-STRUCTURAL_SOURCE_EXTENSIONS = config.STRUCTURAL_SOURCE_EXTENSIONS
-STRUCTURAL_EMBEDDING_SUFFIX = config.STRUCTURAL_EMBEDDING_SUFFIX
 RAW_FOLDER = config.RAW_FOLDER_NAME
 PROCESSING_PHASES = config.PROCESSING_PHASES
-
-
-def _chunk_for_embedding(text: str, max_tokens: int) -> list[str]:
-    """
-    Split text into token-sized chunks based on a simple whitespace token approximation.
-    """
-    if max_tokens <= 0:
-        return [text]
-
-    chunks: list[str] = []
-    current_lines: list[str] = []
-    current_tokens = 0
-
-    def _count_tokens(line: str) -> int:
-        return len(line.split())
-
-    for line in text.splitlines(keepends=True):
-        line_tokens = _count_tokens(line)
-        if current_tokens and current_tokens + line_tokens > max_tokens:
-            chunks.append("".join(current_lines))
-            current_lines = []
-            current_tokens = 0
-        if line_tokens > max_tokens:
-            # Fallback: chunk very long single lines by characters to avoid losing content.
-            max_chars = max_tokens * 4  # rough char-per-token heuristic
-            for start in range(0, len(line), max_chars):
-                chunks.append(line[start : start + max_chars])
-            continue
-        current_lines.append(line)
-        current_tokens += line_tokens
-
-    if current_lines:
-        chunks.append("".join(current_lines))
-
-    return chunks or [text]
 
 
 def _process_dataset_pipeline(dataset_name: str) -> None:
@@ -107,141 +84,52 @@ def _process_dataset_pipeline(dataset_name: str) -> None:
     @param dataset_name Dataset name to process.
     @note Guarded by a per-dataset lock to avoid concurrent runs.
     """
-    raw_dir = dataset_path(dataset_name) / RAW_FOLDER
+    repository = ArtifactRepository(dataset_name)
+    steps_with_phases: list[tuple[str, PipelineStep]] = [
+        ("analyzing_lizard", LizardMetricsStep(LizardMetricsStepConfig(repository=repository, lizard_bin="lizard"))),
+        ("computing_metrics", MetricsStep(MetricsStepConfig(repository=repository))),
+        ("computing_outliers", StudentsOutliersStep(StudentsOutliersStepConfig(repository=repository))),
+        (
+            "building_embeddings",
+            EmbeddingsStep(
+                EmbeddingsStepConfig(
+                    repository=repository,
+                    source_extensions=config.STRUCTURAL_SOURCE_EXTENSIONS,
+                    max_tokens=max(0, int(getattr(config, "EMBEDDING_MAX_TOKENS", 0))),
+                    model=config.DEFAULT_OLLAMA_EMBED_MODEL,
+                )
+            ),
+        ),
+    ]
+    pipeline = Pipeline([step for _, step in steps_with_phases])
+
     with dataset_lock(dataset_name):
         # Avoid duplicate work when a ready status already exists (e.g., concurrent requests).
         if is_ready(load_status(dataset_name)):
             return
         try:
-            update_status(
-                dataset_name, state="running", phase="analyzing_lizard", message=PROCESSING_PHASES["analyzing_lizard"]
-            )
-            analyze_dataset(dataset_name, "lizard")
+            artifact = repository.load()
 
-            update_status(
-                dataset_name,
-                state="running",
-                phase="computing_metrics",
-                message=PROCESSING_PHASES["computing_metrics"],
-            )
-            generate_other_metrics(dataset_name)
+            def _before_step(step: PipelineStep, current_artifact) -> None:
+                phase = next((phase_name for phase_name, candidate in steps_with_phases if candidate is step), None)
+                if not phase:
+                    return
+                status_payload = update_status(
+                    dataset_name,
+                    state="running",
+                    phase=phase,
+                    message=PROCESSING_PHASES.get(phase, ""),
+                )
+                notify_tasks_sync({"type": "dataset-status", "dataset": dataset_name, "status": status_payload})
 
-            update_status(
-                dataset_name,
-                state="running",
-                phase="computing_outliers",
-                message=PROCESSING_PHASES["computing_outliers"],
-            )
-            build_students_outliers(dataset_name)
+            pipeline.run(artifact, before_step=_before_step)
 
-            update_status(
-                dataset_name,
-                state="running",
-                phase="building_embeddings",
-                message="Generating code embeddings.",
-            )
-            _generate_code_embeddings(dataset_name, raw_dir)
-
-            status_payload = update_status(
-                dataset_name, state="ready", phase="ready", message=PROCESSING_PHASES["ready"]
-            )
+            status_payload = update_status(dataset_name, state="ready", phase="ready", message=PROCESSING_PHASES["ready"])
             notify_tasks_sync({"type": "dataset-status", "dataset": dataset_name, "status": status_payload})
         except Exception as exc:  # pragma: no cover - background error path
             status_payload = mark_failed(dataset_name, phase="failed", error=str(exc))
             notify_tasks_sync({"type": "dataset-status", "dataset": dataset_name, "status": status_payload})
             logger.exception("Dataset processing failed for %s: %s", dataset_name, exc)
-
-
-def _generate_code_embeddings(dataset_name: str, raw_dir: Path | None = None) -> str:
-    """
-    @brief Build code embeddings directly from raw source files.
-    @param dataset_name Name of the dataset to process.
-    @param raw_dir Optional pre-resolved raw directory path.
-    @return Status message indicating embedding generation outcome.
-    """
-    raw_dir = raw_dir or (dataset_path(dataset_name) / RAW_FOLDER)
-    if not raw_dir.exists():
-        return "Code embeddings skipped: no raw files."
-
-    embeddings_root = dataset_path(dataset_name) / config.STRUCTURAL_EMBEDDINGS_FOLDER_NAME
-    embeddings_root.mkdir(parents=True, exist_ok=True)
-
-    generated_files = 0
-    generated_segments = 0
-    skipped_files = 0
-    skipped_segments = 0
-    candidate_files = 0
-    max_tokens = max(0, int(getattr(config, "EMBEDDING_MAX_TOKENS", 0)))
-
-    for file_path in raw_dir.rglob("*"):
-        if not file_path.is_file():
-            continue
-        if file_path.suffix.lower() not in STRUCTURAL_SOURCE_EXTENSIONS:
-            continue
-
-        candidate_files += 1
-        try:
-            code = file_path.read_text(encoding="utf-8")
-        except UnicodeDecodeError as exc:
-            skipped_files += 1
-            logger.warning("Code embedding skipped (decode error) for %s: %s", file_path, exc)
-            continue
-
-        if not code.strip():
-            skipped_files += 1
-            continue
-
-        relative = file_path.relative_to(raw_dir)
-        output_path = embeddings_root / relative
-        output_path = output_path.with_suffix(output_path.suffix + STRUCTURAL_EMBEDDING_SUFFIX)
-        segment_texts = _chunk_for_embedding(code, max_tokens)
-        embeddings: list[list[float]] = []
-
-        for index, segment_text in enumerate(segment_texts):
-            if not segment_text.strip():
-                skipped_segments += 1
-                continue
-            try:
-                embedding = request_embedding(segment_text)
-            except (LLMError, ValueError) as exc:
-                logger.warning("Code embedding skipped for %s (chunk %s): %s", file_path, index, exc)
-                skipped_segments += 1
-                continue
-
-            embeddings.append(embedding)
-            generated_segments += 1
-
-        try:
-            if not embeddings:
-                skipped_files += 1
-                continue
-            dim = len(embeddings[0])
-            if dim == 0:
-                skipped_files += 1
-                continue
-            filtered = [vec for vec in embeddings if len(vec) == dim]
-            if not filtered:
-                skipped_files += 1
-                continue
-            averaged_embedding = [sum(values) / len(filtered) for values in zip(*filtered)]
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            payload = {
-                "source": str(relative).replace("\\", "/"),
-                "model": config.DEFAULT_OLLAMA_EMBED_MODEL,
-                "embedding": averaged_embedding,
-                "chunk_count": len(filtered),
-            }
-            output_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-            generated_files += 1
-        except OSError as exc:
-            logger.warning("Failed to persist embedding for %s: %s", file_path, exc)
-            skipped_files += 1
-
-    if generated_files:
-        return f"Code embeddings generated for {generated_files} file(s) across {generated_segments} chunk(s)."
-    if skipped_files or candidate_files:
-        return "Code embeddings skipped: unable to process files."
-    return "No source files available for embeddings."
 
 
 class ExcludedFileToggle(BaseModel):
@@ -260,14 +148,17 @@ def _dataset_response(
     @param extra Additional key/value pairs to merge into the response.
     @return Structured response containing datasets and current selection.
     """
+    dataset_summaries = dataset_service.list_dataset_summaries(list_datasets())
+    current_name = get_current_dataset()
+    current_summary = dataset_service.summarize_dataset(current_name) if current_name else None
     payload: dict[str, object] = {
-        "datasets": list_datasets(),
-        "current_dataset": get_current_dataset(),
+        "datasets": dataset_summaries,
+        "current_dataset": current_summary,
     }
     if message is not None:
         payload["message"] = message
     if dataset is not None:
-        payload["dataset"] = dataset
+        payload["dataset"] = dataset_service.summarize_dataset(dataset)
     if extra:
         payload.update(extra)
     return payload
@@ -298,7 +189,7 @@ async def dataset_status(dataset_name: str) -> dict[str, object]:
     if not target_dir.exists():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=config.MESSAGES["DATASET_NOT_FOUND"])
 
-    return load_status(sanitized)
+    return dataset_service.summarize_dataset(sanitized)
 
 
 @router.post("", status_code=status.HTTP_201_CREATED, name="create-dataset")
@@ -406,6 +297,8 @@ async def delete_dataset(dataset_name: str) -> dict[str, object]:
     if get_current_dataset() == sanitized:
         set_current_dataset(None)
 
+    DATASET_REPOSITORY.clear_cache(sanitized)
+
     return _dataset_response(message=config.MESSAGES["DATASET_DELETED"].format(dataset=sanitized), dataset=sanitized)
 
 
@@ -416,9 +309,10 @@ async def list_files(dataset: str | None = None) -> dict[str, object]:
     @param dataset Optional dataset name to override the current selection.
     @return Mapping with dataset name and relative file paths.
     """
-    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
-    files = sorted(str(path.relative_to(raw_dir)).replace("\\", "/") for path in raw_dir.rglob("*") if path.is_file())
-    return {"dataset": dataset_name, "files": files}
+    dataset_name, dataset_obj, _ = resolve_dataset_objects(dataset, require_raw=True)
+    ensure_dataset_ready(dataset_obj)
+    files = dataset_service.list_files(dataset_obj)
+    return {"dataset": dataset_service.summarize_dataset(dataset_name), "files": files}
 
 
 @router.get("/excluded-files", name="list-excluded-files")
@@ -428,9 +322,13 @@ async def list_excluded_files(dataset: str | None = None) -> dict[str, object]:
     @param dataset Optional dataset name to override the current selection.
     @return Mapping with dataset name and excluded file paths.
     """
-    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
+    dataset_name, dataset_obj, repository = resolve_dataset_objects(dataset, require_raw=True)
+    ensure_dataset_ready(dataset_obj)
+    raw_dir = repository.raw_dir
     excluded = prune_missing_exclusions(dataset_name, raw_dir)
-    return {"dataset": dataset_name, "excluded_files": excluded}
+    summary = dataset_service.summarize_dataset(dataset_name)
+    summary["excluded_files"] = excluded
+    return {"dataset": summary, "excluded_files": excluded}
 
 
 @router.post("/excluded-files", name="update-excluded-file")
@@ -440,11 +338,12 @@ async def set_excluded_file(payload: ExcludedFileToggle) -> dict[str, object]:
     @param payload Body containing filename, exclusion flag, and optional dataset override.
     @return Updated exclusion list for the dataset.
     """
-    dataset_name, raw_dir = resolve_dataset_or_http_error(payload.dataset, require_raw=True)
+    dataset_name, _, repository = resolve_dataset_objects(payload.dataset, require_raw=True)
+    raw_dir = repository.raw_dir
     _, relative_name = resolve_relative_file(raw_dir, payload.filename)
     excluded_files = update_excluded_file(dataset_name, relative_name, excluded=payload.excluded)
     return {
-        "dataset": dataset_name,
+        "dataset": dataset_service.summarize_dataset(dataset_name),
         "filename": relative_name,
         "excluded": payload.excluded,
         "excluded_files": excluded_files,
@@ -460,20 +359,17 @@ async def read_file(filename: str = Query(..., alias="filename"), dataset: str |
     @return Payload including file content and encoding.
     @throws HTTPException If the path is invalid or file missing.
     """
-    dataset_name, raw_dir = resolve_dataset_or_http_error(dataset, require_raw=True)
-    target_path, relative_name = resolve_relative_file(raw_dir, filename)
+    dataset_name, dataset_obj, repository = resolve_dataset_objects(dataset, require_raw=True)
+    ensure_dataset_ready(dataset_obj)
+    _, relative_name = resolve_relative_file(repository.raw_dir, filename)
     try:
-        content = target_path.read_text(encoding="utf-8")
-        encoding = "utf-8"
-    except UnicodeDecodeError:
-        content = target_path.read_text(encoding="utf-8", errors="replace")
-        encoding = "utf-8"
+        content, encoding = dataset_service.read_file(dataset_obj, relative_name)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found.") from exc
 
     return {
-        "dataset": dataset_name,
-        "filename": relative_name,
-        "encoding": encoding,
-        "content": content,
+        "dataset": dataset_service.summarize_dataset(dataset_name),
+        "file": {"path": relative_name, "encoding": encoding, "content": content},
     }
 
 

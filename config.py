@@ -35,7 +35,7 @@ CLUSTERING_CACHE_FILENAME = "clustering.csv"
 CLUSTERING_META_FILENAME = "clustering_meta.json"
 CLUSTERING_EXCLUDED_FILENAME = "clustering_excluded_files.json"
 REPORTS_SUBDIR = "reports"
-STUDENTS_REPORT_FILENAME = "students_outliers_report.md"
+STUDENTS_REPORT_FILENAME = "students_outliers_report.json"
 
 # Processing pipeline labels
 PROCESSING_PHASES = {
@@ -186,7 +186,15 @@ FEEDBACK_PROMPT_NO_REQUIREMENTS = (
     "You are a code reviewer. Provide concise, actionable feedback (strengths, issues, and suggested fixes) "
     "for the following code file: {filename}.\\n\\nCode:\\n{code}"
 )
-STUDENTS_REPORT_SUMMARY_PROMPT = (
+STUDENTS_REPORT_SUMMARY_PROMPT = ("You are writing a concise report destined to an instructor, based on a markdown report that highlights outlier student code files and common patterns.\\n"
+                                  "Do not invent any information beyond what is in the report.\\n"
+                                  "Your task is to generate a structured summary that highlight :\\n"
+                                  "Students facing big difficulties\\n"
+                                  "Students facing moderate difficulties\\n"
+                                  "Students doing well\\n"
+                                  "Student in advanced level\\n")
+
+STUDENTS_REPORT_SUMMARY_PROMPT_OLD = (
     "You are writing a concise, instructor-facing summary from an auto-generated markdown report about student code metrics.\\n"
     "Rewrite the report below with clearer structure and brevity while keeping all concrete findings and numbers.\\n"
     "Rules:\\n"

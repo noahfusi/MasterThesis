@@ -1,5 +1,10 @@
 (function () {
   const app = window.App || {};
+  app.__initialized = app.__initialized || {};
+  if (app.__initialized.fileExplorer) return;
+  app.__initialized.fileExplorer = true;
+  window.App = app;
+
   const { API_ROUTES, utils = {}, dataset = {}, duplicates = {}, onReady = (fn) => fn() } = app;
   const { requestJSON, showMessage, mergeLineRanges } = utils;
   const { setCurrentDataset, getSelectedDataset } = dataset;
@@ -160,7 +165,7 @@
         }
       });
       fileListState.metricsByFile = map;
-      fileListState.metricsDataset = payload.dataset || datasetName;
+      fileListState.metricsDataset = (payload.dataset && payload.dataset.name) || payload.dataset || datasetName;
     } catch (error) {
       console.warn("Unable to load metrics for dataset", datasetName, error);
     }
@@ -173,7 +178,7 @@
       const params = new URLSearchParams({ dataset: datasetName });
       const payload = await requestJSON(`${API_ROUTES.excludedFiles}?${params.toString()}`);
       const excluded = Array.isArray(payload.excluded_files) ? payload.excluded_files : [];
-      const targetDataset = payload.dataset || datasetName;
+      const targetDataset = (payload.dataset && payload.dataset.name) || payload.dataset || datasetName;
       setExcludedState(excluded, targetDataset);
     } catch (error) {
       console.warn("Unable to load excluded files for dataset", datasetName, error);
@@ -249,7 +254,7 @@
         body: JSON.stringify({ filename, excluded, dataset: datasetName }),
       });
       const excludedList = Array.isArray(payload.excluded_files) ? payload.excluded_files : [];
-      const targetDataset = payload.dataset || datasetName;
+      const targetDataset = (payload.dataset && payload.dataset.name) || payload.dataset || datasetName;
       setExcludedState(excludedList, targetDataset);
       renderFileList(fileListState.files, fileListState.dataset);
       const actionVerb = excluded ? "Excluded" : "Included";
@@ -391,7 +396,7 @@
     resetFileExplorerState();
     try {
       const data = await requestJSON(API_ROUTES.listFiles);
-      const datasetName = data.dataset || null;
+      const datasetName = (data.dataset && data.dataset.name) || data.dataset || null;
       const files = Array.isArray(data.files) ? data.files : [];
       await Promise.all([loadMetricsForDataset(datasetName), loadExcludedFiles(datasetName)]);
       renderFileList(files, datasetName);
@@ -467,9 +472,12 @@
         params.set("dataset", selectedDataset);
       }
       const data = await requestJSON(`${API_ROUTES.fileContent}?${params.toString()}`);
-      const highlightRanges = await getDuplicateRangesForFile(data.dataset, data.filename);
-      showFilePreview(data.filename, data.content, highlightRanges);
-      showMessage(fileListFeedback, `Displaying ${data.filename}.`);
+      const datasetName = (data.dataset && data.dataset.name) || data.dataset;
+      const filePath = (data.file && data.file.path) || data.filename;
+      const fileContent = (data.file && data.file.content) || data.content;
+      const highlightRanges = await getDuplicateRangesForFile(datasetName, filePath);
+      showFilePreview(filePath, fileContent, highlightRanges);
+      showMessage(fileListFeedback, `Displaying ${filePath}.`);
     } catch (error) {
       showMessage(fileListFeedback, error.message, true);
     }

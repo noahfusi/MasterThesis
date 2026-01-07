@@ -1,5 +1,10 @@
 (function () {
   const app = window.App || {};
+  app.__initialized = app.__initialized || {};
+  if (app.__initialized.plagiarism) return;
+  app.__initialized.plagiarism = true;
+  window.App = app;
+
   const { API_ROUTES, utils = {}, duplicates = {}, onReady = (fn) => fn() } = app;
   const { requestJSON } = utils;
   const {
@@ -105,25 +110,40 @@
     }
   }
 
-  async function getFileContentCached(dataset, relativePath) {
-    if (!relativePath) throw new Error("Missing file path in duplicate block.");
-    const key = `${dataset}:${relativePath}`;
+  async function getFileContentCached(dataset, relativePath, fallbackPath) {
+    const normalizedPath = normalizeRelativePath(relativePath || fallbackPath || "");
+    if (!normalizedPath) throw new Error("Missing file path in duplicate block.");
+    const datasetName = dataset || getActiveDatasetForPlagiarism();
+    const key = `${datasetName || ""}:${normalizedPath}`;
     if (!plagiarismState.snippetCache.has(key)) {
-      const params = new URLSearchParams({ filename: relativePath });
-      if (dataset) params.set("dataset", dataset);
+      const params = new URLSearchParams({ filename: normalizedPath });
+      if (datasetName) params.set("dataset", datasetName);
       const promise = requestJSON(`${API_ROUTES.fileContent}?${params.toString()}`);
       plagiarismState.snippetCache.set(key, promise);
     }
     const payload = await plagiarismState.snippetCache.get(key);
-    return payload.content || "";
+    if (!payload) return "";
+    if (payload.file && typeof payload.file.content === "string") {
+      return payload.file.content;
+    }
+    if (typeof payload.content === "string") {
+      return payload.content;
+    }
+    return "";
   }
 
   function buildSnippetLines(content, start, end) {
     const lines = content.split(/\r?\n/);
+    const startNum = Number(start);
+    const endNum = Number(end);
+    const startLine = Number.isFinite(startNum) ? startNum : 1;
+    const endLine = Number.isFinite(endNum) ? endNum : startLine;
     const before = 10;
     const after = 10;
-    const snippetStart = Math.max(start - before, 1);
-    const snippetEnd = Math.min(end + after, lines.length);
+    const resolvedStart = startLine || 1;
+    const resolvedEnd = endLine || resolvedStart;
+    const snippetStart = Math.max(resolvedStart - before, 1);
+    const snippetEnd = Math.min(resolvedEnd + after, lines.length || 1);
     const snippetLines = [];
     for (let line = snippetStart; line <= snippetEnd; line += 1) {
       snippetLines.push({
@@ -140,7 +160,12 @@
     wrapper.className = "plagiarism-file";
 
     const title = document.createElement("h3");
-    title.textContent = `${entry.relativePath} (${entry.startLine} ~ ${entry.endLine})`;
+    const rel = normalizeRelativeEntryPath(entry);
+    const startNum = Number(entry.startLine);
+    const endNum = Number(entry.endLine);
+    const start = Number.isFinite(startNum) ? startNum : "";
+    const end = Number.isFinite(endNum) ? endNum : "";
+    title.textContent = `${rel || entry.filePath || "Unknown file"} ${start && end ? `(${start} ~ ${end})` : ""}`;
     wrapper.appendChild(title);
 
     const snippet = document.createElement("div");
@@ -189,7 +214,7 @@
     try {
       const panels = await Promise.all(
         block.entries.map(async (entry) => {
-          const content = await getFileContentCached(plagiarismState.dataset, entry.relativePath);
+          const content = await getFileContentCached(plagiarismState.dataset, entry.relativePath, entry.filePath);
           const snippetLines = buildSnippetLines(content, entry.startLine, entry.endLine);
           return buildSnippetElement(entry, snippetLines);
         }),

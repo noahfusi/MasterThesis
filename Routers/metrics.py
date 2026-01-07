@@ -8,6 +8,7 @@ from Files.dataset_manager import get_current_dataset, list_datasets
 from Metrics import dataset_summary_path
 from Metrics.other_metrics import extract_file_metrics, load_reference_metrics
 from Metrics.students import THRESHOLD_DESCRIPTIONS, load_students_outliers
+from Routers.reports import generate_students_report
 from Routers.utils import ensure_dataset_ready, read_utf8_or_error, resolve_dataset_or_http_error
 
 router = APIRouter()
@@ -67,6 +68,7 @@ async def read_students_metrics(dataset: str | None = None) -> dict[str, object]
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lizard analysis not found.")
     try:
         payload = load_students_outliers(dataset_name)
+        report = generate_students_report(dataset_name)
     except RuntimeError as exc:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)) from exc
     except Exception as exc:  # pragma: no cover - unexpected decode errors
@@ -76,6 +78,8 @@ async def read_students_metrics(dataset: str | None = None) -> dict[str, object]
 
     if not payload:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No students metrics available.")
+    payload = dict(payload)
+    payload["report"] = report
     return payload
 
 

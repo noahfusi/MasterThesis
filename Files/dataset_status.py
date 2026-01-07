@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 import config
-from Files.dataset_manager import dataset_path
+from Files.dataset_repository import DATASET_REPOSITORY
 
 STATUS_FILENAME = config.STATUS_FILENAME
 
@@ -21,7 +21,7 @@ def _timestamp() -> str:
 
 
 def status_path(dataset: str) -> Path:
-    return dataset_path(dataset) / STATUS_FILENAME
+    return DATASET_REPOSITORY.dataset_path(dataset) / STATUS_FILENAME
 
 
 def load_status(dataset: str) -> dict[str, Any]:
