@@ -27,7 +27,9 @@ conda env create -f env.yml -n env_name
 ├── __pycache__
 ├── .gitignore
 ├── config.py               # Main configuration file with notable prompts, texts, OLLAMA server config
-└── main.py                 # Main file to launch the prototype
+├── env.yml                 # Conda enviroment file
+├── main.py                 # Main file to launch the prototype
+└── README.MD               # README
 ```
 ## Launching the program
 To launch the program use the following command:
