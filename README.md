@@ -2,7 +2,10 @@
 
 ## Environment and modules
 This project requires a linux environment with several modules. The python version is 3.10.18 and a env.yml is available for easy replication with conda.
-The project 
+To import an environment in conda use the following command:
+```code
+conda env create -f env.yml -n env_name
+```
 
 ## Project structure
 
