@@ -23,6 +23,7 @@ SCALA_DIR = Path(__file__).resolve().parent
 OBJECT_DECL_RE = re.compile(r"^\s*object\s+([A-Za-z_][\w\$]*)", re.MULTILINE)
 MAIN_METHOD_RE = re.compile(r"\bdef\s+main\s*\(", re.MULTILINE)
 EXTENDS_APP_RE = re.compile(r"extends\s+App\b")
+VARIANT_SUFFIX_RE = re.compile(r"^(?P<base>.+)_([a-zA-Z])$")
 
 
 def _dataset_paths(dataset: str) -> tuple[Path, Path, Path]:
@@ -50,6 +51,38 @@ def _load_tests(tests_path: Path) -> List[Dict[str, Any]]:
     if not isinstance(tests, list):
         raise ValueError("Invalid autotest format: 'tests' must be a list.")
     return tests
+
+
+def _ensure_test_ids(tests: list[dict[str, Any]]) -> None:
+    """
+    Ensure every test has an id so summaries stay stable.
+    """
+    for index, test in enumerate(tests, start=1):
+        if isinstance(test, dict) and not test.get("id"):
+            test["id"] = f"test-{index}"
+
+
+def _scenario_group_id(test_id: str) -> str:
+    """
+    Treat suffixes like _a/_b as variants of the same scenario.
+    """
+    match = VARIANT_SUFFIX_RE.match(test_id)
+    if match:
+        return match.group("base")
+    return test_id
+
+
+def _summarize_results(results: list[dict[str, Any]]) -> dict[str, int]:
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for entry in results:
+        test_id = entry.get("id") or "test-unknown"
+        group_id = _scenario_group_id(test_id)
+        grouped.setdefault(group_id, []).append(entry)
+
+    passed = sum(
+        1 for entries in grouped.values() if any(item.get("status") == "ok" for item in entries)
+    )
+    return {"passed": passed, "total": len(grouped)}
 
 
 def _brace_depth_before(content: str, pos: int) -> int:
@@ -426,6 +459,7 @@ async def _run_tests_once(dataset: str, target_file: str) -> dict[str, Any]:
     """
     dataset_root, autotest_path, results_dir = _dataset_paths(dataset)
     tests = _load_tests(autotest_path)
+    _ensure_test_ids(tests)
     if not target_file:
         raise ValueError("target_file is required for running tests.")
 
@@ -491,10 +525,7 @@ async def _run_tests_once(dataset: str, target_file: str) -> dict[str, Any]:
                 result = await _run_single_test(workspace, test)
                 results.append(result)
 
-        summary = {
-            "passed": sum(1 for entry in results if entry.get("status") == "ok"),
-            "total": len(results),
-        }
+        summary = _summarize_results(results)
         result_payload = {
             "dataset": dataset,
             "target": target_file,

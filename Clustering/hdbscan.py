@@ -35,6 +35,13 @@ def run_hdbscan_clustering(
     selected_min_samples = min_samples if min_samples is not None else max(1, min_cluster_size // 2 or 1)
     if selected_min_samples is not None:
         selected_min_samples = max(1, int(selected_min_samples))
+    selection_method = None
+    if cluster_selection_method is not None:
+        method = str(cluster_selection_method).strip().lower()
+        if method:
+            if method not in {"eom", "leaf"}:
+                raise ValueError('Invalid cluster_selection_method. Use "eom" or "leaf".')
+            selection_method = method
 
     if _cuml_HDBSCAN is None and _hdbscan is None:
         raise RuntimeError("hdbscan (CPU or GPU) is required for clustering.")
@@ -46,8 +53,8 @@ def run_hdbscan_clustering(
                 "min_cluster_size": min_cluster_size,
                 "min_samples": selected_min_samples,
             }
-            if cluster_selection_method:
-                clusterer_kwargs["cluster_selection_method"] = cluster_selection_method
+            if selection_method:
+                clusterer_kwargs["cluster_selection_method"] = selection_method
             if metric:
                 clusterer_kwargs["metric"] = metric
             clusterer = _cuml_HDBSCAN(**clusterer_kwargs)
@@ -55,13 +62,16 @@ def run_hdbscan_clustering(
         except Exception:
             labels = None
     if labels is None and _hdbscan is not None:
-        clusterer = _hdbscan.HDBSCAN(
-            min_cluster_size=min_cluster_size,
-            min_samples=selected_min_samples,
-            prediction_data=True,
-            cluster_selection_method=cluster_selection_method,
-            metric=metric,
-        )
+        hdbscan_kwargs = {
+            "min_cluster_size": min_cluster_size,
+            "min_samples": selected_min_samples,
+            "prediction_data": True,
+        }
+        if selection_method:
+            hdbscan_kwargs["cluster_selection_method"] = selection_method
+        if metric:
+            hdbscan_kwargs["metric"] = metric
+        clusterer = _hdbscan.HDBSCAN(**hdbscan_kwargs)
         labels = clusterer.fit_predict(points).tolist()
 
     if not labels or not any(label >= 0 for label in labels):

@@ -193,6 +193,7 @@ class AutoGMMStep(AlgorithmStepBase):
 class HDBSCANStepConfig(AlgorithmStepConfig):
     min_cluster_size: int | None = None
     min_samples: int | None = None
+    cluster_selection_method: str | None = None
 
 
 class HDBSCANStep(AlgorithmStepBase):
@@ -206,9 +207,19 @@ class HDBSCANStep(AlgorithmStepBase):
         min_cluster_size = self.config.min_cluster_size or heuristic
         min_cluster_size = max(2, min(min_cluster_size, len(normalized.entries)))
         min_samples = self.config.min_samples or max(1, min_cluster_size // 2)
-        min_samples = max(1, min(min_samples, min_cluster_size))
-        result = run_hdbscan_clustering(normalized, min_cluster_size=min_cluster_size, min_samples=min_samples)
-        return result, {"min_cluster_size": min_cluster_size, "min_samples": min_samples}
+        min_samples = max(1, min(min_samples, len(normalized.entries)))
+        selection_method = (self.config.cluster_selection_method or "eom").strip().lower()
+        result = run_hdbscan_clustering(
+            normalized,
+            min_cluster_size=min_cluster_size,
+            min_samples=min_samples,
+            cluster_selection_method=selection_method,
+        )
+        return result, {
+            "min_cluster_size": min_cluster_size,
+            "min_samples": min_samples,
+            "cluster_selection_method": selection_method,
+        }
 
 
 @dataclass(frozen=True)

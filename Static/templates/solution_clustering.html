@@ -241,6 +241,15 @@
                   </label>
                 </div>
                 <div class="clustering-inline-inputs">
+                  <label>
+                    Cluster selection
+                    <select class="theme-hdbscan-selection" {{ clustering_disabled }}>
+                      <option value="eom" selected>EOM</option>
+                      <option value="leaf">Leaf</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="clustering-inline-inputs">
                   <button type="button" class="clustering-secondary theme-hdbscan-auto" {{ clustering_disabled }}>
                     Auto-tune HDBSCAN
                   </button>

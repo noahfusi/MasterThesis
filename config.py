@@ -130,12 +130,12 @@ CLUSTERING_THEMES: dict[str, dict[str, object]] = {
         "description": "Highlight very small or oversized files and duplicated code.",
     },
     "functions": {
-        "label": "Split into functions",
+        "label": "Function decomposition",
         "metrics": ["Functions", "NCSS/Functions", "Vars/Functions"],
         "description": "Check whether logic is broken down into smaller pieces.",
     },
     "style": {
-        "label": "Style",
+        "label": "Variable usage",
         "metrics": ["Total variables", "Vars/NCSS"],
         "description": "Look at naming density and variable usage.",
     },
@@ -153,11 +153,12 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
 OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-5-nano")
 OPENAI_EMBED_MODEL = os.environ.get("OPENAI_EMBED_MODEL", "text-embedding-3-small")
-FEEDBACK_MODEL = "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
+FEEDBACK_MODEL = "qwen3-coder:30b"
 #"ministral-3:8b"
 #"MHKetbi/Unsloth_gemma3-4b-it:q4_K_M"
 #"gemma3:4b"
 # "danielsheep/Qwen3-Coder-30B-A3B-Instruct-1M-Unsloth:UD-Q4_K_XL"
+#"qwen3-coder:30b"
 FEEDBACK_PROMPT_WITH_REQUIREMENTS = (
     "You are a code reviewer for an introductory programming course.  "
     "Your goal is to evaluate a student's code based *only* on the given requirements."

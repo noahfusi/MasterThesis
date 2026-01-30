@@ -305,6 +305,7 @@ class ClusteringRequest(BaseModel):
     cluster_count: int | None = Field(default=None, ge=2, le=200)
     min_cluster_size: int | None = Field(default=None, ge=2, le=500)
     min_samples: int | None = Field(default=None, ge=1, le=500)
+    cluster_selection_method: Literal["eom", "leaf"] | None = None
     optics_xi: float | None = Field(default=None, ge=0, le=1)
     optics_max_eps: float | None = Field(default=None, ge=0)
     auto_hdbscan: bool = False
@@ -327,6 +328,7 @@ class ThemeClusteringConfig(BaseModel):
     cluster_count: int | None = Field(default=None, ge=2, le=200)
     min_cluster_size: int | None = Field(default=None, ge=2, le=500)
     min_samples: int | None = Field(default=None, ge=1, le=500)
+    cluster_selection_method: Literal["eom", "leaf"] | None = None
     optics_xi: float | None = Field(default=None, ge=0, le=1)
     optics_max_eps: float | None = Field(default=None, ge=0)
     auto_hdbscan: bool = False
@@ -373,6 +375,7 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
         cluster_count: int | None,
         min_cluster_size: int | None,
         min_samples: int | None,
+        cluster_selection_method: Literal["eom", "leaf"] | None,
         auto_hdbscan: bool,
         auto_kmeans: bool,
         auto_gmm: bool,
@@ -471,6 +474,7 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                         embedding_dims=embedding_dims,
                         min_cluster_size=min_cluster_size,
                         min_samples=min_samples,
+                        cluster_selection_method=cluster_selection_method,
                     )
                 )
         else:
@@ -530,6 +534,7 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                     "cluster_count": theme_cfg.cluster_count or payload.cluster_count,
                     "min_cluster_size": theme_cfg.min_cluster_size or payload.min_cluster_size,
                     "min_samples": theme_cfg.min_samples or payload.min_samples,
+                    "cluster_selection_method": theme_cfg.cluster_selection_method or payload.cluster_selection_method,
                     "auto_hdbscan": bool(theme_cfg.auto_hdbscan or False),
                     "auto_kmeans": bool(theme_cfg.auto_kmeans or False),
                     "auto_gmm": bool(theme_cfg.auto_gmm or False),
@@ -556,17 +561,18 @@ async def launch_clustering(payload: ClusteringRequest, background_tasks: Backgr
                 "cluster_count": payload.cluster_count,
                 "min_cluster_size": payload.min_cluster_size,
                 "min_samples": payload.min_samples,
-                    "auto_hdbscan": payload.auto_hdbscan,
-                    "auto_kmeans": payload.auto_kmeans,
-                    "auto_gmm": payload.auto_gmm,
-                    "auto_optics": payload.auto_optics,
-                    "optics_xi": payload.optics_xi,
-                    "optics_max_eps": payload.optics_max_eps,
-                    "gmm_covariance_type": payload.gmm_covariance_type,
-                    "feature_mode": payload.feature_mode or "metrics",
-                    "embedding_dims": payload.embedding_dims or 16,
-                    "generate_descriptions": payload.generate_descriptions,
-                }
+                "cluster_selection_method": payload.cluster_selection_method,
+                "auto_hdbscan": payload.auto_hdbscan,
+                "auto_kmeans": payload.auto_kmeans,
+                "auto_gmm": payload.auto_gmm,
+                "auto_optics": payload.auto_optics,
+                "optics_xi": payload.optics_xi,
+                "optics_max_eps": payload.optics_max_eps,
+                "gmm_covariance_type": payload.gmm_covariance_type,
+                "feature_mode": payload.feature_mode or "metrics",
+                "embedding_dims": payload.embedding_dims or 16,
+                "generate_descriptions": payload.generate_descriptions,
+            }
             )
 
     results: dict[str, object] = {}

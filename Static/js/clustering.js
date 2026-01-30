@@ -635,6 +635,9 @@
     if (controls?.minSamples) {
       controls.minSamples.disabled = state.autoHdbscan;
     }
+    if (controls?.hdbscanSelection) {
+      controls.hdbscanSelection.disabled = state.autoHdbscan;
+    }
   }
 
   function setThemeOpticsAutoMode(themeId, enabled) {
@@ -790,6 +793,7 @@
       const gmmCovariance = card.querySelector(".theme-gmm-covariance");
       const minClusterSize = card.querySelector(".theme-hdbscan-min-size");
       const minSamples = card.querySelector(".theme-hdbscan-min-samples");
+      const hdbscanSelection = card.querySelector(".theme-hdbscan-selection");
       const opticsMinSamples = card.querySelector(".theme-optics-min-samples");
       const opticsXi = card.querySelector(".theme-optics-xi");
       const opticsMaxEps = card.querySelector(".theme-optics-max-eps");
@@ -810,6 +814,7 @@
         gmmCovariance,
         minClusterSize,
         minSamples,
+        hdbscanSelection,
         opticsMinSamples,
         opticsXi,
         opticsMaxEps,
@@ -988,6 +993,9 @@
       }
       if (Number.isFinite(minSamples)) {
         parts.push(`min_samples=${minSamples}`);
+      }
+      if (parameters.cluster_selection_method) {
+        parts.push(`selection=${parameters.cluster_selection_method}`);
       }
     } else if (algorithm === "gmm") {
       const components = Number(parameters.cluster_count);
@@ -1561,6 +1569,9 @@
           sanitizeThemeHdbscanInputs(theme.id);
           payload.min_cluster_size = Number(controls.minClusterSize ? controls.minClusterSize.value : 5);
           payload.min_samples = Number(controls.minSamples ? controls.minSamples.value : 5);
+          payload.cluster_selection_method = controls.hdbscanSelection
+            ? controls.hdbscanSelection.value || "eom"
+            : "eom";
         }
       } else if (algorithm === "gmm") {
         if (params.autoGmm) {
